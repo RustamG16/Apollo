@@ -1,0 +1,12 @@
+{
+  "project": "Apollo Orchestration Studio",
+  "target": "D:\\Analyst_Designer\\Apollo\\apollo-studio",
+  "route": "/",
+  "runType": "concept-and-implementation",
+  "selectedConcept": "Apollo control plane",
+  "gateA": "User directed implementation of a working, adjustable system after rejecting the static visualization.",
+  "gateB": "User explicitly requested one concept to be selected and implemented.",
+  "gateC": "pending user review",
+  "phase": "client-review",
+  "reference": "C:\\Users\\RUSTAM~1\\AppData\\Local\\Temp\\codex-clipboard-e9cd9e70-67a0-40c4-a8e8-1539fa527672.png"
+}

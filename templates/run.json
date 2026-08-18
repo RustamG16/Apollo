@@ -1,0 +1,16 @@
+{
+  "system": "olympus-designer-system1",
+  "target_project": "",
+  "target_route": "",
+  "mode": "concept-only | concept-and-implementation",
+  "phase": "intake",
+  "gate_a": "pending",
+  "gate_b": "pending",
+  "gate_c": "pending",
+  "approved_concept": null,
+  "constraints": [],
+  "references": [],
+  "assets": [],
+  "last_updated": "YYYY-MM-DD"
+}
+

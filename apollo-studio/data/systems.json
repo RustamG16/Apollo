@@ -1,0 +1,293 @@
+{
+  "version": 1,
+  "activeSystemId": "olympus-web-system",
+  "systems": [
+    {
+      "id": "olympus-web-system",
+      "name": "Olympus Web System",
+      "description": "Evidence-led website design, implementation, and bounded verification.",
+      "instructions": "Plan first, activate only relevant specialists, preserve approval gates, and integrate one coherent answer.",
+      "createdAt": "2026-08-11T12:04:55.056Z",
+      "updatedAt": "2026-08-11T13:19:30.640Z",
+      "agents": [
+        {
+          "id": "evidence-analyst",
+          "name": "Evidence Analyst",
+          "description": "Inspects current-state evidence before recommendations.",
+          "skills": [
+            "ux-evidence-audit",
+            "reference-deconstruction"
+          ],
+          "budget": 4500,
+          "approval": false,
+          "priority": 8,
+          "triggers": [
+            "audit",
+            "existing",
+            "reference",
+            "research",
+            "evidence",
+            "analytics",
+            "diagnose",
+            "redesign"
+          ],
+          "activation": "Current page, research, references, or diagnostic evidence is requested.",
+          "phase": "diagnose",
+          "mcp": [],
+          "plugins": [],
+          "instructions": "Work only within the Evidence Analyst responsibility. Return a bounded phase packet to the orchestrator and do not delegate.",
+          "enabled": true
+        },
+        {
+          "id": "experience-designer",
+          "name": "Experience Designer",
+          "description": "Shapes hierarchy, interaction, and distinct product directions.",
+          "skills": [
+            "concept-studio",
+            "impeccable"
+          ],
+          "budget": 5500,
+          "approval": false,
+          "priority": 7,
+          "triggers": [
+            "design",
+            "redesign",
+            "concept",
+            "ux",
+            "ui",
+            "layout",
+            "website",
+            "interface",
+            "dashboard"
+          ],
+          "activation": "A visual or interaction direction must be designed.",
+          "phase": "direct",
+          "mcp": [],
+          "plugins": [],
+          "instructions": "Work only within the Experience Designer responsibility. Return a bounded phase packet to the orchestrator and do not delegate.",
+          "enabled": true
+        },
+        {
+          "id": "design-engineer",
+          "name": "Design Engineer",
+          "description": "Turns an approved direction into working interface code.",
+          "skills": [
+            "impeccable",
+            "awwwards-web-design"
+          ],
+          "budget": 6500,
+          "approval": false,
+          "priority": 6,
+          "triggers": [
+            "build",
+            "implement",
+            "code",
+            "frontend",
+            "react",
+            "vue",
+            "svelte",
+            "html",
+            "css",
+            "component"
+          ],
+          "activation": "The plan requires implementation or frontend code.",
+          "phase": "build",
+          "mcp": [],
+          "plugins": [],
+          "instructions": "Work only within the Design Engineer responsibility. Return a bounded phase packet to the orchestrator and do not delegate.",
+          "enabled": true
+        },
+        {
+          "id": "motion-engineer",
+          "name": "Motion Engineer",
+          "description": "Owns purposeful motion and framework-safe GSAP execution.",
+          "skills": [
+            "gsap-core",
+            "gsap-timeline",
+            "gsap-scrolltrigger",
+            "gsap-react",
+            "gsap-frameworks",
+            "gsap-plugins",
+            "gsap-performance"
+          ],
+          "budget": 4500,
+          "approval": false,
+          "priority": 5,
+          "triggers": [
+            "motion",
+            "animate",
+            "animation",
+            "gsap",
+            "scroll",
+            "parallax",
+            "timeline",
+            "draggable",
+            "transition"
+          ],
+          "activation": "Motion communicates state, sequence, or spatial continuity.",
+          "phase": "prepare",
+          "mcp": [],
+          "plugins": [],
+          "instructions": "Work only within the Motion Engineer responsibility. Return a bounded phase packet to the orchestrator and do not delegate.",
+          "enabled": true
+        },
+        {
+          "id": "spatial-engineer",
+          "name": "Spatial Engineer",
+          "description": "Bounds 3D/WebGL value, lifecycle, fallbacks, and performance.",
+          "skills": [
+            "webgl-experience",
+            "three-js-implementation"
+          ],
+          "budget": 5000,
+          "approval": true,
+          "priority": 4,
+          "triggers": [
+            "3d",
+            "three.js",
+            "threejs",
+            "webgl",
+            "spatial",
+            "shader",
+            "glsl"
+          ],
+          "activation": "A concrete 3D communication purpose appears in the plan.",
+          "phase": "prepare",
+          "mcp": [],
+          "plugins": [],
+          "instructions": "Work only within the Spatial Engineer responsibility. Return a bounded phase packet to the orchestrator and do not delegate.",
+          "enabled": true
+        },
+        {
+          "id": "media-producer",
+          "name": "Media Producer",
+          "description": "Plans images, video, renders, provenance, and generation handoff.",
+          "skills": [
+            "asset-director"
+          ],
+          "budget": 4500,
+          "approval": true,
+          "priority": 3,
+          "triggers": [
+            "image",
+            "video",
+            "asset",
+            "photo",
+            "illustration",
+            "render",
+            "generate",
+            "media"
+          ],
+          "activation": "Missing visual media is required by the approved concept.",
+          "phase": "prepare",
+          "mcp": [],
+          "plugins": [],
+          "instructions": "Work only within the Media Producer responsibility. Return a bounded phase packet to the orchestrator and do not delegate.",
+          "enabled": true
+        },
+        {
+          "id": "verification-critic",
+          "name": "Verification Critic",
+          "description": "Runs bounded visual, responsive, accessibility, and runtime checks.",
+          "skills": [
+            "visual-qa",
+            "award-rubric",
+            "gsap-performance"
+          ],
+          "budget": 4000,
+          "approval": false,
+          "priority": 2,
+          "triggers": [
+            "test",
+            "qa",
+            "verify",
+            "accessibility",
+            "responsive",
+            "performance",
+            "ship",
+            "production",
+            "review"
+          ],
+          "activation": "The plan includes implementation review or delivery evidence.",
+          "phase": "verify",
+          "mcp": [],
+          "plugins": [],
+          "instructions": "Work only within the Verification Critic responsibility. Return a bounded phase packet to the orchestrator and do not delegate.",
+          "enabled": true
+        },
+        {
+          "id": "measurement-analyst",
+          "name": "Measurement Analyst",
+          "description": "Connects design hypotheses to events and readouts.",
+          "skills": [
+            "design-analytics"
+          ],
+          "budget": 3500,
+          "approval": false,
+          "priority": 1,
+          "triggers": [
+            "analytics",
+            "conversion",
+            "experiment",
+            "metric",
+            "funnel",
+            "event",
+            "a/b",
+            "measure"
+          ],
+          "activation": "A business outcome or experiment must be measured.",
+          "phase": "verify",
+          "mcp": [],
+          "plugins": [],
+          "instructions": "Work only within the Measurement Analyst responsibility. Return a bounded phase packet to the orchestrator and do not delegate.",
+          "enabled": true
+        }
+      ],
+      "outputs": [
+        {
+          "id": "apollo-studio-phase-3-fresh-chat-handoff-apollo-studio-handoff-p",
+          "name": "Apollo Studio Phase 3 fresh-chat handoff",
+          "type": "Continuation handoff",
+          "status": "Paused - ready for fresh chat",
+          "createdAt": "2026-08-11T13:19:30.639Z",
+          "runId": "apollo-studio-handoff-phase3-20260811-codex",
+          "summary": "Durable resume context created after Phase 2; IA selection and Phase 3 approval remain required.",
+          "content": "# Apollo Studio fresh-chat handoff\n\nStatus: paused after Phase 2 and ready to resume in a fresh Codex chat.\n\nHandoff root: Apollo/apollo-studio/handoffs/phase-3\n\nFiles:\n- START-HERE.md: durable human context, constraints, environment, required reads, and Phase 3 boundary.\n- STATE.json: machine-readable phase, gate, runtime, validation, artifact, and telemetry state.\n- KICKOFF-PROMPT.md: copy-paste prompt for the fresh chat.\n\nCurrent decision: IA direction A, B, or C is required. A is recommended. Phase 3 and broader implementation are not authorized.\n\nValidation: all seven required references exist; STATE.json parses; live Apollo health reports 22 skills.\n\nExact token usage remains unavailable and is not estimated.",
+          "previewPath": ""
+        },
+        {
+          "id": "apollo-studio-phase-2-product-model-and-catalog-repair-apollo-st",
+          "name": "Apollo Studio Phase 2 - product model and catalog repair",
+          "type": "Product model and IA",
+          "status": "Phase 2 complete - IA selection required",
+          "createdAt": "2026-08-11T13:13:27.745Z",
+          "runId": "apollo-studio-phase2-20260811-codex",
+          "summary": "Repaired stale Knowledge discovery and defined the Phase 2 product model plus three approval-gated IA directions.",
+          "content": "# Apollo Studio Phase 2\n\nStatus: product model and information architecture complete; IA selection required before Phase 3.\n\nDefect repair:\n- Before: the running server exposed 19 skills.\n- Root cause: the Node process started at 14:27 and retained the old module, while skills.mjs changed at 14:58.\n- Fix: npm start now uses Node watch mode; start:once preserves a fixed-process option; health reports loaded and enabled skill counts; the stale server was restarted.\n- After: health and Knowledge expose 22 skills, including the three requested capabilities.\n\nPhase 2 artifact:\n- Canonical entities and ownership rules for Project, Style Profile, Reference Decision, Mission, Squad Configuration, Agent Definition, Agent Configuration, Run, Artifact, Portfolio Entry, Playbook, and Progress Record.\n- Snapshot/versioning, evidence-state, token-usage, and attribution rules.\n- Progressive disclosure and lifecycle.\n- Three IA directions: A Oracle-first journey (recommended), B Studio desk, C Mission map.\n- No broader navigation or UI build was implemented.\n\nValidation:\n- npm.cmd run check passed.\n- Desktop Knowledge shows 22 skills and all three new entries.\n- 390x844 mobile shows 22 with no document overflow.\n- Browser console warnings/errors: none.\n- Evidence screenshots saved under apollo-studio/evidence.\n- Exact host token usage unavailable; no number estimated or recorded.\n\nDecision required: approve A, B, or C before Phase 3 flows and content begin.",
+          "previewPath": "apollo-studio/evidence/phase2-knowledge-desktop.png"
+        },
+        {
+          "id": "apollo-studio-design-system-foundation-apollo-studio-foundation-",
+          "name": "Apollo Studio design-system foundation",
+          "type": "Design-system foundation",
+          "status": "Foundation complete - approval required",
+          "createdAt": "2026-08-11T13:01:57.167Z",
+          "runId": "apollo-studio-foundation-20260811-codex",
+          "summary": "Three requested skills created and registered; broader product work is approval-gated. Whole-run token usage was unavailable and is not estimated.",
+          "content": "# Apollo Studio design-system foundation\n\nStatus: Phase 1 foundation complete. No broader UI/product work was performed; all later phases require approval.\n\nCreated and registered: taste-first-experience-design, ethical-gamification-systems, agent-identity-and-portfolio.\n\nSkill routing: skill-creator was invoked. apple-design, prototype, emil-design-eng, customer-research, onboarding, image, animate, analytics, and ab-testing are conditional recommendations only and were not invoked.\n\nStages: inspect conventions; initialize and author skills; register and initialize Apollo knowledge; validate; record run; stop.\n\nToken observability: exact Codex-hosted whole-run usage is unavailable. This run did not use Apollo's Responses adapter and the host exposed no trustworthy count. No number is recorded, and zero is not substituted. Existing Apollo events accept actual phase tokens and the UI renders absence as \"Tokens not reported\"; no new instrumentation was needed.\n\nValidation: npm.cmd run check passed; Apollo discovered all three capabilities; local structure passed a dependency-free quick_validate.py equivalent; the official validator could not run because bundled Python lacks PyYAML; no package was installed; all three Apollo knowledge README entries exist.\n\nManual validation:\n1. Start Apollo Studio and open Knowledge. Find each exact ID. Screenshot all three cards (or one per skill). Assess distinct ownership and legible descriptions.\n2. Open Runs > apollo-studio-foundation-20260811-codex. Screenshot the header and phase rows. Confirm \"Tokens not reported\", never \"0 tokens\".\n3. Open Output library > Apollo Studio design-system foundation. Screenshot status and run ID. Confirm foundation-only completion.\nAlso assess whether Oracle language is nontechnical, spend/status safeguards feel protective, agent identities keep proof and limitations visible, and absent usage never looks exact.\n\nApproval-gated follow-on plan:\nPhase 2 product model/information architecture.\nPhase 3 critical UX flows and Oracle content.\nPhase 4 visual identity and prototype.\nPhase 5 approved bounded implementation.\nPhase 6 browser, accessibility, analytics, and experiment validation.\nDo not begin Phase 2 without user approval.",
+          "previewPath": ""
+        },
+        {
+          "id": "savra-threshold-ritual",
+          "name": "SAVRA — The Threshold Ritual",
+          "type": "Responsive website",
+          "status": "Gate C pending",
+          "createdAt": "2026-08-10T23:28:15.190Z",
+          "runId": "savra-20260810T225627Z-codex",
+          "summary": "Cinematic restaurant concept built from supplied synthetic media.",
+          "previewPath": "test_projects/Savra_Restraunt/.olympus/evidence/qa/desktop-1440x900.png"
+        }
+      ]
+    }
+  ]
+}

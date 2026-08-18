@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Configure, inspect, and compare Apollo skill combinations.">
+  <title>Apollo Orchestration Studio</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!--
+  THESIS: Apollo is a composable orchestration instrument, not a decorative architecture poster or a fixed agent roster.
+  OWN-WORLD: Carbon operator surface, crisp measured paths, cyan execution, violet approvals, zero false connectivity.
+  STORY: Build named systems from replaceable agents and inventories, understand their route, inspect outputs, then compare or run them.
+  FIRST VIEWPORT: Persistent command rail, live architecture graph with phase-owned agents, selected-node evidence, and direct entry into the system composer.
+  FORM: Code-led orchestration workbench; single selected concept; seed key apollo-control-plane.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+  -->
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#architecture" aria-label="Apollo Studio home">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span><strong>Apollo Studio</strong><small>Orchestration control plane</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <button class="nav-item is-active" data-view-target="architecture">Architecture</button>
+        <button class="nav-item" data-view-target="systems">Systems</button>
+        <button class="nav-item" data-view-target="knowledge">Knowledge</button>
+        <button class="nav-item" data-view-target="oracle">Oracle</button>
+        <button class="nav-item" data-view-target="playground">Playground</button>
+        <button class="nav-item" data-view-target="runs">Runs <span id="run-count">0</span></button>
+      </nav>
+      <div class="runtime-state"><span class="state-dot" aria-hidden="true"></span><span id="runtime-label">Connecting…</span></div>
+    </header>
+
+    <main>
+      <section class="view is-active" id="architecture" aria-labelledby="architecture-title">
+        <div class="section-heading">
+          <div><h1 id="architecture-title">Build the route. See the consequences.</h1><p>Apollo keeps the gates fixed and lets judgment capabilities change around them.</p></div>
+          <button class="primary-action" data-view-target="systems">Edit active system</button>
+        </div>
+
+        <div class="architecture-toolbar">
+          <label>Show phase
+            <select id="phase-filter">
+              <option value="all">Entire workflow</option>
+              <option value="diagnose">Diagnose</option>
+              <option value="direct">Direct</option>
+              <option value="prepare">Prepare</option>
+              <option value="build">Build</option>
+              <option value="verify">Verify</option>
+            </select>
+          </label>
+          <div class="active-system-summary" aria-live="polite"><span>Active system</span><strong id="architecture-system-name">Loading…</strong><small id="architecture-system-count">0 agents</small></div>
+        </div>
+
+        <section class="architecture-agents" aria-labelledby="architecture-agents-title">
+          <div class="panel-heading"><div><h2 id="architecture-agents-title">Agents by phase</h2><p>The active saved system owns this roster. Select an agent to inspect its inventory.</p></div><button class="quiet-action" data-view-target="systems">Change roster</button></div>
+          <div class="architecture-agent-lanes" id="architecture-agent-lanes"></div>
+        </section>
+
+        <section class="workflow-canvas" id="workflow-canvas" aria-label="Apollo gated workflow">
+          <svg class="connector-layer" id="connector-layer" aria-hidden="true">
+            <defs>
+              <marker id="arrow-data" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker>
+              <marker id="arrow-feedback" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker>
+            </defs>
+          </svg>
+          <div class="workflow-grid">
+            <button class="workflow-node input-node" data-node="intake" data-phase="diagnose" aria-pressed="false"><span>Evidence</span><strong>Intake & audit</strong><small>Page · source · references · analytics</small></button>
+            <button class="workflow-node director-node" data-node="director" data-phase="all" aria-pressed="true"><span>Orchestrator</span><strong>Apollo Design Director</strong><small>Owns the brief, routing, gates, and final answer</small><em>Always active</em></button>
+            <button class="workflow-node gate gate-a" data-node="gate-a" data-phase="diagnose" aria-pressed="false"><span>Gate A</span><strong>Brief approved</strong><small>Problem · audience · constraints</small></button>
+            <button class="workflow-node concept-node" data-node="concepts" data-phase="direct" aria-pressed="false"><span>Direction</span><strong>Concept studio</strong><small>Three routes · independent critique</small></button>
+            <button class="workflow-node gate gate-b" data-node="gate-b" data-phase="direct" aria-pressed="false"><span>Gate B</span><strong>Direction selected</strong><small>One concept becomes build truth</small></button>
+            <button class="workflow-node build-node" data-node="build" data-phase="prepare" aria-pressed="false"><span>Production</span><strong>Assets & implementation</strong><small>Media · motion · components · code</small></button>
+            <button class="workflow-node qa-node" data-node="qa" data-phase="verify" aria-pressed="false"><span>Gate C</span><strong>Visual QA & handoff</strong><small>Desktop · mobile · a11y · runtime</small></button>
+          </div>
+        </section>
+
+        <div class="node-inspector" aria-live="polite"><span id="inspector-phase">Orchestrator</span><strong id="inspector-title">Apollo Design Director</strong><p id="inspector-copy">One manager keeps ownership while selected skills contribute bounded judgment.</p></div>
+
+        <div class="configuration-layout">
+          <section class="skills-panel" aria-labelledby="skills-title">
+            <div class="panel-heading"><div><h2 id="skills-title">Skill registry</h2><p>Every switch changes the instructions sent by this configuration.</p></div><button class="quiet-action" id="reset-skills">Reset defaults</button></div>
+            <div class="registry-controls">
+              <label class="search-field"><span class="sr-only">Search skills</span><input id="skill-search" type="search" placeholder="Search skills"></label>
+              <label><span class="sr-only">Filter skill phase</span><select id="skill-phase-filter"><option value="all">All phases</option><option value="diagnose">Diagnose</option><option value="direct">Direct</option><option value="prepare">Prepare</option><option value="build">Build</option><option value="verify">Verify</option></select></label>
+            </div>
+            <div class="skill-list" id="skill-list"></div>
+          </section>
+
+          <aside class="tools-panel" aria-labelledby="tools-title">
+            <div class="panel-heading"><div><h2 id="tools-title">Tool adapters</h2><p>Availability is reported honestly.</p></div></div>
+            <div id="tool-list" class="tool-list"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="systems" aria-labelledby="systems-title">
+        <div class="section-heading">
+          <div><h1 id="systems-title">Compose the system. Keep the recipe.</h1><p>Create named orchestration systems, replace their agents, and assign the skills, MCP tools, plugins, instructions, and token boundaries each specialist carries.</p></div>
+          <div class="heading-actions"><button class="quiet-action" id="duplicate-system">Duplicate active</button><button class="primary-action" id="new-system">New system</button></div>
+        </div>
+        <div class="systems-workbench">
+          <aside class="system-library" aria-labelledby="saved-systems-title">
+            <div class="panel-heading"><div><h2 id="saved-systems-title">Saved systems</h2><p>Reusable, server-backed configurations.</p></div></div>
+            <div class="system-list" id="system-list"></div>
+            <p class="system-library-note">The active system drives Architecture and new Oracle plans. Saving never changes historical run evidence.</p>
+          </aside>
+          <section class="system-editor" id="system-editor" aria-live="polite">
+            <form id="system-form">
+              <div class="system-editor-head">
+                <div class="system-identity-grid">
+                  <label>System name<input name="name" required maxlength="100"></label>
+                  <label>Description<input name="description" maxlength="700"></label>
+                </div>
+                <div class="system-actions"><button type="button" class="quiet-action" id="activate-system">Use this system</button><button type="button" class="danger-action" id="delete-system">Delete</button><button class="run-action" type="submit">Save changes</button></div>
+              </div>
+              <label class="system-instructions">Orchestrator instructions<textarea name="instructions" rows="4" maxlength="8000" placeholder="Rules every run of this system must follow…"></textarea></label>
+              <p class="form-feedback" id="system-feedback" role="status"></p>
+            </form>
+
+            <section class="system-agents" aria-labelledby="system-agents-title">
+              <div class="system-section-heading"><div><h2 id="system-agents-title">Agent roster</h2><p>Each agent owns one phase and an explicit inventory. Replace from a template or edit every field.</p></div><button type="button" class="quiet-action" id="add-system-agent">Add agent</button></div>
+              <div class="system-agent-list" id="system-agent-list"></div>
+            </section>
+
+            <section class="output-library" aria-labelledby="output-library-title">
+              <div class="system-section-heading"><div><h2 id="output-library-title">Output library</h2><p>Project previews remain attached to the system that produced them.</p></div><span id="output-count">0 outputs</span></div>
+              <div class="output-grid" id="output-grid"></div>
+            </section>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="playground" aria-labelledby="playground-title">
+        <div class="section-heading">
+          <div><h1 id="playground-title">One prompt. Controlled configurations.</h1><p>Compare two or three skill combinations without changing the task or model settings.</p></div>
+          <div class="runtime-note" id="playground-mode">Checking runtime…</div>
+        </div>
+
+        <section class="prompt-composer">
+          <label for="experiment-prompt">Test prompt</label>
+          <textarea id="experiment-prompt" rows="7" maxlength="20000" placeholder="Describe the same task every variant should solve…">Redesign a SaaS agency homepage so founders understand the offer in ten seconds and can confidently book a strategy call. Explain the recommended structure, interaction, and verification plan.</textarea>
+          <div class="prompt-footer"><span id="prompt-length">0 / 20,000</span><button class="quiet-action" id="clear-prompt">Clear</button></div>
+        </section>
+
+        <div class="experiment-settings">
+          <label>Model<select id="model-select"></select></label>
+          <label>Reasoning<select id="reasoning-select"><option value="none">None</option><option value="low" selected>Low</option><option value="medium">Medium</option><option value="high">High</option></select></label>
+          <label>Output ceiling<input id="max-output" type="number" min="200" max="4000" step="100" value="1000"><span>tokens</span></label>
+        </div>
+
+        <section class="variant-section" aria-labelledby="variants-title">
+          <div class="panel-heading"><div><h2 id="variants-title">Variants</h2><p>Each variant receives the exact same prompt.</p></div><button class="quiet-action" id="add-variant">Add third variant</button></div>
+          <div class="variant-grid" id="variant-grid"></div>
+        </section>
+
+        <div class="run-bar"><p id="run-message" role="status">Ready to compare.</p><button class="run-action" id="run-comparison">Run comparison</button></div>
+        <section class="results-grid" id="results-grid" aria-live="polite"></section>
+      </section>
+
+      <section class="view" id="agents" aria-labelledby="agents-title">
+        <div class="section-heading">
+          <div><h1 id="agents-title">Specialists wait for a reason.</h1><p>Apollo matches plan requirements to bounded agents. Dormant agents consume no model calls and cannot delegate further.</p></div>
+          <button class="primary-action" data-view-target="oracle">Test the router</button>
+        </div>
+        <div class="agent-principles">
+          <p><strong>One orchestrator</strong><span>Owns the prompt, plan, approvals, and synthesis.</span></p>
+          <p><strong>Conditional activation</strong><span>Keyword rules make the local planner inspectable and deterministic.</span></p>
+          <p><strong>Concurrency 2</strong><span>Independent specialists may run together; authors and critics stay ordered by the plan.</span></p>
+        </div>
+        <div class="agent-registry" id="agent-registry" aria-live="polite"></div>
+      </section>
+
+      <section class="view" id="knowledge" aria-labelledby="knowledge-title">
+        <div class="section-heading">
+          <div><h1 id="knowledge-title">Knowledge that has an address.</h1><p>Every skill lives in a categorized folder with runtime instructions and source notes you can inspect outside this UI.</p></div>
+          <button class="primary-action" id="show-add-skill">Add skill</button>
+        </div>
+        <div class="knowledge-path"><span>Local root</span><code id="knowledge-root">Loading…</code></div>
+        <form class="inline-editor is-hidden" id="add-skill-form">
+          <div class="editor-heading"><div><h2>Create a skill</h2><p>The category becomes its physical folder. The ID is generated from the name.</p></div><button type="button" class="quiet-action" id="cancel-add-skill">Cancel</button></div>
+          <div class="editor-grid">
+            <label>Name<input name="name" required minlength="2" maxlength="80" placeholder="e.g. Three.js shaders"></label>
+            <label>Category<input name="category" list="category-options" required maxlength="50" placeholder="e.g. Spatial"></label>
+            <label>Phase<select name="phase"><option value="diagnose">Diagnose</option><option value="direct">Direct</option><option value="prepare" selected>Prepare</option><option value="build">Build</option><option value="verify">Verify</option></select></label>
+          </div>
+          <label>Description<textarea name="description" rows="3" required maxlength="500" placeholder="What judgment does this capability contribute?"></textarea></label>
+          <label>Runtime instructions<textarea name="runtimePrompt" rows="5" required maxlength="4000" placeholder="Specific instructions Apollo sends when this skill is activated."></textarea></label>
+          <div class="form-status"><span id="add-skill-status" role="status"></span><button class="run-action" type="submit">Create skill folder</button></div>
+        </form>
+        <datalist id="category-options"></datalist>
+        <div class="knowledge-layout">
+          <aside class="category-rail">
+            <label class="search-field">Search knowledge<input id="knowledge-search" type="search" placeholder="Skill, category, source…"></label>
+            <div id="category-list" class="category-list"></div>
+          </aside>
+          <section class="knowledge-browser">
+            <div id="knowledge-skill-list" class="knowledge-skill-list"></div>
+            <aside id="knowledge-inspector" class="knowledge-inspector"><div class="empty-state">Select a skill to edit its category, instructions, or sources.</div></aside>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="oracle" aria-labelledby="oracle-title">
+        <div class="section-heading">
+          <div><h1 id="oracle-title">Ask once. See who wakes up.</h1><p>Oracle plans first, exposes the selected skills and budgets, then runs only specialists required by that plan.</p></div>
+          <div class="runtime-note" id="oracle-mode">Checking runtime…</div>
+        </div>
+        <div class="oracle-layout">
+          <section class="oracle-chat" aria-label="Oracle conversation">
+            <div class="oracle-messages" id="oracle-messages" aria-live="polite"></div>
+            <form class="oracle-composer" id="oracle-form">
+              <label for="oracle-prompt">Message Oracle</label>
+              <textarea id="oracle-prompt" rows="5" maxlength="30000" placeholder="Build a responsive product page with a scroll-linked GSAP sequence, original imagery, and delivery QA…"></textarea>
+              <div class="oracle-settings">
+                <label>Provider<select id="oracle-provider"><option value="studio">Apollo Studio runtime</option></select></label>
+                <label>Model<select id="oracle-model"></select></label>
+                <label>Total run budget<input id="oracle-budget" type="number" min="1000" max="300000" step="1000" value="30000"><span>max 300k tokens</span></label>
+              </div>
+              <div class="form-status"><button type="button" class="quiet-action" id="oracle-clear">Clear chat</button><div class="oracle-actions"><button type="button" class="quiet-action" id="oracle-plan">Plan only</button><button class="run-action" id="oracle-run" type="submit">Plan & run</button></div></div>
+            </form>
+          </section>
+          <aside class="oracle-side">
+            <section><div class="panel-heading"><div><h2>Current plan</h2><p>Approval-gated agents remain paused until checked.</p></div></div><div id="oracle-plan-view" class="oracle-plan-view"><div class="empty-state">Write a prompt to inspect its route.</div></div></section>
+            <section>
+              <div class="panel-heading"><div><h2>Host connections</h2><p>Supported logins stay inside each host.</p></div></div>
+              <div id="integration-list" class="integration-list"></div>
+              <p class="integration-recommendation" id="integration-recommendation"></p>
+              <div class="activity-heading"><div><h2>Shared host activity</h2><p>Only explicit MCP and Oracle events appear here.</p></div><button type="button" class="quiet-action" id="refresh-events">Refresh</button></div>
+              <div id="host-event-list" class="host-event-list" aria-live="polite"></div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="runs" aria-labelledby="runs-title">
+        <div class="section-heading"><div><h1 id="runs-title">Run history</h1><p>Codex and other connected hosts arrive through Apollo MCP. Playground comparisons remain private to this browser.</p></div><div class="heading-actions"><button class="quiet-action" id="refresh-runs">Refresh</button><button class="quiet-action" id="export-runs">Export JSON</button><button class="danger-action" id="clear-runs">Clear local</button></div></div>
+        <section class="history-section" aria-labelledby="connected-runs-title">
+          <div class="history-section-heading"><div><h2 id="connected-runs-title">Connected host runs</h2><p>Explicit lifecycle events published by Codex, Cursor, Claude, or Oracle.</p></div><span class="history-source is-connected">MCP event stream</span></div>
+          <div class="run-history" id="connected-run-history" aria-live="polite"></div>
+        </section>
+        <section class="history-section" aria-labelledby="local-runs-title">
+          <div class="history-section-heading"><div><h2 id="local-runs-title">Browser experiments</h2><p>Same-prompt comparisons created in this Studio browser.</p></div><span class="history-source">Local storage</span></div>
+          <div class="run-history" id="run-history"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <template id="variant-template">
+    <article class="variant-card">
+      <div class="variant-title-row"><label>Variant name<input class="variant-name" maxlength="60"></label><button class="icon-action remove-variant" aria-label="Remove variant">×</button></div>
+      <label>Preset<select class="variant-preset"></select></label>
+      <div class="variant-summary"><strong class="variant-count">0 skills</strong><span class="variant-groups"></span></div>
+      <details><summary>Customize skills</summary><div class="variant-skills"></div></details>
+      <label class="tool-option"><input type="checkbox" class="variant-web-search"> <span><strong>OpenAI web search</strong><small>Live mode only; may increase latency and cost.</small></span></label>
+    </article>
+  </template>
+
+  <script src="/vendor/gsap.min.js" defer></script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
