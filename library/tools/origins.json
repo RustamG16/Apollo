@@ -1,15 +1,14 @@
 {
-  "_comment": "library/ is now the source of truth inside Apollo. The host trees (.claude, .agents, .codex, apollo-studio/knowledge) are GENERATED from it by tools/project.py. This file only records where external upstreams live, for reference.",
-  "personal-upstream": {
-    "windows": "C:\\Users\\Rustam Gurbanov\\.claude\\skills",
-    "env": "PERSONAL_SKILLS_DIR"
-  },
-  "apollo-claude-donor": {
-    "windows": "D:\\KnowledgeFactory\\Apollo_claude",
-    "env": "APOLLO_CLAUDE_DIR"
-  },
-  "knowledgefactory-donor": {
-    "windows": "D:\\KnowledgeFactory\\library",
-    "env": "KF_LIBRARY_DIR"
+  "_comment": "library/ is the source of truth inside Apollo. The host trees (.claude, .agents, .codex, apollo-studio/knowledge) are GENERATED from it by tools/project.py — nothing here is read at runtime. This file only records provenance.",
+  "provenance": {
+    "skills": "KnowledgeFactory library/skills (52) + the 6 Studio-store skills + 71 personal skills from the user's ~/.claude/skills, folded in Phase 1 of the unification (see git history / PROGRESS.md).",
+    "agents": "The 5 specialists were converted from .codex/agents/*.toml; design-director was written new. Apollo_claude's 12 agents were deliberately not ported (decision 4).",
+    "knowledge": "Published from KnowledgeFactory's MNEMOSYNE (library/knowledge).",
+    "doctrines": "The 4 doctrines came from the now-archived Apollo_claude donor.",
+    "personal_upstream": {
+      "windows": "C:\\Users\\Rustam Gurbanov\\.claude\\skills",
+      "env": "PERSONAL_SKILLS_DIR",
+      "note": "Still the global Claude load path. Read-only donor; never modified by this system."
+    }
   }
 }

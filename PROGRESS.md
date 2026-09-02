@@ -366,3 +366,144 @@ before. Payload is metadata only (~40 KB); flagged for token-discipline review i
 **Result: PASS. Proceeding to Phase 8.**
 
 ---
+
+## Phase 8 — archive and report — **PASS** (2026-09-02)
+
+### Actions
+1. Confirmed **nothing under `Apollo\` references the path `D:\KnowledgeFactory\Apollo_claude`**.
+   Removed the one-time build scripts (`library/tools/_phase1_fold.py`,
+   `_phase2_build_agents.py`) — they held the donor paths and their job is done (they live in
+   the Phase 1 / Phase 2 commits). Rewrote `library/tools/origins.json` as a pure provenance
+   note with no `D:\KnowledgeFactory` paths. `library/tools/` is now exactly
+   `verify.py · build_index.py · project.py · origins.json`. Residual bare-string mentions of
+   "Apollo_claude" / "KnowledgeFactory" are in vendored skill content and descriptive prose,
+   not path dependencies.
+2. Wrote `D:\KnowledgeFactory\Apollo_claude\README.md` marking it **ARCHIVED**, pointing at
+   `D:\Analyst_Designer\Apollo`, listing what moved and what deliberately did not. The repo
+   is **kept, not deleted** (dashboard + loadout reference value).
+3. Committed Phase 8; pushed `unification` to `origin`. Opening a PR is left to Rustam.
+
+---
+
+# FINAL REPORT
+
+## Per-phase result
+
+| Phase | Result |
+|---|---|
+| 0 — safety net, off-machine | **PASS** |
+| 1 — build the library | **PASS** |
+| 2 — the agent layer, host-neutral | **PASS** |
+| 3 — generators | **PASS** |
+| 4 — cut over | **PASS** |
+| 5 — direction by questionnaire | **PASS** |
+| 6 — dual-host instructions | **PASS** |
+| 7 — token discipline and loop guards | **PASS** |
+| 8 — archive and report | **PASS** |
+
+**Nothing halted.** No HALT CHECK failed. No item from *Unresolvable at runtime* was hit
+(no two different real bodies for one id; no generator wanted to delete an uncreated file).
+
+## Final counts
+
+| Metric | Value |
+|---|---|
+| Skills in `library/skills/` (= registry records) | **127** |
+| ├ active / manual / stub | 121 / 3 / 3 |
+| ├ pipeline-active (in `ROUTING-DIGEST.md`) / unrouted | 27 / 100 |
+| Projected to `.claude/skills/` (claude-hosted, non-stub) | 112 |
+| Projected to `.agents/skills/` (codex-hosted, non-stub) | 124 |
+| Studio-hosted (registry + `apollo-studio/knowledge/skills/`) | 127 |
+| Host-neutral agents (`library/agents/`) | 6 → `.claude/agents/*.md` + `.codex/agents/*.toml` |
+| `apollo_get_context` inventory | 127 (baseline was 24; ≥ satisfied) |
+| `npm.cmd run check` | EXIT 0 (baseline EXIT 0) |
+| `validate-system.ps1` | EXIT 0 |
+| `library/tools/verify.py` | CLEAN |
+
+Skills by category: 01-design-direction 11 · 02-web-build 3 · 03-motion-3d 27 ·
+04-media-generation 11 · 05-content-copy 4 · 06-marketing-growth 40 · 07-research-intel 5 ·
+08-qa-review 4 · 09-engineering-workflow 12 · 10-docs-deliverables 2 · 11-meta-system 8.
+
+Count arithmetic (Phase 1 HALT): 52 (KF) + 6 (studio-store) + 71 (personal) − 2 (documented
+duplicates) = **127**. Matched exactly.
+
+## Duplicates resolved under decision 9
+
+Two personal skills share a canonical id with a folded Studio-store skill. In both cases the
+personal `SKILL.md` body is **byte-identical** (after newline normalisation) to the Studio's
+`sources/upstream/SKILL.md` copy, so precedence kept a single folder and the personal body:
+
+| id | Resolution |
+|---|---|
+| `apple-design` | one folder `library/skills/01-design-direction/apple-design/`; body = personal copy; `hosts: [codex, studio]` (claude excluded — plugin collision) |
+| `emil-design-eng` | one folder `library/skills/01-design-direction/emil-design-eng/`; body = personal copy; `hosts: [codex, studio]` |
+
+No case of "two different real bodies for one id" — **no HALT**.
+
+Skills whose `hosts` exclude `claude` because their bare name collides with an installed
+plugin skill (decision 9), so the projection never shadows the plugin:
+`gsap-core`, `gsap-frameworks`, `gsap-performance`, `gsap-plugins`, `gsap-react`,
+`gsap-scrolltrigger`, `gsap-timeline`, `gsap-utils`, `impeccable`, `apple-design`,
+`emil-design-eng`, `seo-audit`. (The 3 stubs — `taste-first-experience-design`,
+`ethical-gamification-systems`, `agent-identity-and-portfolio` — are `hosts: [studio]` per
+decision 10.)
+
+## UNSORTED.md
+
+**Empty (count 0).** Every one of the 71 personal skills resolved to an existing category —
+none needed `99-unsorted`. The personal skills filled the previously-empty `05-content-copy`
+(4) and `06-marketing-growth` (40) and added to `02-web-build` (+2), `03-motion-3d` (+18),
+`04-media-generation` (+1), `07-research-intel` (+3), `09-engineering-workflow` (+1).
+
+## UNROUTED.md
+
+**100 skills** — projected to their hosts, invoked explicitly, excluded from the pipeline
+routing table (decision 13). This is by design: the Apollo redesign pipeline is small
+(27 active skills across always/diagnose/direct/prepare/build/verify); everything else is an
+available capability. Breakdown by category:
+
+- 01-design-direction (0 unrouted — all 11 are pipeline or Taste)
+- 02-web-build (3): `garden-web-design-engineer`, `pick-ui-library`, `prototype`
+- 03-motion-3d (18): `animate`, `animation-vocabulary`, `find-animation-opportunities`,
+  `improve-animations`, `review-animations`, `video`, and the 12 `remotion-*` skills.
+  (`gsap-*` are routed: `prepare` / `build` / `verify`.)
+- 04-media-generation (10): all `higgsfield-*` (8) + `garden-gpt-image-2` + `image`.
+  (`asset-director` is routed `prepare`.)
+- 05-content-copy (4): `content-strategy`, `copy-editing`, `copywriting`, `sales-enablement`
+- 06-marketing-growth (40): every skill in the category
+- 07-research-intel (3): `analytics`, `competitor-profiling`, `customer-research`
+- 08-qa-review (2): `superpowers-receiving-code-review`, `superpowers-requesting-code-review`
+- 09-engineering-workflow (12): all `superpowers-*` workflow skills + `project-scaffold`
+- 10-docs-deliverables (2): `garden-beautiful-article`, `garden-web-video-presentation`
+- 11-meta-system (6): `apollo-bootstrap`, `apollo-cyberpunk-athens-skin`,
+  `apollo-dashboard-sync`, `apollo-loadout-sync`, `garden-kb-retriever`,
+  `superpowers-writing-skills`
+
+Full per-skill list with descriptions: `library/registry/UNROUTED.md`.
+
+## Defects fixed (from the plan's audit)
+
+1. ✅ `.claude/skills` + `.claude/agents` now exist and are generated from `library/`.
+2. ✅ `CLAUDE.md` at the Apollo root.
+3. ✅ Three disagreeing stores collapsed to one source of truth (`library/`) + generated projections.
+4. ✅ `gsap-utils` has a registry record (`phase: prepare`).
+5. ✅ `three-js-implementation` deleted (registry entry + folder).
+6. ✅ The six bodiless skills: `ui-ux` / `apple-design` / `emil-design-eng` recovered from
+   `sources/upstream`; the 3 `runtimePrompt`-only skills are explicit `status: stub`.
+7. ✅ `skills.mjs` is data — it reads `library/registry/*.json`.
+8. ✅ The fixed-three rule is gone; the direction rule lives once in `AGENTS.md`.
+9. ✅ `library/design-dna/` is now load-bearing (Gate A runs the taste interview when unresolved).
+10. ✅ Greenfield has an entry (questionnaire-first, `ux-evidence-audit` dormant).
+
+## What is NOT in this plan
+
+The end-to-end validation — one real redesign run compared against a token baseline — needs a
+real website project and was explicitly out of scope (decision 17). The system is ready for
+that test: kick off per `USAGE.md`.
+
+## Out-of-scope, confirmed untouched
+
+`server.mjs`, `knowledge.mjs`, `mcp-server.mjs`, `apollo-studio/data/`, `evidence/`,
+`handoffs/`, `public/media/`, every `.olympus/`, `~/.claude/skills`, `.skill-backups/`,
+`test_projects/`, `third-party/`, `main` branch. Every commit landed on `unification`.
+
