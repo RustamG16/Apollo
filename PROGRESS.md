@@ -158,3 +158,40 @@ No case of "two different real bodies for one id" — no HALT.
 **Result: PASS. Proceeding to Phase 3.**
 
 ---
+
+## Phase 3 — generators — **PASS** (2026-09-02)
+
+### Actions
+- Wrote `library/tools/project.py` (stdlib only). Subcommands: `claude`, `codex`, `studio`,
+  `digest`, plus `all`. Every subcommand supports `--dry-run`.
+  - `claude` → `.claude/skills/<id>/` (full skill folder) + `.claude/agents/<name>.md` for
+    every record with `claude` in `hosts` (excludes the 3 stubs). Agent `tools:` derives from
+    `access`: read-only → `Read, Glob, Grep, Bash, WebFetch`; write → + `Write, Edit,
+    NotebookEdit`. Body `$name` markers rewritten to "the *name* skill (Skill tool)".
+  - `codex` → `.agents/skills/<id>/` + `.codex/agents/<name>.toml` (`name`, `description`,
+    `sandbox_mode` only when read-only, `developer_instructions`). Body keeps `$name`.
+  - `studio` → `apollo-studio/knowledge/skills/<group>/<id>/README.md` (group lowercased) +
+    `apollo-studio/skills.registry.json` (`{skills,tools,plugins,presets}`, field shapes
+    identical to `skills.mjs`). Studio projection writes README.md only and **never touches
+    `sources/`** or `knowledge/index.json`.
+  - `digest` → `library/registry/ROUTING-DIGEST.md`: id, phase, one line, for the 27
+    pipeline-active skills only.
+- Delete budget implemented: a file is deleted only if it is in that root's previous
+  `MANIFEST.txt` **and** the root has `GENERATED.md`; otherwise hard halt. First run (no
+  `MANIFEST.txt`) writes only, deletes nothing. Each root gets `GENERATED.md` + `MANIFEST.txt`
+  on a real (non-dry) run.
+
+### HALT CHECK — Phase 3
+- [x] `project.py claude --dry-run` → exit 0, 0 deletes (`.claude/skills` 1019 writes,
+      `.claude/agents` 6).
+- [x] `project.py codex --dry-run` → exit 0, 0 deletes (`.agents/skills` 895 writes,
+      `.codex/agents` 6).
+- [x] `project.py studio --dry-run` → exit 0, 0 deletes (127 README writes + 1 registry).
+- [x] `project.py digest --dry-run` → exit 0 (1 write, 27 active skills).
+- [x] `git status` after the dry runs shows only the newly-authored `library/tools/project.py`
+      — the dry runs wrote nothing.
+- [x] Every planned delete list is empty on this first pass.
+
+**Result: PASS. Proceeding to Phase 4.**
+
+---
