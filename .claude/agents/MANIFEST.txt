@@ -1,0 +1,8 @@
+GENERATED.md
+MANIFEST.txt
+analytics-specialist.md
+asset-producer.md
+design-director.md
+design-engineer.md
+independent-critic.md
+visual-analyst.md

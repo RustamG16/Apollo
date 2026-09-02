@@ -2,6 +2,7 @@
 
 - Category: Experience
 - Phase: direct
+- Status: stub
 - Skill ID: taste-first-experience-design
 
 Turns visual preference evidence into editable Creative DNA, plain-language choices, and a bounded mission setup.

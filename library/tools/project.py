@@ -170,7 +170,7 @@ def codex_agent(name):
     lines.append('developer_instructions = """')
     lines.append(a["body"])
     lines.append('"""')
-    return "\n".join(lines) + "\n"
+    return "\n".join(lines) + "\n\n"
 
 
 # ---------------------------------------------------------------- targets

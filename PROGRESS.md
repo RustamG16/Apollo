@@ -195,3 +195,45 @@ No case of "two different real bodies for one id" — no HALT.
 **Result: PASS. Proceeding to Phase 4.**
 
 ---
+
+## Phase 4 — cut over — **PASS** (2026-09-02)
+
+### Actions
+- Ran `project.py codex` → `.agents/skills/` (124 skill folders, stubs excluded) +
+  `.codex/agents/*.toml` (6). Ran `project.py claude` → `.claude/skills/` (112 folders) +
+  `.claude/agents/*.md` (6). **This creates the paths Claude Code actually loads — fixes
+  defects 1 and 2.** Ran `project.py digest` → `library/registry/ROUTING-DIGEST.md` (27
+  active skills). Ran `project.py studio` → 127 `README.md` + `apollo-studio/skills.registry.json`.
+- Every generated root now carries `GENERATED.md` + `MANIFEST.txt`.
+- Converted `apollo-studio/skills.mjs` from code to data: it now `readFileSync`s
+  `../library/registry/{skills.registry,tools,plugins,presets}.json` and re-exports `skills`,
+  `tools`, `plugins`, `presets` with the **same symbol names and field shapes**. `knowledge.mjs`,
+  `server.mjs`, `mcp-server.mjs` unchanged (`git diff` confirms zero changes to all three).
+- Only sanctioned edit in `.codex/agents/`: `design-engineer.toml` line with the
+  `$emil-design-engineering` → `$emil-design-eng` fix. The other 4 tomls are byte-identical.
+- `.agents/skills` file-level changes are CRLF→LF normalisation in vendored skill trees
+  (impeccable, higgsfield-*); 0/0 under `git diff --numstat` after `.gitattributes` normalisation.
+  ~26 studio `README.md` files gained a `- Status:` line (generated).
+- Extended `scripts/validate-system.ps1`: kept every prior check; bumped custom-agent count
+  5→6; scoped the TODO-marker scan to system-authored files (vendored/generated skill trees
+  excluded — 3 upstream skill files legitimately contain `TODO:`); added registry↔host-folder
+  parity, agent-in-both-formats, `project.py all --dry-run` staleness, `verify.py` exit,
+  and line caps (ROUTING-DIGEST ≤200, CLAUDE.md/CODEX.md ≤120 when present). Added
+  `library/README.md`, `library/registry/skills.registry.json`, `library/registry/ROUTING-DIGEST.md`,
+  `library/tools/project.py`, `library/tools/verify.py` to required files.
+- `knowledge/index.json` `overrides` and `sources` left untouched.
+
+### HALT CHECK — Phase 4
+- [x] `validate-system.ps1` exits 0 — "124 skills, 6 agents, 30 required files, registry parity OK".
+- [x] `npm.cmd run check` in `apollo-studio` — EXIT 0 (Phase 0 baseline was EXIT 0; no worse).
+- [x] `/api/health` responds `{"ok":true, "skillCount":127, "enabledSkillCount":127}`.
+- [x] `apollo_get_context` returns 127 skills ≥ 24 baseline.
+- [x] `git diff` shows **zero** changes to `server.mjs`, `knowledge.mjs`, `mcp-server.mjs`,
+      `apollo-studio/data/`, `evidence/`, `handoffs/`, `public/media/`, any `.olympus/`.
+
+Note for Phase 7: `apollo_get_context` / `/api/health` now report 127 enabled skills vs 24
+before. Payload is metadata only (~40 KB); flagged for token-discipline review in Phase 7.
+
+**Result: PASS. Proceeding to Phase 5.**
+
+---

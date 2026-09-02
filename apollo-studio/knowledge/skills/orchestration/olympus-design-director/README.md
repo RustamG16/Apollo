@@ -2,6 +2,7 @@
 
 - Category: Orchestration
 - Phase: always
+- Status: active
 - Skill ID: olympus-design-director
 
 Owns the brief, routes work, and enforces approval gates.

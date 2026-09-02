@@ -2,6 +2,7 @@
 
 - Category: Motion
 - Phase: build
+- Status: active
 - Skill ID: gsap-react
 
 Scopes React animation lifecycle and cleanup.

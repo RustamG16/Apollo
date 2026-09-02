@@ -2,6 +2,7 @@
 
 - Category: Motion
 - Phase: verify
+- Status: active
 - Skill ID: gsap-performance
 
 Finds animation jank and layout-thrashing risk.

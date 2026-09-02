@@ -2,6 +2,7 @@
 
 - Category: Verification
 - Phase: verify
+- Status: active
 - Skill ID: visual-qa
 
 Verifies desktop, mobile, states, runtime, accessibility, and risk.

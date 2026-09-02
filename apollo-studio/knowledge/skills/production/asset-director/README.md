@@ -2,6 +2,7 @@
 
 - Category: Production
 - Phase: prepare
+- Status: active
 - Skill ID: asset-director
 
 Plans required media, provenance, rights, and fallbacks.

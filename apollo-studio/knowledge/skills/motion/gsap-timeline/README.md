@@ -2,6 +2,7 @@
 
 - Category: Motion
 - Phase: prepare
+- Status: active
 - Skill ID: gsap-timeline
 
 Sequences dependent animation beats.

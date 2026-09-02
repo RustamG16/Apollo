@@ -2,6 +2,7 @@
 
 - Category: Measurement
 - Phase: verify
+- Status: active
 - Skill ID: design-analytics
 
 Connects design hypotheses to a minimal event contract.

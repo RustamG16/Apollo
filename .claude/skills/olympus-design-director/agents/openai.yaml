@@ -1,0 +1,4 @@
+interface:
+  display_name: "Olympus Design Director"
+  short_description: "Route a redesign through controlled phases"
+  default_prompt: "Use $olympus-design-director to audit this existing page and run the gated redesign workflow."

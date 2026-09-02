@@ -2,6 +2,7 @@
 
 - Category: Motion
 - Phase: prepare
+- Status: active
 - Skill ID: gsap-core
 
 Adds responsive, reduced-motion-aware tweens.

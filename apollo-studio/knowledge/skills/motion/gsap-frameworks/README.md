@@ -2,6 +2,7 @@
 
 - Category: Motion
 - Phase: build
+- Status: active
 - Skill ID: gsap-frameworks
 
 Scopes Vue, Nuxt, Svelte, and SvelteKit animation lifecycle.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "UX Evidence Audit"
+  short_description: "Audit a live page with prioritized evidence"
+  default_prompt: "Use $ux-evidence-audit to diagnose this page before proposing redesign concepts."

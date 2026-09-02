@@ -2,6 +2,7 @@
 
 - Category: Progression
 - Phase: direct
+- Status: stub
 - Skill ID: ethical-gamification-systems
 
 Creates meaningful missions, mastery, rewards, and collections with explicit spend and anti-coercion safeguards.

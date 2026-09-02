@@ -2,6 +2,7 @@
 
 - Category: Motion
 - Phase: prepare
+- Status: active
 - Skill ID: gsap-plugins
 
 Routes approved plugin use such as Flip, Draggable, or SplitText.

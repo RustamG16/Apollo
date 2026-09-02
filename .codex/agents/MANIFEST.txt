@@ -1,0 +1,8 @@
+GENERATED.md
+MANIFEST.txt
+analytics-specialist.toml
+asset-producer.toml
+design-director.toml
+design-engineer.toml
+independent-critic.toml
+visual-analyst.toml

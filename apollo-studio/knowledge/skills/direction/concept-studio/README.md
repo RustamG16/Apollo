@@ -2,6 +2,7 @@
 
 - Category: Direction
 - Phase: direct
+- Status: active
 - Skill ID: concept-studio
 
 Creates materially distinct design directions.

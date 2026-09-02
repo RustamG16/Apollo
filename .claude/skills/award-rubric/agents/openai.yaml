@@ -1,0 +1,4 @@
+interface:
+  display_name: "Independent Design Critic"
+  short_description: "Score concepts without redesigning them"
+  default_prompt: "Use $award-rubric to independently score these concepts and identify risks."

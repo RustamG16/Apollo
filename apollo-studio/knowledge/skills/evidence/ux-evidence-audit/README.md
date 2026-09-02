@@ -2,6 +2,7 @@
 
 - Category: Evidence
 - Phase: diagnose
+- Status: active
 - Skill ID: ux-evidence-audit
 
 Diagnoses source, browser, responsive, accessibility, and content evidence.

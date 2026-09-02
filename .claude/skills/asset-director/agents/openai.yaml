@@ -1,0 +1,4 @@
+interface:
+  display_name: "Asset Director"
+  short_description: "Specify and govern visual media production"
+  default_prompt: "Use $asset-director to create an approved asset manifest for the selected concept."

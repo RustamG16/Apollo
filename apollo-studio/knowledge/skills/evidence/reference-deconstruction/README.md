@@ -2,6 +2,7 @@
 
 - Category: Evidence
 - Phase: diagnose
+- Status: active
 - Skill ID: reference-deconstruction
 
 Extracts transferable visual logic without copying expression.

@@ -30,6 +30,11 @@ $requiredFiles = @(
     'templates/project-context/CODEX.md'
     'templates/project-context/PROGRESS-AND-DECISIONS.md'
     'scripts/validate-project-context.ps1'
+    'library/README.md'
+    'library/registry/skills.registry.json'
+    'library/registry/ROUTING-DIGEST.md'
+    'library/tools/project.py'
+    'library/tools/verify.py'
 )
 
 $failures = [System.Collections.Generic.List[string]]::new()
@@ -64,7 +69,7 @@ foreach ($skill in $skills) {
     if ($content -notmatch '(?s)^---\s*\r?\n.*?\r?\n---') {
         $failures.Add("Invalid frontmatter boundary: $($skill.Name)")
     }
-    if ($content -notmatch "(?m)^name:\s*$([regex]::Escape($skill.Name))\s*$") {
+    if ($content -notmatch "(?m)^name:\s*""?$([regex]::Escape($skill.Name))""?\s*$") {
         $failures.Add("Frontmatter name does not match folder: $($skill.Name)")
     }
     if ($content -notmatch '(?m)^description:\s*\S') {
@@ -73,8 +78,8 @@ foreach ($skill in $skills) {
 }
 
 $customAgents = Get-ChildItem -LiteralPath (Join-Path $systemRoot '.codex/agents') -Filter '*.toml' -File
-if ($customAgents.Count -ne 5) {
-    $failures.Add("Expected 5 optional custom agents; found $($customAgents.Count).")
+if ($customAgents.Count -ne 6) {
+    $failures.Add("Expected 6 custom agents (5 specialists + design-director); found $($customAgents.Count).")
 }
 foreach ($agent in $customAgents) {
     $content = Get-Content -LiteralPath $agent.FullName -Raw -Encoding utf8
@@ -85,17 +90,86 @@ foreach ($agent in $customAgents) {
     }
 }
 
+# --- unification checks --------------------------------------------------
+
+# scope the TODO scan to system-authored files; generated + vendored skill trees are excluded
+$excludeRe = '\\third-party\\|\\.validation-libs\\|\\.git\\|\\node_modules\\|\\test_projects\\|\\.skill-backups\\|\\.olympus\\|\\.impeccable\\|\\library\\skills\\|\\library\\knowledge\\|\\.claude\\skills\\|\\.agents\\skills\\|\\apollo-studio\\knowledge\\skills\\'
 $unfinishedMarkers = @('\[' + 'TODO', 'TODO' + ':')
 $todoHits = Get-ChildItem -LiteralPath $systemRoot -Recurse -File |
-    Where-Object { $_.FullName -notmatch '\\third-party\\|\\.validation-libs\\|\\.git\\' } |
+    Where-Object { $_.FullName -notmatch $excludeRe } |
     Select-String -Pattern $unfinishedMarkers
 if ($todoHits) {
-    $failures.Add("Unresolved TODO markers found in system-authored files.")
+    $failures.Add("Unresolved TODO markers found in system-authored files: " + (($todoHits | ForEach-Object { $_.Path }) -join '; '))
 }
+
+# registry <-> host folder parity
+$registryPath = Join-Path $systemRoot 'library/registry/skills.registry.json'
+if (Test-Path -LiteralPath $registryPath) {
+    $registry = Get-Content -LiteralPath $registryPath -Raw -Encoding utf8 | ConvertFrom-Json
+    $claudeSkillDir = Join-Path $systemRoot '.claude/skills'
+    $codexSkillDir  = Join-Path $systemRoot '.agents/skills'
+    $claudeHave = @{}; if (Test-Path $claudeSkillDir) { Get-ChildItem $claudeSkillDir -Directory | ForEach-Object { $claudeHave[$_.Name] = $true } }
+    $codexHave  = @{}; if (Test-Path $codexSkillDir)  { Get-ChildItem $codexSkillDir  -Directory | ForEach-Object { $codexHave[$_.Name]  = $true } }
+    $regIds = @{}
+    foreach ($rec in $registry) {
+        $regIds[$rec.id] = $true
+        if (($rec.hosts -contains 'claude') -and ($rec.status -ne 'stub') -and -not $claudeHave[$rec.id]) {
+            $failures.Add("Registry id '$($rec.id)' (claude host) has no .claude/skills folder.")
+        }
+        if (($rec.hosts -contains 'codex') -and ($rec.status -ne 'stub') -and -not $codexHave[$rec.id]) {
+            $failures.Add("Registry id '$($rec.id)' (codex host) has no .agents/skills folder.")
+        }
+    }
+    foreach ($name in $claudeHave.Keys) { if (-not $regIds[$name]) { $failures.Add(".claude/skills/$name has no registry record.") } }
+    foreach ($name in $codexHave.Keys)  { if (-not $regIds[$name])  { $failures.Add(".agents/skills/$name has no registry record.") } }
+} else {
+    $failures.Add("Missing library/registry/skills.registry.json")
+}
+
+# every agent exists in both host formats
+$agentDir = Join-Path $systemRoot 'library/agents'
+if (Test-Path $agentDir) {
+    Get-ChildItem $agentDir -Filter '*.md' -File | Where-Object { $_.Name -ne 'README.md' } | ForEach-Object {
+        $n = [IO.Path]::GetFileNameWithoutExtension($_.Name)
+        if (-not (Test-Path (Join-Path $systemRoot ".claude/agents/$n.md")))   { $failures.Add("Agent '$n' missing .claude/agents/$n.md") }
+        if (-not (Test-Path (Join-Path $systemRoot ".codex/agents/$n.toml")))  { $failures.Add("Agent '$n' missing .codex/agents/$n.toml") }
+    }
+}
+
+# generated trees must match a fresh projection
+$projectPy = Join-Path $systemRoot 'library/tools/project.py'
+if (Test-Path $projectPy) {
+    $dry = & python $projectPy all --dry-run 2>&1 | Out-String
+    if ($dry -match '(?m)^\s*HALT' -or $dry -notmatch '(?m)OK\s*$') {
+        $failures.Add("project.py all --dry-run did not report OK:`n$dry")
+    }
+    $pending = [regex]::Matches($dry, '(\d+)\s+write\(s\)') | ForEach-Object { [int]$_.Groups[1].Value } | Measure-Object -Sum
+    if ($pending.Sum -gt 0) {
+        $failures.Add("Generated trees are stale - project.py all --dry-run plans $($pending.Sum) write(s). Run the projectors and commit.")
+    }
+}
+
+$verifyPy = Join-Path $systemRoot 'library/tools/verify.py'
+if (Test-Path $verifyPy) {
+    & python $verifyPy | Out-Null
+    if ($LASTEXITCODE -ne 0) { $failures.Add("library/tools/verify.py exited $LASTEXITCODE") }
+}
+
+# line-length caps
+function Test-LineCap($rel, $cap) {
+    $p = Join-Path $systemRoot $rel
+    if (Test-Path -LiteralPath $p -PathType Leaf) {
+        $n = (Get-Content -LiteralPath $p).Count
+        if ($n -gt $cap) { $script:failures.Add("$rel is $n lines (cap $cap).") }
+    }
+}
+Test-LineCap 'library/registry/ROUTING-DIGEST.md' 200
+Test-LineCap 'CLAUDE.md' 120
+Test-LineCap 'CODEX.md' 120
 
 if ($failures.Count -gt 0) {
     $failures | ForEach-Object { Write-Error $_ }
     exit 1
 }
 
-Write-Output "Olympus validation passed: $($skills.Count) skills, $($customAgents.Count) optional agents, and $($requiredFiles.Count) required files."
+Write-Output "Olympus validation passed: $($skills.Count) skills, $($customAgents.Count) agents, $($requiredFiles.Count) required files, registry parity OK."
