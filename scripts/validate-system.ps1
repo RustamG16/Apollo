@@ -23,6 +23,13 @@ $requiredFiles = @(
     'templates/07-qa.md',
     'templates/08-metrics.md',
     'templates/09-handoff.md'
+    'templates/project-context/PRD.md'
+    'templates/project-context/ARCHITECTURE.md'
+    'templates/project-context/ARCHITECTURE-ESSENTIALS.md'
+    'templates/project-context/AGENTS.md'
+    'templates/project-context/CODEX.md'
+    'templates/project-context/PROGRESS-AND-DECISIONS.md'
+    'scripts/validate-project-context.ps1'
 )
 
 $failures = [System.Collections.Generic.List[string]]::new()

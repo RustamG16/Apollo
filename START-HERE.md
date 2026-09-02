@@ -26,6 +26,13 @@ If the answer already exists in attached material, do not ask it again. After th
 
 Create `<website-project>/.olympus/` from the files in `templates/`. Record the target route, constraints, reference locations, and approval state in `run.json`.
 
+Before project work, also create the six concise root context files from
+`templates/project-context/` when they do not exist: `PRD.md`, `ARCHITECTURE.md`,
+`ARCHITECTURE-ESSENTIALS.md`, `AGENTS.md`, `CODEX.md`, and
+`PROGRESS-AND-DECISIONS.md`. Validate them with `scripts/validate-project-context.ps1`.
+`CODEX.md` is a read router, not a duplicate specification; load only the task-relevant
+documents after `ARCHITECTURE-ESSENTIALS.md`.
+
 ### 1. Diagnose
 
 Use `$ux-evidence-audit` on the existing page. Use `$reference-deconstruction` only for references actually supplied or approved. Inspect the live page at representative desktop and mobile widths. Separate observations from inferences.

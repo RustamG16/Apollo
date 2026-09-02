@@ -10,6 +10,7 @@ import { addSource, allSkills, createSkill, initializeKnowledge, listKnowledge, 
 import { buildPlan, listAgents, updateAgent } from './agents.mjs';
 import { initializeEventStore, listEvents, publishEvent } from './events.mjs';
 import { agentTemplates, createSystem, deleteSystem, getOutputPreview, initializeSystems, listSystems, recordSystemOutput, setActiveSystem, updateSystem } from './systems.mjs';
+import { addAttachment, addMessage, chatDetail, createChat, createProject, createProposal, initializeWorkspace, listWorkspace, resolveProposal, unlinkAttachment } from './workspace.mjs';
 
 const root = fileURLToPath(new URL('./public/', import.meta.url));
 const port = Number(process.env.PORT || 4173);
@@ -199,13 +200,28 @@ async function serveStatic(request, response) {
   } catch { json(response, 404, { error: 'Not found.' }); }
 }
 
-await Promise.all([initializeKnowledge(), initializeEventStore(), initializeSystems()]);
+await Promise.all([initializeKnowledge(), initializeEventStore(), initializeSystems(), initializeWorkspace()]);
 
 const server = http.createServer(async (request, response) => {
   const url = new URL(request.url, `http://${request.headers.host}`);
   const path = url.pathname;
   try {
     if (request.method === 'GET' && path === '/api/config') return json(response, 200, { mode: apiKey ? 'live' : 'demo', models: [...allowedModels], skills: await allSkills(), tools, plugins, presets });
+    if (request.method === 'GET' && path === '/api/workspace') return json(response, 200, await listWorkspace());
+    if (request.method === 'POST' && path === '/api/projects') return json(response, 201, await createProject(await readJson(request)));
+    const projectChatMatch = path.match(/^\/api\/projects\/([a-z0-9-]+)\/chats$/);
+    if (request.method === 'POST' && projectChatMatch) return json(response, 201, await createChat(projectChatMatch[1], await readJson(request)));
+    const chatMatch = path.match(/^\/api\/chats\/([a-z0-9-]+)$/);
+    if (request.method === 'GET' && chatMatch) return json(response, 200, await chatDetail(chatMatch[1]));
+    const messageMatch = path.match(/^\/api\/chats\/([a-z0-9-]+)\/messages$/);
+    if (request.method === 'POST' && messageMatch) return json(response, 201, await addMessage(messageMatch[1], await readJson(request)));
+    const attachmentMatch = path.match(/^\/api\/chats\/([a-z0-9-]+)\/attachments$/);
+    if (request.method === 'POST' && attachmentMatch) return json(response, 201, await addAttachment(attachmentMatch[1], await readJson(request)));
+    const unlinkMatch = path.match(/^\/api\/chats\/([a-z0-9-]+)\/attachments\/([a-z0-9-]+)$/);
+    if (request.method === 'DELETE' && unlinkMatch) return json(response, 200, await unlinkAttachment(unlinkMatch[1], unlinkMatch[2]));
+    if (request.method === 'POST' && path === '/api/proposals') return json(response, 201, await createProposal(await readJson(request)));
+    const proposalMatch = path.match(/^\/api\/proposals\/([a-z0-9-]+)$/);
+    if (request.method === 'PATCH' && proposalMatch) { const input = await readJson(request); return json(response, 200, await resolveProposal(proposalMatch[1], input.approved === true)); }
     if (request.method === 'GET' && path === '/api/knowledge') return json(response, 200, await listKnowledge());
     if (request.method === 'POST' && path === '/api/knowledge/skills') return json(response, 201, await createSkill(await readJson(request)));
     const skillMatch = path.match(/^\/api\/knowledge\/skills\/([a-z0-9-]+)$/);

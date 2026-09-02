@@ -15,20 +15,55 @@ const state = {
   eventsError: null,
   systems: null,
   selectedSystemId: null,
-  view: 'architecture'
+  view: 'work',
+  work: { projects: [], proposals: [], activeProjectId: null, activeChatId: null, detail: null }
 };
 
 const storage = {
   read(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } },
   write(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} }
 };
+const skillDefaultsVersion = 2;
 
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
-const views = new Set(['architecture', 'systems', 'knowledge', 'oracle', 'playground', 'runs']);
+const views = new Set(['work', 'architecture', 'systems', 'agents', 'knowledge', 'oracle', 'playground', 'runs']);
+let comparisonTween = null;
+let motionContext = null;
+const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+function initMotionPreferences() {
+  if (!window.gsap?.matchMedia) return;
+  motionContext?.revert();
+  motionContext = window.gsap.matchMedia();
+  motionContext.add({
+    reduceMotion: '(prefers-reduced-motion: reduce)',
+    allowMotion: '(prefers-reduced-motion: no-preference)'
+  }, context => {
+    document.documentElement.dataset.motion = context.conditions.reduceMotion ? 'reduced' : 'full';
+  });
+}
+function refreshIcons(root = document) {
+  if (!window.lucide?.createIcons) return;
+  window.lucide.createIcons({ root, attrs: { width: 16, height: 16, 'stroke-width': 1.75 } });
+}
+function setCommandLabel(button, label) {
+  const target = button.querySelector('span');
+  if (target) target.textContent = label;
+  else button.textContent = label;
+}
+function setComparisonState(mode) {
+  const bar = $('.run-bar'); const track = $('#comparison-progress'); const indicator = track?.querySelector('i');
+  if (!bar || !indicator) return;
+  bar.dataset.state = mode;
+  comparisonTween?.kill(); comparisonTween = null;
+  if (!window.gsap || reduceMotion()) { indicator.style.transform = `scaleX(${mode === 'idle' ? 0 : 1})`; return; }
+  if (mode === 'idle') window.gsap.set(indicator, { scaleX: 0 });
+  else if (mode === 'running') comparisonTween = window.gsap.fromTo(indicator, { scaleX: .05 }, { scaleX: .76, duration: .8, ease: 'power3.out', overwrite: 'auto' });
+  else comparisonTween = window.gsap.to(indicator, { scaleX: 1, duration: .24, ease: 'power3.out', overwrite: 'auto' });
+}
 const viewFromHash = () => {
   const candidate = location.hash.replace(/^#\/?/, '');
-  return views.has(candidate) ? candidate : 'architecture';
+  return views.has(candidate) ? candidate : 'work';
 };
 
 async function api(path, options = {}) {
@@ -38,17 +73,18 @@ async function api(path, options = {}) {
   return body;
 }
 
-const nodeCopy = {
+const defaultNodeCopy = {
   intake: ['Evidence', 'Intake & audit', 'Collects real page, source, reference, analytics, accessibility, and responsive evidence before visual direction.'],
   director: ['Orchestrator', 'Apollo Design Director', 'One manager keeps ownership while selected skills contribute bounded judgment.'],
   'gate-a': ['Gate A', 'Brief approved', 'Confirms the problem, audience, constraints, success signal, and missing assets before concepts.'],
   concepts: ['Direction', 'Concept studio', 'Produces three structurally different directions, then freezes them for independent critique.'],
   'gate-b': ['Gate B', 'Direction selected', 'Records one approved direction before media production, motion planning, or implementation.'],
   build: ['Production', 'Assets & implementation', 'Activates only approved media, motion, framework, and engineering capabilities.'],
-  qa: ['Gate C', 'Visual QA & handoff', 'Verifies desktop, mobile, interaction states, reduced motion, runtime health, and release evidence.']
+  qa: ['Gate C', 'Visual QA & handoff', 'Verifies laptop and desktop layouts, interaction states, reduced motion, runtime health, and release evidence.']
 };
+const nodeCopy = storage.read('apollo-graph-copy', structuredClone(defaultNodeCopy));
 
-const edges = [
+const defaultEdges = [
   { from: 'intake', to: 'director', phase: 'diagnose' },
   { from: 'director', to: 'gate-a', phase: 'diagnose' },
   { from: 'gate-a', to: 'concepts', phase: 'direct', vertical: true },
@@ -57,13 +93,24 @@ const edges = [
   { from: 'build', to: 'qa', phase: 'verify' },
   { from: 'qa', to: 'director', phase: 'verify', feedback: true }
 ];
+let edges = storage.read('apollo-graph-edges', structuredClone(defaultEdges));
+const defaultGraphPositions = {
+  intake: { x: 3, y: 12 }, director: { x: 28, y: 34 }, 'gate-a': { x: 52, y: 12 },
+  concepts: { x: 52, y: 42 }, 'gate-b': { x: 52, y: 70 }, build: { x: 76, y: 35 }, qa: { x: 76, y: 68 }
+};
+let graphPositions = storage.read('apollo-graph-positions', structuredClone(defaultGraphPositions));
+let graphPhases = storage.read('apollo-graph-phases', {});
+let selectedNodeId = 'director';
+let graphConnectMode = false;
+let connectSourceId = null;
 
-function navigate(view, { updateHash = true, scrollBehavior = 'smooth' } = {}) {
+function navigate(view, { updateHash = true, scrollBehavior = 'smooth', animate = false } = {}) {
   view = views.has(view) ? view : 'architecture';
   state.view = view;
   $$('.view').forEach(section => section.classList.toggle('is-active', section.id === view));
+  const navView = view === 'architecture' ? 'systems' : view === 'agents' ? 'knowledge' : view;
   $$('.nav-item').forEach(button => {
-    const active = button.dataset.viewTarget === view;
+    const active = button.dataset.viewTarget === navView;
     button.classList.toggle('is-active', active);
     if (active) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current');
   });
@@ -73,9 +120,39 @@ function navigate(view, { updateHash = true, scrollBehavior = 'smooth' } = {}) {
   if (view === 'agents') renderAgents();
   if (view === 'knowledge') renderKnowledge();
   if (view === 'oracle') { renderOracleMessages(); renderOraclePlan(); }
+  if (view === 'work') renderWork();
   if (updateHash && location.hash !== `#/${view}`) location.hash = `/${view}`;
   window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : scrollBehavior });
+  if (animate && window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const section = document.getElementById(view);
+    window.gsap.fromTo(section.querySelectorAll(':scope > .section-heading, :scope > .library-switcher, :scope > .playground-steps, :scope > .workspace-frame'), { y: 8, autoAlpha: .65 }, { y: 0, autoAlpha: 1, duration: .24, stagger: .035, ease: 'power3.out', overwrite: 'auto', clearProps: 'transform,opacity,visibility' });
+  }
+  refreshIcons(document.getElementById(view));
 }
+
+function workProject() { return state.work.projects.find(project => project.id === state.work.activeProjectId) || state.work.projects[0]; }
+function workChat(project = workProject()) { return project?.chats.find(chat => chat.id === state.work.activeChatId) || project?.chats[0]; }
+async function refreshWork({ preserve = true } = {}) {
+  const workspace = await api('/api/workspace'); const oldProject = state.work.activeProjectId; const oldChat = state.work.activeChatId;
+  state.work = { ...workspace, activeProjectId: preserve ? oldProject : null, activeChatId: preserve ? oldChat : null, detail: null };
+  const project = workProject(); state.work.activeProjectId = project?.id || null; const chat = workChat(project); state.work.activeChatId = chat?.id || null;
+  if (chat) state.work.detail = await api(`/api/chats/${chat.id}`); renderWork();
+}
+async function selectWorkChat(projectId, chatId) { state.work.activeProjectId = projectId; state.work.activeChatId = chatId; state.work.detail = await api(`/api/chats/${chatId}`); renderWork(); }
+function renderWork() {
+  const project = workProject(); const chat = workChat(); if (!project || !chat) return;
+  const list = $('#project-list'); list.replaceChildren(...state.work.projects.map(item => { const button = document.createElement('button'); button.type = 'button'; button.className = `project-item${item.id === project.id ? ' is-active' : ''}`; button.innerHTML = '<span class="project-symbol"></span><span><strong></strong><small></small></span>'; button.querySelector('strong').textContent = item.name; button.querySelector('small').textContent = item.chats.map(chat => chat.name).join(' · ') || 'No chat'; button.addEventListener('click', () => selectWorkChat(item.id, item.chats[0]?.id)); return button; }));
+  const tabs = $('#project-tabs'); tabs.replaceChildren(...project.chats.map(item => { const button = document.createElement('button'); button.type = 'button'; button.setAttribute('role', 'tab'); button.setAttribute('aria-selected', String(item.id === chat.id)); button.className = `project-tab${item.id === chat.id ? ' is-active' : ''}`; button.textContent = item.name; button.addEventListener('click', () => selectWorkChat(project.id, item.id)); return button; }));
+  const detail = state.work.detail || { messages: [], attachments: [] }; const messages = $('#work-messages'); messages.replaceChildren(...detail.messages.map(message => { const article = document.createElement('article'); article.className = `work-message ${message.role}`; const label = document.createElement('span'); label.textContent = message.role === 'assistant' ? 'Apollo' : 'You'; const text = document.createElement('p'); text.textContent = message.text; article.append(label, text); return article; }));
+  const linkedCount = detail.attachments.filter(item => item.status === 'linked').length;
+  $('#work-title').textContent = project.name; $('#work-prompt').placeholder = `Ask Apollo to help with ${project.name}…`; $('#context-title').textContent = chat.name; $('#context-attachments').textContent = linkedCount ? `${linkedCount} authorized link${linkedCount === 1 ? '' : 's'}` : 'No sources';
+  $('#work-context-count').textContent = linkedCount; $('#work-source-count').textContent = `${linkedCount} linked`;
+  const attachmentList = $('#attachment-list'); attachmentList.replaceChildren(...detail.attachments.filter(item => item.status === 'linked').map(item => { const row = document.createElement('div'); row.className = 'attachment-row'; const label = document.createElement('span'); label.textContent = `${item.name} · ${Math.ceil(item.size / 1024) || 0} KB`; const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'text-action'; remove.textContent = 'Unlink'; remove.addEventListener('click', () => stageProposal({ title: 'Unlink attachment', summary: `Remove the local reference “${item.name}” from this chat. The source file will not be deleted.`, affected: [item.name], operation: { type: 'unlink-attachment', chatId: chat.id, attachmentId: item.id } })); row.append(label, remove); return row; }));
+  refreshIcons($('#work'));
+}
+async function sendWorkMessage(role, text) { const chat = workChat(); if (!chat) return; await api(`/api/chats/${chat.id}/messages`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ role, text }) }); state.work.detail = await api(`/api/chats/${chat.id}`); renderWork(); }
+async function stageProposal(input) { const proposal = await api('/api/proposals', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(input) }); const dialog = $('#proposal-dialog'); dialog.dataset.proposalId = proposal.id; dialog.dataset.operation = JSON.stringify(input.operation || null); $('#proposal-title').textContent = proposal.title; $('#proposal-summary').textContent = proposal.summary; $('#proposal-affected').replaceChildren(...proposal.affected.map(item => { const li = document.createElement('li'); li.textContent = item; return li; })); dialog.showModal(); }
+function toggleOracle(force) { const dock = $('#oracle-dock'); const trigger = $('#toggle-oracle'); const open = typeof force === 'boolean' ? force : dock.getAttribute('aria-hidden') === 'true'; dock.setAttribute('aria-hidden', String(!open)); dock.inert = !open; trigger.setAttribute('aria-expanded', String(open)); $('#oracle-context-name').textContent = state.view === 'work' ? 'Work' : state.view[0].toUpperCase() + state.view.slice(1); if (open) $('#oracle-show-how').focus(); else trigger.focus(); }
 
 function skillToggle(skill) {
   const label = document.createElement('label');
@@ -100,6 +177,7 @@ function skillToggle(skill) {
 
 function persistSkills() {
   storage.write('apollo-active-skills', [...state.activeSkills]);
+  storage.write('apollo-active-skills-version', skillDefaultsVersion);
   if ($('#active-skill-count')) $('#active-skill-count').textContent = state.activeSkills.size;
 }
 
@@ -306,8 +384,11 @@ function drawConnections() {
   svg.querySelectorAll('path.connection').forEach(path => path.remove());
   const phase = $('#phase-filter').value;
   edges.forEach(edge => {
-    const from = canvas.querySelector(`[data-node="${edge.from}"]`).getBoundingClientRect();
-    const to = canvas.querySelector(`[data-node="${edge.to}"]`).getBoundingClientRect();
+    const fromElement = canvas.querySelector(`[data-node="${CSS.escape(edge.from)}"]`);
+    const toElement = canvas.querySelector(`[data-node="${CSS.escape(edge.to)}"]`);
+    if (!fromElement || !toElement) return;
+    const from = fromElement.getBoundingClientRect();
+    const to = toElement.getBoundingClientRect();
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.classList.add('connection');
     if (edge.feedback) path.classList.add('feedback');
@@ -344,16 +425,181 @@ function animateConnections() {
 
 function animatePulse(target) {
   if (!window.gsap || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  window.gsap.fromTo(target, { scale: .985 }, { scale: 1, duration: .32, ease: 'back.out(1.7)', overwrite: 'auto' });
+  window.gsap.fromTo(target, { scale: .985 }, { scale: 1, duration: .22, ease: 'power3.out', overwrite: 'auto', clearProps: 'transform' });
 }
 
-function selectNode(button) {
+function selectNode(button, { animate = true } = {}) {
+  selectedNodeId = button.dataset.node;
   $$('.workflow-node').forEach(node => node.setAttribute('aria-pressed', String(node === button)));
   const [phase, title, copy] = nodeCopy[button.dataset.node];
   $('#inspector-phase').textContent = phase;
   $('#inspector-title').textContent = title;
   $('#inspector-copy').textContent = copy;
-  animatePulse(button);
+  $('#node-name').value = title;
+  $('#node-phase').value = button.dataset.phase || 'all';
+  $('#node-description').value = copy;
+  $('#delete-node').disabled = !button.classList.contains('custom-node');
+  if (graphConnectMode) {
+    if (!connectSourceId) {
+      connectSourceId = button.dataset.node;
+      $('#node-status').textContent = `Choose a destination for ${title}.`;
+      button.classList.add('is-connect-source');
+    } else if (connectSourceId !== button.dataset.node) {
+      const exists = edges.some(edge => edge.from === connectSourceId && edge.to === button.dataset.node);
+      if (!exists) edges.push({ from: connectSourceId, to: button.dataset.node, phase: button.dataset.phase === 'all' ? 'prepare' : button.dataset.phase });
+      graphConnectMode = false; connectSourceId = null;
+      $('#connect-node').setAttribute('aria-pressed', 'false');
+      setCommandLabel($('#connect-node'), 'Connect');
+      $$('.workflow-node').forEach(node => node.classList.remove('is-connect-source'));
+      persistGraph(); drawConnections();
+      $('#node-status').textContent = exists ? 'That connection already exists.' : 'Connection added.';
+    }
+  }
+  if (animate) animatePulse(button);
+}
+
+function persistGraph() {
+  storage.write('apollo-graph-copy', nodeCopy);
+  storage.write('apollo-graph-edges', edges);
+  storage.write('apollo-graph-positions', graphPositions);
+  storage.write('apollo-graph-phases', graphPhases);
+}
+
+function applyGraphPositions() {
+  $$('.workflow-node').forEach(node => {
+    const position = graphPositions[node.dataset.node] || { x: 8, y: 12 };
+    node.style.left = `${position.x}%`;
+    node.style.top = `${position.y}%`;
+  });
+  requestAnimationFrame(drawConnections);
+}
+
+function startNodeDrag(event) {
+  if (event.button !== 0 || graphConnectMode) return;
+  const node = event.currentTarget;
+  const canvas = $('#workflow-canvas');
+  const canvasRect = canvas.getBoundingClientRect();
+  const nodeRect = node.getBoundingClientRect();
+  const grabX = event.clientX - nodeRect.left;
+  const grabY = event.clientY - nodeRect.top;
+  let moved = false;
+  node.setPointerCapture(event.pointerId);
+  node.classList.add('is-dragging');
+  const move = pointer => {
+    const dx = pointer.clientX - event.clientX; const dy = pointer.clientY - event.clientY;
+    if (Math.hypot(dx, dy) > 5) moved = true;
+    if (!moved) return;
+    const maxX = Math.max(0, canvasRect.width - node.offsetWidth);
+    const maxY = Math.max(0, canvasRect.height - node.offsetHeight);
+    const x = Math.min(maxX, Math.max(0, pointer.clientX - canvasRect.left - grabX));
+    const y = Math.min(maxY, Math.max(0, pointer.clientY - canvasRect.top - grabY));
+    graphPositions[node.dataset.node] = { x: x / canvasRect.width * 100, y: y / canvasRect.height * 100 };
+    node.style.left = `${graphPositions[node.dataset.node].x}%`;
+    node.style.top = `${graphPositions[node.dataset.node].y}%`;
+    drawConnections();
+  };
+  const end = () => {
+    node.classList.remove('is-dragging');
+    node.removeEventListener('pointermove', move); node.removeEventListener('pointerup', end); node.removeEventListener('pointercancel', end);
+    if (moved) { node.dataset.justDragged = 'true'; persistGraph(); $('#node-status').textContent = 'Node position saved locally.'; }
+  };
+  node.addEventListener('pointermove', move); node.addEventListener('pointerup', end); node.addEventListener('pointercancel', end);
+}
+
+function cancelGraphInteraction(message = 'Connection mode cancelled.') {
+  graphConnectMode = false; connectSourceId = null;
+  $('#connect-node').setAttribute('aria-pressed', 'false');
+  setCommandLabel($('#connect-node'), 'Connect');
+  $$('.workflow-node').forEach(node => node.classList.remove('is-connect-source'));
+  $('#node-status').textContent = message;
+}
+
+function moveGraphNodeWithKeyboard(node, key, accelerated = false) {
+  const canvas = $('#workflow-canvas'); const bounds = canvas.getBoundingClientRect();
+  const current = graphPositions[node.dataset.node] || { x: 0, y: 0 };
+  const step = accelerated ? 24 : 8;
+  const dx = key === 'ArrowLeft' ? -step : key === 'ArrowRight' ? step : 0;
+  const dy = key === 'ArrowUp' ? -step : key === 'ArrowDown' ? step : 0;
+  const maxX = Math.max(0, bounds.width - node.offsetWidth); const maxY = Math.max(0, bounds.height - node.offsetHeight);
+  const nextX = Math.min(maxX, Math.max(0, current.x / 100 * bounds.width + dx));
+  const nextY = Math.min(maxY, Math.max(0, current.y / 100 * bounds.height + dy));
+  graphPositions[node.dataset.node] = { x: nextX / bounds.width * 100, y: nextY / bounds.height * 100 };
+  node.style.left = `${graphPositions[node.dataset.node].x}%`; node.style.top = `${graphPositions[node.dataset.node].y}%`;
+  persistGraph(); drawConnections(); selectNode(node, { animate: false });
+  const title = node.querySelector('strong').textContent;
+  $('#node-status').textContent = `${title} moved ${key.replace('Arrow', '').toLowerCase()}. Position ${Math.round(graphPositions[node.dataset.node].x)}%, ${Math.round(graphPositions[node.dataset.node].y)}%.`;
+}
+
+function bindGraphNode(node) {
+  node.setAttribute('aria-roledescription', 'workflow node');
+  node.setAttribute('aria-keyshortcuts', 'ArrowUp ArrowDown ArrowLeft ArrowRight Shift+ArrowUp Shift+ArrowDown Shift+ArrowLeft Shift+ArrowRight Delete Escape');
+  node.addEventListener('pointerdown', startNodeDrag);
+  node.addEventListener('click', event => {
+    if (node.dataset.justDragged) { delete node.dataset.justDragged; return; }
+    selectNode(node, { animate: event.detail !== 0 });
+  });
+  node.addEventListener('keydown', event => {
+    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveGraphNodeWithKeyboard(node, event.key, event.shiftKey); return; }
+    if (event.key === 'Delete' || event.key === 'Backspace') {
+      event.preventDefault(); selectNode(node, { animate: false });
+      if (node.classList.contains('custom-node')) deleteSelectedNode();
+      else $('#node-status').textContent = 'Core workflow nodes are protected. Only custom nodes can be removed.';
+      return;
+    }
+    if (event.key === 'Escape' && graphConnectMode) { event.preventDefault(); cancelGraphInteraction(); }
+  });
+}
+
+function addGraphNode() {
+  const id = `custom-${crypto.randomUUID()}`;
+  const node = document.createElement('button'); node.type = 'button'; node.className = 'workflow-node custom-node';
+  node.dataset.node = id; node.dataset.phase = 'prepare'; node.setAttribute('aria-pressed', 'false');
+  node.innerHTML = '<span>Custom node</span><strong>New capability</strong><small>Describe what this node contributes</small>';
+  nodeCopy[id] = ['Custom node', 'New capability', 'Describe what this node contributes.'];
+  graphPhases[id] = 'prepare';
+  graphPositions[id] = { x: 38, y: 58 };
+  $('.workflow-grid').append(node); bindGraphNode(node); applyGraphPositions(); persistGraph(); selectNode(node); $('#node-name').focus();
+}
+
+function deleteSelectedNode() {
+  const node = $(`.workflow-node[data-node="${CSS.escape(selectedNodeId)}"]`); if (!node) return;
+  if (!node.classList.contains('custom-node')) { $('#node-status').textContent = 'Core workflow nodes are protected. Only custom nodes can be removed.'; return; }
+  node.remove(); delete nodeCopy[selectedNodeId]; delete graphPositions[selectedNodeId]; edges = edges.filter(edge => edge.from !== selectedNodeId && edge.to !== selectedNodeId);
+  delete graphPhases[selectedNodeId];
+  persistGraph(); selectNode($('.workflow-node[data-node="director"]')); drawConnections(); $('#node-status').textContent = 'Node removed from this local setup.';
+}
+
+function autoLayoutGraph(animate = true) {
+  const nodes = $$('.workflow-node');
+  nodes.forEach((node, index) => {
+    const column = index % 4; const row = Math.floor(index / 4);
+    graphPositions[node.dataset.node] = { x: 3 + column * 24, y: 14 + row * 42 };
+  });
+  persistGraph(); applyGraphPositions();
+  if (animate && window.gsap && !reduceMotion()) window.gsap.fromTo(nodes, { scale: .97 }, { scale: 1, duration: .24, stagger: .025, ease: 'power3.out', clearProps: 'transform' });
+  $('#node-status').textContent = 'Nodes arranged into a clear reading order.';
+}
+
+function resetGraph() {
+  Object.keys(nodeCopy).forEach(key => delete nodeCopy[key]); Object.assign(nodeCopy, structuredClone(defaultNodeCopy));
+  graphPositions = structuredClone(defaultGraphPositions); edges = structuredClone(defaultEdges);
+  graphPhases = {};
+  $$('.workflow-node.custom-node').forEach(node => node.remove());
+  $$('.workflow-node').forEach(node => { const [phase, title, copy] = nodeCopy[node.dataset.node]; node.dataset.phase = node.dataset.node === 'director' ? 'all' : node.dataset.phase; node.querySelector('span').textContent = phase; node.querySelector('strong').textContent = title; node.querySelector('small').textContent = copy; });
+  persistGraph(); applyGraphPositions(); selectNode($('.workflow-node[data-node="director"]')); $('#node-status').textContent = 'Default graph restored.';
+}
+
+function restoreGraphNodes() {
+  Object.keys(nodeCopy).filter(id => !defaultNodeCopy[id]).forEach(id => {
+    if ($(`.workflow-node[data-node="${CSS.escape(id)}"]`)) return;
+    const [label, title, copy] = nodeCopy[id];
+    const node = document.createElement('button'); node.type = 'button'; node.className = 'workflow-node custom-node';
+    node.dataset.node = id; node.dataset.phase = graphPhases[id] || 'prepare'; node.setAttribute('aria-pressed', 'false');
+    node.innerHTML = '<span></span><strong></strong><small></small>';
+    node.querySelector('span').textContent = label; node.querySelector('strong').textContent = title; node.querySelector('small').textContent = copy;
+    $('.workflow-grid').append(node);
+  });
+  $$('.workflow-node').forEach(node => { if (graphPhases[node.dataset.node]) node.dataset.phase = graphPhases[node.dataset.node]; });
 }
 
 function presetOptions(select) {
@@ -435,6 +681,16 @@ function renderResults(run) {
     head.append(title, meta);
     const body = document.createElement('pre'); body.className = `result-body${result.error ? ' result-error' : ''}`; body.textContent = result.error || result.text;
     card.append(head, body);
+    if (!result.error) {
+      const keep = document.createElement('button'); keep.type = 'button'; keep.className = 'quiet-action keep-setup'; keep.textContent = 'Keep this setup';
+      keep.addEventListener('click', () => {
+        state.activeSkills = new Set(result.variant.skills); persistSkills(); renderSkillRegistry();
+        $$('.result-card').forEach(item => item.classList.remove('is-kept')); card.classList.add('is-kept');
+        keep.textContent = 'Kept for the full plan'; $('#run-message').textContent = `${result.variant.name} is now the active skill setup. Open the node editor to refine it.`;
+        animatePulse(card);
+      });
+      card.append(keep);
+    }
     return card;
   });
   grid.replaceChildren(...cards);
@@ -444,8 +700,10 @@ function renderResults(run) {
 async function runComparison() {
   const prompt = $('#experiment-prompt').value.trim();
   if (prompt.length < 3) { $('#run-message').textContent = 'Enter a prompt with at least three characters.'; $('#experiment-prompt').focus(); return; }
-  const button = $('#run-comparison'); button.disabled = true; button.textContent = 'Running…';
-  $('#run-message').textContent = `Running ${state.variants.length} configurations in parallel…`;
+  const scale = $('#run-scale').value;
+  const scaleLabel = { pilot: 'pilot', standard: 'standard', full: 'full-plan' }[scale];
+  const button = $('#run-comparison'); button.disabled = true; setCommandLabel(button, 'Running…'); setComparisonState('running');
+  $('#run-message').textContent = `Running ${state.variants.length} ${scaleLabel} setups in parallel…`;
   try {
     const response = await fetch('/api/compare', {
       method: 'POST', headers: { 'content-type': 'application/json' },
@@ -463,11 +721,11 @@ async function runComparison() {
     state.runs.unshift(run); state.runs = state.runs.slice(0, 20); storage.write('apollo-runs', state.runs);
     $('#run-count').textContent = state.runs.length;
     $('#run-message').textContent = `${run.results.length} results ready · ${run.model} · ${run.reasoning} reasoning`;
-    renderResults(run);
+    renderResults(run); setComparisonState('complete');
   } catch (error) {
-    $('#run-message').textContent = error.message;
+    $('#run-message').textContent = error.message; setComparisonState('error');
   } finally {
-    button.disabled = false; button.textContent = 'Run comparison';
+    button.disabled = false; setCommandLabel(button, scale === 'pilot' ? 'Run pilot comparison' : scale === 'standard' ? 'Run standard comparison' : 'Run full comparison');
   }
 }
 
@@ -602,11 +860,30 @@ function renderConnectedHistory() {
 function renderAgents() {
   const host = $('#agent-registry');
   if (!host || !state.agents.length) return;
-  host.replaceChildren(...state.agents.map(agent => {
+  const query = ($('#agent-search')?.value || '').trim().toLowerCase();
+  const categoryFilter = $('#agent-category')?.value || 'all';
+  const categoryById = { 'apollo-director': 'Direction', 'athena-evidence': 'Research', 'calliope-experience': 'Direction', 'hephaestus-build': 'Production', 'hermes-delivery': 'Delivery' };
+  const mediaById = {
+    'apollo-director': '/media/gods/Apollo/Character_202607032015.jpeg',
+    'athena-evidence': '/media/gods/Athena/Character_202607032014.jpeg',
+    'calliope-experience': '/media/gods/Calliope/Make_eaclty_this_picture_202607032015.jpeg',
+    'hephaestus-build': '/media/gods/Hephaestus/Character_202607032015%20(1).jpeg',
+    'hermes-delivery': '/media/gods/Hermes/Character_202607032015%20(3).jpeg'
+  };
+  const filtered = state.agents.filter(agent => {
+    const category = categoryById[agent.id] || 'Direction';
+    const haystack = `${agent.name} ${agent.description} ${agent.activation} ${agent.skills.join(' ')} ${category}`.toLowerCase();
+    return (categoryFilter === 'all' || category === categoryFilter) && haystack.includes(query);
+  });
+  if (!filtered.length) { host.innerHTML = '<div class="empty-state"><strong>No agent profiles match.</strong><p>Change the category or search term.</p></div>'; return; }
+  host.replaceChildren(...filtered.map(agent => {
     const article = document.createElement('article');
-    article.className = `agent-row${agent.enabled ? '' : ' is-dormant'}`;
-    article.innerHTML = `<div class="agent-identity"><span class="agent-state"></span><div><strong></strong><p></p></div></div><div class="agent-activation"><span>Activation rule</span><p></p></div><div class="agent-skills"></div><div class="agent-controls"><label>Token budget<input type="number" min="500" max="50000" step="500"></label><label class="compact-check"><input class="approval-toggle" type="checkbox"> Approval required</label><label class="switch"><input class="agent-toggle" type="checkbox"><span class="switch-track" aria-hidden="true"></span></label></div>`;
-    article.querySelector('.agent-state').textContent = agent.enabled ? 'Ready' : 'Dormant';
+    const category = categoryById[agent.id] || 'Direction';
+    article.className = `agent-profile${agent.enabled ? '' : ' is-dormant'}`;
+    article.innerHTML = `<div class="agent-portrait"><img src="/media/gods/Apollo/Character_202607032015.jpeg" alt="" loading="lazy"><span class="agent-category"></span><span class="agent-state"></span></div><div class="agent-profile-main"><div class="agent-identity"><div><strong></strong><p></p></div></div><div class="agent-activation"><span>When this agent joins</span><p></p></div><div class="agent-skills"></div></div><div class="agent-controls"><label>Token budget<input type="number" min="500" max="50000" step="500"></label><label class="compact-check"><input class="approval-toggle" type="checkbox"> Review before action</label><label class="switch"><input class="agent-toggle" type="checkbox"><span class="switch-track" aria-hidden="true"></span></label></div>`;
+    const portrait = article.querySelector('.agent-portrait img'); portrait.src = mediaById[agent.id] || mediaById['apollo-director']; portrait.alt = `${agent.name} profile portrait`;
+    article.querySelector('.agent-category').textContent = category;
+    article.querySelector('.agent-state').textContent = agent.enabled ? 'Available' : 'Paused';
     article.querySelector('.agent-identity strong').textContent = agent.name;
     article.querySelector('.agent-identity p').textContent = agent.description;
     article.querySelector('.agent-activation p').textContent = agent.activation;
@@ -622,6 +899,8 @@ function renderAgents() {
       } catch (error) { alert(error.message); }
     };
     budget.addEventListener('change', save); approval.addEventListener('change', save); enabled.addEventListener('change', save);
+    article.addEventListener('pointerenter', () => { if (window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) window.gsap.to(portrait, { scale: 1.025, duration: .28, ease: 'power3.out', overwrite: 'auto' }); });
+    article.addEventListener('pointerleave', () => { if (window.gsap) window.gsap.to(portrait, { scale: 1, duration: .22, ease: 'power3.out', overwrite: 'auto' }); });
     return article;
   }));
 }
@@ -758,8 +1037,23 @@ async function refreshEvents() {
 function setRuntime(mode) {
   const stateEl = $('.runtime-state'); stateEl.classList.remove('is-live', 'is-demo', 'is-error'); stateEl.classList.add(mode === 'live' ? 'is-live' : 'is-demo');
   $('#runtime-label').textContent = mode === 'live' ? 'Live API ready' : 'Demo mode';
+  $('#work-runtime-state').textContent = mode === 'live' ? 'Live API' : 'Demo';
   $('#playground-mode').textContent = mode === 'live' ? 'Live OpenAI Responses mode. Runs may incur API usage.' : 'Demo mode validates routing without sending data or consuming API tokens.';
   $('#oracle-mode').textContent = mode === 'live' ? 'Live OpenAI API execution. Plan-only remains local.' : 'Demo execution. Plan-only is fully functional and consumes zero tokens.';
+}
+
+function bindRovingToolbar(toolbar) {
+  const items = [...toolbar.querySelectorAll('button:not([disabled])')];
+  items.forEach((button, index) => {
+    button.tabIndex = index === 0 ? 0 : -1;
+    button.addEventListener('focus', () => items.forEach(item => item.tabIndex = item === button ? 0 : -1));
+    button.addEventListener('keydown', event => {
+      const current = items.indexOf(event.currentTarget);
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1 : event.key === 'ArrowRight' ? (current + 1) % items.length : event.key === 'ArrowLeft' ? (current - 1 + items.length) % items.length : -1;
+      if (next < 0) return;
+      event.preventDefault(); items[next].focus();
+    });
+  });
 }
 
 async function saveSelectedSystem(event) {
@@ -786,8 +1080,38 @@ async function createNewSystem(sourceSystemId) {
 }
 
 function bindEvents() {
-  $$('[data-view-target]').forEach(button => button.addEventListener('click', () => navigate(button.dataset.viewTarget)));
-  $$('.workflow-node').forEach(button => button.addEventListener('click', () => selectNode(button)));
+  $$('[data-view-target]').forEach(button => button.addEventListener('click', event => navigate(button.dataset.viewTarget, { animate: event.detail !== 0 })));
+  $$('.workflow-node').forEach(bindGraphNode);
+  bindRovingToolbar($('.node-tools'));
+  $('#add-node').addEventListener('click', addGraphNode);
+  $('#connect-node').addEventListener('click', event => {
+    graphConnectMode = !graphConnectMode; connectSourceId = null;
+    event.currentTarget.setAttribute('aria-pressed', String(graphConnectMode)); setCommandLabel(event.currentTarget, graphConnectMode ? 'Choose start node' : 'Connect');
+    $$('.workflow-node').forEach(node => node.classList.remove('is-connect-source'));
+    $('#node-status').textContent = graphConnectMode ? 'Select the start node, then its destination.' : 'Connection mode cancelled.';
+  });
+  $('#auto-layout').addEventListener('click', event => autoLayoutGraph(event.detail !== 0));
+  $('#reset-layout').addEventListener('click', resetGraph);
+  $('#delete-node').addEventListener('click', deleteSelectedNode);
+  $('#node-inspector').addEventListener('submit', event => {
+    event.preventDefault(); const node = $(`.workflow-node[data-node="${CSS.escape(selectedNodeId)}"]`); if (!node) return;
+    const title = $('#node-name').value.trim() || 'Untitled node'; const copy = $('#node-description').value.trim() || 'No purpose has been defined yet.'; const phase = $('#node-phase').value;
+    nodeCopy[selectedNodeId][1] = title; nodeCopy[selectedNodeId][2] = copy; graphPhases[selectedNodeId] = phase; node.dataset.phase = phase;
+    node.querySelector('strong').textContent = title; node.querySelector('small').textContent = copy;
+    $('#inspector-title').textContent = title; $('#inspector-copy').textContent = copy; persistGraph(); drawConnections(); $('#node-status').textContent = 'Node settings saved locally.'; animatePulse(node);
+  });
+  $('#toggle-oracle').addEventListener('click', () => toggleOracle()); $('#close-oracle').addEventListener('click', () => toggleOracle(false));
+  $('#oracle-show-how').addEventListener('click', () => { toggleOracle(false); navigate('oracle'); $('#oracle-prompt').value = `Explain the next safe step for the current ${state.view} context.`; $('#oracle-prompt').focus(); });
+  $('#oracle-do-it').addEventListener('click', () => { toggleOracle(false); navigate('oracle'); $('#oracle-prompt').value = `Draft a proposal for the current ${state.view} context. Do not apply it without my approval.`; $('#oracle-prompt').focus(); });
+  $('#new-project').addEventListener('click', async () => { try { const created = await api('/api/projects', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({}) }); state.work.activeProjectId = created.project.id; state.work.activeChatId = created.chat.id; await refreshWork(); $('#work-prompt').focus(); } catch (error) { $('#work-status').textContent = error.message; } });
+  $('#new-chat').addEventListener('click', async () => { const project = workProject(); if (!project) return; try { const chat = await api(`/api/projects/${project.id}/chats`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({}) }); state.work.activeChatId = chat.id; await refreshWork(); } catch (error) { $('#work-status').textContent = error.message; } });
+  $('#work-composer').addEventListener('submit', async event => { event.preventDefault(); const input = $('#work-prompt'); const prompt = input.value.trim(); if (!prompt) return; try { await sendWorkMessage('user', prompt); input.value = ''; $('#work-status').textContent = 'Preparing local demo response…'; window.setTimeout(async () => { await sendWorkMessage('assistant', 'Demo response: I can turn this into a reviewed plan, keep the project context visible, and route any mutation through Oracle for your approval.'); $('#work-status').textContent = 'Demo responses stay local'; }, 180); } catch (error) { $('#work-status').textContent = error.message; } });
+  $('#work-prompt').addEventListener('keydown', event => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); $('#work-composer').requestSubmit(); } });
+  $('#work-context').addEventListener('click', () => $('#work-inspector').classList.toggle('is-open')); $('#close-context').addEventListener('click', () => $('#work-inspector').classList.remove('is-open'));
+  $('.attachment-button').addEventListener('click', () => $('#work-file-picker').click());
+  $('#work-file-picker').addEventListener('change', async event => { const chat = workChat(); const files = [...event.target.files]; if (!chat || !files.length) return; try { for (const file of files) await api(`/api/chats/${chat.id}/attachments`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: file.name, size: file.size, type: file.type }) }); state.work.detail = await api(`/api/chats/${chat.id}`); renderWork(); $('#work-status').textContent = `${files.length} local reference${files.length === 1 ? '' : 's'} linked`; } catch (error) { $('#work-status').textContent = error.message; } finally { event.target.value = ''; } });
+  $('#proposal-dialog').addEventListener('close', async event => { const dialog = event.currentTarget; const approved = dialog.returnValue === 'approve'; const proposalId = dialog.dataset.proposalId; if (!proposalId) return; try { await api(`/api/proposals/${proposalId}`, { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ approved }) }); const operation = JSON.parse(dialog.dataset.operation || 'null'); if (approved && operation?.type === 'unlink-attachment') { await api(`/api/chats/${operation.chatId}/attachments/${operation.attachmentId}`, { method: 'DELETE' }); state.work.detail = await api(`/api/chats/${operation.chatId}`); renderWork(); $('#work-status').textContent = 'Attachment unlinked. Source file was not changed.'; } else if (!approved) $('#work-status').textContent = 'Change cancelled. Nothing was persisted.'; } catch (error) { $('#work-status').textContent = error.message; } finally { delete dialog.dataset.proposalId; delete dialog.dataset.operation; } });
+  $('#project-search').addEventListener('input', event => $$('.project-item').forEach(item => item.hidden = !item.textContent.toLowerCase().includes(event.target.value.trim().toLowerCase())));
   $('#phase-filter').addEventListener('change', () => {
     const phase = $('#phase-filter').value;
     $$('.workflow-node').forEach(node => node.style.opacity = phase === 'all' || node.dataset.phase === phase || node.dataset.phase === 'all' ? '1' : '.3');
@@ -797,6 +1121,8 @@ function bindEvents() {
   $('#skill-search').addEventListener('input', filterSkills);
   $('#skill-phase-filter').addEventListener('change', filterSkills);
   $('#knowledge-search').addEventListener('input', renderKnowledge);
+  $('#agent-search').addEventListener('input', renderAgents);
+  $('#agent-category').addEventListener('change', renderAgents);
   $('#show-add-skill').addEventListener('click', () => { $('#add-skill-form').classList.remove('is-hidden'); $('#add-skill-form').elements.name.focus(); });
   $('#cancel-add-skill').addEventListener('click', () => $('#add-skill-form').classList.add('is-hidden'));
   $('#add-skill-form').addEventListener('submit', async event => {
@@ -812,8 +1138,13 @@ function bindEvents() {
   $('#refresh-events').addEventListener('click', refreshEvents);
   $('#refresh-runs').addEventListener('click', refreshEvents);
   $('#reset-skills').addEventListener('click', () => { state.activeSkills = new Set(state.config.skills.filter(skill => skill.defaultOn).map(skill => skill.id)); renderSkillRegistry(); });
-  $('#add-variant').addEventListener('click', () => { if (state.variants.length < 3) { state.variants.push(createVariant('Variant C', 'delivery-qa')); renderVariants(); } });
+  $('#add-variant').addEventListener('click', () => { if (state.variants.length < 3) { state.variants.push(createVariant('Setup C', 'delivery-qa')); renderVariants(); } });
   $('#run-comparison').addEventListener('click', runComparison);
+  $('#run-scale').addEventListener('change', event => {
+    const values = { pilot: 700, standard: 1600, full: 3000 }; const labels = { pilot: 'Run pilot comparison', standard: 'Run standard comparison', full: 'Run full comparison' };
+    $('#max-output').value = values[event.target.value]; setCommandLabel($('#run-comparison'), labels[event.target.value]); setComparisonState('idle');
+    $('#run-message').textContent = event.target.value === 'pilot' ? 'Pilot mode limits cost before full implementation.' : event.target.value === 'standard' ? 'Standard mode gives each setup more room.' : 'Full-plan mode uses the largest test budget.';
+  });
   $('#experiment-prompt').addEventListener('input', () => $('#prompt-length').textContent = `${$('#experiment-prompt').value.length.toLocaleString()} / 20,000`);
   $('#clear-prompt').addEventListener('click', () => { $('#experiment-prompt').value = ''; $('#experiment-prompt').dispatchEvent(new Event('input')); $('#experiment-prompt').focus(); });
   $('#export-runs').addEventListener('click', exportRuns);
@@ -855,13 +1186,18 @@ async function init() {
     state.oracleMessages = storage.read('apollo-oracle-messages', []);
     state.oraclePlan = storage.read('apollo-oracle-plan', null);
     const stored = storage.read('apollo-active-skills', null);
-    state.activeSkills = new Set(stored || state.config.skills.filter(skill => skill.defaultOn).map(skill => skill.id));
+    const storedVersion = storage.read('apollo-active-skills-version', 0);
+    const configuredIds = new Set(state.config.skills.map(skill => skill.id));
+    const defaults = state.config.skills.filter(skill => skill.defaultOn).map(skill => skill.id);
+    state.activeSkills = new Set(stored && storedVersion >= skillDefaultsVersion ? stored.filter(id => configuredIds.has(id)) : defaults);
     state.runs = storage.read('apollo-runs', []);
-    state.variants = [createVariant('Variant A', 'lean-audit'), createVariant('Variant B', 'concept-lab')];
+    await refreshWork({ preserve: false });
+    state.variants = [createVariant('Setup A', 'lean-audit'), createVariant('Setup B', 'concept-lab')];
     $('#model-select').innerHTML = state.config.models.map(model => `<option value="${model}"${model === 'gpt-5.6-terra' ? ' selected' : ''}>${model}</option>`).join('');
     $('#oracle-model').innerHTML = state.config.models.map(model => `<option value="${model}"${model === 'gpt-5.6-terra' ? ' selected' : ''}>${model}</option>`).join('');
     $('#integration-recommendation').textContent = integrationData.recommendation;
-    renderSkillRegistry(); renderTools(); renderVariants(); renderAgents(); renderSystems(); renderArchitectureAgents(); renderKnowledge(); renderOracleMessages(); renderIntegrations(); renderHostEvents(); setRuntime(state.config.mode); bindEvents();
+    restoreGraphNodes(); applyGraphPositions();
+    renderSkillRegistry(); renderTools(); renderVariants(); renderAgents(); renderSystems(); renderArchitectureAgents(); renderKnowledge(); renderOracleMessages(); renderIntegrations(); renderHostEvents(); setRuntime(state.config.mode); bindEvents(); refreshIcons(); initMotionPreferences(); setComparisonState('idle');
     updateRunCount();
     $('#experiment-prompt').dispatchEvent(new Event('input'));
     navigate(viewFromHash());

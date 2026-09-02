@@ -19,26 +19,42 @@
   -->
   <div class="app-shell">
     <header class="topbar">
-      <a class="brand" href="#architecture" aria-label="Apollo Studio home">
+      <a class="brand" href="#work" aria-label="Apollo Studio Work">
         <span class="brand-mark" aria-hidden="true">A</span>
-        <span><strong>Apollo Studio</strong><small>Orchestration control plane</small></span>
+        <span><strong>Apollo Studio</strong><small>Local creative workspace</small></span>
       </a>
       <nav class="primary-nav" aria-label="Primary navigation">
-        <button class="nav-item is-active" data-view-target="architecture">Architecture</button>
+        <button class="nav-item is-active" data-view-target="work">Work</button>
         <button class="nav-item" data-view-target="systems">Systems</button>
-        <button class="nav-item" data-view-target="knowledge">Knowledge</button>
-        <button class="nav-item" data-view-target="oracle">Oracle</button>
+        <button class="nav-item" data-view-target="knowledge">Library</button>
         <button class="nav-item" data-view-target="playground">Playground</button>
-        <button class="nav-item" data-view-target="runs">Runs <span id="run-count">0</span></button>
       </nav>
-      <div class="runtime-state"><span class="state-dot" aria-hidden="true"></span><span id="runtime-label">Connecting…</span></div>
+      <div class="topbar-actions"><button class="oracle-trigger" id="toggle-oracle" type="button" aria-expanded="false" aria-controls="oracle-dock">Oracle <kbd>⌘</kbd></button><div class="runtime-state"><span class="state-dot" aria-hidden="true"></span><span id="runtime-label">Connecting…</span><span id="run-count" hidden>0</span></div></div>
     </header>
 
     <main>
-      <section class="view is-active" id="architecture" aria-labelledby="architecture-title">
+      <section class="view is-active work-view" id="work" aria-labelledby="work-title">
+        <div class="workspace-frame">
+          <aside class="project-sidebar" aria-label="Projects and chats">
+            <div class="sidebar-brandline"><div><span class="eyebrow">Workspace</span><strong class="workspace-name">Local archive</strong></div><button class="icon-action" id="new-project" type="button" aria-label="Create project">+</button></div>
+            <label class="project-search"><span class="sr-only">Search projects</span><input id="project-search" type="search" placeholder="Search projects"><kbd>Ctrl K</kbd></label>
+            <div class="project-list-label"><span>Active projects</span><button class="text-action" id="new-chat" type="button">+ chat</button></div>
+            <div id="project-list" class="project-list" aria-live="polite"></div>
+            <div class="sidebar-footer"><span class="local-dot"></span><span>Private by default</span><button class="text-action" data-view-target="runs" type="button">Run log →</button></div>
+          </aside>
+          <div class="work-area">
+            <div class="project-tabs" id="project-tabs" role="tablist" aria-label="Open project tabs"></div>
+            <div class="work-toolbar"><div><p class="eyebrow">Active project · Work</p><h1 id="work-title">Start with the work.</h1><p class="work-subtitle">Chat with the full project context, then inspect or adjust the system only when needed.</p></div><div class="work-toolbar-actions"><span class="system-pill"><i></i> Olympus system</span><button class="quiet-action command-action" id="work-context" type="button"><i data-lucide="panel-right" aria-hidden="true"></i><span>Context</span><b id="work-context-count">0</b></button><button class="quiet-action command-action" data-view-target="architecture" type="button"><i data-lucide="workflow" aria-hidden="true"></i><span>Node view</span></button></div></div>
+            <div class="work-orientation" aria-label="Current workspace state"><span><i data-lucide="shield-check" aria-hidden="true"></i><small>Privacy</small><strong>Local only</strong></span><span><i data-lucide="layers-3" aria-hidden="true"></i><small>System</small><strong>Olympus Web</strong></span><span><i data-lucide="paperclip" aria-hidden="true"></i><small>Sources</small><strong id="work-source-count">0 linked</strong></span><span><i data-lucide="circle-dot-dashed" aria-hidden="true"></i><small>Runtime</small><strong id="work-runtime-state">Demo</strong></span></div>
+            <section class="conversation" aria-label="Project conversation"><div id="work-messages" class="work-messages" aria-live="polite"></div><form id="work-composer" class="work-composer"><label class="sr-only" for="work-prompt">Message project</label><textarea id="work-prompt" rows="3" maxlength="12000" placeholder="Ask Apollo to help with this project…"></textarea><div class="composer-footer"><div class="composer-options"><button class="attachment-button command-action" type="button" title="Attach an authorized local reference"><i data-lucide="paperclip" aria-hidden="true"></i><span>Attach</span></button><label class="model-choice"><span>Model</span><select id="work-model"><option>Balanced</option><option>Fast</option></select></label></div><div class="composer-submit"><span id="work-status" role="status">Demo responses stay local</span><button class="primary-action composer-send" type="submit"><i data-lucide="arrow-up" aria-hidden="true"></i><span>Send</span><kbd>Enter</kbd></button></div></div></form></section>
+          </div>
+          <aside class="work-inspector" id="work-inspector" aria-label="Project context"><div class="inspector-heading"><div><p class="eyebrow">Project context</p><h2 id="context-title">Launch narrative</h2></div><button class="icon-action" id="close-context" type="button" aria-label="Close context">×</button></div><p id="context-copy">Attachments are explicit local references. Apollo never reads a selected file in this browser slice.</p><div class="context-list"><div><span>Attached</span><strong id="context-attachments">No sources</strong></div><div><span>System</span><strong>Olympus Web System</strong></div><div><span>Privacy</span><strong>Local only</strong></div></div><div class="attachment-list" id="attachment-list"></div><button class="quiet-action work-inspector-action" data-view-target="knowledge" type="button">Manage reference knowledge</button></aside>
+        </div>
+      </section>
+      <section class="view" id="architecture" aria-labelledby="architecture-title">
         <div class="section-heading">
-          <div><h1 id="architecture-title">Build the route. See the consequences.</h1><p>Apollo keeps the gates fixed and lets judgment capabilities change around them.</p></div>
-          <button class="primary-action" data-view-target="systems">Edit active system</button>
+          <div><h1 id="architecture-title">Shape the system.</h1><p>Move, rename, add, and connect nodes. Save different setups, then test them in Playground before a full run.</p></div>
+          <div class="heading-actions"><button class="quiet-action command-action" data-view-target="systems"><i data-lucide="settings-2" aria-hidden="true"></i><span>System settings</span></button><button class="primary-action command-action" data-view-target="playground"><i data-lucide="flask-conical" aria-hidden="true"></i><span>Test this setup</span></button></div>
         </div>
 
         <div class="architecture-toolbar">
@@ -52,6 +68,7 @@
               <option value="verify">Verify</option>
             </select>
           </label>
+          <div class="node-tools" role="toolbar" aria-label="Node editor tools"><button class="quiet-action command-action" id="add-node" type="button"><i data-lucide="plus" aria-hidden="true"></i><span>Add node</span></button><button class="quiet-action command-action" id="connect-node" type="button" aria-pressed="false"><i data-lucide="waypoints" aria-hidden="true"></i><span>Connect</span></button><button class="quiet-action command-action" id="auto-layout" type="button"><i data-lucide="layout-grid" aria-hidden="true"></i><span>Auto layout</span></button><button class="quiet-action command-action" id="reset-layout" type="button"><i data-lucide="rotate-ccw" aria-hidden="true"></i><span>Reset</span></button></div>
           <div class="active-system-summary" aria-live="polite"><span>Active system</span><strong id="architecture-system-name">Loading…</strong><small id="architecture-system-count">0 agents</small></div>
         </div>
 
@@ -60,7 +77,8 @@
           <div class="architecture-agent-lanes" id="architecture-agent-lanes"></div>
         </section>
 
-        <section class="workflow-canvas" id="workflow-canvas" aria-label="Apollo gated workflow">
+        <p class="sr-only" id="graph-keyboard-help">Select a workflow node, then use the arrow keys to move it. Hold Shift for larger steps. Press Delete to remove a custom node, or Escape to cancel a connection.</p>
+        <section class="workflow-canvas" id="workflow-canvas" aria-label="Apollo gated workflow" aria-describedby="graph-keyboard-help">
           <svg class="connector-layer" id="connector-layer" aria-hidden="true">
             <defs>
               <marker id="arrow-data" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker>
@@ -74,11 +92,11 @@
             <button class="workflow-node concept-node" data-node="concepts" data-phase="direct" aria-pressed="false"><span>Direction</span><strong>Concept studio</strong><small>Three routes · independent critique</small></button>
             <button class="workflow-node gate gate-b" data-node="gate-b" data-phase="direct" aria-pressed="false"><span>Gate B</span><strong>Direction selected</strong><small>One concept becomes build truth</small></button>
             <button class="workflow-node build-node" data-node="build" data-phase="prepare" aria-pressed="false"><span>Production</span><strong>Assets & implementation</strong><small>Media · motion · components · code</small></button>
-            <button class="workflow-node qa-node" data-node="qa" data-phase="verify" aria-pressed="false"><span>Gate C</span><strong>Visual QA & handoff</strong><small>Desktop · mobile · a11y · runtime</small></button>
+            <button class="workflow-node qa-node" data-node="qa" data-phase="verify" aria-pressed="false"><span>Gate C</span><strong>Visual QA & handoff</strong><small>Laptop · desktop · a11y · runtime</small></button>
           </div>
         </section>
 
-        <div class="node-inspector" aria-live="polite"><span id="inspector-phase">Orchestrator</span><strong id="inspector-title">Apollo Design Director</strong><p id="inspector-copy">One manager keeps ownership while selected skills contribute bounded judgment.</p></div>
+        <form class="node-inspector" id="node-inspector" aria-label="Selected node settings"><div class="node-inspector-copy"><span id="inspector-phase">Orchestrator</span><strong id="inspector-title">Apollo Design Director</strong><p id="inspector-copy">One manager keeps ownership while selected skills contribute bounded judgment.</p></div><div class="node-inspector-fields"><label>Name<input id="node-name" maxlength="64"></label><label>Phase<select id="node-phase"><option value="all">Always</option><option value="diagnose">Diagnose</option><option value="direct">Direct</option><option value="prepare">Prepare</option><option value="build">Build</option><option value="verify">Verify</option></select></label><label class="node-description">Purpose<input id="node-description" maxlength="140"></label></div><div class="node-inspector-actions"><span id="node-status" role="status">Drag nodes to reposition</span><button class="danger-action" id="delete-node" type="button">Delete node</button><button class="run-action" type="submit">Save node</button></div></form>
 
         <div class="configuration-layout">
           <section class="skills-panel" aria-labelledby="skills-title">
@@ -100,7 +118,7 @@
       <section class="view" id="systems" aria-labelledby="systems-title">
         <div class="section-heading">
           <div><h1 id="systems-title">Compose the system. Keep the recipe.</h1><p>Create named orchestration systems, replace their agents, and assign the skills, MCP tools, plugins, instructions, and token boundaries each specialist carries.</p></div>
-          <div class="heading-actions"><button class="quiet-action" id="duplicate-system">Duplicate active</button><button class="primary-action" id="new-system">New system</button></div>
+          <div class="heading-actions"><button class="quiet-action" data-view-target="architecture">Open node editor</button><button class="quiet-action" id="duplicate-system">Duplicate active</button><button class="primary-action" id="new-system">New system</button></div>
         </div>
         <div class="systems-workbench">
           <aside class="system-library" aria-labelledby="saved-systems-title">
@@ -136,49 +154,53 @@
 
       <section class="view" id="playground" aria-labelledby="playground-title">
         <div class="section-heading">
-          <div><h1 id="playground-title">One prompt. Controlled configurations.</h1><p>Compare two or three skill combinations without changing the task or model settings.</p></div>
+          <div><h1 id="playground-title">Test small. Commit with evidence.</h1><p>Give two or three setups the same task, compare the result, then keep the winner for the full plan.</p></div>
           <div class="runtime-note" id="playground-mode">Checking runtime…</div>
         </div>
 
-        <section class="prompt-composer">
-          <label for="experiment-prompt">Test prompt</label>
-          <textarea id="experiment-prompt" rows="7" maxlength="20000" placeholder="Describe the same task every variant should solve…">Redesign a SaaS agency homepage so founders understand the offer in ten seconds and can confidently book a strategy call. Explain the recommended structure, interaction, and verification plan.</textarea>
-          <div class="prompt-footer"><span id="prompt-length">0 / 20,000</span><button class="quiet-action" id="clear-prompt">Clear</button></div>
-        </section>
+        <div class="playground-steps" aria-label="Comparison workflow"><span class="is-current">1 · Task</span><span>2 · Setups</span><span>3 · Pilot run</span><span>4 · Keep result</span></div>
+        <div class="playground-workbench">
+          <div class="playground-task-rail">
+            <section class="prompt-composer">
+              <label for="experiment-prompt">The task every setup must solve</label>
+              <textarea id="experiment-prompt" rows="4" maxlength="20000" placeholder="Describe the same task every setup should solve…">Redesign a SaaS agency homepage so founders understand the offer in ten seconds and can confidently book a strategy call. Explain the recommended structure, interaction, and verification plan.</textarea>
+              <div class="prompt-footer"><span id="prompt-length">0 / 20,000</span><button class="quiet-action command-action" id="clear-prompt"><i data-lucide="eraser" aria-hidden="true"></i><span>Clear</span></button></div>
+            </section>
 
-        <div class="experiment-settings">
-          <label>Model<select id="model-select"></select></label>
-          <label>Reasoning<select id="reasoning-select"><option value="none">None</option><option value="low" selected>Low</option><option value="medium">Medium</option><option value="high">High</option></select></label>
-          <label>Output ceiling<input id="max-output" type="number" min="200" max="4000" step="100" value="1000"><span>tokens</span></label>
+            <div class="experiment-settings">
+              <label>Model<select id="model-select"></select></label>
+              <label>Reasoning<select id="reasoning-select"><option value="none">None</option><option value="low" selected>Low</option><option value="medium">Medium</option><option value="high">High</option></select></label>
+              <label>Run scale<select id="run-scale"><option value="pilot" selected>Pilot · 25%</option><option value="standard">Standard · 60%</option><option value="full">Full plan · 100%</option></select></label>
+              <label>Output ceiling<input id="max-output" type="number" min="200" max="4000" step="100" value="700"><span>tokens</span></label>
+            </div>
+          </div>
+
+          <section class="variant-section" aria-labelledby="variants-title">
+            <div class="panel-heading"><div><h2 id="variants-title">Setups to compare</h2><p>Change skills and tools, not the task.</p></div><button class="quiet-action command-action" id="add-variant"><i data-lucide="plus" aria-hidden="true"></i><span>Add third setup</span></button></div>
+            <div class="variant-grid" id="variant-grid"></div>
+          </section>
         </div>
 
-        <section class="variant-section" aria-labelledby="variants-title">
-          <div class="panel-heading"><div><h2 id="variants-title">Variants</h2><p>Each variant receives the exact same prompt.</p></div><button class="quiet-action" id="add-variant">Add third variant</button></div>
-          <div class="variant-grid" id="variant-grid"></div>
-        </section>
-
-        <div class="run-bar"><p id="run-message" role="status">Ready to compare.</p><button class="run-action" id="run-comparison">Run comparison</button></div>
+        <div class="run-bar"><div class="run-state"><p id="run-message" role="status">Pilot mode limits cost before full implementation.</p><div class="comparison-progress" id="comparison-progress" aria-hidden="true"><i></i></div></div><button class="run-action command-action" id="run-comparison"><i data-lucide="play" aria-hidden="true"></i><span>Run pilot comparison</span></button></div>
         <section class="results-grid" id="results-grid" aria-live="polite"></section>
       </section>
 
       <section class="view" id="agents" aria-labelledby="agents-title">
         <div class="section-heading">
-          <div><h1 id="agents-title">Specialists wait for a reason.</h1><p>Apollo matches plan requirements to bounded agents. Dormant agents consume no model calls and cannot delegate further.</p></div>
-          <button class="primary-action" data-view-target="oracle">Test the router</button>
+          <div><h1 id="agents-title">Agent Profiles</h1><p>Organize specialists by role, equip compatible skills, and adjust budget, approval, and availability without editing raw configuration.</p></div>
+          <div class="heading-actions"><button class="quiet-action" data-view-target="knowledge">Skill library</button><button class="primary-action" data-view-target="systems">Use in a system</button></div>
         </div>
-        <div class="agent-principles">
-          <p><strong>One orchestrator</strong><span>Owns the prompt, plan, approvals, and synthesis.</span></p>
-          <p><strong>Conditional activation</strong><span>Keyword rules make the local planner inspectable and deterministic.</span></p>
-          <p><strong>Concurrency 2</strong><span>Independent specialists may run together; authors and critics stay ordered by the plan.</span></p>
-        </div>
+        <div class="library-switcher" role="navigation" aria-label="Library categories"><button class="is-active" data-view-target="agents" type="button">Agents</button><button data-view-target="knowledge" type="button">Skills & knowledge</button></div>
+        <div class="agent-filterbar"><label>Category<select id="agent-category"><option value="all">All agents</option><option value="Direction">Direction</option><option value="Research">Research</option><option value="Production">Production</option><option value="Delivery">Delivery</option></select></label><label class="search-field">Search profiles<input id="agent-search" type="search" placeholder="Name, role, skill…"></label></div>
         <div class="agent-registry" id="agent-registry" aria-live="polite"></div>
       </section>
 
       <section class="view" id="knowledge" aria-labelledby="knowledge-title">
         <div class="section-heading">
-          <div><h1 id="knowledge-title">Knowledge that has an address.</h1><p>Every skill lives in a categorized folder with runtime instructions and source notes you can inspect outside this UI.</p></div>
+          <div><h1 id="knowledge-title">Skills & knowledge</h1><p>Browse reusable capabilities by category, tune their instructions, and attach trusted sources.</p></div>
           <button class="primary-action" id="show-add-skill">Add skill</button>
         </div>
+        <div class="library-switcher" role="navigation" aria-label="Library categories"><button data-view-target="agents" type="button">Agents</button><button class="is-active" data-view-target="knowledge" type="button">Skills & knowledge</button></div>
         <div class="knowledge-path"><span>Local root</span><code id="knowledge-root">Loading…</code></div>
         <form class="inline-editor is-hidden" id="add-skill-form">
           <div class="editor-heading"><div><h2>Create a skill</h2><p>The category becomes its physical folder. The ID is generated from the name.</p></div><button type="button" class="quiet-action" id="cancel-add-skill">Cancel</button></div>
@@ -248,8 +270,11 @@
         </section>
       </section>
     </main>
+    <aside class="oracle-dock" id="oracle-dock" aria-label="Oracle contextual guidance" aria-hidden="true" inert><div class="oracle-dock-head"><div><p class="eyebrow">Oracle</p><h2>Contextual guidance</h2></div><button class="icon-action" id="close-oracle" type="button" aria-label="Close Oracle">×</button></div><p class="oracle-context-copy">You are in <strong id="oracle-context-name">Work</strong>. Oracle can explain the next step or prepare a proposal for your review.</p><div class="oracle-dock-actions"><button class="quiet-action" id="oracle-show-how" type="button">Show me how</button><button class="primary-action" id="oracle-do-it" type="button">Do it for me</button></div><div class="oracle-safety"><span>Approval required</span><p>Oracle will never save, change, or connect anything without a visible proposal and your confirmation.</p></div></aside>
   </div>
 
+  <input id="work-file-picker" type="file" hidden multiple aria-hidden="true">
+  <dialog class="proposal-dialog" id="proposal-dialog" aria-labelledby="proposal-title"><form method="dialog"><p class="eyebrow">Review required</p><h2 id="proposal-title">Proposed change</h2><p id="proposal-summary"></p><ul id="proposal-affected"></ul><div class="proposal-actions"><button class="quiet-action" value="cancel">Cancel</button><button class="run-action" id="approve-proposal" value="approve">Approve change</button></div></form></dialog>
   <template id="variant-template">
     <article class="variant-card">
       <div class="variant-title-row"><label>Variant name<input class="variant-name" maxlength="60"></label><button class="icon-action remove-variant" aria-label="Remove variant">×</button></div>
@@ -260,6 +285,7 @@
     </article>
   </template>
 
+  <script src="/vendor/lucide.min.js" defer></script>
   <script src="/vendor/gsap.min.js" defer></script>
   <script type="module" src="/app.js"></script>
 </body>

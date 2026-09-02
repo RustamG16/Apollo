@@ -19,6 +19,10 @@ These instructions apply whenever this folder is attached as context for a websi
 - Make new dependencies, WebGL, heavy scroll animation, and external generation opt-in decisions with explicit value and fallback.
 - Verify desktop, mobile, interaction states, reduced motion, console/runtime health, accessibility basics, and performance risks.
 - Keep an audit trail in `.olympus/` using the templates in this repository.
+- Do not begin a new project without the six root context files in
+  `templates/project-context/`; run `scripts/validate-project-context.ps1` before Gate A.
+- Use progressive disclosure: read Architecture Essentials first, then only the product,
+  architecture, agent, or history file needed for the current decision.
 
 ## Delegation policy
 
@@ -47,4 +51,3 @@ The default is a single Design Director using focused skills. Optional custom ag
 - Do not place secrets in this repository or generated project documents.
 - Respect reduced motion and provide non-WebGL fallbacks.
 - An “Awwwards-level” ambition does not excuse unclear hierarchy, inaccessible interaction, poor mobile behavior, or unacceptable loading cost.
-

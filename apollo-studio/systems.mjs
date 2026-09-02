@@ -7,14 +7,11 @@ const dataPath = fileURLToPath(new URL('./data/systems.json', import.meta.url));
 const apolloRoot = fileURLToPath(new URL('../', import.meta.url));
 const phases = new Set(['always', 'diagnose', 'direct', 'prepare', 'build', 'verify']);
 const phaseByAgent = {
-  'evidence-analyst': 'diagnose',
-  'experience-designer': 'direct',
-  'design-engineer': 'build',
-  'motion-engineer': 'prepare',
-  'spatial-engineer': 'prepare',
-  'media-producer': 'prepare',
-  'verification-critic': 'verify',
-  'measurement-analyst': 'verify'
+  'apollo-director': 'always',
+  'athena-evidence': 'diagnose',
+  'calliope-experience': 'direct',
+  'hephaestus-build': 'build',
+  'hermes-delivery': 'verify'
 };
 
 const clean = (value, max = 4000) => String(value || '').trim().slice(0, max);

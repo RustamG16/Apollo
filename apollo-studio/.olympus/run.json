@@ -1,12 +1,28 @@
 {
-  "project": "Apollo Orchestration Studio",
-  "target": "D:\\Analyst_Designer\\Apollo\\apollo-studio",
-  "route": "/",
-  "runType": "concept-and-implementation",
-  "selectedConcept": "Apollo control plane",
-  "gateA": "User directed implementation of a working, adjustable system after rejecting the static visualization.",
-  "gateB": "User explicitly requested one concept to be selected and implemented.",
-  "gateC": "pending user review",
-  "phase": "client-review",
-  "reference": "C:\\Users\\RUSTAM~1\\AppData\\Local\\Temp\\codex-clipboard-e9cd9e70-67a0-40c4-a8e8-1539fa527672.png"
+  "system": "olympus-design-director",
+  "target_project": "Apollo Studio",
+  "target_route": "Desktop application shell: Work, Systems, Library, Playground, Oracle, and Settings",
+  "mode": "concept-and-implementation",
+  "phase": "desktop continuous improvement — research and implementation",
+  "gate_a": "approved (2026-08-31; master plan)",
+  "gate_b": "approved (2026-08-31; Apollo Workbench selected by delegated user decision)",
+  "gate_c": "pending",
+  "approved_concept": "Apollo Workbench",
+  "constraints": [
+    "Preserve existing uncommitted work, Node-based local application, demo/live OpenAI distinction, and /api/* behavior during migration.",
+    "Keep local data private; files remain external references unless explicitly imported.",
+    "Record media provenance and usage rights before reuse; avoid unapproved external media generation.",
+    "Honor reduced motion/transparency and keep Work usable without WebGL.",
+    "Optimize and verify laptop/desktop only; mobile responsiveness is explicitly out of scope as of 2026-09-01.",
+    "Keep post-baseline improvement commits local until the user explicitly approves another GitHub push."
+  ],
+  "references": [
+    "Approved direction: calm Codex-style desktop workspace with contextual mythological identity; no external visual reference supplied."
+  ],
+  "assets": [
+    "public/media/gods/{Apollo,Athena,Calliope,Hephaestus,Hermes}",
+    "public/media/other"
+  ],
+  "last_updated": "2026-09-01",
+  "latest_improvement": "Visual-enrichment cycle: generated local Systems and Knowledge Factory scene assets, applied fallback-safe desktop styling, and verified Systems, Architecture, and Library at 1440×900."
 }
