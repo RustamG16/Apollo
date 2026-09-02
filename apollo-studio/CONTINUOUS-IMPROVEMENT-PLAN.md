@@ -22,9 +22,9 @@ Completing one implementation slice does not complete the program. Every verifie
 
 Gate A: approve the diagnosis and scoring criteria.
 
-## Phase 2: three visual systems
+## Phase 2: the visual system
 
-Create exactly three distinct directions: Editorial Utility, Technical Instrument, and Native Studio. Define shell, navigation, typography, color, density, components, workflow visualization, motion, media policy, risks, and representative screens for each. No decorative generated media is allowed during selection.
+Resolve one direction at intake per the direction rule in `AGENTS.md` (candidates on the table: Editorial Utility, Technical Instrument, Native Studio — pick via the questionnaire, not by building all three). Define shell, navigation, typography, color, density, components, workflow visualization, motion, media policy, risks, and representative screens for the chosen direction. No decorative generated media is allowed during selection.
 
 Gate B: select and lock one direction.
 

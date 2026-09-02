@@ -10,10 +10,10 @@
 | `apollo-taste-interview` | direct | active | c/c/s | Path A of the taste-profile system. Runs a structured interview that is a 1:1 walk through taste-profile.schema.json's fields, … |
 | `apple-design` | direct | active | c/s | Applies Apple-inspired purpose, agency, familiarity, simplicity, typography, material restraint, and fluid interaction principl… |
 | `awwwards-web-design` | build | active | c/c/s | Adds premium editorial craft after hierarchy is stable. |
-| `concept-studio` | direct | active | c/c/s | Creates materially distinct design directions. |
+| `concept-studio` | direct | active | c/c/s | Produce the one website redesign direction the approved brief specifies — in full: layout, typography, media, motion, mobile be… |
 | `emil-design-eng` | build | active | c/s | Polishes component feel, interaction feedback, animation decisions, easing, performance, and invisible interface details. |
 | `impeccable` | build | active | c/s | Optional production UI craft and bounded finishing pass. |
-| `olympus-design-director` | always | active | c/c/s | Owns the brief, routes work, and enforces approval gates. |
+| `olympus-design-director` | always | active | c/c/s | Orchestrate an evidence-based redesign through intake, audit, one direction resolved at intake, human approval, asset planning,… |
 | `reference-deconstruction` | diagnose | active | c/c/s | Extracts transferable visual logic without copying expression. |
 | `taste-first-experience-design` | direct | stub | s | Turns visual preference evidence into editable Creative DNA, plain-language choices, and a bounded mission setup. |
 | `ui-ux` | diagnose | active | c/c/s | Establishes product cognition, task journeys, progressive disclosure, recovery states, mobile priorities, and frontend governance. |
@@ -142,7 +142,7 @@
 
 | Skill | Phase | Status | Hosts | Purpose |
 |---|---|---|---|---|
-| `award-rubric` | direct | active | c/c/s | Scores frozen concepts without silently redesigning them. |
+| `award-rubric` | direct | active | c/c/s | Independently critique and score the single frozen website direction against an approved brief using design, usability, creativ… |
 | `superpowers-receiving-code-review` | unrouted | active | c/c/s | Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically q… |
 | `superpowers-requesting-code-review` | unrouted | active | c/c/s | Use when completing tasks, implementing major features, or before merging to verify work meets requirements |
 | `visual-qa` | verify | active | c/c/s | Verifies desktop, mobile, states, runtime, accessibility, and risk. |

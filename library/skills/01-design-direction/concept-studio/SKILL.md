@@ -1,30 +1,26 @@
 ---
 name: concept-studio
-description: Produce exactly three genuinely different website redesign directions from an approved brief and evidence audit, including layout, typography, media, motion, mobile behavior, asset needs, and risk. Use after the design problem is approved and before implementation or asset generation.
+description: Produce the one website redesign direction the approved brief specifies — in full: layout, typography, media, motion, mobile behavior, asset needs, and risk. Alternatives only on explicit request. Use after the design problem is approved and before implementation or asset generation.
 ---
 
 # Concept Studio
 
 Create choice at the level of experience, not decoration. Begin only after Gate A.
 
+Direction is set at intake. Produce **one** direction — the one the brief's direction block
+specifies — unless the user asked for alternatives (see the direction rule in `AGENTS.md`).
+If alternatives are requested, repeat "Detail the direction" per alternative and state how
+many and why.
+
 ## Establish shared constraints
 
-Read the approved brief, audit, reference principles, available assets, stack, and success signal. List non-negotiables once; do not repeat them under every concept.
+Read the approved brief and its direction block, the audit, reference principles, available
+assets, stack, and success signal. List non-negotiables once.
 
-## Generate three directions
+## Detail the direction
 
-Make each concept distinct on at least three of these axes:
-
-- information model and content order;
-- spatial composition and grid;
-- typography role and density;
-- media/art-direction system;
-- interaction model and pacing;
-- tone and brand posture.
-
-A palette swap, font swap, or stronger animation layer is not a separate concept.
-
-For each direction provide:
+Take the brief's direction block (chosen doctrine, structural posture, motion posture,
+type/colour logic, ruled-out list) and resolve it into a buildable direction:
 
 - memorable name and one-sentence thesis;
 - why it fits the audience and goal;
@@ -37,11 +33,14 @@ For each direction provide:
 - implementation/performance/accessibility risks;
 - a representative low-cost frame, wireframe, or coded static study when requested.
 
-## Compare honestly
+## Show how it answers the brief
 
-Add a table comparing information model, composition, media, motion, differentiation, production cost, and risk. Recommend one direction based on the approved goal, but preserve all three for Gate B.
+Add a table mapping information model, composition, media, motion, production cost, and risk
+to the brief requirement each satisfies. If alternatives were requested, add one row per
+alternative naming what it varies and the trade-off against the default.
 
 ## Stop
 
-Write `02-concepts.md` using the system template. Freeze the directions for independent critique. Do not merge them, generate production media, install dependencies, or implement the page before user selection.
-
+Write `02-concepts.md` using the system template. Freeze the direction for independent
+critique. Do not generate production media, install dependencies, or implement the page
+before user selection.

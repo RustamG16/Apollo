@@ -1,22 +1,10 @@
-# Three design directions
+# Design direction
 
-Create exactly three. Each must differ in information hierarchy, composition, and experience model—not just styling.
+One direction by default — the one the brief's direction block specifies. Produce more only
+when the user asked for alternatives; if so, repeat the **Direction** section per alternative
+and state how many and why (see the direction rule in `AGENTS.md`).
 
-## Concept 1 — name
-
-- Thesis:
-- Best for:
-- Page hierarchy and layout:
-- Typography and color logic:
-- Media strategy:
-- Interaction/motion posture:
-- WebGL: no / candidate, with reason
-- Mobile behavior:
-- Required assets:
-- Implementation risk:
-- Representative frame/wireframe:
-
-## Concept 2 — name
+## Direction — name
 
 - Thesis:
 - Best for:
@@ -30,27 +18,18 @@ Create exactly three. Each must differ in information hierarchy, composition, an
 - Implementation risk:
 - Representative frame/wireframe:
 
-## Concept 3 — name
+## How it answers the brief
 
-- Thesis:
-- Best for:
-- Page hierarchy and layout:
-- Typography and color logic:
-- Media strategy:
-- Interaction/motion posture:
-- WebGL: no / candidate, with reason
-- Mobile behavior:
-- Required assets:
-- Implementation risk:
-- Representative frame/wireframe:
+| Dimension | This direction | Brief requirement it satisfies |
+|---|---|---|
+| Information model | | |
+| Composition | | |
+| Media | | |
+| Motion | | |
+| Complexity/risk | | |
 
-## Meaningful differences
+## Alternatives (only if requested)
 
-| Dimension | Concept 1 | Concept 2 | Concept 3 |
-|---|---|---|---|
-| Information model | | | |
-| Composition | | | |
-| Media | | | |
-| Motion | | | |
-| Complexity/risk | | | |
-
+- Requested: no / yes — how many, and why:
+- If yes, each alternative gets its own **Direction** section above and one row here noting
+  what it varies and the trade-off against the default.

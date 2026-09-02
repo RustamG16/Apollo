@@ -237,3 +237,52 @@ before. Payload is metadata only (~40 KB); flagged for token-discipline review i
 **Result: PASS. Proceeding to Phase 5.**
 
 ---
+
+## Phase 5 — direction by questionnaire — **PASS** (2026-09-02)
+
+### Actions
+- **The direction rule** now lives in exactly one place: `AGENTS.md` → "## The direction rule"
+  (default one direction; alternatives only on request with count + reason; taste profile is
+  load-bearing; greenfield entry). Everything else references it.
+- Removed the fixed-three rule from every Apollo-authored location:
+  - `AGENTS.md` ×2 (required-behavior line, token-controls line) → reference the rule.
+  - `START-HERE.md` — section 2 rewritten ("Create the direction"); Gate A now resolves the
+    direction block / runs the taste interview; section 1 gains the greenfield branch.
+  - `ARCHITECTURE.md` ×2 — mermaid node "One direction (per the brief)"; routing-table
+    activation "A direction is frozen".
+  - `README.md` ×2 — Gate B line, core-promise line.
+  - `library/skills/.../concept-studio/SKILL.md` (desc + body) + `agents/openai.yaml`.
+  - `library/skills/.../award-rubric/SKILL.md` (desc + body: verdict is accept / accept with
+    fixes / reject; may not author a replacement).
+  - `library/skills/.../olympus-design-director/SKILL.md` (desc + Direct phase) +
+    `references/routing-contract.md`.
+  - `templates/02-concepts.md` — rewritten to one **Direction** section, repeatable on request.
+  - `library/registry/skills.registry.json` — concept-studio / award-rubric descriptions +
+    runtimePrompts; regenerated `skills.mjs` data, studio READMEs, ROUTING-DIGEST, host trees.
+  - `apollo-studio/CONTINUOUS-IMPROVEMENT-PLAN.md` — Phase 2 heading/line realigned (it applied
+    the old rule to the Studio's own redesign).
+- **Direction block** added to `templates/00-brief.md` with all six fields: chosen doctrine
+  (from `library/doctrines/`), structural posture, motion posture, type logic, colour logic,
+  explicitly-ruled-out, alternatives-requested.
+- **Taste profile load-bearing**: `START-HERE.md` Gate A and `olympus-design-director` Direct
+  phase now run `$apollo-taste-interview` / `$apollo-style-picker` before Gate A when the
+  references don't resolve the direction block, writing to `library/design-dna/`.
+- **Greenfield entry** (defect 10): `START-HERE.md` §1 + `AGENTS.md` rule + director SKILL —
+  no existing page → start at the questionnaire, `ux-evidence-audit` dormant,
+  `reference-deconstruction` carries evidence.
+
+### HALT CHECK — Phase 5
+- [x] `grep -riE "exactly three|three concepts|three distinct"` — **zero** Apollo-authored
+      matches. The 45 residual hits are all vendored third-party skills (`impeccable`
+      "three concessions"/"three comps"; `higgsfield-brandkit` "three logo candidates") and
+      their projections, plus out-of-scope `test_projects/` and `.olympus/` run artifacts —
+      none is a statement of Apollo's concept/direction rule. (Documented exclusions beyond
+      the plan's literal list: the vendored skill trees, generated host projections of them,
+      `test_projects/`, `.olympus/`.)
+- [x] The direction block exists in `templates/00-brief.md` with all six fields.
+- [x] Affected skills regenerated; `library/tools/verify.py` CLEAN; `validate-system.ps1`
+      exits 0; `npm.cmd run check` EXIT 0; no protected files touched.
+
+**Result: PASS. Proceeding to Phase 6.**
+
+---

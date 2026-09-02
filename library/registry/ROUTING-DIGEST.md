@@ -5,15 +5,15 @@ Unrouted skills (100) are in `UNROUTED.md` — capabilities, invoked explicitly,
 
 | Skill | Phase | Line |
 |---|---|---|
-| `olympus-design-director` | always | Owns the brief, routes work, and enforces approval gates. |
+| `olympus-design-director` | always | Orchestrate an evidence-based redesign through intake, audit, one direction resolved at intake, human appro… |
 | `reference-deconstruction` | diagnose | Extracts transferable visual logic without copying expression. |
 | `ui-ux` | diagnose | Establishes product cognition, task journeys, progressive disclosure, recovery states, mobile priorities, a… |
 | `ux-evidence-audit` | diagnose | Diagnoses source, browser, responsive, accessibility, and content evidence. |
 | `apollo-style-picker` | direct | Path B of the taste-profile system |
 | `apollo-taste-interview` | direct | Path A of the taste-profile system |
 | `apple-design` | direct | Applies Apple-inspired purpose, agency, familiarity, simplicity, typography, material restraint, and fluid … |
-| `award-rubric` | direct | Scores frozen concepts without silently redesigning them. |
-| `concept-studio` | direct | Creates materially distinct design directions. |
+| `award-rubric` | direct | Independently critique and score the single frozen website direction against an approved brief using design… |
+| `concept-studio` | direct | Produce the one website redesign direction the approved brief specifies — in full: layout, typography, medi… |
 | `ethical-gamification-systems` | direct | Creates meaningful missions, mastery, rewards, and collections with explicit spend and anti-coercion safegu… |
 | `taste-first-experience-design` | direct | Turns visual preference evidence into editable Creative DNA, plain-language choices, and a bounded mission … |
 | `agent-identity-and-portfolio` | prepare | Defines consistent agent identities, transparent inventory, and evidence-backed marketplace portfolios. |

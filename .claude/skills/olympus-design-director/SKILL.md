@@ -1,6 +1,6 @@
 ---
 name: olympus-design-director
-description: Orchestrate an evidence-based redesign of an existing website page through intake, audit, three concepts, human approval, asset planning, implementation, analytics, and browser QA. Use when a user asks to improve, repair, redesign, or elevate a page and needs coherent routing rather than every design capability at once.
+description: Orchestrate an evidence-based redesign through intake, audit, one direction resolved at intake, human approval, asset planning, implementation, analytics, and browser QA. Use when a user asks to improve, repair, redesign, or elevate a page and needs coherent routing rather than every design capability at once.
 ---
 
 # Olympus Design Director
@@ -21,15 +21,21 @@ Own one interpretation of the brief and route work through explicit gates. Never
 
 - Invoke `$ux-evidence-audit` for the existing page.
 - Invoke `$reference-deconstruction` only when approved references exist.
+- Greenfield: skip `$ux-evidence-audit`; `$reference-deconstruction` carries the evidence phase.
 - Write durable findings to `.olympus/01-audit.md`.
-- Stop for Gate A. Do not generate concepts or edit production code before approval.
+- Resolve the direction block in `00-brief.md` from intake answers, references, and
+  `library/design-dna/`. If unresolved, run `$apollo-taste-interview` or `$apollo-style-picker`
+  and write the result to `library/design-dna/`.
+- Stop for Gate A. Do not generate the direction or edit production code before approval.
 
 ### Direct
 
 - Invoke `$concept-studio` after Gate A.
-- Require exactly three materially different experience directions.
-- Invoke `$award-rubric` after the concepts are complete, preferably as a read-only critic.
-- Recommend one direction, but stop for Gate B and let the user choose.
+- Produce **one** direction — the one the brief specifies. Alternatives only on explicit
+  user request; state how many and why (see the direction rule in `AGENTS.md`).
+- Invoke `$award-rubric` as a read-only critic of the frozen direction; it may reject it, it
+  may not author a replacement.
+- Stop for Gate B and let the user confirm the direction.
 
 ### Prepare
 

@@ -291,8 +291,8 @@
       "phase": "direct",
       "group": "Direction",
       "defaultOn": false,
-      "description": "Scores frozen concepts without silently redesigning them.",
-      "runtimePrompt": "Critique independently. Score design, usability, creativity, content, and delivery risk; identify defects without merging or rewriting the proposed directions.",
+      "description": "Independently critique and score the single frozen website direction against an approved brief using design, usability, creativity, content, and delivery-risk evidence. Use once a direction is frozen or for a bounded final review; it may reject the direction but must not author or merge a replacement.",
+      "runtimePrompt": "Critique the single frozen direction independently. Score design, usability, creativity, content, and delivery risk; return accept / accept with fixes / reject. It may reject the direction; it may not author a replacement.",
       "category": "08-qa-review",
       "hosts": [
         "claude",
@@ -419,8 +419,8 @@
       "phase": "direct",
       "group": "Direction",
       "defaultOn": true,
-      "description": "Creates materially distinct design directions.",
-      "runtimePrompt": "Generate exactly three materially different directions when concepts are requested. Distinguish structure, hierarchy, media, motion, mobile behavior, assets, and risk—not only color.",
+      "description": "Produce the one website redesign direction the approved brief specifies — in full: layout, typography, media, motion, mobile behavior, asset needs, and risk. Alternatives only on explicit request. Use after the design problem is approved and before implementation or asset generation.",
+      "runtimePrompt": "Detail the one direction the brief specifies — structure, hierarchy, media, motion, mobile behavior, assets, and risk, not only color. Produce alternatives only when the user asks, stating how many and why.",
       "category": "01-design-direction",
       "hosts": [
         "claude",
@@ -1143,7 +1143,7 @@
       "phase": "always",
       "group": "Orchestration",
       "defaultOn": true,
-      "description": "Owns the brief, routes work, and enforces approval gates.",
+      "description": "Orchestrate an evidence-based redesign through intake, audit, one direction resolved at intake, human approval, asset planning, implementation, analytics, and browser QA. Use when a user asks to improve, repair, redesign, or elevate a page and needs coherent routing rather than every design capability at once.",
       "runtimePrompt": "Act as the single design director. Maintain one interpretation of the brief, activate only relevant capabilities, and make dependencies and approval boundaries explicit.",
       "category": "01-design-direction",
       "hosts": [

@@ -1,4 +1,4 @@
 interface:
   display_name: "Concept Studio"
-  short_description: "Create three distinct design directions"
-  default_prompt: "Use $concept-studio to create three genuinely different redesign directions from the approved brief."
+  short_description: "Detail the one redesign direction the brief specifies"
+  default_prompt: "Use $concept-studio to detail the one direction the approved brief's direction block specifies. Produce alternatives only if the user asked."

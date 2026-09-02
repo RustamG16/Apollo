@@ -37,17 +37,24 @@ documents after `ARCHITECTURE-ESSENTIALS.md`.
 
 Use `$ux-evidence-audit` on the existing page. Use `$reference-deconstruction` only for references actually supplied or approved. Inspect the live page at representative desktop and mobile widths. Separate observations from inferences.
 
+**Greenfield (no existing page):** skip `$ux-evidence-audit`; start from the questionnaire and let `$reference-deconstruction` carry the evidence phase.
+
 Deliver `01-audit.md` with screenshots/evidence, severity, affected users, and the five highest-leverage problems. Do not propose a visual concept yet.
 
 ### Gate A — approve the brief
 
-Show the interpreted problem, audience, constraints, success signal, and missing assets. Wait for approval or corrections.
+Resolve the direction block in `00-brief.md` from the intake answers, the supplied references, and `library/design-dna/`. If it is still unresolved, run `$apollo-taste-interview` or `$apollo-style-picker` now and write the result to `library/design-dna/`. Then show the interpreted problem, audience, constraints, success signal, missing assets, and the frozen direction. Wait for approval or corrections.
 
-### 2. Create directions
+### 2. Create the direction
 
-Use `$concept-studio` to produce exactly three structurally distinct directions. A color swap is not a distinct direction. Each direction needs a thesis, hierarchy, type/color logic, media strategy, motion posture, mobile behavior, asset requirements, implementation risk, and one representative frame or wireframe.
+Use `$concept-studio` to produce **one** direction — the one the brief's direction block
+specifies — in full: thesis, hierarchy, type/color logic, media strategy, motion posture,
+mobile behavior, asset requirements, implementation risk, and one representative frame or
+wireframe. Produce alternatives only when the user asked for them (see the direction rule in
+`AGENTS.md`), and state how many and why.
 
-Use `$award-rubric` as an independent read-only critique. It may score and challenge concepts; it must not merge or rewrite them.
+Use `$award-rubric` as an independent read-only critique of that frozen direction. It may
+score, challenge, and reject it against the brief; it must not author a replacement.
 
 Deliver `02-concepts.md` and `03-critique.md`.
 

@@ -5,7 +5,7 @@
 - Status: active
 - Skill ID: olympus-design-director
 
-Owns the brief, routes work, and enforces approval gates.
+Orchestrate an evidence-based redesign through intake, audit, one direction resolved at intake, human approval, asset planning, implementation, analytics, and browser QA. Use when a user asks to improve, repair, redesign, or elevate a page and needs coherent routing rather than every design capability at once.
 
 ## Runtime instructions
 

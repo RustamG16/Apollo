@@ -9,9 +9,9 @@ flowchart LR
     I --> A["Evidence audit"]
     A --> GA{"Gate A: brief approved?"}
     GA -- revise --> I
-    GA -- yes --> C["Three distinct concepts"]
+    GA -- yes --> C["One direction (per the brief)"]
     C --> R["Independent critique"]
-    R --> GB{"Gate B: concept selected?"}
+    R --> GB{"Gate B: direction selected?"}
     GB -- revise --> C
     GB -- yes --> P["Assets + motion + build plan"]
     P --> B["Design engineering"]
@@ -30,8 +30,8 @@ flowchart LR
 | Direct the run | `$olympus-design-director` | Always | Never |
 | Diagnose existing UX/UI | `$ux-evidence-audit` | Existing page is supplied | Greenfield work with no existing interface |
 | Decode references | `$reference-deconstruction` | Approved references exist | No references or only vague taste words |
-| Generate directions | `$concept-studio` | Gate A is approved | Before diagnosis |
-| Independent scoring | `$award-rubric` | Three concepts exist | During authorship or implementation |
+| Generate the direction | `$concept-studio` | Gate A is approved | Before diagnosis |
+| Independent scoring | `$award-rubric` | A direction is frozen | During authorship or implementation |
 | Plan media | `$asset-director` | Chosen concept has missing media | Existing approved assets are sufficient |
 | Component polish | Impeccable + `$awwwards-web-design` | Concept is selected and hierarchy is stable | Early ideation |
 | Timed/scroll motion | Official GSAP skills | Narrative sequencing justifies it | Decorative motion or simple CSS transition |

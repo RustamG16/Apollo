@@ -18,7 +18,7 @@ Then open `http://127.0.0.1:4173`. It runs safely in demo mode without credentia
 1. Attach this `system1` folder and the website project folder to the same Codex task.
 2. Tell Codex: **“Read `system1/START-HERE.md` completely and follow it. My website project is `<project-folder>`.”**
 3. Codex must ask the intake questions in `START-HERE.md` before auditing or editing.
-4. Approve one of the three concepts at Gate B.
+4. Approve the direction at Gate B.
 5. Review the verified implementation at Gate C.
 
 Do not copy this system into the website. Project-specific decisions and evidence belong in `<project>/.olympus/`; this folder remains reusable and unchanged.
@@ -40,7 +40,7 @@ The skill folder also vendors the requested [Impeccable](https://github.com/pbak
 The system separates four kinds of work that broad “make it award-winning” prompts usually collapse together:
 
 1. Evidence: what is wrong and why.
-2. Direction: three genuinely different concepts.
+2. Direction: one direction, resolved at intake from the questionnaire and taste profile.
 3. Production: only the chosen direction, with an explicit asset plan.
 4. Verification: browser evidence, analytics, and an independent critique.
 
