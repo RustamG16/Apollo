@@ -286,3 +286,34 @@ before. Payload is metadata only (~40 KB); flagged for token-discipline review i
 **Result: PASS. Proceeding to Phase 6.**
 
 ---
+
+## Phase 6 — dual-host instructions — **PASS** (2026-09-02)
+
+### Actions
+- `AGENTS.md` is unchanged as the single substantive doctrine — not forked.
+- **New `CLAUDE.md`** (46 lines): read order (`ARCHITECTURE-ESSENTIALS.md` → `AGENTS.md` →
+  `START-HERE.md`, then only the file the decision needs); Claude host mechanics (skills from
+  `.claude/skills/`, invoked with the Skill tool not `$name`; agents from `.claude/agents/`;
+  plugin-owned skills not projected; 3 studio-only stubs; `powershell -File`; rebuild command);
+  do-not list; pointer to `USAGE.md`. No doctrine prose duplicated from `AGENTS.md`.
+- **New `ARCHITECTURE-ESSENTIALS.md`** (49 lines): one-screen derived digest of `ARCHITECTURE.md`
+  + `library/README.md` (the run, the direction rule, where things live, two-stage loading).
+  Created because the plan's `CLAUDE.md` read order names it and Apollo's root had none.
+- **New `USAGE.md`** (71 lines): what the system does, the A/B/C gates in three sentences,
+  full kickoff prompt for **both** hosts (Claude Code inline + Codex inline), follow-up
+  commands, and the rebuild-the-projections steps. Studio note.
+- **`PROMPT.md` rewritten** as the Codex variant: Codex kickoff prompt + Codex host mechanics,
+  pointing at `USAGE.md`. (Also cleared a lingering "the three concept directions" line.)
+- `scripts/validate-system.ps1`: added `CLAUDE.md`, `USAGE.md`, `ARCHITECTURE-ESSENTIALS.md`
+  to required files; added `PROMPT.md` ≤120 cap; added a check that `CLAUDE.md` shares no
+  16-word verbatim run with `AGENTS.md`.
+
+### HALT CHECK — Phase 6
+- [x] `CLAUDE.md` is 46 lines (≤120) and shares no >15-word sentence with `AGENTS.md`
+      (validate-system's new overlap check passes).
+- [x] `USAGE.md` carries a kickoff prompt for both hosts (Claude Code and Codex, both inline).
+- [x] `validate-system.ps1` exits 0 — "124 skills, 6 agents, 33 required files, registry parity OK".
+
+**Result: PASS. Proceeding to Phase 7.**
+
+---

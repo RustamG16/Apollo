@@ -8,8 +8,11 @@ $requiredFiles = @(
     'README.md',
     'START-HERE.md',
     'PROMPT.md',
+    'CLAUDE.md',
+    'USAGE.md',
     'AGENTS.md',
     'ARCHITECTURE.md',
+    'ARCHITECTURE-ESSENTIALS.md',
     '.codex/config.toml',
     'config/MCP-SETUP.md',
     'templates/run.json',
@@ -166,6 +169,26 @@ function Test-LineCap($rel, $cap) {
 Test-LineCap 'library/registry/ROUTING-DIGEST.md' 200
 Test-LineCap 'CLAUDE.md' 120
 Test-LineCap 'CODEX.md' 120
+Test-LineCap 'PROMPT.md' 120
+
+# CLAUDE.md must not duplicate doctrine sentences from AGENTS.md (>15 words shared verbatim)
+$claudePath = Join-Path $systemRoot 'CLAUDE.md'
+$agentsPath = Join-Path $systemRoot 'AGENTS.md'
+if ((Test-Path $claudePath) -and (Test-Path $agentsPath)) {
+    $norm = { param($t) ($t -replace '[^a-zA-Z0-9 ]', ' ') -replace '\s+', ' ' }
+    $agentsWords = (& $norm (Get-Content $agentsPath -Raw)).ToLower()
+    foreach ($line in Get-Content $claudePath) {
+        $s = (& $norm $line).ToLower().Trim()
+        $w = $s -split ' ' | Where-Object { $_ }
+        for ($i = 0; $i -le $w.Count - 16; $i++) {
+            $window = ($w[$i..($i + 15)] -join ' ')
+            if ($agentsWords.Contains($window)) {
+                $failures.Add("CLAUDE.md shares a 16-word run with AGENTS.md: '$window'")
+                break
+            }
+        }
+    }
+}
 
 if ($failures.Count -gt 0) {
     $failures | ForEach-Object { Write-Error $_ }
