@@ -1,0 +1,32 @@
+{
+  "_comment": "Skill ids referenced but NOT owned as bodies in this library. plugin = installed Claude plugin (decision 9: never copied as a body). builtin = Anthropic-shipped. Personal skills are now folded into library/skills and are no longer external.",
+  "plugin": [
+    "design:accessibility-review",
+    "design:design-critique",
+    "design:design-handoff",
+    "design:design-system",
+    "design:research-synthesis",
+    "design:user-research",
+    "design:ux-copy",
+    "brightdata-plugin:competitive-intel",
+    "anthropic-skills:emil-design-eng",
+    "apple-design",
+    "impeccable",
+    "anthropic-skills:gsap-core",
+    "anthropic-skills:gsap-scrolltrigger",
+    "dataviz",
+    "seo-audit"
+  ],
+  "builtin": [
+    "anthropic-skills:brand-guidelines",
+    "anthropic-skills:docx",
+    "anthropic-skills:pdf",
+    "anthropic-skills:pptx",
+    "anthropic-skills:frontend-design",
+    "anthropic-skills:web-design-pro",
+    "artifact-capabilities"
+  ],
+  "unresolved": [
+    "claude-api"
+  ]
+}

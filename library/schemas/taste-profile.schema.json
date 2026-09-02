@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "apollo-claude/taste-profile.schema.json",
+  "title": "Apollo_claude taste profile",
+  "type": "object",
+  "schemaVersion": 1,
+  "required": ["profileId", "displayName", "createdAt", "updatedAt", "source", "doctrine",
+    "explicitPreferences", "avoidList", "references", "confidence", "provenance"],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1,
+      "description": "Missing or lower than the running system's schemaVersion means: fill any newly-added field below with its default and rewrite the file at load time, do not error."
+    },
+    "profileId": { "type": "string", "description": "Stable id, e.g. a slug of displayName plus a short random suffix." },
+    "displayName": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "string",
+      "enum": ["interview", "style-pick", "hybrid"],
+      "description": "interview = Path A only. style-pick = Path B, doctrine defaults plus residual interview only. hybrid = a style-pick profile later edited via interview, or vice versa."
+    },
+    "doctrine": {
+      "type": ["string", "null"],
+      "enum": ["apollo-atelier", "apollo-kinetic", "apollo-instrument", "apollo-cyberpunk-athens", "custom", null],
+      "description": "null when source is a pure bespoke interview with no doctrine anchor. 'custom' when the interview produced preferences that don't match any built-in doctrine closely enough to name one."
+    },
+    "explicitPreferences": {
+      "type": "object",
+      "required": ["color", "type", "density", "motion", "tone"],
+      "properties": {
+        "color": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "type": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "density": { "type": "string", "default": "" },
+        "motion": { "type": "string", "default": "" },
+        "tone": { "type": "string", "default": "" }
+      }
+    },
+    "avoidList": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [],
+      "description": "Things explicitly not wanted. Never dropped or overridden by a doctrine default merge - avoidList always unions across sources, it never gets replaced."
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "verdict"],
+        "properties": {
+          "source": { "type": "string" },
+          "verdict": { "type": "string", "enum": ["like", "dislike", "mixed"] },
+          "note": { "type": "string", "default": "" }
+        }
+      },
+      "default": []
+    },
+    "confidence": {
+      "type": "object",
+      "required": ["overall", "byField"],
+      "properties": {
+        "overall": { "type": "number", "minimum": 0, "maximum": 1 },
+        "byField": {
+          "type": "object",
+          "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 },
+          "description": "A style-pick default sets every prefilled field to 1.0; interview answers set their own confidence based on how directly the user answered vs. how much was inferred."
+        }
+      }
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "source", "at"],
+        "properties": {
+          "field": { "type": "string" },
+          "source": { "type": "string", "description": "e.g. 'interview:oracle', 'doctrine-default:apollo-atelier', 'user-edit'" },
+          "at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "default": []
+    }
+  },
+  "additionalProperties": false
+}

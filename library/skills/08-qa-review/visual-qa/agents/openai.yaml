@@ -1,0 +1,4 @@
+interface:
+  display_name: "Visual QA"
+  short_description: "Verify responsive design and runtime quality"
+  default_prompt: "Use $visual-qa to verify the implemented page with browser evidence before release."

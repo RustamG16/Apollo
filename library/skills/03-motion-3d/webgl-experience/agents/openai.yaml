@@ -1,0 +1,4 @@
+interface:
+  display_name: "WebGL Experience"
+  short_description: "Design bounded Three.js experiences"
+  default_prompt: "Use $webgl-experience to decide whether this concept needs WebGL and specify its fallbacks."

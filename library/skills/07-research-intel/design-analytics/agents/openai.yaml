@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Analytics"
+  short_description: "Connect redesign choices to measurable behavior"
+  default_prompt: "Use $design-analytics to define the baseline, event plan, and experiment for this redesign."

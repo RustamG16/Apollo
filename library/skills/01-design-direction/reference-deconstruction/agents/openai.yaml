@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reference Deconstruction"
+  short_description: "Extract reusable design logic from references"
+  default_prompt: "Use $reference-deconstruction to analyze these visual references without copying them."

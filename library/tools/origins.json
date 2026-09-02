@@ -1,0 +1,15 @@
+{
+  "_comment": "library/ is now the source of truth inside Apollo. The host trees (.claude, .agents, .codex, apollo-studio/knowledge) are GENERATED from it by tools/project.py. This file only records where external upstreams live, for reference.",
+  "personal-upstream": {
+    "windows": "C:\\Users\\Rustam Gurbanov\\.claude\\skills",
+    "env": "PERSONAL_SKILLS_DIR"
+  },
+  "apollo-claude-donor": {
+    "windows": "D:\\KnowledgeFactory\\Apollo_claude",
+    "env": "APOLLO_CLAUDE_DIR"
+  },
+  "knowledgefactory-donor": {
+    "windows": "D:\\KnowledgeFactory\\library",
+    "env": "KF_LIBRARY_DIR"
+  }
+}

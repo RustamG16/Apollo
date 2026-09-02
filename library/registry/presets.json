@@ -1,0 +1,53 @@
+[
+  {
+    "id": "lean-audit",
+    "name": "Lean audit",
+    "skills": [
+      "olympus-design-director",
+      "ui-ux",
+      "ux-evidence-audit",
+      "reference-deconstruction"
+    ]
+  },
+  {
+    "id": "concept-lab",
+    "name": "Concept lab",
+    "skills": [
+      "olympus-design-director",
+      "ui-ux",
+      "ux-evidence-audit",
+      "reference-deconstruction",
+      "concept-studio",
+      "apple-design",
+      "award-rubric"
+    ]
+  },
+  {
+    "id": "premium-build",
+    "name": "Premium build",
+    "skills": [
+      "olympus-design-director",
+      "ui-ux",
+      "asset-director",
+      "apple-design",
+      "awwwards-web-design",
+      "emil-design-eng",
+      "gsap-core",
+      "gsap-performance",
+      "visual-qa"
+    ]
+  },
+  {
+    "id": "delivery-qa",
+    "name": "Delivery QA",
+    "skills": [
+      "olympus-design-director",
+      "ui-ux",
+      "apple-design",
+      "emil-design-eng",
+      "gsap-performance",
+      "design-analytics",
+      "visual-qa"
+    ]
+  }
+]

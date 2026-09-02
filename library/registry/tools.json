@@ -1,0 +1,50 @@
+[
+  {
+    "id": "web_search",
+    "name": "OpenAI Web Search",
+    "kind": "hosted",
+    "usable": true,
+    "status": "Available in live API mode",
+    "description": "Current web evidence through the Responses API."
+  },
+  {
+    "id": "browser_control",
+    "name": "Browser Control",
+    "kind": "local",
+    "usable": false,
+    "status": "Codex-hosted adapter",
+    "description": "Page inspection and visual QA; requires a browser automation bridge."
+  },
+  {
+    "id": "figma",
+    "name": "Figma MCP",
+    "kind": "mcp",
+    "usable": false,
+    "status": "Requires MCP connection",
+    "description": "Approved frames, variables, components, and exportable assets."
+  },
+  {
+    "id": "posthog",
+    "name": "PostHog MCP",
+    "kind": "mcp",
+    "usable": false,
+    "status": "Requires MCP connection",
+    "description": "Read-only baselines, funnels, experiments, and event evidence."
+  },
+  {
+    "id": "higgsfield",
+    "name": "Higgsfield MCP",
+    "kind": "mcp",
+    "usable": false,
+    "status": "Requires approval + MCP",
+    "description": "Media generation after an approved asset manifest."
+  },
+  {
+    "id": "chrome_devtools",
+    "name": "Chrome DevTools MCP",
+    "kind": "mcp",
+    "usable": false,
+    "status": "Requires MCP connection",
+    "description": "Runtime profiling and targeted performance diagnosis."
+  }
+]

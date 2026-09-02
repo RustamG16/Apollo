@@ -44,3 +44,80 @@ Resume rule: read this file, find the last phase marked **PASS**, resume at the 
 **Result: PASS. Proceeding to Phase 1.**
 
 ---
+
+## Phase 1 — build the library — **PASS** (2026-09-02)
+
+### Actions
+- Copied `D:\KnowledgeFactory\library\{skills,knowledge}` and `systems/schemas/taste-profile.schema.json`
+  into `Apollo\library\`. Did **not** copy `agents/`, `sources/`, `frames/`, `design-dna/`,
+  `layout/`, `motion/`, `typography/`, `systems/` (loadouts/routing/pipelines/rules).
+- Created empty `library/design-dna/` (publish target for Phase 5).
+- Folded the 6 Studio-store skills:
+  - `ui-ux` — body from `apollo-studio/.../craft/ui-ux/sources/upstream/SKILL.md`; 01-design-direction, diagnose/Craft/defaultOn.
+  - `apple-design`, `emil-design-eng` — bodies from personal skills (byte-identical to the
+    studio `sources/upstream` copies after newline normalisation; precedence keeps one folder).
+    `hosts` excludes `claude` (decision 9). 01-design-direction, direct+build/Craft.
+  - `taste-first-experience-design`, `ethical-gamification-systems`, `agent-identity-and-portfolio`
+    — `status: stub`, `hosts: ["studio"]` (decision 10). Stub `SKILL.md` written (registry
+    carries the runtimePrompt; not projected to Claude/Codex).
+- Folded all **71** personal skills from `C:\Users\Rustam Gurbanov\.claude\skills`.
+  `apple-design` + `emil-design-eng` collapsed into the studio-six ids (documented duplicates).
+  Remaining 69 folded fresh. Categories assigned: 05-content-copy (4) and 06-marketing-growth (40)
+  filled; 03-motion-3d +18; 07-research-intel +3; 02-web-build +2; 04-media-generation +1;
+  09-engineering-workflow +1. **No skill landed in 99-unsorted** — every one resolved to a category.
+  `pick-ui-library`, `prototype`, `review-animations` → `status: manual`, `disable-model-invocation`
+  preserved (decision 11).
+- Deleted `three-js-implementation`: removed its `customSkills` entry from
+  `apollo-studio/knowledge/index.json` and deleted `apollo-studio/knowledge/skills/spatial/`.
+  (`overrides` and `sources` left untouched per the plan; one now-dangling `sources` ref remains,
+  which the plan explicitly forbids touching.)
+- Brought the 4 doctrines from `Apollo_claude\profiles\doctrines\` into `library/doctrines/`
+  as knowledge (`profile.json` + `design.md` each): apollo-atelier, apollo-cyberpunk-athens,
+  apollo-instrument, apollo-kinetic.
+- `apollo-taste-interview`, `apollo-style-picker`, `taste-profile.schema.json` already present
+  via the KF library copy / schemas copy. Taste skills routed `phase: direct`, group `Taste`.
+- Built `library/registry/skills.registry.json` — 127 records. Seeded phase/group/defaultOn/
+  runtimePrompt/description/name from `skills.mjs` for the 18 KF∩mjs skills + 6 studio-six;
+  `gsap-utils` → `phase: prepare` (fixes defect 4); everything else with no derivable phase →
+  `phase: unrouted` (decision 13).
+- Copied `skills.mjs` `tools` / `plugins` / `presets` arrays verbatim into
+  `library/registry/{tools,plugins,presets}.json`.
+- Wrote `library/registry/external-skills.json`, `UNROUTED.md` (100 skills), `UNSORTED.md` (0).
+- Rewrote `library/tools/origins.json` for the unified location; added `verify.py` + `build_index.py`.
+- Fold script kept at `scratchpad/fold_library.py`; report at `scratchpad/fold_report.json`.
+
+### Counts
+| Category | Skills |
+|---|---|
+| 01-design-direction | 11 |
+| 02-web-build | 3 |
+| 03-motion-3d | 27 |
+| 04-media-generation | 11 |
+| 05-content-copy | 4 |
+| 06-marketing-growth | 40 |
+| 07-research-intel | 5 |
+| 08-qa-review | 4 |
+| 09-engineering-workflow | 12 |
+| 10-docs-deliverables | 2 |
+| 11-meta-system | 8 |
+| **Total** | **127** |
+
+status: active 121 · manual 3 · stub 3.
+phase: always 1 · diagnose 3 · direct 7 · prepare 8 · build 5 · verify 3 · unrouted 100.
+
+### Documented duplicates (decision 9)
+- `apple-design` — personal copy byte-identical to `apollo-studio/.../craft/apple-design/sources/upstream/SKILL.md` (normalised). One folder kept, body = personal, `hosts` excludes claude.
+- `emil-design-eng` — same: personal copy byte-identical to the studio `sources/upstream` copy. One folder kept, `hosts` excludes claude.
+No case of "two different real bodies for one id" — no HALT.
+
+### HALT CHECK — Phase 1
+- [x] `verify.py` exits 0 (`CLEAN`, 127 skills / 127 records).
+- [x] Exactly one registry record per skill folder and one folder per record.
+- [x] No `library/agents/` content (directory not created yet; Phase 2).
+- [x] No `three-js-implementation` anywhere (removed from studio; never in library).
+- [x] Every `phase` is a valid value; every skill has a non-empty `description`; no id in two folders.
+- [x] Total 127 ≥ 52 + 6 + 71 − 2 = 127.
+
+**Result: PASS. Proceeding to Phase 2.**
+
+---

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "browser",
+    "name": "Browser",
+    "status": "Host capability",
+    "description": "Interactive local page inspection and browser QA when the active host exposes it."
+  },
+  {
+    "id": "imagegen",
+    "name": "Image generation",
+    "status": "Host capability",
+    "description": "Raster generation and editing when the host and approvals allow it."
+  },
+  {
+    "id": "documents",
+    "name": "Documents",
+    "status": "Host plugin",
+    "description": "Create, edit, render, and verify Word-compatible documents."
+  },
+  {
+    "id": "pdf",
+    "name": "PDF",
+    "status": "Host plugin",
+    "description": "Read, generate, render, and verify PDF artifacts."
+  },
+  {
+    "id": "presentations",
+    "name": "Presentations",
+    "status": "Host plugin",
+    "description": "Build and revise presentation decks with rendered review."
+  },
+  {
+    "id": "spreadsheets",
+    "name": "Spreadsheets",
+    "status": "Host plugin",
+    "description": "Create, analyze, and verify spreadsheet artifacts."
+  },
+  {
+    "id": "sites",
+    "name": "Sites",
+    "status": "Host plugin",
+    "description": "Build and host web experiences when a Sites project is present."
+  },
+  {
+    "id": "visualize",
+    "name": "Visualize",
+    "status": "Host plugin",
+    "description": "Create interactive diagrams, simulations, plots, and visual explanations."
+  }
+]
