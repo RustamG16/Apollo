@@ -12,11 +12,10 @@ activate a specialist or skill only when its routing condition in `ARCHITECTURE.
 
 1. Read `ARCHITECTURE-ESSENTIALS.md`, then `AGENTS.md`, then `START-HERE.md`. Load a
    specific product/architecture/history file only when the current decision needs it.
-2. Ask the intake questions from `START-HERE.md` once, in one message, skipping anything the
-   attached material already answers. Resolve the direction block in `templates/00-brief.md`
-   from the answers, the supplied references, and `library/design-dna/`. If direction is
-   still unresolved, run `the *apollo-taste-interview* skill (Skill tool)` or `the *apollo-style-picker* skill (Skill tool)` before Gate A
-   and write the result to `library/design-dna/`.
+2. Ask the intake questions from `START-HERE.md` per the intake bound in `AGENTS.md`. Resolve
+   the direction block in `templates/00-brief.md` from the answers, the supplied references,
+   and `library/design-dna/`. If direction is still unresolved, run `the *apollo-taste-interview* skill (Skill tool)`
+   or `the *apollo-style-picker* skill (Skill tool)` before Gate A and write the result to `library/design-dna/`.
 3. Create `<website-project>/.olympus/` from `templates/` and record phase and gate state in
    `run.json`.
 
@@ -36,9 +35,9 @@ activate a specialist or skill only when its routing condition in `ARCHITECTURE.
 - **Build** — implement only the Gate-B direction, in the allowed files only. Preserve the
   project stack; reuse components. Verify the smallest slice early.
 - **Verify** — `the *visual-qa* skill (Skill tool)` across routes, breakpoints, states, reduced motion.
-  `the *design-analytics* skill (Skill tool)` only when measurement is in scope. At most two author-fix / critic
-  cycles, then escalate tradeoffs to the user. Deliver `07-qa.md`, `08-metrics.md`,
-  `09-handoff.md`. **Gate C: client review.**
+  `the *design-analytics* skill (Skill tool)` only when measurement is in scope. Apply the loop bounds in `AGENTS.md`
+  to the QA repair loop, then escalate tradeoffs to the user. Deliver `07-qa.md`,
+  `08-metrics.md`, `09-handoff.md`. **Gate C: client review.**
 
 ## Delegation policy
 

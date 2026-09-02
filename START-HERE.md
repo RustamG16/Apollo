@@ -8,7 +8,7 @@ Act as the Olympus Design Director. Own the sequence, keep the context small, an
 
 ## First response — ask before working
 
-Before inspecting or changing the website, ask the user these questions in one concise message:
+Before inspecting or changing the website, ask the user these questions (following the intake bound in `AGENTS.md`):
 
 1. Which project folder and exact page/route should be redesigned?
 2. What is the page’s primary business goal and one action visitors should take?
@@ -18,7 +18,7 @@ Before inspecting or changing the website, ask the user these questions in one c
 6. Which source assets exist: logo/vector, fonts and licenses, photos/video, brand guide, Figma, analytics, or product renders?
 7. Is the first run **concept only** or **concept + implementation**?
 
-If the answer already exists in attached material, do not ask it again. After the reply, restate the brief and explicitly ask for Gate A approval. Do not edit production code before Gate A.
+After the reply, restate the brief and explicitly ask for Gate A approval. Do not edit production code before Gate A.
 
 ## Run sequence
 
@@ -78,7 +78,7 @@ Implement only the selected concept in the website project. Preserve the project
 
 Use `$visual-qa` across the agreed routes, breakpoints, interaction states, and reduced-motion mode. Use `$design-analytics` to recommend or implement measurement only when analytics are in scope.
 
-Allow at most two author-fix/critic-review cycles. After the second cycle, present remaining issues and tradeoffs to the user instead of looping.
+Apply the loop bounds in `AGENTS.md` to the QA repair loop.
 
 Deliver `07-qa.md`, `08-metrics.md`, and `09-handoff.md`.
 
@@ -91,10 +91,9 @@ Show what changed, before/after evidence, known limitations, asset provenance, p
 - One director owns the full brief. Specialists receive only the contract and files needed for their phase.
 - Maximum one specialist at a time by default; maximum two only for independent read-only analysis.
 - No nested delegation. A specialist returns to the director instead of spawning another specialist.
-- Never ask every skill for an opinion. Route by the activation table in `ARCHITECTURE.md`.
+- Never ask every skill for an opinion. Route from `library/registry/ROUTING-DIGEST.md`, one skill body per phase.
 - Store durable findings in `.olympus/`; pass file paths and short summaries instead of repeating the full history.
-- Do not regenerate unchanged audits or concepts.
-- Stop after two QA cycles and escalate decisions to the user.
+- Obey the loop bounds in `AGENTS.md` (QA cycles, intake, audit cache, anti-loop) and record phase counts in `run.json`.
 
 ## Completion standard
 

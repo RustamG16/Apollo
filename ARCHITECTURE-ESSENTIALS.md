@@ -21,8 +21,8 @@ intake + direction block → 01 audit → Gate A
   direction. See the direction rule in `AGENTS.md`.
 - **Greenfield**: no existing page → start at the questionnaire, `ux-evidence-audit` dormant,
   `reference-deconstruction` carries evidence.
-- **Loops**: QA repair ≤ 2 cycles, then escalate. Never re-run an audit against unchanged
-  evidence.
+- **Loops**: see the loop bounds in `AGENTS.md` (QA cycles, intake, audit cache, one-direction,
+  anti-loop). Phase counts are recorded in `run.json`.
 
 ## Where things live
 

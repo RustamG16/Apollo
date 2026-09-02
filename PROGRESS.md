@@ -317,3 +317,52 @@ before. Payload is metadata only (~40 KB); flagged for token-discipline review i
 **Result: PASS. Proceeding to Phase 7.**
 
 ---
+
+## Phase 7 — token discipline and loop guards — **PASS** (2026-09-02)
+
+### Actions
+- **Duplication check:** hashed every `SKILL.md` under `library/skills`, `.claude/skills`,
+  `.agents/skills`, `apollo-studio/knowledge/skills`. **127 distinct contents for 127 skills —
+  0 unexpected cross-id duplicate pairs.** The only same-hash / different-basename cases are
+  the three `apollo-studio/knowledge/skills/craft/*/sources/upstream/SKILL.md` provenance
+  copies (`ui-ux`, `apple-design`, `emil-design-eng`), which are *meant* to equal the
+  canonical body — the studio projector preserves `sources/`.
+- **Two-stage skill loading** — stated once, in `AGENTS.md` → "## Token control — two-stage
+  skill loading": route from `ROUTING-DIGEST.md`; load a `SKILL.md` body only after the
+  routing decision; never more than one body per phase. `ROUTING-DIGEST.md`'s own header now
+  points at that rule instead of restating it.
+- **Loop bounds — stated once, in `AGENTS.md` → "## Loop bounds"** (numbered 1–5):
+  1. QA repair stops after two author-fix / critic-review cycles, then escalate.
+  2. Intake asked once, in one concise message; an answered question is never re-asked.
+  3. An audit is never re-run against unchanged evidence — the `.olympus/` artifact is the cache.
+  4. One direction by default (cross-refs the direction rule).
+  5. **Anti-loop:** byte-identical output twice → stop and escalate.
+  Every other file was changed to *reference* "the loop bounds in `AGENTS.md`" — no number
+  restated: `START-HERE.md` (§5 + context-budget list + intake section), `ARCHITECTURE.md`
+  (mermaid loop labels), `ARCHITECTURE-ESSENTIALS.md`, `PROMPT.md`, `USAGE.md`,
+  `library/agents/design-director.md`, `library/skills/.../olympus-design-director/SKILL.md`
+  + `routing-contract.md`, `library/skills/.../visual-qa/SKILL.md` (+ registry desc/runtimePrompt),
+  `apollo-studio/CONTINUOUS-IMPROVEMENT-PLAN.md`.
+- **Cost feedback:** `AGENTS.md` → "## Cost feedback" tells the director to record per-run
+  phase counts in `run.json` under `phase_counts`; `templates/run.json` gains that object
+  (and `approved_concept` → `approved_direction`, unused elsewhere).
+- Regenerated all host trees; `verify.py` CLEAN; idempotent (0 writes on re-run).
+
+### HALT CHECK — Phase 7
+- [x] Hash check: no unexpected duplicate `SKILL.md` pair (127 distinct / 127 skills;
+      3 `sources/upstream` provenance copies are expected and excluded).
+- [x] Each loop bound's normative sentence occurs in exactly one file — `AGENTS.md`:
+      - `grep -rn "two author-fix / critic-review cycles"` → `AGENTS.md` only.
+      - `grep -rn "asked once, in one concise message"` → `AGENTS.md` only.
+      - `grep -rn "never re-run against unchanged evidence"` → `AGENTS.md` only.
+      - `grep -rn "byte-identical to the previous attempt"` → `AGENTS.md` only.
+      - `grep -rn "more than one \`SKILL.md\` body per phase"` → `AGENTS.md` only.
+      Other files carry only the pointer phrase "the loop bounds in `AGENTS.md`". Residual
+      numeric "cycles" mentions outside `AGENTS.md` are vendored third-party skills
+      (`sms`, `marketing-loops`, `customer-research`, `impeccable`) describing their own
+      unrelated loops.
+- [x] `validate-system.ps1` exits 0; `npm.cmd run check` EXIT 0; no protected files touched.
+
+**Result: PASS. Proceeding to Phase 8.**
+
+---

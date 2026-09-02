@@ -23,9 +23,9 @@ Attach this folder and the website project to the session, then send:
 > Read `CLAUDE.md`, then `ARCHITECTURE-ESSENTIALS.md`, `AGENTS.md`, and `START-HERE.md`
 > completely before acting. The website project is `<PROJECT_FOLDER>`; the initial target is
 > `<ROUTE_OR_PAGE>`. Do not inspect or edit production code yet. First ask the intake
-> questions from `START-HERE.md`, skipping any already answered by attached material. Act as
-> one Design Director, route skills from `library/registry/ROUTING-DIGEST.md`, respect Gates
-> A/B/C, write project artifacts to `<PROJECT_FOLDER>/.olympus/`, and limit QA to two cycles.
+> questions from `START-HERE.md`. Act as one Design Director, route skills from
+> `library/registry/ROUTING-DIGEST.md`, respect Gates A/B/C and the loop bounds in
+> `AGENTS.md`, and write project artifacts to `<PROJECT_FOLDER>/.olympus/`.
 
 ## Kickoff — Codex
 
@@ -35,10 +35,9 @@ Attach both folders to one Codex task and send:
 > `ARCHITECTURE-ESSENTIALS.md`, `AGENTS.md`, and `START-HERE.md` completely before acting.
 > The website project is `<PROJECT_FOLDER>` and the initial target is `<ROUTE_OR_PAGE>`. Do
 > not inspect or edit production code yet. First ask the intake questions from
-> `START-HERE.md`, omitting any already answered by attached material. Use one Design
-> Director, route skills from `library/registry/ROUTING-DIGEST.md` (skills are `$name`
-> tokens), respect Gates A/B/C, write artifacts to `<PROJECT_FOLDER>/.olympus/`, and limit
-> QA to two cycles.
+> `START-HERE.md`. Use one Design Director, route skills from
+> `library/registry/ROUTING-DIGEST.md` (skills are `$name` tokens), respect Gates A/B/C and
+> the loop bounds in `AGENTS.md`, and write artifacts to `<PROJECT_FOLDER>/.olympus/`.
 
 `PROMPT.md` is the same prompt plus the Codex host-mechanics quick reference.
 
@@ -48,7 +47,7 @@ Attach both folders to one Codex task and send:
 - "Run the independent critique against the frozen direction."
 - "Gate B approved with these changes: … Prepare the asset manifest and build plan."
 - "The asset manifest is approved. Implement the first bounded slice and show browser evidence."
-- "Run final visual QA. Stop after cycle two and surface remaining tradeoffs."
+- "Run final visual QA. Apply the AGENTS.md loop bounds and surface remaining tradeoffs."
 - "I want two alternative directions as well — here is why: …" (alternatives are opt-in)
 
 ## Rebuild the projections

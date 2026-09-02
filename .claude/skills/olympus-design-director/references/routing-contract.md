@@ -9,7 +9,7 @@
 | Selection | Direction and critique | `04-decision.md` | Gate B decision |
 | Preparation | Selected direction and available assets | `05-asset-manifest.md`, `06-build-plan.md` | Required approvals recorded |
 | Build | Approved plan | Working selected direction | Bounded implementation passes |
-| QA | Running implementation | `07-qa.md` | Two cycles maximum |
+| QA | Running implementation | `07-qa.md` | QA repair loop bound reached (`AGENTS.md`) |
 | Measurement | Goal and analytics scope | `08-metrics.md` | Event/readout contract complete |
 | Handoff | Verified implementation | `09-handoff.md` | Gate C decision |
 

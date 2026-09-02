@@ -5,8 +5,8 @@
 - Status: active
 - Skill ID: visual-qa
 
-Verifies desktop, mobile, states, runtime, accessibility, and risk.
+Verify an implemented website redesign against the approved direction using browser screenshots, responsive and interaction states, accessibility basics, reduced motion, runtime health, content, assets, and performance evidence. Use after a working implementation exists; the QA repair loop is bounded by AGENTS.md.
 
 ## Runtime instructions
 
-Verify the implementation against the approved direction at desktop and mobile, including interaction states, reduced motion, console health, accessibility basics, assets, and performance risks. Limit repair loops to two.
+Verify the implementation against the approved direction at desktop and mobile, including interaction states, reduced motion, console health, accessibility basics, assets, and performance risks. The QA repair loop is bounded by AGENTS.md.

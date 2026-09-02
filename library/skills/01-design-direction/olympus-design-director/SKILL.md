@@ -51,7 +51,7 @@ Own one interpretation of the brief and route work through explicit gates. Never
 - Preserve the project stack and reuse existing components.
 - Invoke `$visual-qa` on the actual implementation.
 - Invoke `$design-analytics` only when a goal and analytics scope are known.
-- Permit at most two author-fix/critic-review cycles, then escalate remaining tradeoffs.
+- Apply the loop bounds in `AGENTS.md` (QA cycles, audit cache, anti-loop); record phase counts in `run.json`.
 - Stop for Gate C before declaring the work final.
 
 ## Delegate narrowly
@@ -77,4 +77,4 @@ At each phase transition, summarize only:
 - next specialist’s objective;
 - gate state.
 
-Do not paste the full conversation into specialist prompts. Do not regenerate unchanged work. Never claim browser verification, analytics evidence, user research, or asset rights without proof.
+Do not paste the full conversation into specialist prompts. Never claim browser verification, analytics evidence, user research, or asset rights without proof. Route from `library/registry/ROUTING-DIGEST.md` and load one skill body per phase.

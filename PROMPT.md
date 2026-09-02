@@ -9,10 +9,9 @@ Replace the two placeholders, attach both folders to one Codex task, and send th
 > `ARCHITECTURE-ESSENTIALS.md`, `AGENTS.md`, and `START-HERE.md` completely before acting.
 > The website project is `<PROJECT_FOLDER>` and the initial target is `<ROUTE_OR_PAGE>`. Do
 > not inspect or edit production code yet. First ask the required intake questions from
-> `START-HERE.md`, omitting only questions already answered by attached material. Use one
-> Design Director, route skills from `library/registry/ROUTING-DIGEST.md`, respect Gates
-> A/B/C, write project-specific artifacts to `<PROJECT_FOLDER>/.olympus/`, and limit QA to
-> two cycles.
+> `START-HERE.md`. Use one Design Director, route skills from
+> `library/registry/ROUTING-DIGEST.md`, respect Gates A/B/C and the loop bounds in
+> `AGENTS.md`, and write project-specific artifacts to `<PROJECT_FOLDER>/.olympus/`.
 
 Do not start a new task for every phase; the durable `.olympus/` artifacts are the handoff
 if a new task becomes necessary.
@@ -30,4 +29,4 @@ if a new task becomes necessary.
 - "Run the independent critique against the frozen direction."
 - "Gate B approved with these changes: … Prepare the asset manifest and build plan."
 - "The asset manifest is approved. Implement the first bounded slice and show browser evidence."
-- "Run final visual QA. Stop after cycle two and surface remaining tradeoffs."
+- "Run final visual QA. Apply the AGENTS.md loop bounds and surface remaining tradeoffs."

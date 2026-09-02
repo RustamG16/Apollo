@@ -7,10 +7,11 @@
   "gate_a": "pending",
   "gate_b": "pending",
   "gate_c": "pending",
-  "approved_concept": null,
+  "approved_direction": null,
   "constraints": [],
   "references": [],
   "assets": [],
+  "phase_counts": { "intake": 0, "audit": 0, "direction": 0, "critique": 0, "prepare": 0, "build": 0, "qa": 0, "measurement": 0, "handoff": 0 },
   "last_updated": "YYYY-MM-DD"
 }
 

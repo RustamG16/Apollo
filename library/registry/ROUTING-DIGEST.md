@@ -1,6 +1,6 @@
 # Routing digest
 
-One line per pipeline-active skill. Route from this table; load a `SKILL.md` body only after the routing decision, and never more than one body per phase.
+One line per pipeline-active skill. Route from this table, then follow the two-stage skill-loading rule in `AGENTS.md`.
 Unrouted skills (100) are in `UNROUTED.md` — capabilities, invoked explicitly, not part of the pipeline.
 
 | Skill | Phase | Line |
@@ -31,4 +31,4 @@ Unrouted skills (100) are in `UNROUTED.md` — capabilities, invoked explicitly,
 | `impeccable` | build | Optional production UI craft and bounded finishing pass. |
 | `design-analytics` | verify | Connects design hypotheses to a minimal event contract. |
 | `gsap-performance` | verify | Finds animation jank and layout-thrashing risk. |
-| `visual-qa` | verify | Verifies desktop, mobile, states, runtime, accessibility, and risk. |
+| `visual-qa` | verify | Verify an implemented website redesign against the approved direction using browser screenshots, responsive… |

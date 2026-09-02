@@ -254,8 +254,8 @@ def build_digest(dry):
     order = {"always": 0, "diagnose": 1, "direct": 2, "prepare": 3, "build": 4, "verify": 5}
     active.sort(key=lambda r: (order.get(r["phase"], 9), r["id"]))
     lines = ["# Routing digest", "",
-             "One line per pipeline-active skill. Route from this table; load a `SKILL.md` "
-             "body only after the routing decision, and never more than one body per phase.",
+             "One line per pipeline-active skill. Route from this table, then follow the "
+             "two-stage skill-loading rule in `AGENTS.md`.",
              f"Unrouted skills ({sum(1 for r in REG if r['phase']=='unrouted')}) are in "
              "`UNROUTED.md` — capabilities, invoked explicitly, not part of the pipeline.", "",
              "| Skill | Phase | Line |", "|---|---|---|"]

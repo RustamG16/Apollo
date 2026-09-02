@@ -62,4 +62,4 @@ A slice passes only when no critical or high defects remain, the primary task is
 
 ## Stop conditions
 
-Pause only when a decision changes product direction, cost, privacy, or architecture; a required asset or permission is unavailable; two repair cycles fail on the same defect; or the user explicitly pauses the loop. Do not stop because one page or iteration is complete.
+Pause only when a decision changes product direction, cost, privacy, or architecture; a required asset or permission is unavailable; the loop bounds in `AGENTS.md` are reached (QA repair or anti-loop); or the user explicitly pauses the loop. Do not stop because one page or iteration is complete.

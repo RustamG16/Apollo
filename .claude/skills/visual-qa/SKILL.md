@@ -1,6 +1,6 @@
 ---
 name: visual-qa
-description: Verify an implemented website redesign against the approved concept using browser screenshots, responsive and interaction states, accessibility basics, reduced motion, runtime health, content, assets, and performance evidence. Use after a working implementation exists and limit repair/review loops to two.
+description: Verify an implemented website redesign against the approved direction using browser screenshots, responsive and interaction states, accessibility basics, reduced motion, runtime health, content, assets, and performance evidence. Use after a working implementation exists; the QA repair loop is bounded by AGENTS.md.
 ---
 
 # Visual QA
@@ -33,7 +33,7 @@ For every defect provide route/state/viewport, screenshot or reproducible eviden
 
 ## Control the loop
 
-Write `07-qa.md`. Send defects to the author for one bounded fix pass, then re-check affected and adjacent states. Allow at most two cycles. After cycle two, show remaining defects and tradeoffs to the user rather than continuing autonomously.
+Write `07-qa.md`. Send defects to the author for one bounded fix pass, then re-check affected and adjacent states. The QA repair loop is bounded by `AGENTS.md`; when that bound is reached, show remaining defects and tradeoffs to the user rather than continuing autonomously.
 
 Do not claim a pass without browser evidence. Do not redesign the selected direction during QA.
 

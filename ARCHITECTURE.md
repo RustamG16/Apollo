@@ -17,8 +17,8 @@ flowchart LR
     P --> B["Design engineering"]
     B --> Q["Browser QA + measurement"]
     Q --> F{"Critical defects?"}
-    F -- "yes, cycle 1-2" --> B
-    F -- "after cycle 2" --> E["Escalate tradeoffs"]
+    F -- "repair, within bound" --> B
+    F -- "bound reached" --> E["Escalate tradeoffs"]
     F -- no --> GC{"Gate C: client review"}
     GC --> H["Handoff"]
 ```
@@ -32,8 +32,8 @@ flowchart LR
 | Decode references | `$reference-deconstruction` | Approved references exist | No references or only vague taste words |
 | Generate the direction | `$concept-studio` | Gate A is approved | Before diagnosis |
 | Independent scoring | `$award-rubric` | A direction is frozen | During authorship or implementation |
-| Plan media | `$asset-director` | Chosen concept has missing media | Existing approved assets are sufficient |
-| Component polish | Impeccable + `$awwwards-web-design` | Concept is selected and hierarchy is stable | Early ideation |
+| Plan media | `$asset-director` | Chosen direction has missing media | Existing approved assets are sufficient |
+| Component polish | Impeccable + `$awwwards-web-design` | Direction is selected and hierarchy is stable | Early ideation |
 | Timed/scroll motion | Official GSAP skills | Narrative sequencing justifies it | Decorative motion or simple CSS transition |
 | 3D/WebGL | `$webgl-experience` | Unique communication value passes activation test | Generic spectacle, weak devices, tight budget |
 | Measurement | `$design-analytics` | Goal and analytics scope are known | No consent, no baseline, or concept-only run |
@@ -47,7 +47,7 @@ flowchart TB
     VA["Visual analyst\npage + reference evidence"]
     CR["Independent critic\nread-only scoring"]
     AP["Asset producer\napproved manifest only"]
-    DE["Design engineer\nselected concept only"]
+    DE["Design engineer\nselected direction only"]
     AN["Analytics specialist\nmeasurement only"]
     DD --> VA
     VA --> DD

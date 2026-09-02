@@ -145,7 +145,7 @@
 | `award-rubric` | direct | active | c/c/s | Independently critique and score the single frozen website direction against an approved brief using design, usability, creativ… |
 | `superpowers-receiving-code-review` | unrouted | active | c/c/s | Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically q… |
 | `superpowers-requesting-code-review` | unrouted | active | c/c/s | Use when completing tasks, implementing major features, or before merging to verify work meets requirements |
-| `visual-qa` | verify | active | c/c/s | Verifies desktop, mobile, states, runtime, accessibility, and risk. |
+| `visual-qa` | verify | active | c/c/s | Verify an implemented website redesign against the approved direction using browser screenshots, responsive and interaction sta… |
 
 ## 09-engineering-workflow  (12)
 
