@@ -87,8 +87,13 @@ if os.path.isdir(os.path.join(LIB, "skills", "spatial")) or "three-js-implementa
 agents_dir = os.path.join(LIB, "agents")
 if os.path.isdir(agents_dir):
     for f in os.listdir(agents_dir):
+        if f == "README.md":
+            continue
         if f.endswith(".md") and f[:-3] not in SANCTIONED_AGENTS:
             bad.append(f"unsanctioned agent file in library/agents: {f}")
+    for a in SANCTIONED_AGENTS:
+        if not os.path.isfile(os.path.join(agents_dir, f"{a}.md")):
+            bad.append(f"missing sanctioned agent file: {a}.md")
 
 print(f"skills {len(folders)} | registry records {len(reg)}")
 for b in bad:

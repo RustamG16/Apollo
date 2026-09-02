@@ -121,3 +121,40 @@ No case of "two different real bodies for one id" — no HALT.
 **Result: PASS. Proceeding to Phase 2.**
 
 ---
+
+## Phase 2 — the agent layer, host-neutral — **PASS** (2026-09-02)
+
+### Actions
+- Converted the 5 `.codex/agents/*.toml` specialists into `library/agents/<name>.md`:
+  `visual-analyst`, `independent-critic`, `analytics-specialist` (`access: read-only`),
+  `asset-producer`, `design-engineer` (`access: write`). Frontmatter: `name`, `description`
+  (from the toml), `access`, `skills: [...]` (canonical ids). Body = `developer_instructions`
+  verbatim.
+- Added `library/agents/design-director.md` — the role `START-HERE.md` describes, written as
+  an agent for the first time. `access: write`.
+- `library/agents/README.md` documents that `$name` is the host-neutral skill marker
+  (`project.py` keeps `$name` for Codex, rewrites for Claude) and `access: read-only` → no
+  Write/Edit in any projection.
+- **One sanctioned edit during conversion:** the source `design-engineer.toml` contains the
+  broken token `$emil-design-engineering` (not a registry id). Corrected to the canonical
+  `$emil-design-eng`. This is the only non-identity substitution; it round-trips to the
+  source exactly when reversed. Documented in `library/agents/README.md`.
+- `.codex/agents/*.toml` left in place (Phase 3's `project.py codex` will regenerate them).
+- `verify.py` extended: `library/agents/` may contain only the 6 sanctioned `.md` files
+  (+ `README.md`), and all 6 must be present.
+
+### HALT CHECK — Phase 2
+- [x] Six agent files present (`visual-analyst`, `independent-critic`, `asset-producer`,
+      `design-engineer`, `analytics-specialist`, `design-director`).
+- [x] Every skill id referenced (frontmatter `skills:` + body `$tokens`) exists in the
+      registry with `status: active` — validated by `scratchpad/build_agents.py`.
+- [x] Every agent has `access` set.
+- [x] The five converted bodies round-trip to their `.toml` source byte-for-byte; the single
+      documented substitution is `$emil-design-engineering` ↔ `$emil-design-eng`
+      (src 405/433/536/358/417 → body 405/433/**528**/358/417; the 8-char delta is exactly
+      that token correction).
+- [x] `verify.py` exits 0.
+
+**Result: PASS. Proceeding to Phase 3.**
+
+---
