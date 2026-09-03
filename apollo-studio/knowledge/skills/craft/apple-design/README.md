@@ -3,6 +3,7 @@
 - Category: Craft
 - Phase: direct
 - Status: active
+- Routed: yes
 - Skill ID: apple-design
 
 Applies Apple-inspired purpose, agency, familiarity, simplicity, typography, material restraint, and fluid interaction principles to the cross-platform desktop experience.

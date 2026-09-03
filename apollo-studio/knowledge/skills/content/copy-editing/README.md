@@ -1,8 +1,13 @@
 # copy-editing
 
 - Category: Content
-- Phase: unrouted
+- Phase: verify
 - Status: active
+- Routed: yes
 - Skill ID: copy-editing
 
-When the user wants to edit, review, or improve existing marketing copy, or refresh outdated content. Also use when the user mentions 'edit this copy,' 'review my copy,' 'copy feedback,' 'proofread,' 'polish this,' 'make this better,' 'copy sweep,' 'tighten this up,' 'this reads awkwardly,' 'clean up this text,' 'too wordy,' 'sharpen the messaging,' 'refresh this content,' 'update this page,' 'this content is outdated,' or 'content audit.' Use this when the user already has copy and wants it improved or refreshed rather than rewritten from scratch. For writing new copy, see copywriting.
+Edit implemented interface copy in focused passes (clarity, concision, consistency, voice) without changing the approved message. Routed to the verify phase.
+
+## Runtime instructions
+
+Edit the implemented interface copy in focused passes - clarity, concision, consistency, voice - without changing the approved message. Flag copy that fights the visual hierarchy or the primary action.

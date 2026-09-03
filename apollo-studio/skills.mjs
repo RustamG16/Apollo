@@ -20,6 +20,10 @@ export const skills = reg('skills.registry').map(s => ({
   phase: s.phase,
   group: s.group,
   defaultOn: Boolean(s.defaultOn),
+  // `enabled` gates apollo_get_context's inventory: true for pipeline-routed skills,
+  // false for the unrouted capability library. Registry is the source of truth; default
+  // to (phase !== 'unrouted') for any record written before the field existed.
+  enabled: s.enabled ?? (s.phase !== 'unrouted'),
   description: s.description,
   runtimePrompt: s.runtimePrompt || '',
   status: s.status,

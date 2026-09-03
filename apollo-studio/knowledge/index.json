@@ -29,15 +29,6 @@
         "createdAt": "2026-08-31T00:00:00.000Z",
         "file": "knowledge/skills/craft/emil-design-eng/sources/upstream/SKILL.md"
       }
-    ],
-    "three-js-implementation": [
-      {
-        "id": "76a8a77d-a936-443d-80ac-e736773561bc",
-        "title": "Implementation guardrails",
-        "type": "note",
-        "createdAt": "2026-08-10T21:15:59.587Z",
-        "file": "knowledge/skills/spatial/three-js-implementation/sources/1786396559587-implementation-guardrails.md"
-      }
     ]
   }
 }

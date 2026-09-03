@@ -507,3 +507,79 @@ that test: kick off per `USAGE.md`.
 `handoffs/`, `public/media/`, every `.olympus/`, `~/.claude/skills`, `.skill-backups/`,
 `test_projects/`, `third-party/`, `main` branch. Every commit landed on `unification`.
 
+
+---
+
+# POST-UNIFICATION — scope narrowing + audit fixes — **DONE** (2026-09-03)
+
+Apollo is a design system only: a skill stays only if it serves designing and building an
+interface. Follow-up on top of the unification.
+
+## A. Precondition — PASS
+All 43 skills marked for removal still exist in `C:\Users\Rustam Gurbanov\.claude\skills\` —
+the Apollo copy was never going to be the last one. Safe to remove.
+
+## B. Marketing removed from Apollo
+
+- **43 skills deleted** from `library/skills/`, the registry, and every projection
+  (`.claude/skills/` -220 files, `.agents/skills/` -224 files, `apollo-studio/knowledge/skills/` -43):
+  all 39 of `06-marketing-growth` except `site-architecture`; `content-strategy` +
+  `sales-enablement` from `05-content-copy`; `analytics` + `competitor-profiling` from
+  `07-research-intel`.
+- `06-marketing-growth` category folder deleted (empty).
+- `site-architecture` moved `06-marketing-growth` -> `02-web-build`.
+- **Kept, verified against each SKILL.md:** `copywriting`, `copy-editing`, `site-architecture`,
+  `customer-research`. Report on body-vs-call tension: `copywriting` and `copy-editing` both
+  self-describe as "marketing / conversion copy"; `site-architecture` lists SEO as a secondary
+  goal; `customer-research` leans toward positioning. **None contradicts the keep call** —
+  page copy, IA, and customer evidence are all part of designing/building an interface — but
+  the registry `description` for all four was rewritten to an interface framing (SKILL.md
+  bodies, which are vendored, were left untouched).
+- **Pipeline copy/IA/research step closed by routing** (phase + a new `runtimePrompt` each):
+  `copywriting` -> `build`, `copy-editing` -> `verify`, `site-architecture` -> `diagnose`,
+  `customer-research` -> `diagnose`. Each added to `ARCHITECTURE.md`'s routing table with an
+  activate / keep-dormant condition.
+- `D:\KnowledgeFactory\library\knowledge\marketing-system-seed.md` written — all 43 ids with
+  description + the single source path `C:\Users\Rustam Gurbanov\.claude\skills\<id>\`. **No
+  skill folder copied anywhere.**
+
+## C. Audit defects fixed
+
+1. **`enabled` on every registry record** — `true` where `phase != "unrouted"`, else `false`.
+   `project.py` normalises it from phase before any projection emits it (studio README gains a
+   `- Routed:` line; `apollo-studio/skills.registry.json` carries the field); `skills.mjs`
+   passes it through so `mergeSkill` -> `apollo_get_context` filters on it.
+   **`apollo_get_context` payload: 84 skills / 55,225 bytes -> 31 skills / 21,992 bytes**
+   (~60% smaller; pre-task with 127 skills it was ~83 KB). The 31 enabled = 27 previously
+   routed + the 4 newly-routed above. *Note:* the 3 studio-only stubs
+   (`taste-first-experience-design`, `ethical-gamification-systems`,
+   `agent-identity-and-portfolio`) have `phase: direct|prepare` so the literal rule marks them
+   `enabled: true` — they appear in the inventory. Flip to `status`-gated if that is unwanted.
+2. **runtimePrompts written** for the three routed-but-empty skills: `apollo-taste-interview`,
+   `apollo-style-picker`, `gsap-utils`. `verify.py` now fails if any routed skill has an empty
+   `runtimePrompt` or an `enabled` that disagrees with its phase.
+3. **Orphaned `sources["three-js-implementation"]`** deleted from
+   `apollo-studio/knowledge/index.json`. Its one substantive sentence (dispose GL resources,
+   cap pixel ratio, keep a DOM/poster fallback) was first saved to
+   `library/knowledge/03-skill-briefs/webgl-implementation-guardrails.md`.
+
+## D. Regenerate + verify — PASS
+
+| Check | Result |
+|---|---|
+| `project.py claude / codex / studio / digest` | ran; re-run dry-run = 0 writes / 0 deletes (idempotent) |
+| `library/tools/verify.py` | CLEAN — 84 skills / 84 records |
+| `scripts/validate-system.ps1` | EXIT 0 — "81 skills, 6 agents, 33 required files, registry parity OK" |
+| `npm.cmd run check` (apollo-studio) | EXIT 0 |
+| `external-skills.json` resolves | yes — parses; nothing it references was removed; `seo-audit` correctly moves back to plugin-only (comment updated) |
+| protected files (`server.mjs`, `knowledge.mjs`, `mcp-server.mjs`, `data/`, `evidence/`, `handoffs/`, `public/media/`, `.olympus/`) | 0 changes |
+
+### Final counts
+
+- Registry: **84 skills** (127 - 43) · 31 enabled/routed · 53 unrouted.
+- By category: 01-design-direction 11 · 02-web-build 4 · 03-motion-3d 27 · 04-media-generation 11 ·
+  05-content-copy 2 · 07-research-intel 3 · 08-qa-review 4 · 09-engineering-workflow 12 ·
+  10-docs-deliverables 2 · 11-meta-system 8. (No 06.)
+- By phase: always 1 · diagnose 5 · direct 7 · prepare 8 · build 6 · verify 4 · unrouted 53.
+- Projections: `.claude/skills/` 70 · `.agents/skills/` 81 · studio 84.
+- `ROUTING-DIGEST.md`: 31 active skills.

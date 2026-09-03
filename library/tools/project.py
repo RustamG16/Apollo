@@ -17,6 +17,11 @@ LIB = os.path.join(ROOT, "library")
 REG_PATH = os.path.join(LIB, "registry", "skills.registry.json")
 
 REG = json.load(open(REG_PATH, encoding="utf-8"))
+# normalise `enabled` from phase before any projection emits it: pipeline-routed skills
+# are enabled, the unrouted capability library is not. apollo_get_context filters on this.
+for _r in REG:
+    _r["enabled"] = _r.get("phase") != "unrouted"
+
 BY_ID = {r["id"]: r for r in REG}
 REGISTRY = {"skills": REG,
             "tools": json.load(open(os.path.join(LIB, "registry", "tools.json"), encoding="utf-8")),
@@ -229,7 +234,8 @@ def build_studio(dry):
             mm = re.match(r"^---\s*\n.*?\n---\s*\n(.*)$", t, re.S)
             body = (mm.group(1).strip() if mm else t.strip())
         readme = (f"# {r['name']}\n\n- Category: {r['group']}\n- Phase: {r['phase']}\n"
-                  f"- Status: {r['status']}\n- Skill ID: {r['id']}\n\n{r['description']}\n")
+                  f"- Status: {r['status']}\n- Routed: {'yes' if r['enabled'] else 'no'}\n"
+                  f"- Skill ID: {r['id']}\n\n{r['description']}\n")
         if r.get("runtimePrompt"):
             readme += f"\n## Runtime instructions\n\n{r['runtimePrompt']}\n"
         p.add(f"{grp}/{r['id']}/README.md", readme)

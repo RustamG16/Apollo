@@ -76,6 +76,12 @@ for r in reg:
         bad.append(f"{r['id']}: invalid hosts {hosts!r}")
     if r.get("status") not in VALID_STATUS:
         bad.append(f"{r['id']}: invalid status {r.get('status')!r}")
+    if "enabled" not in r:
+        bad.append(f"{r['id']}: missing `enabled`")
+    elif bool(r["enabled"]) != (r["phase"] != "unrouted"):
+        bad.append(f"{r['id']}: enabled={r['enabled']} disagrees with phase={r['phase']}")
+    if r["phase"] != "unrouted" and not str(r.get("runtimePrompt", "")).strip():
+        bad.append(f"{r['id']}: routed ({r['phase']}) but empty runtimePrompt")
 
 for sid in folders:
     if sid not in set(reg_ids):

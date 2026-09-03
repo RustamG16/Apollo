@@ -30,13 +30,17 @@ flowchart LR
 | Direct the run | `$olympus-design-director` | Always | Never |
 | Diagnose existing UX/UI | `$ux-evidence-audit` | Existing page is supplied | Greenfield work with no existing interface |
 | Decode references | `$reference-deconstruction` | Approved references exist | No references or only vague taste words |
+| Ground the brief in research | `$customer-research` | Existing customer evidence (interviews, tickets, reviews, surveys) is available | No research assets, or a pure visual refresh of a known page |
+| Plan information architecture | `$site-architecture` | Page/route hierarchy, navigation, or URL structure is in scope | Single existing route with a fixed IA that will not change |
 | Generate the direction | `$concept-studio` | Gate A is approved | Before diagnosis |
 | Independent scoring | `$award-rubric` | A direction is frozen | During authorship or implementation |
 | Plan media | `$asset-director` | Chosen direction has missing media | Existing approved assets are sufficient |
 | Component polish | Impeccable + `$awwwards-web-design` | Direction is selected and hierarchy is stable | Early ideation |
 | Timed/scroll motion | Official GSAP skills | Narrative sequencing justifies it | Decorative motion or simple CSS transition |
 | 3D/WebGL | `$webgl-experience` | Unique communication value passes activation test | Generic spectacle, weak devices, tight budget |
+| Write interface copy | `$copywriting` | The direction needs new headline / body / CTA / state text | Copy is fixed, supplied, or out of scope |
 | Measurement | `$design-analytics` | Goal and analytics scope are known | No consent, no baseline, or concept-only run |
+| Edit interface copy | `$copy-editing` | Implemented copy needs a clarity / consistency pass | Copy was written fresh this run and already reviewed |
 | Release evidence | `$visual-qa` | An implementation exists | Before build |
 
 ## Roles

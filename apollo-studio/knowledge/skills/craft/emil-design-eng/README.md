@@ -3,6 +3,7 @@
 - Category: Craft
 - Phase: build
 - Status: active
+- Routed: yes
 - Skill ID: emil-design-eng
 
 Polishes component feel, interaction feedback, animation decisions, easing, performance, and invisible interface details.

@@ -3,6 +3,7 @@
 - Category: Motion
 - Phase: prepare
 - Status: active
+- Routed: yes
 - Skill ID: gsap-scrolltrigger
 
 Controls justified scroll-linked narratives and pinning.

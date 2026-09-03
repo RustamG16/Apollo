@@ -3,6 +3,7 @@
 - Category: Production
 - Phase: prepare
 - Status: active
+- Routed: yes
 - Skill ID: webgl-experience
 
 Tests whether 3D has communication value and specifies a bounded fallback.

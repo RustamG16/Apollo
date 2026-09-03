@@ -3,6 +3,7 @@
 - Category: Craft
 - Phase: diagnose
 - Status: active
+- Routed: yes
 - Skill ID: ui-ux
 
 Establishes product cognition, task journeys, progressive disclosure, recovery states, mobile priorities, and frontend governance.

@@ -1,8 +1,13 @@
 # customer-research
 
 - Category: Research
-- Phase: unrouted
+- Phase: diagnose
 - Status: active
+- Routed: yes
 - Skill ID: customer-research
 
-When the user wants to conduct, analyze, or synthesize customer research. Use when the user mentions "customer research," "ICP research," "talk to customers," "analyze transcripts," "customer interviews," "survey analysis," "support ticket analysis," "voice of customer," "VOC," "build personas," "customer personas," "jobs to be done," "JTBD," "what do customers say," "what are customers struggling with," "Reddit mining," "G2 reviews," "review mining," "digital watering holes," "community research," "forum research," "competitor reviews," "customer sentiment," or "find out why customers churn/convert/buy." Use for both analyzing existing research assets AND gathering new research from online sources. For writing copy informed by research, see copywriting. For acting on research to improve pages, see cro.
+Synthesise existing customer evidence (interviews, tickets, reviews, surveys) into the user, their primary task, and their language, to ground the brief. Routed to the diagnose phase.
+
+## Runtime instructions
+
+Synthesise existing customer evidence - interviews, tickets, reviews, surveys - into the user, their primary task, and their own language, to ground the brief. Do not invent findings; report confidence and gaps.

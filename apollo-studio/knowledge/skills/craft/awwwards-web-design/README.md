@@ -3,6 +3,7 @@
 - Category: Craft
 - Phase: build
 - Status: active
+- Routed: yes
 - Skill ID: awwwards-web-design
 
 Adds premium editorial craft after hierarchy is stable.

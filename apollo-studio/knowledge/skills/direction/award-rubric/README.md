@@ -3,6 +3,7 @@
 - Category: Direction
 - Phase: direct
 - Status: active
+- Routed: yes
 - Skill ID: award-rubric
 
 Independently critique and score the single frozen website direction against an approved brief using design, usability, creativity, content, and delivery-risk evidence. Use once a direction is frozen or for a bounded final review; it may reject the direction but must not author or merge a replacement.

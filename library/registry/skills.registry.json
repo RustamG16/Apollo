@@ -1,53 +1,5 @@
 [
   {
-    "id": "ab-testing",
-    "name": "ab-testing",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to plan, design, or implement an A/B test or experiment, or build a growth experimentation program. Also use when the user mentions \"A/B test,\" \"split test,\" \"experiment,\" \"test this change,\" \"variant copy,\" \"multivariate test,\" \"hypothesis,\" \"should I test this,\" \"which version is better,\" \"test two versions,\" \"statistical significance,\" \"how long should I run this test,\" \"growth experiments,\" \"experiment velocity,\" \"experiment backlog,\" \"ICE score,\" \"experimentation program,\" or \"experiment playbook.\" Use this whenever someone is comparing two approaches and wants to measure which performs better, or when they want to build a systematic experimentation practice. For tracking implementation, see analytics. For page-level conversion optimization, see cro.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "ad-creative",
-    "name": "ad-creative",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to generate, iterate, or scale ad creative — headlines, descriptions, primary text, or full ad variations — for any paid advertising platform. Also use when the user mentions 'ad copy variations,' 'ad creative,' 'generate headlines,' 'RSA headlines,' 'bulk ad copy,' 'ad iterations,' 'creative testing,' 'ad performance optimization,' 'write me some ads,' 'Facebook ad copy,' 'Google ad headlines,' 'LinkedIn ad text,' 'static ads,' 'static ad concepts,' 'ad templates,' 'iMessage ad,' 'chat reveal ad,' 'fake DM ad,' 'ChatGPT ad,' 'Apple Notes ad,' 'AirDrop ad,' 'creative strategy,' 'creative roadmap,' 'creative retro,' 'hook writing,' 'creative review page,' 'present ad creative for approval,' 'motion video ad,' 'faceless video ad,' 'animated explainer ad,' 'motion collage ad,' or 'I need more ad variations.' Use this whenever someone needs to produce ad copy at scale or iterate on existing ads. For campaign strategy and targeting, see ads. For landing page copy, see copywriting.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "ads",
-    "name": "ads",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants help with paid advertising campaigns on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platforms. Also use when the user mentions 'PPC,' 'paid media,' 'ROAS,' 'CPA,' 'ad campaign,' 'retargeting,' 'audience targeting,' 'Google Ads,' 'Facebook ads,' 'LinkedIn ads,' 'ad budget,' 'cost per click,' 'ad spend,' 'should I run ads,' 'ABM,' 'account-based marketing,' 'B2B ads,' 'lead quality,' 'negative keywords,' 'Performance Max,' 'thought leader ads,' or 'when should I kill an ad.' Use this for campaign strategy, audience targeting, bidding, and optimization. For bulk ad creative generation and iteration, see ad-creative. For landing page optimization, see cro.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
     "id": "agent-identity-and-portfolio",
     "name": "Agent Identity and Portfolio",
     "phase": "prepare",
@@ -59,39 +11,8 @@
     "hosts": [
       "studio"
     ],
-    "status": "stub"
-  },
-  {
-    "id": "ai-seo",
-    "name": "ai-seo",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to optimize content for AI search engines, get cited by LLMs, or appear in AI-generated answers. Also use when the user mentions 'AI SEO,' 'AEO,' 'GEO,' 'LLMO,' 'answer engine optimization,' 'generative engine optimization,' 'LLM optimization,' 'AI Overviews,' 'optimize for ChatGPT,' 'optimize for Perplexity,' 'AI citations,' 'AI visibility,' 'zero-click search,' 'how do I show up in AI answers,' 'LLM mentions,' 'optimize for Claude/Gemini,' 'llms.txt,' 'OKF,' 'Open Knowledge Format,' 'knowledge bundle,' or 'agent-readable site.' Use this whenever someone wants their content to be cited or surfaced by AI assistants and AI search engines. For traditional technical and on-page SEO audits, see seo-audit. For structured data implementation, see schema.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "analytics",
-    "name": "analytics",
-    "phase": "unrouted",
-    "group": "Research",
-    "defaultOn": false,
-    "description": "When the user wants to set up, improve, or audit analytics tracking and measurement. Also use when the user mentions \"set up tracking,\" \"GA4,\" \"Google Analytics,\" \"conversion tracking,\" \"event tracking,\" \"UTM parameters,\" \"tag manager,\" \"GTM,\" \"analytics implementation,\" \"tracking plan,\" \"how do I measure this,\" \"track conversions,\" \"Mixpanel,\" \"Segment,\" \"are my events firing,\" or \"analytics isn't working.\" Use this whenever someone asks how to know if something is working or wants to measure marketing results. For choosing attribution models, comparing multi-touch/MMM/incrementality, or reconciling conflicting numbers across tools, see attribution. For A/B test measurement, see ab-testing.",
-    "runtimePrompt": "",
-    "category": "07-research-intel",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "stub",
+    "enabled": true
   },
   {
     "id": "animate",
@@ -107,7 +28,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "animation-vocabulary",
@@ -123,7 +45,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "apollo-bootstrap",
@@ -139,7 +62,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "apollo-cyberpunk-athens-skin",
@@ -155,7 +79,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "apollo-dashboard-sync",
@@ -171,7 +96,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "apollo-loadout-sync",
@@ -187,7 +113,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "apollo-style-picker",
@@ -196,14 +123,15 @@
     "group": "Taste",
     "defaultOn": false,
     "description": "Path B of the taste-profile system. Presents the built-in design doctrines, pre-fills a taste profile from the chosen one, then runs a short residual interview only for fields the doctrine can't answer (audience, avoid-list additions, project constraints). Trigger phrases - \"pick a style for me\", \"show me the design options\", \"which style should I use\". Do NOT use for building a fully bespoke profile from scratch - use apollo-taste-interview instead.",
-    "runtimePrompt": "",
+    "runtimePrompt": "Present the built-in design doctrines, let the user pick one, pre-fill the taste profile from it, then resolve the few remaining fields with short residual questions. Write the profile to `library/design-dna/`.",
     "category": "01-design-direction",
     "hosts": [
       "claude",
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "apollo-taste-interview",
@@ -212,14 +140,15 @@
     "group": "Taste",
     "defaultOn": false,
     "description": "Path A of the taste-profile system. Runs a structured interview that is a 1:1 walk through taste-profile.schema.json's fields, producing a complete saved profile. Trigger phrases - \"build my taste profile\", \"interview me about design preferences\", \"let's figure out my style\". Do NOT use when a style is already picked - use apollo-style-picker instead, which runs a shorter residual version of this same question set.",
-    "runtimePrompt": "",
+    "runtimePrompt": "Walk the user field by field through `taste-profile.schema.json`, producing a complete saved profile in `library/design-dna/`. Capture provenance and uncertainty; never infer a preference the user did not state.",
     "category": "01-design-direction",
     "hosts": [
       "claude",
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "apple-design",
@@ -234,23 +163,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
-  },
-  {
-    "id": "aso",
-    "name": "aso",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to audit or optimize an App Store or Google Play listing. Also use when the user mentions 'ASO audit,' 'app store optimization,' 'optimize my app listing,' 'improve app visibility,' 'app store ranking,' 'audit my listing,' 'why aren't people downloading my app,' 'improve my app conversion,' 'keyword optimization for app,' or 'compare my app to competitors.' Use when the user shares an App Store or Google Play URL and wants to improve it.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "asset-director",
@@ -266,23 +180,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
-  },
-  {
-    "id": "attribution",
-    "name": "attribution",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to figure out which marketing actually drives conversions and revenue, choose or interpret an attribution model, or reconcile conflicting numbers across tools. Also use when the user mentions \"attribution,\" \"attribution model,\" \"first-touch vs last-touch,\" \"multi-touch,\" \"which channel drives revenue,\" \"what's my real CAC,\" \"my dashboards disagree,\" \"Google/Meta says X but GA says Y,\" \"media mix model,\" \"MMM,\" \"incrementality,\" \"geo lift,\" \"holdout test,\" \"how did you hear about us,\" \"self-reported attribution,\" \"dark social,\" or wants to instrument attribution themselves — \"stitch my bookings to their source,\" \"SavvyCal/Calendly attribution,\" \"close the identify gap,\" \"track conversions on a third-party domain,\" \"first-party / self-hosted attribution.\" For event tracking setup and UTMs, see analytics. For ad-platform pixels/CAPI, see ads. For pipeline and CRM revenue reporting, see revops. For the AI-search attribution blind spot, see ai-seo.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "award-rubric",
@@ -298,7 +197,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "awwwards-web-design",
@@ -314,103 +214,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
-  },
-  {
-    "id": "churn-prevention",
-    "name": "churn-prevention",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to reduce churn, build cancellation flows, set up save offers, recover failed payments, or implement retention strategies. Also use when the user mentions 'churn,' 'cancel flow,' 'offboarding,' 'save offer,' 'dunning,' 'failed payment recovery,' 'win-back,' 'retention,' 'exit survey,' 'pause subscription,' 'involuntary churn,' 'people keep canceling,' 'churn rate is too high,' 'how do I keep users,' or 'customers are leaving.' Use this whenever someone is losing subscribers or wants to build systems to prevent it. For post-cancel win-back email sequences, see emails. For in-app upgrade paywalls, see paywalls.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "co-marketing",
-    "name": "co-marketing",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to find co-marketing partners, plan joint campaigns, or brainstorm partnership opportunities. Use when the user says 'co-marketing,' 'partner marketing,' 'joint campaign,' 'who should we partner with,' 'integration marketing,' 'cross-promotion,' 'collaborate with another company,' 'partnership ideas,' or 'co-brand.' For customer referral programs, see referrals. For launch-specific partnerships, see launch.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "cold-email",
-    "name": "cold-email",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "Write B2B cold emails and follow-up sequences that get replies. Use when the user wants to write cold outreach emails, prospecting emails, cold email campaigns, sales development emails, or SDR emails. Also use when the user mentions \"cold outreach,\" \"prospecting email,\" \"outbound email,\" \"email to leads,\" \"reach out to prospects,\" \"sales email,\" \"follow-up email sequence,\" \"nobody's replying to my emails,\" or \"how do I write a cold email.\" Covers subject lines, opening lines, body copy, CTAs, personalization, and multi-touch follow-up sequences. For warm/lifecycle email sequences, see emails. For sales collateral beyond emails, see sales-enablement.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "community-marketing",
-    "name": "community-marketing",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "Build and leverage online communities to drive product growth and brand loyalty. Use when the user wants to create a community strategy, grow a Discord or Slack community, manage a forum or subreddit, build brand advocates, increase word-of-mouth, drive community-led growth, engage users post-signup, or turn customers into evangelists. Trigger phrases: \\\"build a community,\\\" \\\"community strategy,\\\" \\\"Discord community,\\\" \\\"Slack community,\\\" \\\"community-led growth,\\\" \\\"brand advocates,\\\" \\\"user community,\\\" \\\"forum strategy,\\\" \\\"community engagement,\\\" \\\"grow our community,\\\" \\\"ambassador program,\\\" \\\"community flywheel.\\\"",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "competitor-profiling",
-    "name": "competitor-profiling",
-    "phase": "unrouted",
-    "group": "Research",
-    "defaultOn": false,
-    "description": "When the user wants to research, profile, or analyze competitors from their URLs. Also use when the user mentions 'competitor profile,' 'competitor research,' 'competitor analysis,' 'profile this competitor,' 'analyze competitor,' 'competitive intelligence,' 'competitor deep dive,' 'who are my competitors,' 'competitor landscape,' 'competitor dossier,' 'competitive audit,' or 'research these competitors.' Input is a list of competitor URLs. Output is structured competitor profile markdown files. For creating comparison/alternative pages from profiles, see competitors. For sales-specific battle cards, see sales-enablement.",
-    "runtimePrompt": "",
-    "category": "07-research-intel",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "competitors",
-    "name": "competitors",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to create competitor comparison or alternative pages for SEO and sales enablement. Also use when the user mentions 'alternative page,' 'vs page,' 'competitor comparison,' 'comparison page,' '[Product] vs [Product],' '[Product] alternative,' 'competitive landing pages,' 'how do we compare to X,' 'battle card,' or 'competitor teardown.' Use this for any content that positions your product against competitors. Covers four formats: singular alternative, plural alternatives, you vs competitor, and competitor vs competitor. For sales-specific competitor docs, see sales-enablement.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "concept-studio",
@@ -426,87 +231,59 @@
       "codex",
       "studio"
     ],
-    "status": "active"
-  },
-  {
-    "id": "content-strategy",
-    "name": "content-strategy",
-    "phase": "unrouted",
-    "group": "Content",
-    "defaultOn": false,
-    "description": "When the user wants to plan a content strategy, decide what content to create, or figure out what topics to cover. Also use when the user mentions \"content strategy,\" \"what should I write about,\" \"content ideas,\" \"blog strategy,\" \"topic clusters,\" \"content planning,\" \"editorial calendar,\" \"content marketing,\" \"content roadmap,\" \"what content should I create,\" \"blog topics,\" \"content pillars,\" or \"I don't know what to write.\" Use this whenever someone needs help deciding what content to produce, not just writing it. For writing individual pieces, see copywriting. For SEO-specific audits, see seo-audit. For social media content specifically, see social.",
-    "runtimePrompt": "",
-    "category": "05-content-copy",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "copy-editing",
     "name": "copy-editing",
-    "phase": "unrouted",
+    "phase": "verify",
     "group": "Content",
     "defaultOn": false,
-    "description": "When the user wants to edit, review, or improve existing marketing copy, or refresh outdated content. Also use when the user mentions 'edit this copy,' 'review my copy,' 'copy feedback,' 'proofread,' 'polish this,' 'make this better,' 'copy sweep,' 'tighten this up,' 'this reads awkwardly,' 'clean up this text,' 'too wordy,' 'sharpen the messaging,' 'refresh this content,' 'update this page,' 'this content is outdated,' or 'content audit.' Use this when the user already has copy and wants it improved or refreshed rather than rewritten from scratch. For writing new copy, see copywriting.",
-    "runtimePrompt": "",
+    "description": "Edit implemented interface copy in focused passes (clarity, concision, consistency, voice) without changing the approved message. Routed to the verify phase.",
+    "runtimePrompt": "Edit the implemented interface copy in focused passes - clarity, concision, consistency, voice - without changing the approved message. Flag copy that fights the visual hierarchy or the primary action.",
     "category": "05-content-copy",
     "hosts": [
       "claude",
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "copywriting",
     "name": "copywriting",
-    "phase": "unrouted",
+    "phase": "build",
     "group": "Content",
     "defaultOn": false,
-    "description": "When the user wants to write, rewrite, or improve marketing copy for any page — including homepage, landing pages, pricing pages, feature pages, about pages, or product pages. Also use when the user says \"write copy for,\" \"improve this copy,\" \"rewrite this page,\" \"marketing copy,\" \"headline help,\" \"CTA copy,\" \"value proposition,\" \"tagline,\" \"subheadline,\" \"hero section copy,\" \"above the fold,\" \"this copy is weak,\" \"make this more compelling,\" or \"help me describe my product.\" Use this whenever someone is working on website text that needs to persuade or convert. For email copy, see emails. For popup copy, see popups. For editing existing copy, see copy-editing. For the offer underneath the copy (bonuses, guarantees, value framing), see offers.",
-    "runtimePrompt": "",
+    "description": "Write the interface's copy against the approved direction and primary action - headline, subheads, body, CTAs, and empty/error/loading-state text. Routed to the build phase.",
+    "runtimePrompt": "Write the interface's copy against the approved direction and the page's primary action: headline, subheads, body, CTAs, and empty/error/loading-state text. Keep it concrete and specific to this product; no placeholder or marketing filler.",
     "category": "05-content-copy",
     "hosts": [
       "claude",
       "codex",
       "studio"
     ],
-    "status": "active"
-  },
-  {
-    "id": "cro",
-    "name": "cro",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to optimize, improve, or increase conversions on any marketing page or form — including homepage, landing pages, pricing pages, feature pages, lead capture forms, or contact forms. Also use when the user says 'CRO,' 'conversion rate optimization,' 'this page isn't converting,' 'improve conversions,' 'why isn't this page working,' 'my landing page sucks,' 'form abandonment,' 'nobody's converting,' 'low conversion rate,' or 'this page needs work.' Use this even if the user just shares a URL and asks for feedback. For signup/registration flows, see signup. For post-signup activation, see onboarding. For popups/modals, see popups.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "customer-research",
     "name": "customer-research",
-    "phase": "unrouted",
+    "phase": "diagnose",
     "group": "Research",
     "defaultOn": false,
-    "description": "When the user wants to conduct, analyze, or synthesize customer research. Use when the user mentions \"customer research,\" \"ICP research,\" \"talk to customers,\" \"analyze transcripts,\" \"customer interviews,\" \"survey analysis,\" \"support ticket analysis,\" \"voice of customer,\" \"VOC,\" \"build personas,\" \"customer personas,\" \"jobs to be done,\" \"JTBD,\" \"what do customers say,\" \"what are customers struggling with,\" \"Reddit mining,\" \"G2 reviews,\" \"review mining,\" \"digital watering holes,\" \"community research,\" \"forum research,\" \"competitor reviews,\" \"customer sentiment,\" or \"find out why customers churn/convert/buy.\" Use for both analyzing existing research assets AND gathering new research from online sources. For writing copy informed by research, see copywriting. For acting on research to improve pages, see cro.",
-    "runtimePrompt": "",
+    "description": "Synthesise existing customer evidence (interviews, tickets, reviews, surveys) into the user, their primary task, and their language, to ground the brief. Routed to the diagnose phase.",
+    "runtimePrompt": "Synthesise existing customer evidence - interviews, tickets, reviews, surveys - into the user, their primary task, and their own language, to ground the brief. Do not invent findings; report confidence and gaps.",
     "category": "07-research-intel",
     "hosts": [
       "claude",
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "design-analytics",
@@ -522,39 +299,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
-  },
-  {
-    "id": "directory-submissions",
-    "name": "directory-submissions",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to submit their product to startup, SaaS, AI, agent, MCP, no-code, or review directories for backlinks, domain rating, and discovery. Also use when the user mentions \"directory submissions,\" \"submit to directories,\" \"backlinks from directories,\" \"list my product,\" \"submit to Product Hunt,\" \"BetaList,\" \"TAAFT,\" \"Futurepedia,\" \"G2 listing,\" \"Capterra listing,\" \"AlternativeTo,\" \"SaaSHub,\" \"AI directories,\" \"MCP registry,\" \"agent directory,\" \"dofollow backlinks,\" \"launch directories,\" or \"directory tracker.\" Use this whenever someone is planning the directory layer of a product launch or an ongoing backlink campaign. For the broader launch moment, see launch. For programmatic SEO pages that should live behind these backlinks, see programmatic-seo. For AI citation optimization, see ai-seo.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "emails",
-    "name": "emails",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to create or optimize an email sequence, drip campaign, automated email flow, or lifecycle email program. Also use when the user mentions \"email sequence,\" \"drip campaign,\" \"nurture sequence,\" \"onboarding emails,\" \"welcome sequence,\" \"re-engagement emails,\" \"email automation,\" \"lifecycle emails,\" \"trigger-based emails,\" \"email funnel,\" \"email workflow,\" \"what emails should I send,\" \"welcome series,\" or \"email cadence.\" Use this for any multi-email automated flow. For cold outreach emails, see cold-email. For in-app onboarding, see onboarding.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "emil-design-eng",
@@ -569,7 +315,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "ethical-gamification-systems",
@@ -583,7 +330,8 @@
     "hosts": [
       "studio"
     ],
-    "status": "stub"
+    "status": "stub",
+    "enabled": true
   },
   {
     "id": "find-animation-opportunities",
@@ -599,23 +347,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
-  },
-  {
-    "id": "free-tools",
-    "name": "free-tools",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to plan, evaluate, or build a free tool for marketing purposes — lead generation, SEO value, or brand awareness. Also use when the user mentions \"engineering as marketing,\" \"free tool,\" \"marketing tool,\" \"calculator,\" \"generator,\" \"interactive tool,\" \"lead gen tool,\" \"build a tool for leads,\" \"free resource,\" \"ROI calculator,\" \"grader tool,\" \"audit tool,\" \"should I build a free tool,\" or \"tools for lead gen.\" Use this whenever someone wants to build something useful and give it away to attract leads or earn links. For downloadable content lead magnets (ebooks, checklists, templates), see lead-magnets.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "garden-beautiful-article",
@@ -631,7 +364,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "garden-gpt-image-2",
@@ -647,7 +381,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "garden-kb-retriever",
@@ -663,7 +398,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "garden-web-design-engineer",
@@ -679,7 +415,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "garden-web-video-presentation",
@@ -695,7 +432,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "gsap-core",
@@ -710,7 +448,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "gsap-frameworks",
@@ -725,7 +464,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "gsap-performance",
@@ -740,7 +480,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "gsap-plugins",
@@ -755,7 +496,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "gsap-react",
@@ -770,7 +512,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "gsap-scrolltrigger",
@@ -785,7 +528,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "gsap-timeline",
@@ -800,7 +544,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "gsap-utils",
@@ -809,13 +554,14 @@
     "group": "Motion",
     "defaultOn": false,
     "description": "Official GSAP skill for gsap.utils — clamp, mapRange, normalize, interpolate, random, snap, toArray, wrap, pipe. Use when the user asks about gsap.utils, clamp, mapRange, random, snap, toArray, wrap, or helper utilities in GSAP.",
-    "runtimePrompt": "",
+    "runtimePrompt": "Reach for `gsap.utils` helpers - clamp, mapRange, interpolate, snap, wrap, random, toArray - when motion math would otherwise be hand-rolled. Utilities only; they do not by themselves justify adding animation.",
     "category": "03-motion-3d",
     "hosts": [
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "higgsfield-brandkit",
@@ -831,7 +577,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "higgsfield-generate",
@@ -847,7 +594,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "higgsfield-marketplace-cards",
@@ -863,7 +611,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "higgsfield-product-photoshoot",
@@ -879,7 +628,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "higgsfield-soul-id",
@@ -895,7 +645,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "higgsfield-video-explainer",
@@ -911,7 +662,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "higgsfield-websites",
@@ -927,7 +679,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "higgsfield-youtube-thumbnail",
@@ -943,7 +696,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "image",
@@ -959,7 +713,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "impeccable",
@@ -974,7 +729,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "improve-animations",
@@ -990,151 +746,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
-  },
-  {
-    "id": "influencer-marketing",
-    "name": "influencer-marketing",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to run influencer, creator, or ambassador partnerships to promote their product — finding and vetting partners, structuring deals, briefing creators, disclosure compliance, and measuring ROI. Also use when the user mentions 'influencer marketing,' 'creator partnerships,' 'sponsorships,' 'YouTube sponsorships,' 'podcast sponsorships,' 'brand ambassador,' 'ambassador program,' 'creator program,' 'UGC creators,' 'B2B influencers,' 'thought leader ads,' 'gifting,' 'product seeding,' 'whitelisting creator content,' 'how much to pay an influencer,' or 'FTC disclosure.' For affiliate/referral payout mechanics, see referrals. For community-led advocacy, see community-marketing. For turning creator content into paid ads, see ad-creative.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "launch",
-    "name": "launch",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to plan a product launch, feature announcement, or release strategy. Also use when the user mentions 'launch,' 'Product Hunt,' 'feature release,' 'announcement,' 'go-to-market,' 'beta launch,' 'early access,' 'waitlist,' 'product update,' 'how do I launch this,' 'launch checklist,' 'GTM plan,' or 'we're about to ship.' Use this whenever someone is preparing to release something publicly. For ongoing marketing after launch, see marketing-ideas. For the offer being launched (bonuses, guarantees, scarcity, naming), see offers.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "lead-magnets",
-    "name": "lead-magnets",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to create, plan, or optimize a lead magnet for email capture or lead generation. Also use when the user mentions \"lead magnet,\" \"gated content,\" \"content upgrade,\" \"downloadable,\" \"ebook,\" \"cheat sheet,\" \"checklist,\" \"template download,\" \"opt-in,\" \"freebie,\" \"PDF download,\" \"resource library,\" \"content offer,\" \"email capture content,\" \"Notion template,\" \"spreadsheet template,\" or \"what should I give away for emails.\" Use this for planning what to create and how to distribute it. For interactive tools as lead magnets, see free-tools. For writing the actual content, see copywriting. For the email sequence after capture, see emails.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "marketing-council",
-    "name": "marketing-council",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants multiple expert perspectives on a marketing question — a simulated board of advisors staffed by legendary marketers (Seth Godin, David Ogilvy, Eugene Schwartz, April Dunford, Rory Sutherland, Alex Hormozi, Byron Sharp, and more). Also use when the user mentions 'marketing council,' 'board of advisors,' 'advisory board,' 'what would Seth Godin say,' 'what would Ogilvy think,' 'channel Hormozi,' 'get multiple perspectives,' 'debate this,' 'have the council review,' 'marketing mentors,' or asks how a famous marketer would approach their problem. The council gives each advisor's take through their documented frameworks, surfaces where they disagree, and synthesizes a recommendation. For executing the winning direction, hand off to positioning, offers, copywriting, ads, or the relevant skill.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "marketing-ideas",
-    "name": "marketing-ideas",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user needs marketing ideas, inspiration, or strategies for their SaaS or software product. Also use when the user asks for 'marketing ideas,' 'growth ideas,' 'how to market,' 'marketing strategies,' 'marketing tactics,' 'ways to promote,' 'ideas to grow,' 'what else can I try,' 'I don't know how to market this,' 'brainstorm marketing,' or 'what marketing should I do.' Use this as a starting point whenever someone is stuck or looking for inspiration on how to grow. For specific channel execution, see the relevant skill (ads, social, emails, etc.).",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "marketing-loops",
-    "name": "marketing-loops",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to set up a recurring, self-running marketing workflow — a repeatable loop an AI agent runs on a cadence (weekly, daily, on a trigger) rather than a one-off task. Also use when the user mentions 'marketing loop,' 'recurring marketing workflow,' 'automate my marketing,' 'marketing on autopilot,' 'weekly marketing review,' 'ad fatigue check,' 'content refresh loop,' 'churn watch,' 'ranking drop alert,' 'always-on marketing,' 'marketing automation workflow,' or 'run this every week.' Use this to pick, adapt, and schedule an ongoing marketing loop that orchestrates the other marketing skills. For one-off marketing ideas, see marketing-ideas. For the experimentation loop specifically, see ab-testing.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "marketing-plan",
-    "name": "marketing-plan",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user needs a comprehensive marketing plan for a client, a company they advise, or their own product. Also use when the user mentions \"marketing plan,\" \"growth plan,\" \"GTM plan,\" \"go-to-market plan,\" \"AARRR plan,\" \"90-day marketing plan,\" \"12-month marketing roadmap,\" \"fractional CMO plan,\" or \"fCMO plan.\" Generates an exhaustive 13-section plan structured by AARRR (Acquisition, Activation, Retention, Referral, Revenue), customized to the client's current budget, team, and stage, mapped to future funding milestones, cross-referenced with the 139-idea marketing-ideas library and an embedded 17-section current-state audit rubric, with a full marketing operations stack showing which skills and MCP/API integrations execute each part. Outputs a Notion-paste-ready markdown document. For positioning and ICP context before planning, see product-marketing. For stage-specific deep work, see onboarding, signup, emails, referrals, pricing.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "marketing-psychology",
-    "name": "marketing-psychology",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to apply psychological principles, mental models, or behavioral science to marketing. Also use when the user mentions 'psychology,' 'mental models,' 'cognitive bias,' 'persuasion,' 'behavioral science,' 'why people buy,' 'decision-making,' 'consumer behavior,' 'anchoring,' 'social proof,' 'scarcity,' 'loss aversion,' 'framing,' or 'nudge.' Use this whenever someone wants to understand or leverage how people think and make decisions in a marketing context. For applying psychology to specific pages, see cro; for pricing tactics, see pricing; for copy framing, see copywriting.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "offers",
-    "name": "offers",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to design, construct, or improve an offer — the thing they actually sell — including value framing, bonus stacking, guarantee design, scarcity/urgency, naming, and payment structure. Also use when the user mentions 'offer,' 'offer design,' 'build an offer,' 'grand slam offer,' 'irresistible offer,' 'value stack,' 'bonus stack,' 'guarantee,' 'risk reversal,' 'money-back guarantee,' 'scarcity,' 'urgency,' 'high-ticket offer,' 'productize a service,' 'naming an offer,' 'payment plan,' 'down-sell,' 'upsell offer,' or 'why isn't my offer converting.' Best for services, agencies, courses, coaching, info products, high-ticket B2B, and direct-response. If you run pure self-serve SaaS, read pricing first — tiers and packaging do more work there. For price level itself (tiers, freemium, value metric), see pricing. For the page that presents the offer, see copywriting. For the launch moment, see launch. For sales collateral, see sales-enablement.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "olympus-design-director",
@@ -1150,39 +763,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
-  },
-  {
-    "id": "onboarding",
-    "name": "onboarding",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to optimize post-signup onboarding, user activation, first-run experience, or time-to-value. Also use when the user mentions \"onboarding flow,\" \"activation rate,\" \"user activation,\" \"first-run experience,\" \"empty states,\" \"onboarding checklist,\" \"aha moment,\" \"new user experience,\" \"users aren't activating,\" \"nobody completes setup,\" \"low activation rate,\" \"users sign up but don't use the product,\" \"time to value,\" or \"first session experience.\" Use this whenever users are signing up but not sticking around. For signup/registration optimization, see signup. For ongoing email sequences, see emails.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "paywalls",
-    "name": "paywalls",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to create or optimize in-app paywalls, upgrade screens, upsell modals, or feature gates. Also use when the user mentions \"paywall,\" \"upgrade screen,\" \"upgrade modal,\" \"upsell,\" \"feature gate,\" \"convert free to paid,\" \"freemium conversion,\" \"trial expiration screen,\" \"limit reached screen,\" \"plan upgrade prompt,\" \"in-app pricing,\" \"free users won't upgrade,\" \"trial to paid conversion,\" or \"how do I get users to pay.\" Use this for any in-product moment where you're asking users to upgrade. Distinct from public pricing pages (see cro) — this focuses on in-product upgrade moments where the user has already experienced value. For pricing decisions, see pricing.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "pick-ui-library",
@@ -1199,71 +781,8 @@
       "studio"
     ],
     "status": "manual",
-    "disableModelInvocation": true
-  },
-  {
-    "id": "popups",
-    "name": "popups",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to create or optimize popups, modals, overlays, slide-ins, or banners for conversion purposes. Also use when the user mentions \"exit intent,\" \"popup conversions,\" \"modal optimization,\" \"lead capture popup,\" \"email popup,\" \"announcement banner,\" \"overlay,\" \"collect emails with a popup,\" \"exit popup,\" \"scroll trigger,\" \"sticky bar,\" or \"notification bar.\" Use this for any overlay or interrupt-style conversion element. For forms outside of popups, see cro. For general page conversion optimization, see cro.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "pricing",
-    "name": "pricing",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants help with pricing decisions, packaging, or monetization strategy. Also use when the user mentions 'pricing,' 'pricing tiers,' 'freemium,' 'free trial,' 'packaging,' 'price increase,' 'value metric,' 'Van Westendorp,' 'willingness to pay,' 'monetization,' 'how much should I charge,' 'my pricing is wrong,' 'pricing page,' 'annual vs monthly,' 'per seat pricing,' 'should I offer a free plan,' 'pricing page teardown,' 'pricing page audit,' 'is my pricing page AI-readable,' or 'can AI read my pricing.' Use this whenever someone is figuring out what to charge, how to structure their plans, or wants to audit a pricing page (for humans and for the AI agents that shortlist tools). For in-app upgrade screens, see paywalls. For offer construction (bonuses, guarantees, value framing, naming) on services/courses/coaching/high-ticket B2B, see offers.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "product-marketing",
-    "name": "product-marketing",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to create or update their product marketing context document. Also use when the user mentions 'product context,' 'marketing context,' 'set up context,' 'positioning,' 'who is my target audience,' 'describe my product,' 'ICP,' 'ideal customer profile,' or wants to avoid repeating foundational information across marketing tasks. Use this at the start of any new project before using other marketing skills — it creates `.agents/product-marketing.md` that all other skills reference for product, audience, and positioning context.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "programmatic-seo",
-    "name": "programmatic-seo",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to create SEO-driven pages at scale using templates and data. Also use when the user mentions \"programmatic SEO,\" \"template pages,\" \"pages at scale,\" \"directory pages,\" \"location pages,\" \"[keyword] + [city] pages,\" \"comparison pages,\" \"integration pages,\" \"building many pages for SEO,\" \"pSEO,\" \"generate 100 pages,\" \"data-driven pages,\" or \"templated landing pages.\" Use this whenever someone wants to create many similar pages targeting different keywords or locations. For auditing existing SEO issues, see seo-audit. For content strategy planning, see content-strategy.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "disableModelInvocation": true,
+    "enabled": false
   },
   {
     "id": "project-scaffold",
@@ -1279,23 +798,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
-  },
-  {
-    "id": "prospecting",
-    "name": "prospecting",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to find, qualify, and build a list of prospects to reach out to — across B2B SaaS, general B2B, or local small businesses. Also use when the user mentions \"prospecting,\" \"build a prospect list,\" \"find prospects,\" \"find leads,\" \"lead gen list,\" \"find SaaS companies that,\" \"find B2B companies,\" \"find local businesses,\" \"ICP-fit accounts,\" \"who should we go after,\" \"outbound list,\" \"target account list,\" \"find clients near me,\" \"businesses without websites,\" \"prospect research,\" \"qualified leads,\" \"find my first customers,\" \"early adopters,\" \"design partners,\" \"beta users,\" or \"who has this problem.\" Use this for the list-building and qualification phase. For writing the outbound copy after the list is built, see cold-email. For deep competitive research on specific accounts, see competitor-profiling.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "prototype",
@@ -1312,23 +816,8 @@
       "studio"
     ],
     "status": "manual",
-    "disableModelInvocation": true
-  },
-  {
-    "id": "public-relations",
-    "name": "public-relations",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants help with public relations, earned media, press coverage, journalist outreach, or media strategy (not pull requests). Also use when the user mentions 'PR,' 'public relations,' 'press,' 'press release,' 'press coverage,' 'media outreach,' 'pitch a journalist,' 'get featured,' 'media list,' 'media kit,' 'press kit,' 'newsjacking,' 'news hijack,' 'HARO,' 'Qwoted,' 'Featured,' 'Help A Reporter,' 'reporter request,' 'tech press,' 'TechCrunch,' 'earned media,' 'thought leadership placement,' 'op-ed,' 'guest article,' 'press contacts,' or 'how do I get press.' Use this for earned media work — finding journalists, pitching stories, newsjacking, and responding to press requests. For startup/SaaS/AI directory submissions, see directory-submissions. For product launches, see launch. For social-media engagement, see social. For cold-email outreach to prospects, see cold-email.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "disableModelInvocation": true,
+    "enabled": false
   },
   {
     "id": "reference-deconstruction",
@@ -1344,23 +833,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
-  },
-  {
-    "id": "referrals",
-    "name": "referrals",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to create, optimize, or analyze a referral program, affiliate program, or word-of-mouth strategy. Also use when the user mentions 'referral,' 'affiliate,' 'ambassador,' 'word of mouth,' 'viral loop,' 'refer a friend,' 'partner program,' 'referral incentive,' 'how to get referrals,' 'customers referring customers,' or 'affiliate payout.' Use this whenever someone wants existing users or partners to bring in new customers. For launch-specific virality, see launch.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "remotion-best-practices",
@@ -1376,7 +850,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "remotion-captions",
@@ -1392,7 +867,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "remotion-create",
@@ -1408,7 +884,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "remotion-docs",
@@ -1424,7 +901,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "remotion-interactivity",
@@ -1440,7 +918,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "remotion-maps",
@@ -1456,7 +935,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "remotion-markup",
@@ -1472,7 +952,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "remotion-multimedia",
@@ -1488,7 +969,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "remotion-render",
@@ -1504,7 +986,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "remotion-saas",
@@ -1520,7 +1003,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "remotion-studio",
@@ -1536,7 +1020,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "remotion-upgrade",
@@ -1552,7 +1037,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "review-animations",
@@ -1569,134 +1055,25 @@
       "studio"
     ],
     "status": "manual",
-    "disableModelInvocation": true
-  },
-  {
-    "id": "revops",
-    "name": "revops",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants help with revenue operations, lead lifecycle management, or marketing-to-sales handoff processes. Also use when the user mentions 'RevOps,' 'revenue operations,' 'lead scoring,' 'lead routing,' 'MQL,' 'SQL,' 'pipeline stages,' 'deal desk,' 'CRM automation,' 'marketing-to-sales handoff,' 'data hygiene,' 'leads aren't getting to sales,' 'pipeline management,' 'lead qualification,' or 'when should marketing hand off to sales.' Use this for anything involving the systems and processes that connect marketing to revenue. For cold outreach emails, see cold-email. For email drip campaigns, see emails. For pricing decisions, see pricing.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "sales-enablement",
-    "name": "sales-enablement",
-    "phase": "unrouted",
-    "group": "Content",
-    "defaultOn": false,
-    "description": "When the user wants to create sales collateral, pitch decks, one-pagers, objection handling docs, or demo scripts. Also use when the user mentions 'sales deck,' 'pitch deck,' 'one-pager,' 'leave-behind,' 'objection handling,' 'deal-specific ROI analysis,' 'demo script,' 'talk track,' 'sales playbook,' 'proposal template,' 'buyer persona card,' 'help my sales team,' 'sales materials,' or 'what should I give my sales reps.' Use this for any document or asset that helps a sales team close deals. For competitor comparison pages and battle cards, see competitors. For marketing website copy, see copywriting. For cold outreach emails, see cold-email. For the offer being sold (bonuses, guarantees, pricing structure), see offers.",
-    "runtimePrompt": "",
-    "category": "05-content-copy",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "schema",
-    "name": "schema",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to add, fix, or optimize schema markup and structured data on their site. Also use when the user mentions \"schema markup,\" \"structured data,\" \"JSON-LD,\" \"rich snippets,\" \"schema.org,\" \"FAQ schema,\" \"product schema,\" \"review schema,\" \"breadcrumb schema,\" \"Google rich results,\" \"knowledge panel,\" \"star ratings in search,\" or \"add structured data.\" Use this whenever someone wants their pages to show enhanced results in Google. For broader SEO issues, see seo-audit. For AI search optimization, see ai-seo.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "seo-audit",
-    "name": "seo-audit",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to audit, review, or diagnose SEO issues on their site. Also use when the user mentions \"SEO audit,\" \"technical SEO,\" \"why am I not ranking,\" \"SEO issues,\" \"on-page SEO,\" \"meta tags review,\" \"SEO health check,\" \"my traffic dropped,\" \"lost rankings,\" \"not showing up in Google,\" \"site isn't ranking,\" \"Google update hit me,\" \"page speed,\" \"core web vitals,\" \"crawl errors,\" or \"indexing issues.\" Use this even if the user just says something vague like \"my SEO is bad\" or \"help with SEO\" — start with an audit. For building pages at scale to target keywords, see programmatic-seo. For adding structured data, see schema. For AI search optimization, see ai-seo.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "signup",
-    "name": "signup",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to optimize signup, registration, account creation, or trial activation flows. Also use when the user mentions \"signup conversions,\" \"registration friction,\" \"signup form optimization,\" \"free trial signup,\" \"reduce signup dropoff,\" \"account creation flow,\" \"people aren't signing up,\" \"signup abandonment,\" \"trial conversion rate,\" \"nobody completes registration,\" \"too many steps to sign up,\" or \"simplify our signup.\" Use this whenever the user has a signup or registration flow that isn't performing. For post-signup onboarding, see onboarding. For lead capture forms (not account creation), see cro.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "disableModelInvocation": true,
+    "enabled": false
   },
   {
     "id": "site-architecture",
     "name": "site-architecture",
-    "phase": "unrouted",
-    "group": "Growth",
+    "phase": "diagnose",
+    "group": "Web Build",
     "defaultOn": false,
-    "description": "When the user wants to plan, map, or restructure their website's page hierarchy, navigation, URL structure, or internal linking. Also use when the user mentions \"sitemap,\" \"site map,\" \"visual sitemap,\" \"site structure,\" \"page hierarchy,\" \"information architecture,\" \"IA,\" \"navigation design,\" \"URL structure,\" \"breadcrumbs,\" \"internal linking strategy,\" \"website planning,\" \"what pages do I need,\" \"how should I organize my site,\" or \"site navigation.\" Use this whenever someone is planning what pages a website should have and how they connect. NOT for XML sitemaps (that's technical SEO — see seo-audit). For SEO audits, see seo-audit. For structured data, see schema.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
+    "description": "Plan the page/route hierarchy, navigation model, URL structure, and internal linking so the redesign has a defensible information architecture before layout. Routed to the diagnose phase.",
+    "runtimePrompt": "Map the page/route hierarchy, navigation model, URL structure, and internal linking so the redesign has a defensible information architecture before layout begins. Work from the primary task and audience, not from the current menu.",
+    "category": "02-web-build",
     "hosts": [
       "claude",
       "codex",
       "studio"
     ],
-    "status": "active"
-  },
-  {
-    "id": "sms",
-    "name": "sms",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants to plan, build, or optimize SMS or MMS marketing — including welcome flows, abandoned cart texts, post-purchase, win-back, promotional sends, or transactional/auth SMS. Also use when the user mentions \"SMS marketing,\" \"text message campaigns,\" \"SMS sequence,\" \"SMS automation,\" \"abandoned cart text,\" \"post-purchase SMS,\" \"Klaviyo SMS,\" \"Postscript,\" \"Attentive,\" \"Twilio,\" \"A2P 10DLC,\" \"TCPA,\" \"SMS compliance,\" \"short code,\" \"toll-free SMS,\" \"MMS campaign,\" \"should I do SMS,\" or \"SMS vs email.\" For email sequences, see emails. For SMS copy framing, see copywriting. For opt-in popups that capture phone numbers, see popups.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
-  },
-  {
-    "id": "social",
-    "name": "social",
-    "phase": "unrouted",
-    "group": "Growth",
-    "defaultOn": false,
-    "description": "When the user wants help creating, scheduling, or optimizing social media content for LinkedIn, Twitter/X, Instagram, TikTok, Facebook, or other platforms, or wants to do social listening and engagement triage. Also use when the user mentions 'LinkedIn post,' 'Twitter thread,' 'social media,' 'content calendar,' 'social scheduling,' 'engagement,' 'viral content,' 'what should I post,' 'repurpose this content,' 'tweet ideas,' 'LinkedIn carousel,' 'social media strategy,' 'grow my following,' 'TikTok video,' 'Reels,' 'Shorts,' 'video script,' 'video hook,' 'short-form video,' 'create a reel,' 'social listening,' 'brand mentions,' 'competitor monitoring,' 'top posts to comment on,' 'find people asking for,' 'carousel,' 'slide-by-slide,' or 'document post.' Use this for social media content creation, repurposing, scheduling, short-form video scripting, and social listening. For broader content strategy, see content-strategy. For paid ads, see ad-creative. For earned media, see public-relations.",
-    "runtimePrompt": "",
-    "category": "06-marketing-growth",
-    "hosts": [
-      "claude",
-      "codex",
-      "studio"
-    ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "superpowers-brainstorming",
@@ -1712,7 +1089,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-dispatching-parallel-agents",
@@ -1728,7 +1106,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-executing-plans",
@@ -1744,7 +1123,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-finishing-a-development-branch",
@@ -1760,7 +1140,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-receiving-code-review",
@@ -1776,7 +1157,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-requesting-code-review",
@@ -1792,7 +1174,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-subagent-driven-development",
@@ -1808,7 +1191,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-systematic-debugging",
@@ -1824,7 +1208,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-test-driven-development",
@@ -1840,7 +1225,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-using-git-worktrees",
@@ -1856,7 +1242,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-using-superpowers",
@@ -1872,7 +1259,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-verification-before-completion",
@@ -1888,7 +1276,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-writing-plans",
@@ -1904,7 +1293,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "superpowers-writing-skills",
@@ -1920,7 +1310,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "taste-first-experience-design",
@@ -1934,7 +1325,8 @@
     "hosts": [
       "studio"
     ],
-    "status": "stub"
+    "status": "stub",
+    "enabled": true
   },
   {
     "id": "ui-ux",
@@ -1950,7 +1342,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "ux-evidence-audit",
@@ -1966,7 +1359,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "video",
@@ -1982,7 +1376,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": false
   },
   {
     "id": "visual-qa",
@@ -1998,7 +1393,8 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   },
   {
     "id": "webgl-experience",
@@ -2014,6 +1410,7 @@
       "codex",
       "studio"
     ],
-    "status": "active"
+    "status": "active",
+    "enabled": true
   }
 ]
