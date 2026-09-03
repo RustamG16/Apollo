@@ -420,3 +420,93 @@ Playground and Architecture, icon buttons, switcher tabs and dense rows all rise
 desktop / 44px narrow, and the spacing literals snap to the ten-step scale in the same pass
 because raising a target changes its padding anyway. Expect layout to break where it only
 fit because everything was small. Target T5.
+
+## 2026-09-03 — P2 slice 3: hit targets, and an instrument that measures the real one
+
+**Slice:** P2 of 3, slice 3. Complete. **P2 is complete.**
+
+**What changed.** One floor block appended to the stylesheet rather than a fix per component:
+every button, select, summary, nav item, switcher tab, icon action and wrapping label carries
+`min-height: var(--control-h)` on the desktop and `var(--control-h-narrow)` below 900px. A
+label that wraps a control is laid out as a row — flex, centred, `--space-4` gap — so the
+extra height reads as a row and not as a gap above the text, and the widget inside stays 16px.
+Seven later-layer rules that had pinned controls to 28, 30 and 34px were moved onto the token;
+they could not be beaten from the end of the sheet because an explicit `min-height` is not
+weaker than a later one.
+
+**Two corrections to the instrument itself, both of which made it stricter about the right
+thing and stopped it reporting defects that were not there.**
+
+1. *A target is the activation area, not the widget.* The probe was measuring
+   `input[type=checkbox]` boxes — 13x13 native checkboxes, and 84 more that are visually
+   hidden behind styled switch tracks and therefore had no box at all. Neither is what a
+   person clicks. The probe now resolves a checkbox or radio to its wrapping or bound
+   `<label>` and measures that, deduplicating so one row is one target. Architecture's 84
+   "sub-32px targets" from section 02 were never 84 tiny checkboxes: they were 84 hidden
+   inputs behind switch tracks whose rows were the real defect, and the real defect was
+   9px type, which slice 1 already fixed.
+2. *A disclosure is opened and measured; an unrendered panel is reported, not counted.*
+   The probe now opens every shut `<details>` before measuring and closes it again, so
+   nothing hides from the floor. Controls with no box because the panel they live in is not
+   currently rendered — seven in Library, an editor form that appears on demand — are
+   reported as `unmeasuredControls` rather than counted as failures. A number that cannot
+   be driven to zero by fixing anything is not a threshold; it is noise that makes a real
+   threshold unreachable.
+
+   The check on this reasoning: T5 went to 0 *after* the floor block, not because of the
+   definition change. Before the floor block the same definitions gave 195 visible failures.
+
+**A reduced-motion assertion was added to the instrument.** A `@media
+(prefers-reduced-motion: reduce)` rule existing is not evidence that it wins. The script now
+emulates the preference, reloads, and reads every computed `transition-duration` and
+`animation-duration` in the document. Worst observed: 0.01ms. Reported on every run.
+
+**Metrics, before and after:**
+
+| # | Threshold | Before | After | State |
+|---|---|---:|---:|---|
+| T1 | Text below 13px | 0 | 0 | PASS |
+| T2 | Body text size | 16 | 16 | PASS |
+| T3 | Type in rem / 200% zoom | 100% | 100% | PASS |
+| T4 | Contrast failures (AA) | 0 | 0 | PASS |
+| T5 | Controls under 36/44px | 881 | **0** | PASS |
+| T6 | Distinct visual systems | 1 | 1 | PASS |
+| T7 | Non-semantic accent hues | 1 | 1 | PASS |
+| T8 | Unique radii | 2 | 2 | PASS |
+| T9 | Views with empty state + action | 1 | 1 | FAIL |
+| T10 | Decorative media references | 0 | 0 | PASS |
+| T11 | Destructive actions without undo | 8 | 8 | FAIL |
+
+**Nine of eleven pass. P2's exit gate — T1, T3, T4, T5, T7, T8, T10 — is met in full.**
+No console errors and no horizontal overflow at 1280x800, 1440x900 or 1920x1080.
+
+**Substrate state at the end of P2**, against section 03 of the plan:
+
+| | Before | Now |
+|---|---|---|
+| Colour hex literals in rules | 48 | 0 |
+| Colour rgba literals in rules | 112 | 0 |
+| `font-size` in px | 179 | 0 |
+| Unique radii | 25 | 0 (4 tokens) |
+| Transition durations | 10 ad hoc | 2, both <=150ms |
+| z-index spellings | 14 | 6 named + ordinals <=3 |
+| `!important` | 7 | 2, both the reduced-motion reset |
+| Decorative media references | 5 | 0 |
+| Custom properties | 18, all colour | 60 across 7 families |
+
+**Decision — the spacing sweep is deferred to P4, deliberately.** 503 padding, margin and gap
+literals remain, and DESIGN.md's Token Rule covers them. A blind global snap to the nearest
+scale step would move hundreds of edges by one to three pixels at once, with no threshold to
+catch what it broke and no reviewer to see it. Each P4 surface pass rewrites its region's
+geometry anyway. The count is now tracked as `css.spacingLiterals` in every report so it
+cannot quietly persist, and it is the exit condition of the last surface pass.
+
+**T11 read 7 and now reads 8** — not a regression. An eighth destructive control ("Remove
+variant") became measurable once the probe started opening disclosures. It was always there.
+
+**Next slice:** P3 slice 1 — the loadout data model. Derive the eight-slot map from the
+registry into a new `library/registry/slots.json` keyed by skill id (never added to
+`skills.registry.json`, which a rebuild overwrites), teach `skills.mjs` to join it, add a
+`loadouts` store beside the frozen Olympus pipeline, migrate the four presets to four seed
+loadouts, and make the empty-active-system state unreachable with a save guard plus an
+on-load migration in `systems.mjs`.

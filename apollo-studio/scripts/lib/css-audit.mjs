@@ -131,7 +131,8 @@ export function auditCss(paths) {
   const semantic = new Set(['red', 'amber', 'orange', 'yellow', 'green']);
   const nonSemanticHues = [...hueBuckets.keys()].filter(h => !semantic.has(h));
 
-  const transitions = [...strip.matchAll(/transition[a-z-]*\s*:\s*([^;}]+)/gi)].map(m => m[1].trim());
+  const transitions = [...strip.matchAll(/transition[a-z-]*\s*:\s*([^;}]+)/gi)]
+    .map(m => resolveVars(m[1].trim()));
   const durations = new Set();
   for (const t of transitions) {
     for (const m of t.matchAll(/([\d.]+)m?s\b/g)) durations.add(m[0]);
@@ -139,6 +140,15 @@ export function auditCss(paths) {
 
   const zIndex = new Set();
   for (const m of strip.matchAll(/z-index\s*:\s*([^;}]+)/gi)) zIndex.add(m[1].trim());
+
+  // Spacing debt, tracked so it cannot quietly persist: a padding, margin or gap written
+  // as a length rather than as a step on the scale.
+  let spacingLiterals = 0;
+  for (const m of strip.matchAll(/(padding|margin|gap|row-gap|column-gap)[a-z-]*\s*:\s*([^;}]+)/gi)) {
+    for (const v of m[2].split(/\s+/)) {
+      if (/^[\d.]+(px|rem|em)$/.test(v) && v !== '0px' && v !== '0') spacingLiterals++;
+    }
+  }
 
   const mediaRefs = [...new Set([...strip.matchAll(/url\(['"]?(\/media\/[^'")]+)/gi)].map(m => m[1]))];
 
@@ -158,6 +168,7 @@ export function auditCss(paths) {
     transitionDurations: [...durations].sort(),
     zIndexSpellings: [...zIndex].sort(),
     zIndexLiterals: [...zIndexLiterals].sort(),
+    spacingLiterals,
     decorativeMediaRefs: mediaRefs,
   };
 }

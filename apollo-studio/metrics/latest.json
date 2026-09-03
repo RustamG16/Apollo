@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T01:48:04.966Z",
-  "durationMs": 14693,
+  "generatedAt": "2026-09-03T01:55:16.826Z",
+  "durationMs": 15451,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -41,9 +41,9 @@
     },
     "T5": {
       "name": "Controls under 36px desktop / 44px narrow",
-      "value": 881,
+      "value": 0,
       "target": 0,
-      "pass": false,
+      "pass": true,
       "unit": "controls (all viewports)"
     },
     "T6": {
@@ -115,7 +115,7 @@
     },
     "T11": {
       "name": "Destructive actions without undo",
-      "value": 7,
+      "value": 8,
       "target": 0,
       "pass": false,
       "unit": "distinct controls",
@@ -125,6 +125,7 @@
         "Reset defaults",
         "Delete",
         "Clear",
+        "Remove variant ×",
         "Clear chat",
         "Clear local"
       ]
@@ -136,11 +137,10 @@
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
-      "targetsBelowFloor": 293,
-      "targetsVisibleBelowFloor": 194,
-      "targetsBelow32": 281,
-      "collapsedControls": 99,
-      "controls": 385,
+      "targetsBelowFloor": 0,
+      "targetsBelow32": 0,
+      "unmeasuredControls": 7,
+      "controls": 477,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -152,9 +152,9 @@
           "textNodes": 50,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 8,
-          "targetsBelow32": 3,
-          "collapsedControls": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "13.0",
             17
@@ -164,9 +164,9 @@
           "textNodes": 352,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 84,
-          "targetsBelow32": 84,
-          "collapsedControls": 84,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
             126
@@ -178,7 +178,7 @@
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "collapsedControls": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
             13
@@ -188,9 +188,9 @@
           "textNodes": 227,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 173,
-          "targetsBelow32": 172,
-          "collapsedControls": 2,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
             209
@@ -200,9 +200,9 @@
           "textNodes": 67,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 12,
-          "targetsBelow32": 10,
-          "collapsedControls": 5,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "13.0",
             41
@@ -212,9 +212,9 @@
           "textNodes": 338,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 11,
-          "targetsBelow32": 8,
-          "collapsedControls": 8,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 7,
           "dominantSize": [
             "14.0",
             139
@@ -224,9 +224,9 @@
           "textNodes": 39,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 1,
+          "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "collapsedControls": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
             20
@@ -238,7 +238,7 @@
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "collapsedControls": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
             6
@@ -248,9 +248,9 @@
           "textNodes": 11,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 4,
-          "targetsBelow32": 4,
-          "collapsedControls": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
             8
@@ -263,11 +263,10 @@
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
-      "targetsBelowFloor": 294,
-      "targetsVisibleBelowFloor": 195,
-      "targetsBelow32": 281,
-      "collapsedControls": 99,
-      "controls": 385,
+      "targetsBelowFloor": 0,
+      "targetsBelow32": 0,
+      "unmeasuredControls": 7,
+      "controls": 477,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -279,9 +278,9 @@
           "textNodes": 50,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 9,
-          "targetsBelow32": 3,
-          "collapsedControls": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "13.0",
             17
@@ -291,9 +290,9 @@
           "textNodes": 352,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 84,
-          "targetsBelow32": 84,
-          "collapsedControls": 84,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
             126
@@ -305,7 +304,7 @@
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "collapsedControls": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
             13
@@ -315,9 +314,9 @@
           "textNodes": 227,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 173,
-          "targetsBelow32": 172,
-          "collapsedControls": 2,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
             209
@@ -327,9 +326,9 @@
           "textNodes": 67,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 12,
-          "targetsBelow32": 10,
-          "collapsedControls": 5,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "13.0",
             41
@@ -339,9 +338,9 @@
           "textNodes": 338,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 11,
-          "targetsBelow32": 8,
-          "collapsedControls": 8,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 7,
           "dominantSize": [
             "14.0",
             139
@@ -351,9 +350,9 @@
           "textNodes": 39,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 1,
+          "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "collapsedControls": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
             20
@@ -365,7 +364,7 @@
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "collapsedControls": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
             6
@@ -375,9 +374,9 @@
           "textNodes": 11,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 4,
-          "targetsBelow32": 4,
-          "collapsedControls": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
             8
@@ -390,11 +389,10 @@
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
-      "targetsBelowFloor": 294,
-      "targetsVisibleBelowFloor": 195,
-      "targetsBelow32": 281,
-      "collapsedControls": 99,
-      "controls": 385,
+      "targetsBelowFloor": 0,
+      "targetsBelow32": 0,
+      "unmeasuredControls": 7,
+      "controls": 477,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -406,9 +404,9 @@
           "textNodes": 50,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 9,
-          "targetsBelow32": 3,
-          "collapsedControls": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "13.0",
             17
@@ -418,9 +416,9 @@
           "textNodes": 352,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 84,
-          "targetsBelow32": 84,
-          "collapsedControls": 84,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
             126
@@ -432,7 +430,7 @@
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "collapsedControls": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
             13
@@ -442,9 +440,9 @@
           "textNodes": 227,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 173,
-          "targetsBelow32": 172,
-          "collapsedControls": 2,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
             209
@@ -454,9 +452,9 @@
           "textNodes": 67,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 12,
-          "targetsBelow32": 10,
-          "collapsedControls": 5,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "13.0",
             41
@@ -466,9 +464,9 @@
           "textNodes": 338,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 11,
-          "targetsBelow32": 8,
-          "collapsedControls": 8,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 7,
           "dominantSize": [
             "14.0",
             139
@@ -478,9 +476,9 @@
           "textNodes": 39,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 1,
+          "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "collapsedControls": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
             20
@@ -492,7 +490,7 @@
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "collapsedControls": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
             6
@@ -502,9 +500,9 @@
           "textNodes": 11,
           "belowThirteen": 0,
           "contrastFails": 0,
-          "targetsBelowFloor": 4,
-          "targetsBelow32": 4,
-          "collapsedControls": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
             8
@@ -517,7 +515,8 @@
     "textNodes": 11,
     "belowThirteen": 0,
     "contrastFails": 0,
-    "targetsBelow36": 4
+    "targetsBelow36": 0,
+    "unmeasuredControls": 0
   },
   "sizeHistogram": {
     "13.0": 291,
@@ -531,8 +530,8 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 85340,
-        "lines": 884
+        "bytes": 87840,
+        "lines": 988
       }
     ],
     "fontSizeUnits": {
@@ -570,7 +569,9 @@
     "important": 3,
     "transitionDeclarations": 13,
     "transitionDurations": [
-      ".01ms"
+      ".01ms",
+      "120ms",
+      "150ms"
     ],
     "zIndexSpellings": [
       "-1",
@@ -590,147 +591,61 @@
       "2",
       "3"
     ],
+    "spacingLiterals": 503,
     "decorativeMediaRefs": []
   },
   "consoleErrors": [],
+  "reducedMotion": {
+    "worstDurationMs": 0.01,
+    "offender": "HTML.",
+    "honoured": true
+  },
   "worstContrast": [],
-  "smallestTargets": [
+  "unmeasuredControls": [
     {
-      "view": "playground",
-      "tag": "input",
-      "cls": "",
-      "label": "",
-      "w": 221.17,
-      "h": 13,
-      "min": 13
+      "view": "knowledge",
+      "tag": "button",
+      "cls": "quiet-action",
+      "inDisclosure": false
     },
     {
-      "view": "playground",
+      "view": "knowledge",
       "tag": "input",
       "cls": "",
-      "label": "",
-      "w": 272.56,
-      "h": 13,
-      "min": 13
+      "inDisclosure": false
     },
     {
-      "view": "playground",
+      "view": "knowledge",
       "tag": "input",
       "cls": "",
-      "label": "",
-      "w": 232.11,
-      "h": 13,
-      "min": 13
+      "inDisclosure": false
     },
     {
-      "view": "playground",
-      "tag": "input",
+      "view": "knowledge",
+      "tag": "select",
       "cls": "",
-      "label": "",
-      "w": 244.94,
-      "h": 13,
-      "min": 13
+      "inDisclosure": false
     },
     {
-      "view": "playground",
-      "tag": "input",
+      "view": "knowledge",
+      "tag": "textarea",
       "cls": "",
-      "label": "",
-      "w": 213.06,
-      "h": 13,
-      "min": 13
+      "inDisclosure": false
     },
     {
-      "view": "playground",
-      "tag": "input",
+      "view": "knowledge",
+      "tag": "textarea",
       "cls": "",
-      "label": "",
-      "w": 228.7,
-      "h": 13,
-      "min": 13
+      "inDisclosure": false
     },
     {
-      "view": "playground",
-      "tag": "input",
-      "cls": "",
-      "label": "",
-      "w": 236.09,
-      "h": 13,
-      "min": 13
-    },
-    {
-      "view": "playground",
-      "tag": "input",
-      "cls": "",
-      "label": "",
-      "w": 250.22,
-      "h": 13,
-      "min": 13
-    },
-    {
-      "view": "playground",
-      "tag": "input",
-      "cls": "",
-      "label": "",
-      "w": 240.98,
-      "h": 13,
-      "min": 13
-    },
-    {
-      "view": "playground",
-      "tag": "input",
-      "cls": "",
-      "label": "",
-      "w": 266.59,
-      "h": 13,
-      "min": 13
-    },
-    {
-      "view": "playground",
-      "tag": "input",
-      "cls": "",
-      "label": "",
-      "w": 257.89,
-      "h": 13,
-      "min": 13
-    },
-    {
-      "view": "playground",
-      "tag": "input",
-      "cls": "",
-      "label": "",
-      "w": 266.86,
-      "h": 13,
-      "min": 13
-    },
-    {
-      "view": "playground",
-      "tag": "input",
-      "cls": "",
-      "label": "",
-      "w": 239.06,
-      "h": 13,
-      "min": 13
-    },
-    {
-      "view": "playground",
-      "tag": "input",
-      "cls": "",
-      "label": "",
-      "w": 260.19,
-      "h": 13,
-      "min": 13
-    },
-    {
-      "view": "playground",
-      "tag": "input",
-      "cls": "",
-      "label": "",
-      "w": 269.72,
-      "h": 13,
-      "min": 13
+      "view": "knowledge",
+      "tag": "button",
+      "cls": "run-action",
+      "inDisclosure": false
     }
   ],
+  "smallestTargets": [],
   "diff": {
     "firstRun": false,
     "regressions": [],

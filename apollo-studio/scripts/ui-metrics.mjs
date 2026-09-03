@@ -101,10 +101,9 @@ function summarise(runs) {
       belowThirteen: text.filter(t => t.size < 13).length,
       contrastFails: text.filter(t => !t.pass).length,
       contrastFailsOnImage: text.filter(t => !t.pass && t.imageBacked).length,
-      targetsBelowFloor: controls.filter(c => c.min < targetFloor).length + rows.reduce((n, r) => n + r.probe.collapsed.length, 0),
-      targetsVisibleBelowFloor: controls.filter(c => c.min < targetFloor).length,
-      targetsBelow32: controls.filter(c => c.min < 32).length + rows.reduce((n, r) => n + r.probe.collapsed.length, 0),
-      collapsedControls: rows.reduce((n, r) => n + r.probe.collapsed.length, 0),
+      targetsBelowFloor: controls.filter(c => c.min < targetFloor).length,
+      targetsBelow32: controls.filter(c => c.min < 32).length,
+      unmeasuredControls: rows.reduce((n, r) => n + r.probe.unmeasured.length, 0),
       controls: controls.length,
       targetFloor,
       overflow: rows.filter(r => r.probe.overflow.horizontal > 0)
@@ -114,9 +113,9 @@ function summarise(runs) {
         textNodes: r.probe.text.length,
         belowThirteen: r.probe.text.filter(t => t.size < 13).length,
         contrastFails: r.probe.text.filter(t => !t.pass).length,
-        targetsBelowFloor: r.probe.controls.filter(c => c.min < targetFloor).length + r.probe.collapsed.length,
-        targetsBelow32: r.probe.controls.filter(c => c.min < 32).length + r.probe.collapsed.length,
-        collapsedControls: r.probe.collapsed.length,
+        targetsBelowFloor: r.probe.controls.filter(c => c.min < targetFloor).length,
+        targetsBelow32: r.probe.controls.filter(c => c.min < 32).length,
+        unmeasuredControls: r.probe.unmeasured.length,
         dominantSize: Object.entries(r.probe.sizeTally).sort((a, b) => b[1] - a[1])[0] || null,
       }])),
     };
@@ -255,6 +254,7 @@ async function main() {
   const consoleErrors = [];
   const viewFacts = {};
   let zoom = { scalesWithRoot: false, overflow: 0, bodyAt200: 0 };
+  let reducedMotion = { honoured: false, worstDurationMs: null };
 
   try {
     const page = await browser.newPage();
@@ -288,7 +288,7 @@ async function main() {
       for (const view of VIEWS) {
         await evaluate(page, "location.hash = '/" + view + "'");
         await settle(page, 420);
-        const probe = await evaluate(page, '(' + PROBE_SOURCE + ')("view")');
+        const probe = await evaluate(page, '(' + PROBE_SOURCE + ')("view", true)');
         trace(vp.name, view, probe.text.length + ' text', probe.controls.length + ' controls');
         runs.push({ viewport: vp.name, view, probe });
         if (vp.name === PRIMARY_VIEWPORT) {
@@ -299,7 +299,7 @@ async function main() {
           };
         }
       }
-      const chromeProbe = await evaluate(page, '(' + PROBE_SOURCE + ')("chrome")');
+      const chromeProbe = await evaluate(page, '(' + PROBE_SOURCE + ')("chrome", false)');
       trace(vp.name, 'chrome', chromeProbe.text.length + ' text');
       runs.push({ viewport: vp.name, view: '_chrome', probe: chromeProbe });
     }
@@ -323,6 +323,29 @@ async function main() {
       '  return { bodyAt100: before, bodyAt200: after, scalesWithRoot: after >= before * 1.6, overflow };',
       '})()',
     ].join('\n'));
+    // Reduced motion is a promise the product makes; a rule that exists is not evidence
+    // that it wins, so this reads the computed durations under the emulated preference.
+    await page.send('Emulation.setEmulatedMedia', {
+      features: [{ name: 'prefers-reduced-motion', value: 'reduce' }],
+    });
+    const reloaded = page.once('Page.loadEventFired');
+    await withTimeout(page.send('Page.navigate', { url: base + '/?rm=1#/architecture' }), 20000, 'Page.navigate rm');
+    await withTimeout(reloaded, 20000, 'Page.loadEventFired rm');
+    await settle(page, 700);
+    reducedMotion = await evaluate(page, [
+      '(() => {',
+      '  const ms = v => v.split(",").map(x => parseFloat(x) * (x.includes("ms") ? 1 : 1000));',
+      '  let worst = 0, offender = null;',
+      '  for (const el of document.querySelectorAll("*")) {',
+      '    const cs = getComputedStyle(el);',
+      '    for (const v of [...ms(cs.transitionDuration), ...ms(cs.animationDuration)]) {',
+      '      if (v > worst) { worst = v; offender = el.tagName + "." + String(el.className).slice(0, 40); }',
+      '    }',
+      '  }',
+      '  return { worstDurationMs: worst, offender, honoured: worst <= 1 };',
+      '})()',
+    ].join(String.fromCharCode(10)));
+    await page.send('Emulation.setEmulatedMedia', { features: [] });
   } finally {
     await browser.close();
     server.kill();
@@ -343,13 +366,17 @@ async function main() {
       belowThirteen: chrome.probe.text.filter(t => t.size < 13).length,
       contrastFails: chrome.probe.text.filter(t => !t.pass).length,
       targetsBelow36: chrome.probe.controls.filter(c => c.min < 36).length,
+      unmeasuredControls: chrome.probe.unmeasured.length,
     } : null,
     sizeHistogram: sizeHistogram(viewRuns.filter(r => r.viewport === PRIMARY_VIEWPORT)),
     css,
     consoleErrors,
+    reducedMotion,
     worstContrast: viewRuns.filter(r => r.viewport === PRIMARY_VIEWPORT)
       .flatMap(r => r.probe.text.filter(t => !t.pass).map(t => ({ view: r.view, ...t })))
       .sort((a, b) => a.ratio - b.ratio).slice(0, 15),
+    unmeasuredControls: viewRuns.filter(r => r.viewport === PRIMARY_VIEWPORT)
+      .flatMap(r => r.probe.unmeasured.map(c => ({ view: r.view, ...c }))).slice(0, 20),
     smallestTargets: viewRuns.filter(r => r.viewport === PRIMARY_VIEWPORT)
       .flatMap(r => r.probe.controls.filter(c => c.min < 36).map(c => ({ view: r.view, ...c })))
       .sort((a, b) => a.min - b.min).slice(0, 15),
@@ -400,6 +427,7 @@ async function main() {
     } else {
       log('  console: clean');
     }
+    log('  reduced motion: ' + (reducedMotion.honoured ? 'honoured' : 'NOT honoured - worst ' + reducedMotion.worstDurationMs + 'ms on ' + reducedMotion.offender));
     if (report.diff.firstRun) {
       log('  diff: first recorded run');
     } else {

@@ -1,6 +1,16 @@
 // The in-page measurement. Serialised into the page by ui-metrics.mjs, so it must be
 // self-contained: no imports, no closures over module scope.
-export const PROBE_SOURCE = String(function apolloProbe(scope) {
+export const PROBE_SOURCE = String(function apolloProbe(scope, revealDisclosures) {
+  // A control inside a shut <details> is one click from being a real target, so it is
+  // measured for real rather than guessed at: the disclosure is opened, the control is
+  // measured, and the disclosure is put back. A control with no box because the panel it
+  // lives in is not currently rendered cannot be measured at all, and is reported as
+  // unmeasured rather than counted as a failure - a number that cannot be driven to zero
+  // by fixing anything is not a threshold.
+  const reopened = [];
+  if (revealDisclosures) {
+    for (const d of document.querySelectorAll('details:not([open])')) { d.open = true; reopened.push(d); }
+  }
   const CHROME_SELECTOR = '.app-shell > header, .topbar, #topbar, body > header';
 
   const parseRgb = value => {
@@ -117,19 +127,39 @@ export const PROBE_SOURCE = String(function apolloProbe(scope) {
     '[tabindex]:not([tabindex="-1"])',
   ].join(',');
 
+  const activationArea = el => {
+    const type = (el.getAttribute('type') || '').toLowerCase();
+    if (el.tagName !== 'INPUT' || (type !== 'checkbox' && type !== 'radio')) return el;
+    const wrapping = el.closest('label');
+    if (wrapping) return wrapping;
+    if (el.id) {
+      const bound = document.querySelector('label[for="' + CSS.escape(el.id) + '"]');
+      if (bound) return bound;
+    }
+    return el;
+  };
+
   const controls = [];
-  const collapsed = [];
+  const unmeasured = [];
+  const measured = new Set();
   for (const root of roots) {
     if (!root) continue;
     for (const el of root.querySelectorAll(CONTROL_SELECTOR)) {
       if (scope !== 'chrome' && inChrome(el)) continue;
-      const rect = el.getBoundingClientRect();
+      // The target is the activation area, not the widget. A 20px checkbox inside a 36px
+      // label is a 36px target, and a checkbox hidden behind a styled switch track is the
+      // size of its label. Measuring the <input> alone would report a defect that is not
+      // there and hide the one that is - a label that really is too short.
+      const hit = activationArea(el);
+      if (hit !== el && measured.has(hit)) continue;
+      measured.add(hit);
+      const rect = hit.getBoundingClientRect();
       const w = Math.round(rect.width * 100) / 100;
       const h = Math.round(rect.height * 100) / 100;
       // A control with no box is either inside a collapsed disclosure or visually hidden
       // behind a proxy. Both are recorded: the first is a real target once revealed.
-      if (!visible(el) || w === 0 || h === 0) {
-        collapsed.push({
+      if (!visible(hit) || w === 0 || h === 0) {
+        unmeasured.push({
           tag: el.tagName.toLowerCase(),
           cls: el.className && typeof el.className === 'string' ? el.className.slice(0, 60) : '',
           inDisclosure: el.closest('details:not([open])') != null,
@@ -182,5 +212,7 @@ export const PROBE_SOURCE = String(function apolloProbe(scope) {
   const rootSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
   const families = Array.from(new Set(text.map(t => t.family))).sort();
 
-  return { text, controls, collapsed, sizeTally, emptyStates, primaryActions, emptyStateHasAction, destructive, overflow, bodySize, rootSize, families };
+  for (const d of reopened) d.open = false;
+
+  return { text, controls, unmeasured, sizeTally, emptyStates, primaryActions, emptyStateHasAction, destructive, overflow, bodySize, rootSize, families };
 });
