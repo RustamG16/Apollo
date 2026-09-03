@@ -170,3 +170,93 @@ at 1280, 1440 or 1920.
 spacing, radius, motion and elevation token families; at most one non-semantic accent), and
 update the AGENTS.md frontend-quality clause to cite `scripts/ui-metrics.mjs` as the evidence
 standard. No CSS in P1.
+
+## 2026-09-03 — P1: the specification replaced
+
+**Slice:** P1, single slice. Complete. No CSS was written.
+
+**Resolved direction — "Apollo Workbench" (v2 of `DESIGN.md`).** One world, resolved at
+intake, held for the whole program. No alternatives were generated and none may be
+introduced at a surface pass.
+
+*Apollo Studio is an instrument, not a stage.* It is the panel you stand in front of to arm
+a pipeline, run it small, read what came back, and change one variable. Three consequences
+carry the whole specification: structure is drawn rather than implied (hairlines and aligned
+columns, not cards and shadows); colour is state (one accent for action and selection, and
+otherwise only green/amber/red); and density comes from geometry, never from type — 32px
+rows, 8-12px padding, 1px rules, and a type scale that never goes below 13px.
+
+**Why this direction and not another.** It is not an invention. `library/doctrines/
+apollo-instrument/design.md` already describes it, already calls itself "the structural base
+Apollo_claude's own dashboard is built on," and Apollo Studio violates it on every clause.
+The product is a dense control surface for configuring and comparing runs; the Instrument
+doctrine is the one that matches the brief on its own stated terms. P2 is adoption, not
+invention. Where v2 departs from the doctrine it is upward: the doctrine's 11/12px sizes are
+below the legibility floor this program exists to establish, so the scale starts at 13.
+
+**What v2 specifies that v1 did not have at all:** a type scale in `rem` (13/14/16/18/22/28/32
+against a 16px root); a six-step surface ladder with measured contrast for all three
+foreground tokens on every surface; a ten-step spacing scale; four radii; three motion
+durations, all under 150ms; six named z-layers and exactly one shadow; control and row
+sizing tokens; a media policy; and ten standing rules each tied to the threshold that
+measures it.
+
+**Decisions taken without asking, and why.**
+
+1. *Dark ground kept, but re-neutralised.* v1's ground was blue enough to read as a theme,
+   which is part of why an accent could not mean anything. v2's `#0B0C0E` is neutral and
+   very slightly cool. Switching to a light ground would have been a defensible instrument
+   choice and a larger risk than value: the product, its media and its whole component
+   surface are dark, and polarity is not the defect the measurements found.
+2. *The accent is one azure, `#5FA8F5`.* The non-semantic hue had to avoid collision with
+   the status palette, which rules out green, amber and red. Between blue, cyan and violet:
+   cyan reads as "info" and would blur into status; violet was v1's gate identity and
+   carrying it forward would keep alive the idea that a gate is a colour rather than a state.
+3. *Violet is withdrawn entirely and gates read as status.* A gate is pending, passed or
+   blocked. Giving it a private hue cost a whole non-semantic colour to say something the
+   status palette already says.
+4. *Body is 16px, not 15.* The threshold is `>=15`, and 15px is a compromise size that
+   exists only to look smaller. The density this product needs is bought back with row
+   height and padding, per the plan's own instruction never to shrink type to fix a layout.
+5. *`--line` and `--line-strong` were split.* v1 used one hairline as both a decorative
+   separator and the boundary of interactive controls; at 1.4:1 it cannot legally be the
+   second. `--line-strong` is 3.3:1 against the ground for anything WCAG 1.4.11 covers.
+6. *`--text-*` now names the type scale only; colours are `--fg*` / `--surface*` / `--bg`.*
+   v1's `--text` was a colour, which made "the text tokens" ambiguous in exactly the file
+   that is supposed to remove ambiguity.
+
+**AGENTS.md amended.** The frontend-quality clause now names `DESIGN.md`'s standing rules
+as binding and `scripts/ui-metrics.mjs` as the evidence standard, and states plainly that a
+markup-pattern detector is not accepted as evidence for a frontend change — it reported this
+interface clean while 165 text nodes failed contrast. The verification clause records that
+`npm run check` now fails on any threshold regression, and that Apollo Studio's own work has
+no human gates.
+
+**Exit gate, self-verified.** v2's frontmatter carries every token family P2 consumes —
+`colors`, `typography`, `spacing`, `rounded`, `motion`, `elevation`, `sizing`, `components`.
+Exactly one non-semantic hue is declared. A repository-wide search for a specified size below
+13px returns only historical references inside the "what it replaces" table and this journal.
+
+**Metrics before and after:** identical, as intended — no CSS was touched.
+
+| # | Before | After |
+|---|---:|---:|
+| T1 | 3105 | 3105 |
+| T2 | 16 | 16 |
+| T3 | 0% | 0% |
+| T4 | 501 | 501 |
+| T5 | 1017 | 1017 |
+| T6 | 3 | 3 |
+| T7 | 3 | 3 |
+| T8 | 19 | 19 |
+| T9 | 1 | 1 |
+| T10 | 5 | 5 |
+| T11 | 7 | 7 |
+
+`npm.cmd run check` passes; console clean; no overflow at any viewport.
+
+**Next slice:** P2 slice 1 — author the token substrate at the top of `public/styles.css`
+(the full colour, type, spacing, radius, motion, elevation and sizing families from v2) and
+convert every `font-size` to `rem` against the new scale, removing the sub-13px sizes. Expect
+T1 and T3 to move to 0 and the layout to break where it only fit at 9px. Do not patch a
+broken layout with smaller type.

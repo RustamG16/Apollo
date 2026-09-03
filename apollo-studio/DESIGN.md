@@ -1,267 +1,459 @@
 ---
-name: Apollo Orchestration Studio
-description: A calm dark control plane for visible orchestration, explicit ownership, and operational state.
+name: Apollo Workbench
+description: One resolved visual world for Apollo Studio — a dense, legible instrument for running and comparing design pipelines. Structure is drawn, colour is semantic, type never goes below 13px.
+version: 2
+replaces: Apollo Orchestration Studio (v1, 2026-08-28)
+resolvedOn: 2026-09-03
 colors:
-  ink: "#07090e"
-  surface: "#0d1119"
-  surface-raised: "#121824"
-  surface-soft: "#171e2b"
-  line: "#293244"
-  line-strong: "#3a465d"
-  text: "#f5f7fb"
-  muted: "#9ca8ba"
-  dim: "#7f8ca0"
-  cyan-action: "#4cc9ff"
-  cyan-soft: "rgba(76, 201, 255, .13)"
-  violet-gate: "#a982ff"
-  violet-soft: "rgba(169, 130, 255, .13)"
-  status-green: "#5bddac"
-  status-amber: "#f4be62"
-  status-red: "#ff7c91"
-  focus: "#92dcff"
+  bg: "#0B0C0E"
+  surface: "#131518"
+  surface-2: "#1A1D21"
+  surface-3: "#22262B"
+  line: "#2A2E34"
+  line-strong: "#5E646E"
+  fg: "#EEF0F3"
+  fg-muted: "#A7AEB8"
+  fg-dim: "#8B929C"
+  fg-on-accent: "#0B0C0E"
+  accent: "#5FA8F5"
+  accent-quiet: "rgba(95,168,245,.14)"
+  accent-line: "rgba(95,168,245,.45)"
+  ok: "#57C98A"
+  ok-quiet: "rgba(87,201,138,.14)"
+  warn: "#E0A64B"
+  warn-quiet: "rgba(224,166,75,.14)"
+  danger: "#F0757F"
+  danger-quiet: "rgba(240,117,127,.14)"
+  focus: "#9BD1FF"
 typography:
-  display:
-    fontFamily: "ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "clamp(30px, 4vw, 58px)"
-    fontWeight: 570
-    lineHeight: 0.98
-    letterSpacing: "-0.035em"
-  headline:
-    fontFamily: "ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "17px"
+  fontUi: "ui-sans-serif, -apple-system, 'Segoe UI Variable Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+  fontMono: "ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, 'Liberation Mono', monospace"
+  rootSize: "16px"
+  label:
+    fontSize: "0.8125rem"
+    px: 13
     fontWeight: 600
-    lineHeight: 1.25
-    letterSpacing: "-0.015em"
-  title:
-    fontFamily: "ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "14px"
-    fontWeight: 600
-    lineHeight: 1.25
+    lineHeight: 1.35
+    letterSpacing: "0.06em"
+    textTransform: "uppercase"
+  meta:
+    fontSize: "0.875rem"
+    px: 14
+    fontWeight: 400
+    lineHeight: 1.4
   body:
-    fontFamily: "ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "12px"
+    fontSize: "1rem"
+    px: 16
     fontWeight: 400
     lineHeight: 1.55
-  label:
-    fontFamily: "ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "9px"
+  title:
+    fontSize: "1.125rem"
+    px: 18
     fontWeight: 600
-    lineHeight: 1.4
-    letterSpacing: "0.08em"
-  mono:
-    fontFamily: "ui-monospace, SFMono-Regular, Consolas, monospace"
-    fontSize: "10px"
-    fontWeight: 400
-    lineHeight: 1.5
-rounded:
-  tag: "5px"
-  small: "8px"
-  field: "9px"
-  control: "10px"
-  medium: "12px"
-  large: "14px"
-  canvas: "16px"
-  circle: "50%"
+    lineHeight: 1.35
+  heading:
+    fontSize: "1.375rem"
+    px: 22
+    fontWeight: 600
+    lineHeight: 1.3
+  section:
+    fontSize: "1.75rem"
+    px: 28
+    fontWeight: 600
+    lineHeight: 1.2
+    letterSpacing: "-0.01em"
+  display:
+    fontSize: "2rem"
+    px: 32
+    fontWeight: 600
+    lineHeight: 1.15
+    letterSpacing: "-0.02em"
 spacing:
-  xs: "5px"
-  sm: "8px"
-  md: "12px"
-  lg: "16px"
-  xl: "24px"
-  page-inline: "clamp(18px, 3vw, 44px)"
-  page-block: "clamp(28px, 4vw, 54px)"
+  space-1: "0.125rem"
+  space-2: "0.25rem"
+  space-3: "0.375rem"
+  space-4: "0.5rem"
+  space-5: "0.75rem"
+  space-6: "1rem"
+  space-7: "1.5rem"
+  space-8: "2rem"
+  space-9: "3rem"
+  space-10: "4rem"
+  inset-page: "clamp(1rem, 2.5vw, 2.5rem)"
+  inset-block: "2rem"
+rounded:
+  radius-1: "2px"
+  radius-2: "4px"
+  radius-3: "8px"
+  radius-round: "999px"
+motion:
+  dur-instant: "80ms"
+  dur-fast: "120ms"
+  dur-slow: "150ms"
+  ease-out: "cubic-bezier(.2,.6,.35,1)"
+  reducedMotion: "all durations collapse to 1ms; no transform is applied"
+elevation:
+  z-base: 0
+  z-raised: 10
+  z-sticky: 20
+  z-dock: 30
+  z-overlay: 40
+  z-toast: 50
+  shadow-float: "0 8px 24px rgba(0,0,0,.5)"
+sizing:
+  control-h: "2.25rem"
+  control-h-narrow: "2.75rem"
+  row-h: "2rem"
+  icon: "1rem"
+  icon-lg: "1.25rem"
+  hit-min: "2.25rem"
+  measure-prose: "68ch"
+  canvas-max: "1560px"
 components:
   button-primary:
-    backgroundColor: "{colors.cyan-action}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.control}"
-    padding: "11px 15px"
-  button-primary-hover:
-    backgroundColor: "#78d7ff"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.control}"
-    padding: "11px 15px"
+    background: "{colors.accent}"
+    color: "{colors.fg-on-accent}"
+    rounded: "{rounded.radius-2}"
+    minHeight: "{sizing.control-h}"
+    padding: "0 {spacing.space-5}"
+    fontSize: "{typography.body.fontSize}"
+    fontWeight: 600
+  button-secondary:
+    background: "{colors.surface-2}"
+    color: "{colors.fg}"
+    border: "1px solid {colors.line-strong}"
+    rounded: "{rounded.radius-2}"
+    minHeight: "{sizing.control-h}"
+    padding: "0 {spacing.space-5}"
   button-quiet:
-    backgroundColor: "transparent"
-    textColor: "{colors.muted}"
-    rounded: "{rounded.small}"
-    padding: "7px 9px"
-  field-default:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.field}"
-    padding: "8px 10px"
-    height: "38px"
-  nav-active:
-    backgroundColor: "{colors.text}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.small}"
-    padding: "8px 12px"
-  workflow-node:
-    backgroundColor: "{colors.surface-raised}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.medium}"
-    padding: "13px"
-    height: "94px"
-  workflow-gate:
-    backgroundColor: "{colors.surface-raised}"
-    textColor: "{colors.violet-gate}"
-    rounded: "{rounded.medium}"
-    padding: "13px"
-    height: "94px"
+    background: "transparent"
+    color: "{colors.fg-muted}"
+    rounded: "{rounded.radius-2}"
+    minHeight: "{sizing.control-h}"
+    padding: "0 {spacing.space-4}"
+    hoverBackground: "{colors.surface-3}"
+    hoverColor: "{colors.fg}"
+  button-danger:
+    background: "transparent"
+    color: "{colors.danger}"
+    border: "1px solid {colors.line-strong}"
+    rounded: "{rounded.radius-2}"
+    minHeight: "{sizing.control-h}"
+    requires: "an undo affordance; see The Undo Rule"
+  field:
+    background: "{colors.bg}"
+    color: "{colors.fg}"
+    border: "1px solid {colors.line-strong}"
+    rounded: "{rounded.radius-2}"
+    minHeight: "{sizing.control-h}"
+    padding: "0 {spacing.space-5}"
+    fontSize: "{typography.body.fontSize}"
+  panel:
+    background: "{colors.surface}"
+    border: "1px solid {colors.line}"
+    rounded: "{rounded.radius-3}"
+    padding: "{spacing.space-6}"
+  row:
+    minHeight: "{sizing.row-h}"
+    borderBottom: "1px solid {colors.line}"
+    padding: "0 {spacing.space-5}"
+    interactiveMinHeight: "{sizing.control-h}"
+  tag:
+    background: "{colors.surface-3}"
+    color: "{colors.fg-muted}"
+    rounded: "{rounded.radius-1}"
+    fontSize: "{typography.label.fontSize}"
+    padding: "{spacing.space-1} {spacing.space-3}"
+  nav-item:
+    minHeight: "{sizing.control-h}"
+    padding: "0 {spacing.space-5}"
+    rounded: "{rounded.radius-2}"
+    inactiveColor: "{colors.fg-muted}"
+    activeBackground: "{colors.surface-3}"
+    activeColor: "{colors.fg}"
+    activeMarker: "2px {colors.accent} inset-block-end rule"
+  switch:
+    width: "2.75rem"
+    height: "1.5rem"
+    hitBox: "{sizing.hit-min}"
+    offTrack: "{colors.surface-3}"
+    onTrack: "{colors.accent-quiet}"
+    onThumb: "{colors.accent}"
+  focus-ring:
+    outline: "2px solid {colors.focus}"
+    outlineOffset: "2px"
 ---
 
-# Design System: Apollo Orchestration Studio
+# Apollo Workbench — the design specification
 
-## Overview
+This file replaces `Apollo Orchestration Studio` (v1). It is read before any frontend work
+in this repository, and it is the reason the previous interface looked the way it did:
+v1 ratified `label: 9px`, `mono: 10px`, `body: 12px`, and every implementation of it was
+faithful. **A specification that names an unusable size will get an unusable interface,
+correctly built.** The measured evidence is in `LOADOUT-PLAN.md` sections 01-03 and the
+numbers are re-measured on every run by `scripts/ui-metrics.mjs`.
 
-**Creative North Star: "The Visible Control Plane"**
+One direction was resolved at intake and is held for the whole program. There are no
+alternatives to compare, and no second world may be introduced at a surface pass.
 
-Apollo Studio is a calm, legible dark mission-control workspace. The interface makes routing, phase, runtime state, approval gates, and agent ownership visible through compact metadata, explicit labels, connected workflow nodes, and persistent operational feedback rather than decorative spectacle.
+## The world
 
-Near-black tonal surfaces create hierarchy without fragmenting the workspace. Restrained cyan carries action and forward flow, violet distinguishes gates and approval-related feedback, and green, amber, and red report operational state. Large editorial page titles orient the user at view level; dense working areas return to compact sans-serif and monospace scales so systems, agents, inventories, budgets, and traces remain scannable.
+**Apollo Studio is an instrument, not a stage.**
 
-**Key Characteristics:**
+It is the panel you stand in front of to arm a pipeline, run it small, read what came back,
+and change one variable. The interface's job is to make state legible at a glance and
+changeable in one move. It has no story to tell about itself.
 
-- Near-black tonal surfaces separated by quiet blue-gray hairlines
-- Cyan reserved for action, selection, data flow, and active structure
-- Violet reserved for gates, approval feedback, and the user side of Oracle
-- Green, amber, and red used semantically for operational state
-- Large view titles paired with compact metadata and tabular numbers
-- Explicit phase, agent, inventory, budget, and runtime ownership
-- Responsive workbenches that linearize without hiding system state
+Three consequences, and everything else follows from them:
 
-## Colors
+1. **Structure is drawn, not implied.** Hairlines, aligned columns, explicit grouping.
+   Where v1 reached for a floating card, v2 uses a rule and a column.
+2. **Colour is state.** One accent hue carries action and selection. Everything else is
+   green, amber or red and means exactly one thing. Nothing is coloured for mood.
+3. **Density comes from geometry, never from type.** Rows are 32px, padding is 8-12px,
+   rules are one pixel. The type does not shrink to make room. If a layout only fits at
+   9px, the layout is wrong.
 
-The palette is a cool near-black control plane with restrained chromatic signals whose meaning stays stable across views.
+### What this world refuses
 
-### Primary
+Background photography and generated atmospheres. Gradients used as decoration. Two type
+families. Serif display type. Gold, cream, and any warm editorial register. Cards as the
+default container — they waste their own edges. Hero sections. Motion that delays a state
+change. Proportional numerals in a data context. Any size below 13px, for any reason,
+including "it's just a label".
 
-- **Signal Cyan** (`colors.cyan-action`): Primary actions, workflow connections, active structural borders, paths, phase labels, switches, and knowledge selection.
-- **Control Ink** (`colors.ink`): The application ground, scrollbar track, inverse button text, and deepest contrast anchor.
+### What it replaces, precisely
 
-### Secondary
+| v1 shipped | v2 specifies |
+|---|---|
+| Two visual worlds — warm gold/cream/serif in Work, neon cyan/violet in Architecture | One world, one family, one accent |
+| `label` 9px, `mono` 10px, `body` 12px, `title` 14px | 13px floor, 16px body, everything in rem |
+| `display` clamp(30px, 4vw, 58px) — 6.4x the body | `display` 32px flat — 2x the body |
+| Cyan action + violet gate + warm gold = 3 non-semantic hues | One accent; gates read as status, not as a hue of their own |
+| 18 colour custom properties, 0 other tokens, 48 hex + 112 rgba literals | Complete token families; zero literals in rules |
+| 25 radii, 10 ad hoc transitions, 14 z-index spellings, 7 `!important` | 4 radii, 3 durations, 6 named layers, no `!important` |
+| 5 decorative WebP backgrounds across 3 views | No decorative imagery; portraits are content |
 
-- **Gate Violet** (`colors.violet-gate`): Approval gates, feedback connectors, user-authored Oracle messages, and host-specific event identity.
-- **Operational Green** (`colors.status-green`): Live, completed, detected, usable, and active-system states.
-- **Operational Amber** (`colors.status-amber`): Demo, connecting, pending, token, and approval-attention states.
-- **Operational Red** (`colors.status-red`): Errors, failures, destructive actions, and form failure feedback.
+## Type
 
-### Neutral
+**One family.** `ui-sans-serif, -apple-system, 'Segoe UI Variable Text', 'Segoe UI', Roboto,
+Helvetica, Arial, sans-serif`. There is no display face and no second family. Monospace
+(`ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, monospace`) is not a second family —
+it is a data type, used only for ids, paths, keys, hashes, raw values and run output.
 
-- **Base Surface** (`colors.surface`): Default panels, cards, fields, workflow canvas, and result containers.
-- **Raised Surface** (`colors.surface-raised`): Floating trace details and elevated sublayers.
-- **Soft Surface** (`colors.surface-soft`): Hover, selected-list, message, tag, and nested-control layers.
-- **Quiet Line** (`colors.line`): Default dividers and panel boundaries.
-- **Strong Line** (`colors.line-strong`): Emphasized borders, sticky run-bar edges, and inactive switch structure.
-- **Primary Text** (`colors.text`): High-priority labels and content.
-- **Muted Text** (`colors.muted`): Descriptions and secondary values.
-- **Dim Text** (`colors.dim`): Tertiary metadata, counts, source labels, and dormant context.
+**Everything is in `rem`, against a 16px root.** No `font-size` in the stylesheet may be
+expressed in `px`. This is not a style preference: WCAG 1.4.4 requires text to survive a
+200% text-only resize, and the v1 stylesheet's 179 `px` font-sizes made that impossible
+product-wide. `scripts/ui-metrics.mjs` fails the build if a single declaration regresses.
 
-**The Semantic Signal Rule.** Cyan means action or active flow, violet means gate or approval context, and green/amber/red report operational state; do not exchange these roles for variety.
+### The scale
 
-**The Tonal Surface Rule.** Build hierarchy from the established Ink, Surface, Raised, and Soft ladder before adding borders, shadows, or new colors.
+| Token | rem | px | Weight | Leading | Role |
+|---|---:|---:|---:|---:|---|
+| `--text-label` | 0.8125 | **13** | 600 | 1.35 | uppercase metadata, +0.06em tracking |
+| `--text-meta` | 0.875 | 14 | 400 | 1.4 | secondary values, table cells, captions |
+| `--text-body` | 1 | 16 | 400 | 1.55 | the default; prose, control labels, inputs |
+| `--text-title` | 1.125 | 18 | 600 | 1.35 | the name of an object — a loadout, an agent, a run |
+| `--text-heading` | 1.375 | 22 | 600 | 1.3 | panel and section headings |
+| `--text-section` | 1.75 | 28 | 600 | 1.2 | the heading of a region within a view |
+| `--text-display` | 2 | **32** | 600 | 1.15 | the view's own name, once per view, -0.02em |
 
-## Typography
+**13px is the floor and the floor is absolute.** It is the smallest size at which the
+system UI face keeps its counters legible on a dark ground at typical laptop pixel density.
+Nothing — no label, no count, no unit, no timestamp, no keyboard hint — goes below it.
 
-**Display Font:** UI sans-serif (with platform system fallbacks)  
-**Body Font:** UI sans-serif (with platform system fallbacks)  
-**Label/Mono Font:** UI monospace (with SFMono-Regular and Consolas fallbacks) for paths, outputs, and technical evidence
+**The display stops at 32px.** v1's display was up to 58px against a 12px body: a 6.4x
+jump that made every real piece of information look like a footnote. 32px against 16px is
+2x, which is enough to orient and not enough to shout.
 
-**Character:** The system sans serif is neutral and operational at small sizes, but expands into a large, tightly tracked view title for clear orientation. Monospace is evidence-specific, not a general stylistic layer.
+**Tabular numerals everywhere.** `font-variant-numeric: tabular-nums` on the root. Numbers
+in this product are compared down columns; proportional digits make that impossible.
 
-### Hierarchy
+**Prose is capped at 68ch.** Operational prose only — this product has no marketing copy.
 
-- **Display** (`typography.display`): View-level titles, capped at 760px and reduced to 34px on mobile.
-- **Headline** (`typography.headline`): Panel and section headings.
-- **Title** (`typography.title`): Brand, output, card, and result identities.
-- **Body** (`typography.body`): Explanations, runtime notes, and operational prose, usually constrained to approximately 68 characters per line.
-- **Label** (`typography.label`): Phases, states, counts, sources, and other metadata, commonly uppercase with tracked letters.
-- **Mono** (`typography.mono`): Filesystem paths, saved output excerpts, run bodies, and precise technical values.
+## Colour
 
-**The Orientation-Then-Operation Rule.** Use the large display scale once to name the current view, then return to compact operational type inside the workbench.
+The ground is a neutral, very slightly cool dark. v1's ground was blue enough to read as a
+theme; v2's reads as unpainted metal, which is what lets one accent mean something.
 
-**The Evidence Mono Rule.** Reserve monospace for machine-readable output, paths, and trace evidence; ordinary interface copy remains sans-serif.
+### The surface ladder
 
-## Layout
+| Token | Value | Role |
+|---|---|---|
+| `--bg` | `#0B0C0E` | the application ground; nothing sits behind it |
+| `--surface` | `#131518` | panels, the default container |
+| `--surface-2` | `#1A1D21` | nested content, secondary buttons, selected rows |
+| `--surface-3` | `#22262B` | hover, active navigation, tags |
+| `--line` | `#2A2E34` | separators inside a group |
+| `--line-strong` | `#5E646E` | the boundary of any control, field, or switch |
 
-The application is centered in a 1560px maximum canvas with fluid page insets (`spacing.page-inline`) and fluid top spacing (`spacing.page-block`). A sticky 72px top bar balances brand, centered view navigation, and runtime state. View headers pair a large title block with one clear action or runtime note, followed by purpose-built grids for workflow, systems, knowledge, Oracle, comparisons, or run evidence.
+Hierarchy is built by moving down this ladder before any border, and by any border before
+any shadow. There is exactly one shadow in the system.
 
-At 1180px, the top bar moves navigation onto a second row, multi-column workbenches simplify, and horizontally complex workflow or knowledge views preserve their structure through controlled overflow. At 760px, the top bar becomes static, navigation scrolls horizontally, minimum interactive height becomes 44px, primary grids linearize, connectors disappear, and the workflow becomes an explicit ordered stack. No operational state is removed merely to fit a smaller viewport.
+**`--line` and `--line-strong` are not interchangeable.** `--line` is a 1.4:1 separator
+and is only legal where the grouping is *also* carried by spacing and alignment; it may
+never be the sole boundary of an interactive element. `--line-strong` is 3.3:1 against the
+ground and is required wherever WCAG 1.4.11 applies — the edge of a field, a secondary
+button, a switch track, a selectable cell.
 
-**The State Before Density Rule.** Responsive simplification may stack or scroll dense structures, but it must keep active selection, phase, ownership, runtime status, and available actions visible.
+### Foreground
 
-## Elevation & Depth
+| Token | Value | On `--bg` | On `--surface-3` | Role |
+|---|---|---:|---:|---|
+| `--fg` | `#EEF0F3` | 16.4:1 | 11.9:1 | primary content |
+| `--fg-muted` | `#A7AEB8` | 8.9:1 | 6.9:1 | labels, secondary values, descriptions |
+| `--fg-dim` | `#8B929C` | 6.2:1 | 4.9:1 | tertiary metadata, counts, dormant context |
 
-Depth is restrained and structural. Most lists and workbenches remain flat, separated by tonal surfaces and one-pixel borders. The shared ambient shadow (`0 18px 50px rgba(0,0,0,.28)`) marks major focused work surfaces such as the workflow canvas, Oracle, inline editors, and the sticky run bar. Workflow nodes use a tighter local shadow, while open traces use the shared or a closely related floating shadow. The top bar and sticky run bar use translucent dark fills with blur to remain legible over scrolling content.
+All three pass AA for normal text on every surface in the ladder. That is the point of
+having exactly three: v1 had a `dim` that failed against half the surfaces it was used on,
+which is where a large share of the 165 measured contrast failures came from.
 
-**The Bounded Lift Rule.** Apply shadow to a focused canvas, sticky command surface, or floating detail; keep ordinary rows and registries flat.
+### One accent
 
-## Shapes
+`--accent: #5FA8F5`. It means **action or active selection** and nothing else: primary
+buttons, the current navigation item's marker, the focused field's edge, the selected row,
+the active connection in the pipeline map.
 
-Apollo uses gently rounded rectangles with a clear size hierarchy: 8–10px for controls and compact selections, 12px for workflow nodes and working cards, 14px for elevated panels, and 16px for the primary workflow canvas. Five-pixel skill tags are deliberately tighter. Dots and switch thumbs are circular because they encode state or binary position, while the cyan brand mark uses a clipped octagonal silhouette.
+There is no second non-semantic hue. v1's violet gate identity is withdrawn — a gate is a
+*state*, so it reads with the status palette (pending amber, passed green, blocked red)
+like every other state in the product. This is the T7 threshold: at most one non-semantic
+hue, and one is what we are spending.
 
-**The Nested Radius Rule.** Smaller controls use smaller corners than the panel that contains them; do not give every layer the same radius.
+### Status, and only status
 
-## Components
+| Token | Value | Means |
+|---|---|---|
+| `--ok` | `#57C98A` | live, complete, passed, detected, available |
+| `--warn` | `#E0A64B` | demo, pending, awaiting approval, degraded |
+| `--danger` | `#F0757F` | failed, error, destructive, unavailable |
 
-### Buttons
+Each has a `-quiet` companion at 14% for fills. **If a colour cannot be named in a legend,
+it does not appear.** No hue may be borrowed for variety, emphasis, or category.
 
-- **Primary:** Signal Cyan fill with Control Ink text, 10px corners, 11px by 15px padding, and a restrained cyan ambient shadow.
-- **Hover / Focus:** Hover brightens the cyan fill; keyboard focus uses a 2px Focus Blue outline with a 3px offset.
-- **Quiet:** Transparent with Muted Text, becoming a Soft Surface with Primary Text on hover.
-- **Danger:** Transparent Operational Red text with a low-opacity red hover fill.
-- **Disabled:** Remains visible at 0.45 opacity; running actions use a wait cursor at 0.5 opacity.
+### Focus
 
-### Chips
+`--focus: #9BD1FF`, a 2px outline at 2px offset, on every interactive element without
+exception, and never removed. It is 12:1 against the ground and 9.4:1 against
+`--surface-3`, so it is visible on every surface a control can sit on.
 
-- **Style:** Skill and plan chips use Primary Text softened toward blue-gray on a Soft Surface, with tight 5px corners and 4px by 6px padding.
-- **State:** Status labels do not become generic chips; they retain semantic text color and, where implemented, a small glowing dot.
+## Density, spacing and rules
 
-### Cards / Containers
+**Position on density: dense, and legible, at the same time.** These are only in tension
+if density is bought with type size. It is bought here with geometry.
 
-- **Corner Style:** Compact work cards use 10–12px corners; elevated panels use 14px; the workflow canvas uses 16px.
-- **Background:** Base Surface is the default; Raised and Soft surfaces identify nested or selected content.
-- **Shadow Strategy:** Flat rows by default, bounded lift for canvases, sticky command surfaces, and floating traces.
-- **Border:** One-pixel Quiet Line by default, Strong Line for emphasized boundaries, and semantic color for active workflow or gate states.
-- **Internal Padding:** Dense rows use roughly 9–14px; independent cards and editors use 16–20px.
+- Rows are `--row-h` (32px) when the row itself is not the control.
+- Any row, cell, or item that is clickable is at least `--control-h` (36px) tall and 36px
+  wide, on desktop; at least 44px below 900px. This is the PRODUCT.md commitment, and
+  v1 missed it in 289 places.
+- Horizontal padding inside dense structures is `--space-4` to `--space-5` (8-12px).
+- Vertical rhythm between groups is `--space-6` (16px); between regions, `--space-8` (32px).
 
-### Inputs / Fields
+### The spacing scale
 
-- **Style:** Base Surface fill, Quiet Line border, 9px corners, Primary Text, and a 38px minimum height for inputs and selects.
-- **Focus:** A 2px Focus Blue outline with a 3px offset is shared across controls and summaries.
-- **Error / Disabled:** Error feedback uses Operational Red. Disabled controls remain in layout with reduced opacity and a not-allowed cursor.
+`--space-1` 2px · `--space-2` 4 · `--space-3` 6 · `--space-4` 8 · `--space-5` 12 ·
+`--space-6` 16 · `--space-7` 24 · `--space-8` 32 · `--space-9` 48 · `--space-10` 64.
 
-### Navigation
+Page inset is `--inset-page: clamp(1rem, 2.5vw, 2.5rem)`; the canvas is capped at 1560px.
+No spacing value may be written as a literal in a rule.
 
-The primary navigation is a compact Base Surface capsule with a Quiet Line border and nested 8px items. Inactive items use Muted Text, hover moves to Soft Surface and Primary Text, and the active item inverts to Primary Text as its fill with Control Ink text. On mobile the same items remain in a horizontally scrolling row rather than collapsing into an undiscoverable menu.
+### Rules
 
-### Toggle Switch
+A rule is 1px, `--line`, and it is the primary grouping device. Where v1 would have made
+each item a card with a border on four sides, v2 draws one rule between items and aligns
+their columns. Aligned columns and a shared baseline do more grouping work than a border,
+and cost nothing.
 
-The switch is 36px by 20px with a 12px track and circular 14px thumb. Off uses Strong Line territory and Muted Text; on uses translucent cyan with a Signal Cyan thumb translated 16px. The hidden native checkbox retains keyboard focus through a Focus Blue outline on the track.
+## Shape
 
-### Workflow Node
+Four radii, and no others:
 
-Workflow nodes are 12px rounded, gradient-toned surfaces with Strong Line borders and a tight local shadow. Hover lifts by 2px and shifts the border to Signal Cyan; pressed nodes add a cyan ring and stronger shadow. Phase labels use Signal Cyan, gate variants use Gate Violet and a violet border, and the always-active director exposes its status in Operational Green.
+| Token | Value | Applies to |
+|---|---|---|
+| `--radius-1` | 2px | tags, dots of information, inline markers |
+| `--radius-2` | 4px | every control — buttons, fields, selects, nav items |
+| `--radius-3` | 8px | panels, canvases, floating layers |
+| `--radius-round` | 999px | switch thumbs and status dots only, where the shape encodes a binary or a point |
 
-### Runtime and Run Status
+Nested radii step down: a control inside a panel uses a smaller radius than the panel.
+v1 shipped 25 distinct radii, which is not a shape language, it is an absence of one.
 
-Runtime state pairs compact text with a 7px glowing dot. Green denotes live/completed/detected, amber denotes demo/pending, red denotes error/failed, and cyan denotes activity. These colors remain semantic in history, integrations, tools, and host events.
+## Motion
 
-## Do's and Don'ts
+**Position: motion is feedback, never performance.** It confirms a state change that has
+already happened. It never introduces content, never staggers a page in, never runs on
+scroll, and never delays a response.
 
-### Do:
+| Token | Value | Use |
+|---|---|---|
+| `--dur-instant` | 80ms | a state flip — toggle, checkbox, selection |
+| `--dur-fast` | 120ms | hover, focus, colour and border changes |
+| `--dur-slow` | 150ms | a disclosure opening, a panel entering |
 
-- **Do** expose active system, phase, agent owner, inventory, budget, approval, runtime, and run state close to the object they describe.
-- **Do** build hierarchy from the four near-black surface levels and quiet blue-gray lines before introducing elevation.
-- **Do** preserve cyan for action and active flow, violet for gates and approval context, and status colors for operational truth.
-- **Do** use compact tracked labels and tabular numbers for metadata while reserving the large title scale for view orientation.
-- **Do** linearize dense workbenches on mobile while retaining selection, state, and action visibility.
+`--ease-out: cubic-bezier(.2,.6,.35,1)`. **Nothing in this product animates for longer
+than 150ms.** Only `opacity`, `background-color`, `border-color`, `color`, and `transform`
+limited to 4px of translation may be animated; never `width`, `height`, `top` or `left`.
 
-### Don't:
+Under `prefers-reduced-motion: reduce`, all three durations become 1ms and no transform is
+applied. GSAP stays in the product for state feedback only, inside these bounds; it is not
+a licence for choreography.
 
-- **Don't** use semantic accent colors as interchangeable decoration.
-- **Don't** add large gradients, bright ambient backgrounds, or ornamental illustration that competes with system state.
-- **Don't** turn every row into a floating card or apply the shared shadow to ordinary registry content.
-- **Don't** hide complex workflow state behind hover-only behavior or remove it at responsive breakpoints.
-- **Don't** use monospace for general prose or enlarge metadata until the information hierarchy flattens.
+## Elevation
+
+Six named layers, and one shadow.
+
+`--z-base` 0 · `--z-raised` 10 · `--z-sticky` 20 · `--z-dock` 30 · `--z-overlay` 40 ·
+`--z-toast` 50. No `z-index` may be written as a number in a rule.
+
+`--shadow-float: 0 8px 24px rgba(0,0,0,.5)` is the only shadow in the system, and it is
+only for a layer that genuinely floats over another: the Oracle dock, an open trace, a
+menu, a toast. Panels, rows, registries and canvases are flat.
+
+## Media
+
+**No decorative imagery, anywhere.** No background photographs, no generated atmospheres,
+no ambient gradients. v1 used five of them across three views. Ornament is what an
+interface reaches for when its type is too weak to carry authority; the type is now strong
+enough, so the appetite should not return.
+
+Agent portraits are **content**, not ornament — they identify an agent. They render in a
+reserved 1:1 box that holds its space before the image loads, with a CSS-only monogram
+fallback in `--surface-2` and `--fg-muted` that is a complete substitute, not a placeholder.
+An image that fails to load must never cause a layout shift or an overlapping alt string.
+
+Files under `public/media/` are protected and are not deleted. They simply stop being
+referenced.
+
+## Standing rules
+
+Each of these names a measured defect in v1 and is checked on every run.
+
+- **The Floor Rule.** No rendered text below 13px. (T1)
+- **The Unit Rule.** Every `font-size` in `rem`. (T3)
+- **The Contrast Rule.** Every text/background pair meets AA — 4.5:1 normal, 3:1 for
+  >=24px or >=18.66px bold. Boundaries that carry meaning meet 3:1. (T4)
+- **The Target Rule.** Every interactive element is at least 36px in both dimensions on
+  desktop, 44px below 900px — including inside a collapsed disclosure. (T5)
+- **The One-World Rule.** One type family, one accent. A surface pass may not introduce
+  a second visual register "just here". (T6, T7)
+- **The Token Rule.** No colour, spacing, radius, duration or z-index literal appears in a
+  rule. If a value is worth writing twice it is worth naming once. (T8)
+- **The Empty-State Rule.** Every view states what it holds when it holds nothing, and
+  offers exactly one primary action to fill it. An empty view with no action is a dead end,
+  and v1 had six of them. (T9)
+- **The No-Ornament Rule.** No image is present without an informational role. (T10)
+- **The Undo Rule.** Every destructive action is reversible, and says so at the moment it
+  is taken. Undo is offered inline for at least the duration of the following interaction;
+  a confirmation dialog is not an undo and does not satisfy this rule. (T11)
+- **The Specificity Rule.** No `!important`. If a rule needs one, the cascade is wrong and
+  the cascade is what gets fixed.
+
+## How this file is enforced
+
+`scripts/ui-metrics.mjs` boots the app, walks all eight views at 1280x800, 1440x900 and
+1920x1080, reads computed styles rather than markup, and emits T1-T11. `npm run check`
+fails on any regression. The markup-pattern detector that reported this interface clean
+while 165 text nodes failed contrast is not evidence and is not accepted as evidence.
+
+**The thresholds are the floor, not the ambition.** Passing all eleven means the interface
+is legible, predictable and consistent. It does not yet mean it is good, and no measurement
+in this file will ever tell you that it is.
