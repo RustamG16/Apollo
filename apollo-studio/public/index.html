@@ -200,13 +200,13 @@
           <div class="runtime-note" id="playground-mode">Checking runtime…</div>
         </div>
 
-        <div class="playground-steps" aria-label="Comparison workflow"><span class="is-current">1 · Task</span><span>2 · Setups</span><span>3 · Pilot run</span><span>4 · Keep result</span></div>
+        <ol class="playground-steps" id="playground-steps" aria-label="Comparison workflow"><li data-step="task">Task</li><li data-step="setups">Loadouts</li><li data-step="run">Pilot run</li><li data-step="result">Keep result</li></ol>
         <div class="playground-workbench">
           <div class="playground-task-rail">
             <section class="prompt-composer">
               <label for="experiment-prompt">The task every setup must solve</label>
               <textarea id="experiment-prompt" rows="4" maxlength="20000" placeholder="Describe the same task every setup should solve…">Redesign a SaaS agency homepage so founders understand the offer in ten seconds and can confidently book a strategy call. Explain the recommended structure, interaction, and verification plan.</textarea>
-              <div class="prompt-footer"><span id="prompt-length">0 / 20,000</span><button class="quiet-action command-action" id="clear-prompt"><i data-lucide="eraser" aria-hidden="true"></i><span>Clear</span></button></div>
+              <div class="prompt-footer"><span id="prompt-length">0 / 20,000</span><button class="quiet-action command-action" data-undo id="clear-prompt"><i data-lucide="eraser" aria-hidden="true"></i><span>Clear</span></button></div>
             </section>
 
             <div class="experiment-settings">
@@ -238,6 +238,11 @@
 
         <div class="run-bar"><div class="run-state"><p id="run-message" role="status">Pilot mode limits cost before full implementation.</p><div class="comparison-progress" id="comparison-progress" aria-hidden="true"><i></i></div></div><button class="run-action command-action" id="run-comparison"><i data-lucide="play" aria-hidden="true"></i><span>Run pilot comparison</span></button></div>
         <section class="results-grid" id="results-grid" aria-live="polite"></section>
+        <div class="empty-state" data-empty-state id="results-empty">
+          <strong>No comparison yet.</strong>
+          <p>Give both loadouts the same task and run it small. The results land here side by side, with the cost and latency of each.</p>
+          <button class="primary-action" data-primary-action type="button" id="results-empty-action">Run the pilot comparison</button>
+        </div>
       </section>
 
       <section class="view" id="agents" aria-labelledby="agents-title">

@@ -1373,3 +1373,36 @@ textarea { min-height: calc(var(--control-h) * 2); }
 }
 .skill-status.is-in-use { border-color: var(--ok); color: var(--ok); background: var(--ok-quiet); }
 .skill-status.is-available { border-color: var(--accent-line); color: var(--accent); background: var(--accent-quiet); }
+
+/* The step strip is an <ol> now that it tracks real state; the numbers come from the list
+   rather than from the copy, so they cannot drift out of order. */
+.playground-steps { counter-reset: step; margin: 0 0 var(--space-7); padding: 0; list-style: none; }
+.playground-steps li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-h);
+  padding: var(--space-4) var(--space-5);
+  color: var(--fg-dim);
+  background: var(--surface);
+  font-size: var(--text-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+}
+.playground-steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-round);
+  font-variant-numeric: tabular-nums;
+}
+.playground-steps li.is-done { color: var(--fg-muted); }
+.playground-steps li.is-done::before { content: '\2713'; border-color: var(--ok); color: var(--ok); }
+.playground-steps li.is-current { color: var(--fg); background: var(--surface-3); box-shadow: inset 0 -2px 0 var(--accent); }
+.playground-steps li.is-current::before { border-color: var(--accent); color: var(--accent); }
+
+#results-empty { margin-block-start: var(--space-7); }

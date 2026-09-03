@@ -52,7 +52,29 @@ function setCommandLabel(button, label) {
   if (target) target.textContent = label;
   else button.textContent = label;
 }
+// The four-step strip was static markup: "1 - Task" stayed current through a completed run.
+// A progress indicator that does not track progress is worse than none, so it now reads the
+// real state.
+function renderPlaygroundSteps(mode) {
+  const host = $('#playground-steps');
+  if (!host) return;
+  const hasPrompt = ($('#experiment-prompt')?.value || '').trim().length > 2;
+  const hasResults = $('#results-grid')?.children.length > 0;
+  const reached = mode === 'running' ? 'run' : hasResults ? 'result' : hasPrompt ? 'setups' : 'task';
+  const order = ['task', 'setups', 'run', 'result'];
+  const index = order.indexOf(reached);
+  for (const item of host.children) {
+    const position = order.indexOf(item.dataset.step);
+    item.classList.toggle('is-current', position === index);
+    item.classList.toggle('is-done', position < index);
+    if (position === index) item.setAttribute('aria-current', 'step'); else item.removeAttribute('aria-current');
+  }
+  const empty = $('#results-empty');
+  if (empty) empty.hidden = hasResults;
+}
+
 function setComparisonState(mode) {
+  renderPlaygroundSteps(mode);
   const bar = $('.run-bar'); const track = $('#comparison-progress'); const indicator = track?.querySelector('i');
   if (!bar || !indicator) return;
   bar.dataset.state = mode;
@@ -1748,7 +1770,16 @@ function bindEvents() {
     $('#run-message').textContent = event.target.value === 'pilot' ? 'Pilot mode limits cost before full implementation.' : event.target.value === 'standard' ? 'Standard mode gives each setup more room.' : 'Full-plan mode uses the largest test budget.';
   });
   $('#experiment-prompt').addEventListener('input', () => $('#prompt-length').textContent = `${$('#experiment-prompt').value.length.toLocaleString()} / 20,000`);
-  $('#clear-prompt').addEventListener('click', () => { $('#experiment-prompt').value = ''; $('#experiment-prompt').dispatchEvent(new Event('input')); $('#experiment-prompt').focus(); });
+  $('#clear-prompt').addEventListener('click', () => {
+    const previous = $('#experiment-prompt').value;
+    if (!previous) return;
+    $('#experiment-prompt').value = '';
+    $('#experiment-prompt').dispatchEvent(new Event('input', { bubbles: true }));
+    offerUndo('Cleared the task.', () => {
+      $('#experiment-prompt').value = previous;
+      $('#experiment-prompt').dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  });
   $('#export-runs').addEventListener('click', exportRuns);
   // A confirmation dialog is not an undo: it asks before you can see the result. The clear
   // happens, and the way back stays on screen.
@@ -1798,6 +1829,8 @@ function bindEvents() {
     state.knowledgeCategory = 'all';
     renderKnowledge();
   });
+  $('#results-empty-action').addEventListener('click', () => $('#run-comparison').click());
+  $('#experiment-prompt').addEventListener('input', () => renderPlaygroundSteps('idle'));
   $('#undo-dismiss').addEventListener('click', dismissUndo);
   const observer = new ResizeObserver(() => requestAnimationFrame(drawConnections)); observer.observe($('#workflow-canvas'));
   window.addEventListener('resize', drawConnections, { passive: true });

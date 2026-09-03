@@ -963,3 +963,49 @@ motion honoured, no overflow at any viewport.
 **Next slice:** P4 pass 4 — Playground. The comparison itself was rebuilt in P3 slice 4, so
 this pass is the surrounding task: the four-step strip, the prompt composer, the run bar, and
 the prompt "Clear" that still has no undo.
+
+## 2026-09-03 — P4 pass 4: Playground
+
+**Slice:** P4, surface 4 of 6. Complete. The comparison itself was rebuilt in P3 slice 4;
+this pass is the task around it.
+
+### The real task, observed
+
+Write one task, point two loadouts at it, run it small, keep the winner. Two things were
+dishonest about the surface while that happened.
+
+**The four-step strip never moved.** "1 · Task" stayed marked current through a completed
+comparison — it was static markup with a hard-coded `is-current`. A progress indicator that
+does not track progress is worse than no indicator, because it is read as information.
+It is now an ordered list driven by real state: the task step completes when a prompt
+exists, setups is current until a run starts, run is current while running, and keep-result
+becomes current when results land. Verified through all four transitions in the live app.
+The numbers come from `counter()` on the list rather than from the copy, so they cannot
+drift out of order, and a completed step shows a check rather than its number.
+
+**Clearing the task was irreversible.** The prompt "Clear" wiped a paragraph with no way
+back. It now offers undo, like every other destructive action in the product. T11 fell from
+4 to 3.
+
+### Added
+
+**An empty state for the results region.** Before a run there was blank space; it now says
+what will land there and offers the run as its one action.
+
+### Metrics
+
+| # | Threshold | Before | After | State |
+|---|---|---:|---:|---|
+| T11 | Destructive actions without undo | 4 | **3** | FAIL |
+
+Nine of eleven pass. `npm.cmd run check` exits 0, console clean, reduced motion honoured, no
+overflow at any viewport. A demo comparison was run end to end after the change.
+
+The three destructive actions still without undo — "Reset", "Delete node" and "Reset
+defaults" — are all in the Architecture node editor, which the next pass converts from an
+authoring surface to an inspection one. Several of them should stop existing rather than
+gain an undo.
+
+**Next slice:** P4 pass 5 — the Pipeline map. The plan's position is that node editing
+authored a second system the loadout has replaced: keep the graph interactive for inspection
+and layout, not for authoring nodes no run will execute.
