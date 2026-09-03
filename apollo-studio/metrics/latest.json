@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T16:01:51.786Z",
-  "durationMs": 27993,
+  "generatedAt": "2026-09-03T16:24:38.718Z",
+  "durationMs": 27961,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -877,13 +877,13 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 122434,
-        "lines": 1622
+        "bytes": 122607,
+        "lines": 1625
       }
     ],
     "fontSizeUnits": {
-      "total": 256,
-      "rem": 256,
+      "total": 257,
+      "rem": 257,
       "px": 0,
       "em": 0,
       "other": 0

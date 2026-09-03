@@ -167,8 +167,12 @@ export const SNAPSHOT = `(() => {
 /** True when the click produced something a person could perceive. */
 export function changed(before, after) {
   if (!before || !after) return false;
+  // `focused` counts. Programmatic .click() does not move focus on its own, so a change here
+  // is always something the page decided to do - a guard sending the caret to the field that
+  // needs filling, native constraint validation focusing the first invalid control, a close
+  // button returning focus to its trigger. Those are answers, not silence.
   const keys = ['hash', 'view', 'domHash', 'textHash', 'storeKeys', 'dialogOpen', 'undoVisible',
-    'oracleOpen', 'inspectorOpen', 'formHidden'];
+    'oracleOpen', 'inspectorOpen', 'formHidden', 'focused'];
   if (keys.some(key => before[key] !== after[key])) return true;
   // a store value that grew or shrank counts, even when the key set is identical
   for (const key of Object.keys(after.store)) {

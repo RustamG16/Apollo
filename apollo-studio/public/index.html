@@ -355,7 +355,7 @@
 
       <section class="view" id="runs" aria-labelledby="runs-title">
         <div class="section-heading"><div><h1 id="runs-title">Run history</h1><p>One history, newest first. Each row says where it came from: a connected host through Apollo MCP, or this browser.</p></div><div class="heading-actions"><button class="quiet-action" id="refresh-runs">Refresh</button><button class="quiet-action" id="export-runs">Export JSON</button><button class="danger-action" data-undo id="clear-runs">Clear local</button></div></div>
-        <div class="history-legend"><span class="history-source is-connected">MCP host</span><span class="history-source">This browser</span></div>
+        <div class="history-legend"><span class="history-source is-connected">MCP host</span><span class="history-source">This browser</span><span class="runs-note" id="runs-note" role="status"></span></div>
         <div class="run-history" id="run-history" aria-live="polite"></div>
         <div class="empty-state" data-empty-state id="runs-empty" hidden>
           <strong>No runs yet.</strong>

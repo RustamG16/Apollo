@@ -1619,3 +1619,6 @@ textarea { min-height: calc(var(--control-h) * 2); }
 .plan-context > summary:hover { color:var(--fg); }
 .plan-context pre { margin: 0; padding: 0 var(--space-5) var(--space-5); overflow-x:auto; color:var(--fg-muted); font-family:var(--font-ui); font-size:var(--text-label); line-height:var(--leading-prose); white-space:pre-wrap; overflow-wrap:anywhere; }
 .plan-context p { margin: 0; padding: 0 var(--space-5) var(--space-5); color:var(--fg-dim); font-size:var(--text-label); }
+
+/* Runs had no status line, so three of its four controls could decline silently. */
+.runs-note { margin-left:auto; color:var(--fg-muted); font-size:var(--text-meta); }

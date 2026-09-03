@@ -1461,7 +1461,18 @@ function renderHistory() {
   updateRunCount();
 }
 
+// Runs view feedback. The view had no status line at all, so three of its four controls
+// could decline silently.
+function setRunsNote(text) {
+  const host = $('#runs-note');
+  if (host) host.textContent = text;
+}
+
 function exportRuns() {
+  if (!state.runs.length && !connectedRunsFromEvents().length) {
+    setRunsNote('Nothing to export yet — no runs have been recorded.');
+    return;
+  }
   const payload = { exportedAt: new Date().toISOString(), connectedRuns: connectedRunsFromEvents(), browserExperiments: state.runs };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
   const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `apollo-runs-${new Date().toISOString().slice(0,10)}.json`; link.click(); URL.revokeObjectURL(link.href);
@@ -1721,7 +1732,14 @@ function renderKnowledgeInspector() {
   ].join(' · ');
   const form = host.querySelector('#skill-editor'); form.elements.enabled.checked = skill.enabled; form.elements.category.value = skill.group; form.elements.phase.value = skill.phase; form.elements.description.value = skill.description; form.elements.runtimePrompt.value = skill.runtimePrompt;
   form.addEventListener('submit', async event => {
-    event.preventDefault(); const status = form.querySelector('.editor-status'); status.textContent = 'Saving…';
+    event.preventDefault(); const status = form.querySelector('.editor-status');
+    const unchanged = form.elements.enabled.checked === skill.enabled
+      && form.elements.category.value === skill.group
+      && form.elements.phase.value === skill.phase
+      && form.elements.description.value === skill.description
+      && form.elements.runtimePrompt.value === skill.runtimePrompt;
+    if (unchanged) { status.textContent = 'Nothing to save — this capability matches what is stored.'; return; }
+    status.textContent = 'Saving…';
     try { await api(`/api/knowledge/skills/${skill.id}`, { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ enabled: form.elements.enabled.checked, category: form.elements.category.value, phase: form.elements.phase.value, description: form.elements.description.value, runtimePrompt: form.elements.runtimePrompt.value }) }); await refreshKnowledge(skill.id); }
     catch (error) { status.textContent = error.message; }
   });
@@ -1857,6 +1875,10 @@ async function saveSelectedLoadout(event) {
   const loadout = selectedLoadout();
   const form = $('#loadout-form');
   const feedback = $('#loadout-feedback');
+  if (!state.loadoutDrafts.has(loadout.id)) {
+    feedback.textContent = 'Nothing to save — this loadout matches what is stored.';
+    return;
+  }
   feedback.textContent = 'Saving…';
   try {
     await api(`/api/loadouts/${loadout.id}`, {
@@ -1930,7 +1952,12 @@ function bindEvents() {
       persistGraph(); applyGraphPositions(); drawConnections();
     });
   });
-  $('#toggle-oracle').addEventListener('click', () => toggleOracle()); $('#close-oracle').addEventListener('click', () => toggleOracle(false));
+  $('#toggle-oracle').addEventListener('click', () => toggleOracle()); $('#close-oracle').addEventListener('click', () => {
+    // The dock's close button lives inside the dock, so it is only reachable when the dock is
+    // open - except to a keyboard or a script. Say so rather than doing nothing.
+    if ($('#oracle-dock').getAttribute('aria-hidden') === 'true') { $('#toggle-oracle').focus(); return; }
+    toggleOracle(false);
+  });
   $('#oracle-show-how').addEventListener('click', () => { toggleOracle(false); navigate('oracle'); $('#oracle-prompt').value = `Explain the next safe step for the current ${state.view} context.`; $('#oracle-prompt').focus(); });
   $('#oracle-do-it').addEventListener('click', () => { toggleOracle(false); navigate('oracle'); $('#oracle-prompt').value = `Draft a proposal for the current ${state.view} context. Do not apply it without my approval.`; $('#oracle-prompt').focus(); });
   $('#new-project').addEventListener('click', async () => { try { const created = await api('/api/projects', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({}) }); state.work.activeProjectId = created.project.id; state.work.activeChatId = created.chat.id; await refreshWork(); $('#work-prompt').focus(); } catch (error) { $('#work-status').textContent = error.message; } });
@@ -1940,7 +1967,11 @@ function bindEvents() {
     event.preventDefault();
     const input = $('#work-prompt');
     const prompt = input.value.trim();
-    if (!prompt) return;
+    if (!prompt) {
+      $('#work-status').textContent = 'Write a message first.';
+      input.focus();
+      return;
+    }
     const error = $('#work-error');
     error.hidden = true;
     const draft = prompt;
@@ -1958,7 +1989,16 @@ function bindEvents() {
   });
   $('#work-prompt').addEventListener('keydown', event => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); $('#work-composer').requestSubmit(); } });
   const syncContext = () => { const open = $('#work-inspector').classList.contains('is-open'); $('#work-context').setAttribute('aria-expanded', String(open)); };
-  $('#work-context').addEventListener('click', () => { $('#work-inspector').classList.toggle('is-open'); syncContext(); }); $('#close-context').addEventListener('click', () => { $('#work-inspector').classList.remove('is-open'); syncContext(); $('#work-context').focus(); });
+  $('#work-context').addEventListener('click', () => { $('#work-inspector').classList.toggle('is-open'); syncContext(); }); $('#close-context').addEventListener('click', () => {
+    const inspector = $('#work-inspector');
+    // Above 1080px the inspector is a grid column, not an overlay: there is nothing to close.
+    // It used to remove a class that was not doing anything and report nothing.
+    if (!matchMedia('(max-width: 1080px)').matches) {
+      $('#work-status').textContent = 'Context stays open at this width. It becomes a panel below 1080px.';
+      return;
+    }
+    inspector.classList.remove('is-open'); syncContext(); $('#work-context').focus();
+  });
   $('.attachment-button').addEventListener('click', () => $('#work-file-picker').click());
   $('#work-file-picker').addEventListener('change', async event => { const chat = workChat(); const files = [...event.target.files]; if (!chat || !files.length) return; try { for (const file of files) await api(`/api/chats/${chat.id}/attachments`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: file.name, size: file.size, type: file.type }) }); state.work.detail = await api(`/api/chats/${chat.id}`); renderWork(); $('#work-status').textContent = `${files.length} local reference${files.length === 1 ? '' : 's'} linked`; } catch (error) { $('#work-status').textContent = error.message; } finally { event.target.value = ''; } });
   $('#proposal-dialog').addEventListener('close', async event => { const dialog = event.currentTarget; const approved = dialog.returnValue === 'approve'; const proposalId = dialog.dataset.proposalId; if (!proposalId) return; try { await api(`/api/proposals/${proposalId}`, { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ approved }) }); const operation = JSON.parse(dialog.dataset.operation || 'null'); if (approved && operation?.type === 'unlink-attachment') { await api(`/api/chats/${operation.chatId}/attachments/${operation.attachmentId}`, { method: 'DELETE' }); state.work.detail = await api(`/api/chats/${operation.chatId}`); renderWork(); $('#work-status').textContent = 'Attachment unlinked. Source file was not changed.'; offerUndo(`Unlinked “${operation.name}”.`, async () => { await api(`/api/chats/${operation.chatId}/attachments`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: operation.name, size: operation.size, type: operation.fileType }) }); state.work.detail = await api(`/api/chats/${operation.chatId}`); renderWork(); $('#work-status').textContent = 'Attachment re-linked.'; }); } else if (!approved) $('#work-status').textContent = 'Change cancelled. Nothing was persisted.'; } catch (error) { $('#work-status').textContent = error.message; } finally { delete dialog.dataset.proposalId; delete dialog.dataset.operation; } });
@@ -1996,8 +2036,24 @@ function bindEvents() {
       renderOracleMessages(); renderOraclePlan();
     });
   });
-  $('#refresh-events').addEventListener('click', refreshEvents);
-  $('#refresh-runs').addEventListener('click', () => { refreshEvents(); refreshRuns(); });
+  // Refresh with nothing new looked identical to Refresh being broken.
+  const announceRefresh = async (target, label) => {
+    const before = state.events.length;
+    await refreshEvents();
+    const gained = state.events.length - before;
+    const host = $(target);
+    if (host) host.textContent = gained > 0
+      ? gained + ' new ' + label + (gained === 1 ? '' : 's') + '.'
+      : 'Up to date — no new ' + label + 's.';
+  };
+  $('#refresh-events').addEventListener('click', () => announceRefresh('#oracle-mode', 'event'));
+  $('#refresh-runs').addEventListener('click', async () => {
+    const before = state.runs.length + connectedRunsFromEvents().length;
+    await refreshEvents();
+    await refreshRuns();
+    const after = state.runs.length + connectedRunsFromEvents().length;
+    setRunsNote(after > before ? (after - before) + ' new run' + (after - before === 1 ? '' : 's') + '.' : 'Up to date — no new runs.');
+  });
   $('#reset-skills').addEventListener('click', () => {
     const previous = new Set(state.activeSkills);
     state.activeSkills = new Set(state.config.skills.filter(skill => skill.defaultOn).map(skill => skill.id));
@@ -2029,10 +2085,11 @@ function bindEvents() {
   // A confirmation dialog is not an undo: it asks before you can see the result. The clear
   // happens, and the way back stays on screen.
   $('#clear-runs').addEventListener('click', async () => {
-    if (!state.runs.length) return;
+    if (!state.runs.length) { setRunsNote('Nothing to clear — no runs are stored in this workspace.'); return; }
     try {
       const { removed } = await api('/api/runs', { method: 'DELETE' });
       await refreshRuns();
+      setRunsNote('Cleared ' + removed.length + ' run' + (removed.length === 1 ? '' : 's') + '.');
       offerUndo('Cleared ' + removed.length + ' local run' + (removed.length === 1 ? '' : 's') + '. Connected MCP runs were untouched.', async () => {
         await api('/api/runs/restore', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ runs: removed }) });
         await refreshRuns();

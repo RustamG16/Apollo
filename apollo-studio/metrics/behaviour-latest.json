@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T16:12:28.215Z",
-  "durationMs": 292377,
+  "generatedAt": "2026-09-03T16:29:31.181Z",
+  "durationMs": 292398,
   "thresholds": {
     "B1": {
       "name": "Controls with no listener and no form owner",
@@ -12,23 +12,11 @@
     },
     "B2": {
       "name": "Clicks that change nothing observable",
-      "value": 11,
+      "value": 0,
       "target": 0,
-      "pass": false,
-      "unit": "of 206 clicked (11 already in their target state, excluded)",
-      "detail": [
-        "work form#work-composer > div.composer-footer > div.composer-submit:nth-of-type(2) > button.primary-action.composer-send \"SendEnter\"",
-        "work #close-context \"Close context\"",
-        "systems form#loadout-form > div.loadout-actions:nth-of-type(2) > button.run-action:nth-of-type(3) \"Save changes\"",
-        "knowledge form#skill-editor > div.form-status:nth-of-type(3) > button.run-action \"Save skill\"",
-        "knowledge aside#knowledge-inspector > section.source-section > form.source-form > div.form-status:nth-of-type(2) > button.quiet-action \"Add source\"",
-        "oracle #refresh-events \"Refresh\"",
-        "runs #refresh-runs \"Refresh\"",
-        "runs #export-runs \"Export JSON\"",
-        "runs #clear-runs \"Clear local\"",
-        "chrome body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item:nth-of-type(1) \"Work1\"",
-        "chrome #close-oracle \"Close Oracle\""
-      ]
+      "pass": true,
+      "unit": "of 206 clicked (12 already in their target state, excluded)",
+      "detail": []
     },
     "B3": {
       "name": "Label-truth rows failing their postcondition",
@@ -116,74 +104,7 @@
     "skipped": 5
   },
   "unwired": [],
-  "noEffect": [
-    {
-      "view": "work",
-      "selector": "form#work-composer > div.composer-footer > div.composer-submit:nth-of-type(2) > button.primary-action.composer-send",
-      "label": "SendEnter",
-      "boundOn": "ancestor"
-    },
-    {
-      "view": "work",
-      "selector": "#close-context",
-      "label": "Close context",
-      "boundOn": "self"
-    },
-    {
-      "view": "systems",
-      "selector": "form#loadout-form > div.loadout-actions:nth-of-type(2) > button.run-action:nth-of-type(3)",
-      "label": "Save changes",
-      "boundOn": "ancestor"
-    },
-    {
-      "view": "knowledge",
-      "selector": "form#skill-editor > div.form-status:nth-of-type(3) > button.run-action",
-      "label": "Save skill",
-      "boundOn": "ancestor"
-    },
-    {
-      "view": "knowledge",
-      "selector": "aside#knowledge-inspector > section.source-section > form.source-form > div.form-status:nth-of-type(2) > button.quiet-action",
-      "label": "Add source",
-      "boundOn": "ancestor"
-    },
-    {
-      "view": "oracle",
-      "selector": "#refresh-events",
-      "label": "Refresh",
-      "boundOn": "self"
-    },
-    {
-      "view": "runs",
-      "selector": "#refresh-runs",
-      "label": "Refresh",
-      "boundOn": "self"
-    },
-    {
-      "view": "runs",
-      "selector": "#export-runs",
-      "label": "Export JSON",
-      "boundOn": "self"
-    },
-    {
-      "view": "runs",
-      "selector": "#clear-runs",
-      "label": "Clear local",
-      "boundOn": "self"
-    },
-    {
-      "view": "chrome",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item:nth-of-type(1)",
-      "label": "Work1",
-      "boundOn": "self"
-    },
-    {
-      "view": "chrome",
-      "selector": "#close-oracle",
-      "label": "Close Oracle",
-      "boundOn": "self"
-    }
-  ],
+  "noEffect": [],
   "alreadyActiveNoEffect": [
     {
       "view": "work",
@@ -239,6 +160,11 @@
       "view": "runs",
       "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(5)",
       "label": "Runs5"
+    },
+    {
+      "view": "chrome",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item:nth-of-type(1)",
+      "label": "Work1"
     }
   ],
   "decisions": [
@@ -352,13 +278,6 @@
   "diff": {
     "firstRun": false,
     "regressions": [],
-    "improvements": [
-      {
-        "id": "B2",
-        "name": "Clicks that change nothing observable",
-        "before": 14,
-        "after": 11
-      }
-    ]
+    "improvements": []
   }
 }

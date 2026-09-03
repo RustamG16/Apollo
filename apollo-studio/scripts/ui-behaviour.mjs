@@ -254,11 +254,16 @@ async function main() {
       if (control.viewId !== 'chrome') await showView(page, control.viewId, 320);
 
       const before = await evaluate(page, SNAPSHOT);
+      // alreadyActive is read HERE, immediately before the click, not from the census. The
+      // census for the chrome ran while the last view of the sweep was showing; by the time
+      // a chrome control is clicked the page has been reloaded at a different view, so a
+      // census-time reading described a state that no longer existed.
       const clicked = await evaluate(page, `(() => {
         const el = document.querySelector(${JSON.stringify(control.selector)});
         if (!el) return { found: false };
+        const active = el.matches('.is-active, [aria-current], [aria-pressed="true"], [aria-selected="true"]');
         el.click();
-        return { found: true };
+        return { found: true, alreadyActive: active };
       })()`);
       if (!clicked.found) { sweep.push({ ...control, notFound: true }); continue; }
       await settle(page, 460);
@@ -271,7 +276,7 @@ async function main() {
           labelTruth = { expected: row.postcondition, pass: Boolean(await evaluate(page, '(() => { ' + row.assert + ' })()')) };
         } catch (error) { labelTruth = { expected: row.postcondition, pass: false, error: error.message }; }
       }
-      sweep.push({ ...control, effect: changed(before, after), before, after, labelTruth });
+      sweep.push({ ...control, alreadyActive: clicked.alreadyActive, effect: changed(before, after), before, after, labelTruth });
     }
 
     // ---- B4 / B7: server-side, no browser needed
