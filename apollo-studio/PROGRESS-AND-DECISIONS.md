@@ -1593,3 +1593,38 @@ lists the 390px column.
 
 The independent critique is done and acted on. The next slice is whatever the plan calls for
 after P5 — or a spacing-literal burn-down pass if continuing to harden. Do not restart at P0.
+
+## 2026-09-03 — P5: spacing-literal token adoption pass
+
+**Slice:** P5, part 10. Pays the spacing-literal ratchet down where it can be done without
+touching the layout.
+
+Of the 492 `padding`/`margin`/`gap` px literals, **178 were exact matches to the scale**
+(2, 4, 6, 8, 12, 16, 24, 32, 48, 64 px). A one-shot transform replaced each with its
+`--space-*` token — `gap:24px` becomes `gap:var(--space-7)`, `padding:8px 12px` becomes
+`padding:var(--space-4) var(--space-5)`, and a mixed declaration keeps its off-scale half
+verbatim (`padding:8px 10px` → `padding:var(--space-4) 10px`). Every converted value is
+identical in `rem` and in `px`, so the computed layout is byte-for-byte unchanged; the
+harness confirms — no threshold moved, no overflow, nothing clipped, contrast unchanged
+across all five viewports.
+
+**Ratchet: 492 → 314.** The remaining 314 are genuinely off-scale (3, 5, 7, 9, 10, 11, 13,
+14, 15, 17, 18, 20, 22 px…). Snapping those to the scale changes the spacing rhythm — a
+design decision, not a mechanical one — so they stay under the ratchet for a future
+deliberate pass rather than being force-fit now.
+
+Also this slice: the project tabs stopped uppercasing chat names (user content shown as
+written) — committed separately as `ba694e4`.
+
+### State
+
+`npm.cmd run check` exits 0. All eleven thresholds pass; motionBudget 0, spacingTokens
+**ratcheting at 314**, clipping 0, specificity 0. Console clean; reduced motion honoured; no
+overflow or clipping at 390, 820, 1280, 1440, 1920.
+
+### Known open, carried forward
+
+- Two agent portraits held back by `saturate(.45)`, not resolved at the asset level.
+- 314 off-scale spacing literals under the ratchet.
+- The uppercase-tracked label register (DESIGN.md-sanctioned for metadata) is still the
+  dominant secondary type treatment.

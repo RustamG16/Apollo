@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T11:01:16.995Z",
-  "durationMs": 28083,
+  "generatedAt": "2026-09-03T11:03:38.279Z",
+  "durationMs": 27881,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -840,7 +840,7 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 111952,
+        "bytes": 114243,
         "lines": 1541
       }
     ],
@@ -899,7 +899,7 @@
       "2",
       "3"
     ],
-    "spacingLiterals": 492,
+    "spacingLiterals": 314,
     "ornament": [],
     "longMotion": [],
     "decorativeMediaRefs": []
@@ -1038,12 +1038,12 @@
     },
     "spacingTokens": {
       "name": "Spacing literals in rules (DESIGN.md Token Rule) - ratchet to 0",
-      "value": 492,
+      "value": 314,
       "target": 492,
       "pass": true,
       "met": false,
-      "remaining": 492,
-      "note": "Ratchet, not a gate. Met only at 0; 492 literals still in the sheet."
+      "remaining": 314,
+      "note": "Ratchet, not a gate. Met only at 0; 314 literals still in the sheet."
     },
     "clipping": {
       "name": "Nothing clipped by its own container at any measured viewport",
@@ -1062,6 +1062,13 @@
   "diff": {
     "firstRun": false,
     "regressions": [],
-    "improvements": []
+    "improvements": [
+      {
+        "id": "spacingTokens",
+        "name": "Spacing literals in rules (DESIGN.md Token Rule) - ratchet to 0",
+        "before": 492,
+        "after": 314
+      }
+    ]
   }
 }
