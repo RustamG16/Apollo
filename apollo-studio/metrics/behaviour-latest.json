@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T15:58:48.156Z",
-  "durationMs": 296967,
+  "generatedAt": "2026-09-03T16:12:28.215Z",
+  "durationMs": 292377,
   "thresholds": {
     "B1": {
       "name": "Controls with no listener and no form owner",
@@ -12,22 +12,21 @@
     },
     "B2": {
       "name": "Clicks that change nothing observable",
-      "value": 12,
+      "value": 11,
       "target": 0,
       "pass": false,
-      "unit": "of 211 clicked (11 already in their target state, excluded)",
+      "unit": "of 206 clicked (11 already in their target state, excluded)",
       "detail": [
         "work form#work-composer > div.composer-footer > div.composer-submit:nth-of-type(2) > button.primary-action.composer-send \"SendEnter\"",
         "work #close-context \"Close context\"",
         "systems form#loadout-form > div.loadout-actions:nth-of-type(2) > button.run-action:nth-of-type(3) \"Save changes\"",
         "knowledge form#skill-editor > div.form-status:nth-of-type(3) > button.run-action \"Save skill\"",
         "knowledge aside#knowledge-inspector > section.source-section > form.source-form > div.form-status:nth-of-type(2) > button.quiet-action \"Add source\"",
+        "oracle #refresh-events \"Refresh\"",
         "runs #refresh-runs \"Refresh\"",
         "runs #export-runs \"Export JSON\"",
         "runs #clear-runs \"Clear local\"",
-        "runs body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item:nth-of-type(5) \"Runs5\"",
-        "chrome #export-runs \"Export JSON\"",
-        "chrome #clear-runs \"Clear local\"",
+        "chrome body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item:nth-of-type(1) \"Work1\"",
         "chrome #close-oracle \"Close Oracle\""
       ]
     },
@@ -36,7 +35,7 @@
       "value": 0,
       "target": 0,
       "pass": false,
-      "unit": "0 of 159 command controls covered",
+      "unit": "0 of 156 command controls covered",
       "detail": {
         "failed": [],
         "uncovered": [
@@ -88,14 +87,14 @@
     },
     "B7": {
       "name": "Comparison runs that do not survive a reload",
-      "value": 1,
+      "value": 0,
       "target": 0,
-      "pass": false,
+      "pass": true,
       "unit": "runs",
       "detail": {
         "ran": true,
-        "persisted": false,
-        "note": "no GET /api/runs endpoint (404)"
+        "persisted": true,
+        "count": 1
       }
     },
     "B8": {
@@ -111,9 +110,9 @@
     }
   },
   "controls": {
-    "total": 1081,
-    "visible": 552,
-    "clicked": 211,
+    "total": 567,
+    "visible": 548,
+    "clicked": 206,
     "skipped": 5
   },
   "unwired": [],
@@ -149,6 +148,12 @@
       "boundOn": "ancestor"
     },
     {
+      "view": "oracle",
+      "selector": "#refresh-events",
+      "label": "Refresh",
+      "boundOn": "self"
+    },
+    {
       "view": "runs",
       "selector": "#refresh-runs",
       "label": "Refresh",
@@ -167,21 +172,9 @@
       "boundOn": "self"
     },
     {
-      "view": "runs",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item:nth-of-type(5)",
-      "label": "Runs5",
-      "boundOn": "self"
-    },
-    {
       "view": "chrome",
-      "selector": "#export-runs",
-      "label": "Export JSON",
-      "boundOn": "self"
-    },
-    {
-      "view": "chrome",
-      "selector": "#clear-runs",
-      "label": "Clear local",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item:nth-of-type(1)",
+      "label": "Work1",
       "boundOn": "self"
     },
     {
@@ -243,9 +236,9 @@
       "label": "Library3"
     },
     {
-      "view": "chrome",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(1)",
-      "label": "Work1"
+      "view": "runs",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(5)",
+      "label": "Runs5"
     }
   ],
   "decisions": [
@@ -335,8 +328,7 @@
       "apollo-graph-phases",
       "apollo-graph-positions",
       "apollo-oracle-messages",
-      "apollo-oracle-plan",
-      "apollo-runs"
+      "apollo-oracle-plan"
     ],
     "read": [
       "apollo-active-skills",
@@ -346,21 +338,27 @@
       "apollo-graph-phases",
       "apollo-graph-positions",
       "apollo-oracle-messages",
-      "apollo-oracle-plan",
-      "apollo-runs"
+      "apollo-oracle-plan"
     ],
     "orphans": []
   },
   "persistence": {
     "ran": true,
-    "persisted": false,
-    "note": "no GET /api/runs endpoint (404)"
+    "persisted": true,
+    "count": 1
   },
   "consoleEvents": [],
   "networkFailures": [],
   "diff": {
     "firstRun": false,
     "regressions": [],
-    "improvements": []
+    "improvements": [
+      {
+        "id": "B2",
+        "name": "Clicks that change nothing observable",
+        "before": 14,
+        "after": 11
+      }
+    ]
   }
 }

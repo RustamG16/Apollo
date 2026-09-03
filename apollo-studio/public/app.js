@@ -129,7 +129,10 @@ function navigate(view, { updateHash = true, scrollBehavior = 'smooth', animate 
   view = views.has(view) ? view : 'architecture';
   state.view = view;
   $$('.view').forEach(section => section.classList.toggle('is-active', section.id === view));
-  const NAV_OWNER = { architecture: 'systems', agents: 'knowledge', oracle: 'work', runs: 'work' };
+  // Views without a tab of their own borrow one. Runs HAS a tab now, so it is not in here;
+  // leaving it mapped to Work meant the Runs tab never highlighted and clicking it while
+  // already on Runs did nothing at all.
+  const NAV_OWNER = { architecture: 'systems', agents: 'knowledge', oracle: 'work' };
   const navView = NAV_OWNER[view] || view;
   $$('.nav-item').forEach(button => {
     const active = button.dataset.viewTarget === navView;
@@ -1257,11 +1260,39 @@ function renderResults(run) {
     card.append(head, body);
     if (!result.error) {
       const keep = document.createElement('button'); keep.type = 'button'; keep.className = 'quiet-action keep-setup'; keep.textContent = 'Keep this setup';
-      keep.addEventListener('click', () => {
-        state.activeSkills = new Set(result.variant.skills); persistSkills(); renderSkillRegistry();
-        $$('.result-card').forEach(item => item.classList.remove('is-kept')); card.classList.add('is-kept');
-        keep.textContent = 'Kept for the full plan'; $('#run-message').textContent = `${result.variant.name} is now the active skill setup. Open the node editor to refine it.`;
-        animatePulse(card);
+      // The last step of the headline workflow. It used to write a vestigial client store and
+      // tell you to open the node editor - a surface that no longer exists. It now activates
+      // the loadout that produced the winner, on the server, and says what it did.
+      keep.addEventListener('click', async () => {
+        keep.disabled = true;
+        try {
+          const kept = await api('/api/runs/' + run.runId + '/keep', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ variant: result.variant.name })
+          });
+          $$('.result-card').forEach(item => item.classList.remove('is-kept'));
+          card.classList.add('is-kept');
+          $$('.keep-setup').forEach(button => { button.textContent = 'Keep this setup'; button.disabled = false; });
+          keep.textContent = 'Kept';
+          keep.disabled = true;
+          const previous = state.loadouts?.activeLoadoutId;
+          if (kept.activatedLoadoutId) await refreshLoadouts(kept.activatedLoadoutId);
+          await refreshRuns();
+          const name = state.loadouts?.loadouts.find(item => item.id === kept.activatedLoadoutId)?.name;
+          $('#run-message').textContent = name
+            ? `Kept ${result.variant.name}. ${name} is now the active loadout, and the run is in Runs.`
+            : `Kept ${result.variant.name}. The run is in Runs.`;
+          if (kept.activatedLoadoutId && previous && previous !== kept.activatedLoadoutId) {
+            offerUndo('Activated ' + (name || 'the winning loadout') + '.', async () => {
+              await api('/api/loadouts/active', { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: previous }) });
+              await refreshLoadouts(previous);
+            });
+          }
+          animatePulse(card);
+        } catch (error) {
+          keep.disabled = false;
+          $('#run-message').textContent = 'Could not keep this setup: ' + error.message;
+        }
       });
       card.append(keep);
     }
@@ -1269,6 +1300,21 @@ function renderResults(run) {
   });
   grid.replaceChildren(...cards);
   if (window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) window.gsap.from(cards, { autoAlpha: 0, duration: .15, stagger: 0, ease: 'power3.out' });
+}
+
+// Runs are server-side records now. state.runs mirrors them so the rest of the view code is
+// unchanged, but the mirror is never the source: B7 measured that a comparison did not
+// survive a reload, because one localStorage key capped at 20 was the whole of its history.
+async function refreshRuns() {
+  try {
+    const body = await api('/api/runs?limit=50');
+    state.runs = body.runs || [];
+    state.runsError = null;
+  } catch (error) {
+    state.runsError = error.message || 'The local run store did not respond.';
+  }
+  renderHistory();
+  updateRunCount();
 }
 
 async function runComparison() {
@@ -1292,8 +1338,7 @@ async function runComparison() {
     });
     const run = await response.json();
     if (!response.ok) throw new Error(run.error || 'Comparison failed.');
-    state.runs.unshift(run); state.runs = state.runs.slice(0, 20); storage.write('apollo-runs', state.runs);
-    $('#run-count').textContent = state.runs.length;
+    await refreshRuns();
     $('#run-message').textContent = `${run.results.length} results ready · ${run.model} · ${run.reasoning} reasoning`;
     renderResults(run); setComparisonState('complete');
   } catch (error) {
@@ -1344,11 +1389,27 @@ function renderHistory() {
     at: run.createdAt,
     source: 'browser',
     sourceLabel: 'This browser',
-    status: 'completed',
-    title: run.model,
-    detail: `${run.results.length} loadout${run.results.length === 1 ? '' : 's'} · ${run.reasoning} reasoning`,
+    status: run.keptVariant ? 'kept' : 'completed',
+    title: run.model || run.mode,
+    detail: [
+      `${run.results.length} loadout${run.results.length === 1 ? '' : 's'}`,
+      run.keptVariant ? 'kept ' + run.keptVariant : null,
+      run.results.some(result => result.contextSent) ? 'brief + DNA sent' : null,
+    ].filter(Boolean).join(' · '),
     summary: run.prompt,
-    open: () => { renderResults(run); navigate('playground'); }
+    // The stored shape nests the loadout snapshot under each result; renderResults expects
+    // a `variant`. Rebuilt here so an old run opens exactly as it did when it was made.
+    open: () => {
+      renderResults({
+        ...run,
+        results: run.results.map(result => ({
+          ...result,
+          variant: { name: result.name, skills: result.skills || [], loadoutId: result.loadout?.id || null },
+          usage: { totalTokens: result.tokens || 0 },
+        })),
+      });
+      navigate('playground');
+    }
   }));
 
   const rows = [...connected, ...local].sort((a, b) => new Date(b.at) - new Date(a.at));
@@ -1936,7 +1997,7 @@ function bindEvents() {
     });
   });
   $('#refresh-events').addEventListener('click', refreshEvents);
-  $('#refresh-runs').addEventListener('click', refreshEvents);
+  $('#refresh-runs').addEventListener('click', () => { refreshEvents(); refreshRuns(); });
   $('#reset-skills').addEventListener('click', () => {
     const previous = new Set(state.activeSkills);
     state.activeSkills = new Set(state.config.skills.filter(skill => skill.defaultOn).map(skill => skill.id));
@@ -1967,15 +2028,16 @@ function bindEvents() {
   $('#export-runs').addEventListener('click', exportRuns);
   // A confirmation dialog is not an undo: it asks before you can see the result. The clear
   // happens, and the way back stays on screen.
-  $('#clear-runs').addEventListener('click', () => {
-    const previous = state.runs;
-    if (!previous.length) return;
-    state.runs = []; storage.write('apollo-runs', []); renderHistory();
-    $('#run-count').textContent = 0;
-    offerUndo('Cleared ' + previous.length + ' local run' + (previous.length === 1 ? '' : 's') + '. Connected MCP runs were untouched.', () => {
-      state.runs = previous; storage.write('apollo-runs', previous); renderHistory();
-      $('#run-count').textContent = previous.length;
-    });
+  $('#clear-runs').addEventListener('click', async () => {
+    if (!state.runs.length) return;
+    try {
+      const { removed } = await api('/api/runs', { method: 'DELETE' });
+      await refreshRuns();
+      offerUndo('Cleared ' + removed.length + ' local run' + (removed.length === 1 ? '' : 's') + '. Connected MCP runs were untouched.', async () => {
+        await api('/api/runs/restore', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ runs: removed }) });
+        await refreshRuns();
+      });
+    } catch (error) { $('#run-message').textContent = error.message; }
   });
   $('#loadout-form').addEventListener('submit', saveSelectedLoadout);
   $('#new-loadout').addEventListener('click', () => createNewLoadout());
@@ -2061,8 +2123,12 @@ async function init() {
     const configuredIds = new Set(state.config.skills.map(skill => skill.id));
     const defaults = state.config.skills.filter(skill => skill.defaultOn).map(skill => skill.id);
     state.activeSkills = new Set(stored && storedVersion >= skillDefaultsVersion ? stored.filter(id => configuredIds.has(id)) : defaults);
-    state.runs = storage.read('apollo-runs', []);
+    // No longer read from localStorage: the store is server-side. The old key is left in
+    // place rather than deleted, so a person who had runs there can still find them in
+    // devtools until they clear it themselves.
+    state.runs = [];
     await refreshWork({ preserve: false });
+    await refreshRuns();
     state.variants = [createVariant('Setup A', loadoutData.loadouts[0]?.id), createVariant('Setup B', loadoutData.loadouts[1]?.id || loadoutData.loadouts[0]?.id)];
     $('#model-select').innerHTML = state.config.models.map(model => `<option value="${model}"${model === 'gpt-5.6-terra' ? ' selected' : ''}>${model}</option>`).join('');
     $('#oracle-model').innerHTML = state.config.models.map(model => `<option value="${model}"${model === 'gpt-5.6-terra' ? ' selected' : ''}>${model}</option>`).join('');

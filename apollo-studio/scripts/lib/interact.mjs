@@ -80,11 +80,18 @@ export const CONTROL_CENSUS = `((viewId) => {
     return text.slice(0, 60);
   };
 
-  const scope = viewId ? document.querySelector('#' + CSS.escape(viewId)) : document;
-  if (!scope) return { controls: [], view: viewId, missing: true };
+  const CONTROLS = 'button, a[href], summary, [role="button"], input, select, textarea';
+  const CHROME = '.topbar, .transport, .statusbar, .undo-bar, .oracle-dock, .proposal-dialog';
 
-  const chrome = viewId ? [...document.querySelectorAll('.topbar button, .topbar a, .undo-bar button')] : [];
-  const nodes = [...scope.querySelectorAll('button, a[href], summary, [role="button"], input, select, textarea')];
+  // The chrome pass must enumerate the CHROME, not the document. scope=document re-walked
+  // whichever view happened to be active and reported its controls a second time as chrome,
+  // which double-counted every finding in the last view of the sweep.
+  const nodes = viewId
+    ? [...(document.querySelector('#' + CSS.escape(viewId))?.querySelectorAll(CONTROLS) || [])]
+    : [...document.querySelectorAll(CHROME.split(', ').map(sel => sel + ' ' + CONTROLS.split(', ').join(', ' + sel + ' ')).join(', '))];
+  if (viewId && !document.querySelector('#' + CSS.escape(viewId))) return { controls: [], view: viewId, missing: true };
+
+  const chrome = viewId ? [...document.querySelectorAll('.topbar button, .topbar a')] : [];
 
   const seen = new Set();
   const controls = [];

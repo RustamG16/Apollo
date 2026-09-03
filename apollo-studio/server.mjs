@@ -13,6 +13,7 @@ import { createProfileFromDoctrine, deleteProfile, getDesignDna, restoreProfile,
 import { agentTemplates, createSystem, createLoadout, deleteLoadout, deleteSystem, getOutputPreview, initializeSystems, listLoadouts, listSystems, recordSystemOutput, restoreLoadout, setActiveLoadout, setActiveSystem, updateLoadout, updateSystem } from './systems.mjs';
 import { addAttachment, addMessage, chatDetail, createChat, createProject, createProposal, initializeWorkspace, listWorkspace, resolveProposal, unlinkAttachment } from './workspace.mjs';
 import { resolveLoadoutContext } from './loadout-context.mjs';
+import { clearRuns, getRun, initializeRunStore, keepVariant, listRuns, recordRun, restoreRuns } from './runs.mjs';
 
 const root = fileURLToPath(new URL('./public/', import.meta.url));
 const port = Number(process.env.PORT || 4173);
@@ -128,7 +129,16 @@ async function handleCompare(request, response) {
     const runner = apiKey && body.mode !== 'demo' ? runLive : runDemo;
     const settled = await Promise.allSettled(normalized.map(variant => runner({ prompt, variant, model, reasoning, maxOutputTokens })));
     const results = settled.map((item, index) => item.status === 'fulfilled' ? { variant: normalized[index], ...item.value } : { variant: normalized[index], mode: apiKey ? 'live' : 'demo', error: item.reason?.message || 'Run failed.' });
-    json(response, 200, { runId: crypto.randomUUID(), createdAt: new Date().toISOString(), model, reasoning, prompt, results });
+    // Kept server-side, with a snapshot of each loadout as it ran. The result of the product's
+    // headline workflow used to live in one localStorage key on one browser.
+    const { slots } = await listLoadouts();
+    const stored = await recordRun({
+      runId: crypto.randomUUID(),
+      source: 'browser',
+      mode: apiKey && body.mode !== 'demo' ? 'live' : 'demo',
+      model, reasoning, prompt, results,
+    }, { loadouts, slots });
+    json(response, 200, { runId: stored.runId, createdAt: stored.createdAt, model, reasoning, prompt, results });
   } catch (error) { json(response, 400, { error: error.message || 'Invalid request.' }); }
 }
 
@@ -225,7 +235,7 @@ async function serveStatic(request, response) {
   } catch { json(response, 404, { error: 'Not found.' }); }
 }
 
-await Promise.all([initializeKnowledge(), initializeEventStore(), initializeSystems(), initializeWorkspace()]);
+await Promise.all([initializeKnowledge(), initializeEventStore(), initializeSystems(), initializeWorkspace(), initializeRunStore()]);
 
 const server = http.createServer(async (request, response) => {
   const url = new URL(request.url, `http://${request.headers.host}`);
@@ -312,6 +322,30 @@ const server = http.createServer(async (request, response) => {
     }
     if (request.method === 'GET' && path === '/api/integrations') return json(response, 200, { integrations: await integrations(), recommendation: 'Use Apollo as a shared MCP/workspace control plane. Let each host keep its own supported subscription login; share explicit plans, artifacts, and traces—not private session tokens.' });
     if (request.method === 'POST' && path === '/api/compare') return handleCompare(request, response);
+    // Runs. A comparison is evidence, and evidence that does not survive a reload is not
+    // evidence. Local history is clearable, and clearing it is undoable like every other
+    // destructive action in the product.
+    if (request.method === 'GET' && path === '/api/runs') return json(response, 200, { runs: await listRuns({ limit: url.searchParams.get('limit') || 50 }) });
+    if (request.method === 'DELETE' && path === '/api/runs') return json(response, 200, { removed: await clearRuns() });
+    if (request.method === 'POST' && path === '/api/runs/restore') return json(response, 200, { restored: await restoreRuns((await readJson(request)).runs) });
+    const runMatch = path.match(/^\/api\/runs\/([A-Za-z0-9-]+)$/);
+    if (request.method === 'GET' && runMatch) {
+      const run = await getRun(runMatch[1]);
+      return run ? json(response, 200, run) : json(response, 404, { error: 'Run not found.' });
+    }
+    const keepMatch = path.match(/^\/api\/runs\/([A-Za-z0-9-]+)\/keep$/);
+    if (request.method === 'POST' && keepMatch) {
+      const input = await readJson(request);
+      const kept = await keepVariant(keepMatch[1], input.variant);
+      // Keeping a setup activates the loadout that produced it. Before this, "Keep this
+      // setup" wrote a vestigial client store and told you to open a screen that no longer
+      // existed - the last step of the headline workflow committed nothing.
+      const chosen = kept.results.find(result => result.name === kept.keptVariant);
+      if (chosen?.loadout?.id) {
+        try { await setActiveLoadout(chosen.loadout.id); } catch { /* the run is kept even if the loadout has since been deleted */ }
+      }
+      return json(response, 200, { run: kept, activatedLoadoutId: chosen?.loadout?.id || null });
+    }
     if (request.method === 'GET' && path === '/api/health') {
       const inventory = await allSkills();
       return json(response, 200, { ok: true, mode: apiKey ? 'live' : 'demo', knowledge: true, skillCount: inventory.length, enabledSkillCount: inventory.filter(skill => skill.enabled).length, oracle: true });
