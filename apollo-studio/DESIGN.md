@@ -16,6 +16,7 @@ colors:
   fg-dim: "#8B929C"
   fg-on-accent: "#0B0C0E"
   accent: "#5FA8F5"
+  accent-hover: "#82BEF8"
   accent-quiet: "rgba(95,168,245,.14)"
   accent-line: "rgba(95,168,245,.45)"
   ok: "#57C98A"
@@ -25,6 +26,7 @@ colors:
   danger: "#F0757F"
   danger-quiet: "rgba(240,117,127,.14)"
   focus: "#9BD1FF"
+  bg-veil: "rgba(11,12,14,.92)"
 typography:
   fontUi: "ui-sans-serif, -apple-system, 'Segoe UI Variable Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
   fontMono: "ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, 'Liberation Mono', monospace"
@@ -312,7 +314,14 @@ which is where a large share of the 165 measured contrast failures came from.
 
 `--accent: #5FA8F5`. It means **action or active selection** and nothing else: primary
 buttons, the current navigation item's marker, the focused field's edge, the selected row,
-the active connection in the pipeline map.
+the active connection in the pipeline map. `--accent-hover: #82BEF8` is its hover state and
+keeps `--fg-on-accent` at 10:1.
+
+**An active control is a surface step plus an accent marker, never an inverted slab.**
+The active navigation item, the active switcher tab and the selected row all read as
+`--surface-3` with a 2px `--accent` inset rule. A white or cream fill puts the brightest
+value in the interface on a control that is merely *current*, which is what v1 did and why
+the eye went to the navigation before it went to the work.
 
 There is no second non-semantic hue. v1's violet gate identity is withdrawn — a gate is a
 *state*, so it reads with the status palette (pending amber, passed green, blocked red)
@@ -406,7 +415,18 @@ Six named layers, and one shadow.
 
 `--shadow-float: 0 8px 24px rgba(0,0,0,.5)` is the only shadow in the system, and it is
 only for a layer that genuinely floats over another: the Oracle dock, an open trace, a
-menu, a toast. Panels, rows, registries and canvases are flat.
+menu, a toast. Panels, rows, registries and canvases are flat. An `inset` box-shadow is not
+a shadow in this sense — it is how a selection or state marker is drawn, and it stays.
+
+`--bg-veil: rgba(11,12,14,.92)` is the only translucency in the system: a sticky or
+floating surface reading over content that scrolls beneath it. It is a veil over `--bg`,
+not a colour, and it is never used as a text colour or as a panel fill.
+
+**Named layers are for the application; ordinals are for a component.** `z-index` uses the
+named tokens for anything that stacks against another part of the application. Ordering
+*within* one component's own stacking context may use `-1`, `0`, `1`, `2` or `3` and may
+not exceed `3`; a component that needs a fourth level is describing an application layer
+and should say so.
 
 ## Media
 
@@ -444,8 +464,11 @@ Each of these names a measured defect in v1 and is checked on every run.
 - **The Undo Rule.** Every destructive action is reversible, and says so at the moment it
   is taken. Undo is offered inline for at least the duration of the following interaction;
   a confirmation dialog is not an undo and does not satisfy this rule. (T11)
-- **The Specificity Rule.** No `!important`. If a rule needs one, the cascade is wrong and
-  the cascade is what gets fixed.
+- **The Specificity Rule.** No `!important`, with exactly one exception: the
+  `prefers-reduced-motion` reset, which must beat author styles written by script and
+  cannot do so on specificity. Everywhere else, a rule that needs one is telling you the
+  cascade is wrong, and the cascade is what gets fixed. v1 had seven; five of them competed
+  with nothing at all.
 
 ## How this file is enforced
 

@@ -339,3 +339,84 @@ Architecture and Playground still holds 173 sub-36px targets.
 definitions), 19 radii to 4, 5 transition durations to 3 under 150ms, 11 z-index literals to
 the named layer scale, the 9 `!important`s removed by fixing their specificity causes, and
 the 5 decorative media references dropped from CSS. Targets T7, T8, T10.
+
+## 2026-09-03 — P2 slice 2: literals to tokens, one shadow, four radii, no ornament
+
+**Slice:** P2 of 3, slice 2. Complete.
+
+**What changed.** A context-aware sweep over every declaration in `public/styles.css`:
+
+- **99 colour literals to tokens, and none left.** The mapping reads the property, not just
+  the value: a gold or cyan or violet literal becomes `--accent-line` on a border,
+  `--accent-quiet` on a low-alpha fill and `--accent` at full strength; cream becomes
+  `--line` on a border and `--surface-2` as a tint; near-blacks become `--bg` or the new
+  `--bg-veil`. Both retired worlds' hues — editorial gold `rgb(201,169,106)` and teal
+  `rgb(139,213,223)`, v1 cyan `rgb(76,201,255)` and violet `rgb(169,130,255)` — now resolve
+  to the single accent.
+- **32 drop shadows removed or replaced.** One shadow survives in the system, and only on a
+  layer that genuinely floats. `inset` shadows are untouched: an inset shadow is not a
+  shadow here, it is how a selection marker is drawn.
+- **62 radius values collapsed to the four shapes.** Two literals remain, `0` and `inherit`,
+  which are not radii.
+- **25 transition timings collapsed to three durations and one easing.** `.2s` and `.22s`
+  came down to 150ms; nothing in the product now animates for longer.
+- **8 z-index literals to named layers**, and the four values above 3 brought down.
+- **Five of seven `!important`s deleted.** Not by force: four of them competed with nothing
+  in the cascade at all, and `.is-hidden` was fixed with a doubled class. The two inside
+  `@media (prefers-reduced-motion: reduce)` stay, because a reset that must beat styles
+  written by script cannot win on specificity. DESIGN.md now names that single exception.
+- **All five decorative WebP references dropped from CSS.** `public/media/` is untouched, as
+  required; the files simply stop being referenced. The `.knowledge-layout::after`
+  photograph and the `.work-orientation::after` scrim that existed only to hold a photograph
+  down were deleted outright.
+- **The primary button and the active navigation item were corrected to the spec.** The
+  editorial layer had `.primary-action { background: var(--paper) }` — a near-white slab —
+  and the active nav item inverted to white as well. Both now read as the accent (primary)
+  or a surface step with a 2px accent inset rule (active). Putting the brightest value in
+  the interface on a control that is merely *current* is why the eye went to the navigation
+  before it went to the work.
+
+**Defect found and repaired inside the slice.** The first pass regressed T4 from 0 to 12.
+Cause: the colour mapper read alpha before it read the property, so three low-alpha cream
+*text* colours became surface tokens — `.work-orientation small { color: var(--surface-2) }`
+rendered at 1.08:1. Repaired by mapping text colours to foreground tokens regardless of
+alpha, and the two other instances the same bug had produced were found and fixed with it.
+This is exactly the failure the instrument exists to catch: the change looked right in a
+screenshot, because the label was invisible.
+
+**Metrics, before and after:**
+
+| # | Threshold | Before | After | State |
+|---|---|---:|---:|---|
+| T1 | Text below 13px | 0 | 0 | PASS |
+| T2 | Body text size | 16 | 16 | PASS |
+| T3 | Type in rem / 200% zoom | 100% | 100% | PASS |
+| T4 | Contrast failures (AA) | 0 | 0 | PASS |
+| T5 | Controls under 36/44px | 881 | 881 | FAIL |
+| T6 | Distinct visual systems | 1 | 1 | PASS |
+| T7 | Non-semantic accent hues | 3 | **1** | PASS |
+| T8 | Unique radii | 19 | **2** | PASS |
+| T9 | Views with empty state + action | 1 | 1 | FAIL |
+| T10 | Decorative media references | 5 | **0** | PASS |
+| T11 | Destructive actions without undo | 7 | 7 | FAIL |
+
+Eight of eleven pass. The three that remain are T5, T9 and T11 — none of them a styling
+problem. T5 is 173 checkboxes in a disclosure that P3 deletes outright, T9 is missing
+content, and T11 is missing behaviour.
+
+**DESIGN.md amended** with three things this slice proved were needed and the specification
+had not said: `--accent-hover`, `--bg-veil` as the system's only translucency with a rule
+against using it as a text colour, the active-control rule (surface step plus accent marker,
+never an inverted slab), the inset-shadow carve-out, the named-layers-for-the-application /
+ordinals-for-a-component rule, and the single `!important` exception.
+
+**Verified.** `npm.cmd run check` passes. Console clean at all three viewports across all
+eight views; no horizontal overflow. Visual check at 1440x900 of Work, Library, Architecture
+and Playground: no photography, one accent, the active tab reads as current rather than as
+the loudest thing on screen.
+
+**Next slice:** P2 slice 3 — the 881 sub-floor hit targets. Native checkboxes at 13x13 in
+Playground and Architecture, icon buttons, switcher tabs and dense rows all rise to 36px
+desktop / 44px narrow, and the spacing literals snap to the ten-step scale in the same pass
+because raising a target changes its padding anyway. Expect layout to break where it only
+fit because everything was small. Target T5.
