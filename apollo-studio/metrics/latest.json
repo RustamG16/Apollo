@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T05:49:21.162Z",
-  "durationMs": 15566,
+  "generatedAt": "2026-09-03T05:54:31.593Z",
+  "durationMs": 15565,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -75,14 +75,13 @@
     },
     "T8": {
       "name": "Unique radii (and >=8 spacing tokens)",
-      "value": 2,
+      "value": 1,
       "target": 4,
       "pass": true,
       "unit": "unique border-radius values",
       "detail": {
         "radii": [
-          "0",
-          "inherit"
+          "0"
         ],
         "spacingTokens": 10
       }
@@ -124,7 +123,7 @@
   },
   "perViewport": {
     "1280x800": {
-      "textNodes": 1378,
+      "textNodes": 1321,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
@@ -200,15 +199,15 @@
           ]
         },
         "knowledge": {
-          "textNodes": 406,
+          "textNodes": 349,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
           "unmeasuredControls": 8,
           "dominantSize": [
-            "13.0",
-            182
+            "14.0",
+            128
           ]
         },
         "oracle": {
@@ -250,7 +249,7 @@
       }
     },
     "1440x900": {
-      "textNodes": 1378,
+      "textNodes": 1321,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
@@ -326,15 +325,15 @@
           ]
         },
         "knowledge": {
-          "textNodes": 406,
+          "textNodes": 349,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
           "unmeasuredControls": 8,
           "dominantSize": [
-            "13.0",
-            182
+            "14.0",
+            128
           ]
         },
         "oracle": {
@@ -376,7 +375,7 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1378,
+      "textNodes": 1321,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
@@ -452,15 +451,15 @@
           ]
         },
         "knowledge": {
-          "textNodes": 406,
+          "textNodes": 349,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
           "unmeasuredControls": 8,
           "dominantSize": [
-            "13.0",
-            182
+            "14.0",
+            128
           ]
         },
         "oracle": {
@@ -510,7 +509,7 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 410,
+    "13.0": 353,
     "14.0": 599,
     "16.0": 309,
     "18.0": 20,
@@ -521,21 +520,20 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 107099,
-        "lines": 1444
+        "bytes": 106902,
+        "lines": 1448
       }
     ],
     "fontSizeUnits": {
-      "total": 244,
-      "rem": 244,
+      "total": 245,
+      "rem": 245,
       "px": 0,
       "em": 0,
       "other": 0
     },
     "uniquePxFontSizes": [],
     "radii": [
-      "0",
-      "inherit"
+      "0"
     ],
     "customPropertyCount": 93,
     "tokenFamilies": {
@@ -565,7 +563,6 @@
       "150ms"
     ],
     "zIndexSpellings": [
-      "-1",
       "0",
       "1",
       "2",
@@ -577,13 +574,12 @@
       "var(--z-toast)"
     ],
     "zIndexLiterals": [
-      "-1",
       "0",
       "1",
       "2",
       "3"
     ],
-    "spacingLiterals": 503,
+    "spacingLiterals": 500,
     "decorativeMediaRefs": []
   },
   "consoleErrors": [],

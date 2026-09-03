@@ -1491,10 +1491,13 @@ function renderKnowledge() {
       id.className = 'skill-id';
       id.textContent = skill.id;
       copy.append(title, meta, id);
-      const badge = document.createElement('span');
-      badge.className = `skill-status is-${status.key}`;
-      badge.textContent = status.label;
-      button.append(copy, badge);
+      button.append(copy);
+      if (status.key !== 'unrouted') {
+        const badge = document.createElement('span');
+        badge.className = `skill-status is-${status.key}`;
+        badge.textContent = status.label;
+        button.append(badge);
+      }
       // A source count of zero on all 84 rows was noise; it is stated only when there is one.
       if (skill.sourceCount) {
         const count = document.createElement('span');

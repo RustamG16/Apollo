@@ -1237,3 +1237,45 @@ MEDIUM.
 All eleven thresholds still pass; `npm.cmd run check` exits 0; console clean; no overflow.
 
 **Next:** the independent critique's findings.
+
+## 2026-09-03 — P5: looking at the real thing
+
+**Slice:** P5, part 3.
+
+Added `scripts/ui-shots.mjs` — screenshots all eight views at a real 1440x900 through the
+same headless Chrome the metrics harness drives. The browser pane had been giving unreliable
+answers about a desktop layout (at one point reporting a zero-width viewport and 320px of
+phantom overflow); this does not, and it costs one command.
+
+**Reading those eight images found six defects that no threshold measures.** That is the
+point of P5 and the argument for looking rather than only counting:
+
+1. **The section heading was still a decorative box.** A 150px-tall bordered container with
+   `linear-gradient(115deg, var(--accent-quiet), transparent 32%)` behind it — the frame the
+   removed photography used to sit in, left standing after the photograph was taken out. A
+   heading does not need a box. It is a rule now, and every view gained roughly 90px of
+   content above the fold.
+2. **Five more decorative gradients**, all of them "colour used for mood", which the doctrine
+   refuses by name: an accent wash across the entire Systems workbench, the same across the
+   Library layout, a two-accent gradient on the comparison progress bar in a system with one
+   accent, a gradient between two identical colours on the agent card, and a fading accent
+   wash on the selected project row.
+3. **Selection was a wash rather than the specified treatment.** `DESIGN.md` says an active
+   control is a surface step plus an accent marker. The project row faded from
+   `--accent-quiet` to transparent, which made its right edge ambiguous. It is `--surface-3`
+   with a 2px inset accent rule now, matching navigation and the switcher.
+4. **The Library badge said "Capability library" on 57 of 84 rows.** Exactly the defect "0
+   sources" had: a value repeated on nearly every row conveys nothing. Only In use and
+   Available are marked; the group heading says the rest.
+5. **Two facts were rendered in the accent** — the skill's folder line and the pipeline
+   strip's ownership line. The specification reserves the accent for action and active
+   selection, and neither of those is either.
+6. **The inspector's full-width action centred its own label**, reading as an orphan floating
+   in the column instead of the last item of an aligned list.
+
+None of these would ever have been caught by T1-T11, and all six are things the specification
+already forbids. A stylesheet can satisfy every measurement and still be carrying the
+previous world's ornament in places the measurements do not look.
+
+All eleven thresholds still pass; `npm.cmd run check` exits 0; console clean; no overflow.
+Screenshots are in `evidence/shots/`.
