@@ -16,3 +16,18 @@ export const dataDir = override || defaultDir;
 export const isScratchData = Boolean(override);
 
 export const dataFile = name => join(dataDir, name);
+
+// Design DNA profiles live in library/design-dna/, outside data/, because the schema and the
+// two interview skills expect them there. They are still WRITTEN state, so the scratch
+// override has to cover them - without this every behaviour-harness run left a real profile
+// in the library for each B4 probe.
+const defaultProfileDir = fileURLToPath(new URL('../library/design-dna/', import.meta.url));
+export const profileDir = override ? join(override, 'design-dna') : defaultProfileDir;
+
+// The knowledge tree is both read (84 capability folders) and written (index overrides, new
+// skill folders, source notes). Under the scratch override it is copied once and then used in
+// place, so the sweep can click "Save skill" and "Add source" for real without editing the
+// repo's own knowledge tree - which is exactly what happened before this existed.
+const defaultKnowledgeDir = fileURLToPath(new URL('./knowledge/', import.meta.url));
+export const knowledgeDir = override ? join(override, 'knowledge') : defaultKnowledgeDir;
+export const knowledgeSeedDir = defaultKnowledgeDir;

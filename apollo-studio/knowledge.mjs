@@ -1,10 +1,11 @@
-import { access, mkdir, readFile, rename, writeFile } from 'node:fs/promises';
+import { access, cp, mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { skills as builtinSkills } from './skills.mjs';
+import { knowledgeDir, knowledgeSeedDir, isScratchData } from './paths.mjs';
 
 const studioRoot = fileURLToPath(new URL('./', import.meta.url));
-const knowledgeRoot = join(studioRoot, 'knowledge');
+const knowledgeRoot = knowledgeDir;
 const indexPath = join(knowledgeRoot, 'index.json');
 
 const emptyIndex = () => ({ version: 1, customSkills: [], overrides: {}, sources: {} });
@@ -59,6 +60,11 @@ function mergeSkill(skill, index, builtin) {
 }
 
 export async function initializeKnowledge() {
+  // Under the scratch override, seed from the repo's tree once so reads work and writes land
+  // in the throwaway directory.
+  if (isScratchData && !(await exists(knowledgeRoot))) {
+    await cp(knowledgeSeedDir, knowledgeRoot, { recursive: true });
+  }
   await mkdir(join(knowledgeRoot, 'skills'), { recursive: true });
   const index = await loadIndex();
   await Promise.all(builtinSkills.map(skill => ensureSkillFolder(mergeSkill(skill, index, true))));

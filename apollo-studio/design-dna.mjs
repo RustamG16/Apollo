@@ -11,9 +11,10 @@
 import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
+import { profileDir } from './paths.mjs';
 
 const doctrineRoot = fileURLToPath(new URL('../library/doctrines/', import.meta.url));
-const profileRoot = fileURLToPath(new URL('../library/design-dna/', import.meta.url));
+const profileRoot = profileDir;
 const schemaPath = fileURLToPath(new URL('../library/schemas/taste-profile.schema.json', import.meta.url));
 
 const now = () => new Date().toISOString();
