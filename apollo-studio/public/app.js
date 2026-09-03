@@ -294,7 +294,10 @@ async function refreshSystems() {
 function renderArchitectureAgents() {
   const host = $('#architecture-agent-lanes');
   const system = activeSystem();
-  if (!host || !system) return;
+  const empty = $('#architecture-empty');
+  if (!host) return;
+  if (empty) empty.hidden = Boolean(system?.agents?.length);
+  if (!system) { host.replaceChildren(); return; }
   $('#architecture-system-name').textContent = system.name;
   $('#architecture-system-count').textContent = `${system.agents.filter(agent => agent.enabled).length} active agents`;
   const phases = ['diagnose', 'direct', 'prepare', 'build', 'verify'];
@@ -1171,19 +1174,99 @@ async function runComparison() {
   }
 }
 
+// One history, not two. The split into "connected host runs" and "browser experiments"
+// asked the reader to know which list a run would be in before they could look for it, and
+// there is not enough MCP traffic to justify two chronologies. Source is a property of a
+// row, not a reason for a second section.
 function renderHistory() {
-  renderConnectedHistory();
   const host = $('#run-history');
-  if (!state.runs.length) { host.innerHTML = '<div class="empty-state compact"><strong>No browser experiments yet.</strong><p>Use Playground to compare two or three skill combinations with the same prompt.</p></div>'; updateRunCount(); return; }
-  host.replaceChildren(...state.runs.map(run => {
-    const row = document.createElement('article'); row.className = 'history-row';
-    const identity = document.createElement('div'); identity.innerHTML = '<time></time><strong></strong><small></small>';
-    identity.querySelector('time').textContent = new Date(run.createdAt).toLocaleString();
-    identity.querySelector('strong').textContent = run.model;
-    identity.querySelector('small').textContent = `${run.results.length} variants · ${run.reasoning} reasoning`;
-    const prompt = document.createElement('div'); prompt.className = 'history-prompt'; prompt.textContent = run.prompt;
-    const open = document.createElement('button'); open.className = 'quiet-action'; open.textContent = 'Open results'; open.addEventListener('click', () => { renderResults(run); navigate('playground'); });
-    row.append(identity, prompt, open); return row;
+  const empty = $('#runs-empty');
+  if (!host) return;
+
+  if (state.eventsError) {
+    const error = document.createElement('div');
+    error.className = 'empty-state history-error';
+    const title = document.createElement('strong');
+    title.textContent = 'MCP run history is unavailable.';
+    const detail = document.createElement('p');
+    detail.textContent = state.eventsError + ' Runs made in this browser are still listed below.';
+    const retry = document.createElement('button');
+    retry.className = 'quiet-action';
+    retry.type = 'button';
+    retry.textContent = 'Try again';
+    retry.addEventListener('click', refreshEvents);
+    error.append(title, detail, retry);
+    host.replaceChildren(error);
+  } else {
+    host.replaceChildren();
+  }
+
+  const connected = state.eventsError ? [] : connectedRunsFromEvents().map(run => ({
+    at: run.updatedAt,
+    source: 'host',
+    sourceLabel: run.host,
+    status: run.status,
+    title: run.host,
+    detail: run.runId,
+    summary: run.summary,
+    open: null
+  }));
+  const local = state.runs.map(run => ({
+    at: run.createdAt,
+    source: 'browser',
+    sourceLabel: 'This browser',
+    status: 'completed',
+    title: run.model,
+    detail: `${run.results.length} loadout${run.results.length === 1 ? '' : 's'} · ${run.reasoning} reasoning`,
+    summary: run.prompt,
+    open: () => { renderResults(run); navigate('playground'); }
+  }));
+
+  const rows = [...connected, ...local].sort((a, b) => new Date(b.at) - new Date(a.at));
+  empty.hidden = rows.length > 0 || Boolean(state.eventsError);
+
+  host.append(...rows.map(row => {
+    const article = document.createElement('article');
+    article.className = 'history-row';
+
+    const identity = document.createElement('div');
+    identity.className = 'history-identity';
+    const time = document.createElement('time');
+    time.dateTime = row.at;
+    time.textContent = new Date(row.at).toLocaleString();
+    const name = document.createElement('strong');
+    name.textContent = row.title;
+    const detail = document.createElement('small');
+    detail.textContent = row.detail;
+    identity.append(time, name, detail);
+
+    const badges = document.createElement('div');
+    badges.className = 'history-badges';
+    const source = document.createElement('span');
+    source.className = `history-source${row.source === 'host' ? ' is-connected' : ''}`;
+    source.textContent = row.source === 'host' ? 'MCP host' : 'This browser';
+    badges.append(source);
+    if (row.source === 'host') {
+      const status = document.createElement('span');
+      status.className = `run-status status-${row.status}`;
+      status.textContent = row.status.replace('-', ' ');
+      badges.append(status);
+    }
+
+    const summary = document.createElement('div');
+    summary.className = 'history-prompt';
+    summary.textContent = row.summary || '';
+
+    article.append(identity, badges, summary);
+    if (row.open) {
+      const open = document.createElement('button');
+      open.className = 'quiet-action';
+      open.type = 'button';
+      open.textContent = 'Open results';
+      open.addEventListener('click', row.open);
+      article.append(open);
+    }
+    return article;
   }));
   updateRunCount();
 }
@@ -1251,57 +1334,9 @@ function updateRunCount() {
   $('#run-count').textContent = connectedRunsFromEvents().length + state.runs.length;
 }
 
-function renderConnectedHistory() {
-  const host = $('#connected-run-history');
-  if (!host) return;
-  if (state.eventsError) {
-    const error = document.createElement('div'); error.className = 'empty-state compact history-error';
-    const title = document.createElement('strong'); title.textContent = 'MCP run history is unavailable.';
-    const detail = document.createElement('p'); detail.textContent = state.eventsError;
-    const retry = document.createElement('button'); retry.className = 'quiet-action'; retry.type = 'button'; retry.textContent = 'Try again'; retry.addEventListener('click', refreshEvents);
-    error.append(title, detail, retry); host.replaceChildren(error); updateRunCount(); return;
-  }
-  const runs = connectedRunsFromEvents();
-  if (!runs.length) { host.innerHTML = '<div class="empty-state compact"><strong>No connected runs yet.</strong><p>Open this workspace in a configured host and publish a run lifecycle through Apollo MCP.</p></div>'; updateRunCount(); return; }
-  host.replaceChildren(...runs.map(run => {
-    const row = document.createElement('article'); row.className = 'phase-run';
-    const header = document.createElement('header'); header.className = 'phase-run-header';
-    const identity = document.createElement('div'); identity.className = 'connected-run-identity';
-    const time = document.createElement('time'); time.dateTime = run.updatedAt; time.textContent = new Date(run.updatedAt).toLocaleString();
-    const name = document.createElement('strong'); name.textContent = run.host;
-    const status = document.createElement('span'); status.className = `run-status status-${run.status}`; status.textContent = run.status.replace('-', ' ');
-    const runId = document.createElement('small'); runId.textContent = run.runId;
-    const line = document.createElement('div'); line.className = 'connected-run-line'; line.append(time, name, status);
-    identity.append(line, runId);
-    const summary = document.createElement('div'); summary.className = 'history-prompt connected-summary'; summary.textContent = run.summary;
-    const eventCount = document.createElement('span'); eventCount.className = 'run-event-count'; eventCount.textContent = `${run.events.length} events`;
-    header.append(identity, summary, eventCount);
-    const timeline = document.createElement('div'); timeline.className = 'phase-timeline';
-    run.phases.forEach(trace => {
-      const phase = document.createElement('details'); phase.className = 'phase-trace';
-      const phaseSummary = document.createElement('summary');
-      const phaseName = document.createElement('span'); phaseName.className = 'phase-trace-name'; phaseName.textContent = trace.label;
-      const phaseAgent = document.createElement('strong'); phaseAgent.textContent = trace.agents.join(', ') || 'Agent not reported';
-      const token = document.createElement('span'); token.className = 'phase-token'; token.textContent = trace.tokensReported ? `${trace.tokens.toLocaleString()} tokens` : 'Tokens not reported';
-      const count = document.createElement('small'); count.textContent = `${trace.events.length} event${trace.events.length === 1 ? '' : 's'}`;
-      phaseSummary.append(phaseName, phaseAgent, token, count);
-      const list = document.createElement('ol');
-      trace.events.forEach(event => {
-        const item = document.createElement('li');
-        const kind = document.createElement('strong'); kind.textContent = event.kind.replaceAll('.', ' ');
-        const copy = document.createElement('span'); copy.textContent = event.summary;
-        item.append(kind, copy); list.append(item);
-      });
-      phase.append(phaseSummary, list); timeline.append(phase);
-    });
-    row.append(header, timeline); return row;
-  }));
-  updateRunCount();
-}
-
 function renderAgents() {
   const host = $('#agent-registry');
-  if (!host || !state.agents.length) return;
+  if (!host) return;
   const query = ($('#agent-search')?.value || '').trim().toLowerCase();
   const categoryFilter = $('#agent-category')?.value || 'all';
   const categoryById = { 'apollo-director': 'Direction', 'athena-evidence': 'Research', 'calliope-experience': 'Direction', 'hephaestus-build': 'Production', 'hermes-delivery': 'Delivery' };
@@ -1318,6 +1353,8 @@ function renderAgents() {
     return (categoryFilter === 'all' || category === categoryFilter) && haystack.includes(query);
   });
   if (!filtered.length) { host.innerHTML = '<div class="empty-state"><strong>No agent profiles match.</strong><p>Change the category or search term.</p></div>'; return; }
+  const agentsEmpty = $('#agents-empty');
+  if (agentsEmpty) agentsEmpty.hidden = filtered.length > 0;
   host.replaceChildren(...filtered.map(agent => {
     const article = document.createElement('article');
     const category = categoryById[agent.id] || 'Direction';
@@ -1540,7 +1577,9 @@ function renderIntegrations() {
 
 function renderHostEvents() {
   const host = $('#host-event-list'); if (!host) return;
-  if (!state.events.length) { host.innerHTML = '<div class="empty-state">No shared events yet. Ask a connected host to publish an Apollo event.</div>'; return; }
+  const empty = $('#oracle-events-empty');
+  if (empty) empty.hidden = state.events.length > 0;
+  if (!state.events.length) { host.replaceChildren(); return; }
   host.replaceChildren(...state.events.map(event => {
     const article = document.createElement('article'); article.className = `host-event host-${event.host}`;
     article.innerHTML = '<div><strong></strong><span></span></div><p></p><time></time>';
@@ -1800,6 +1839,8 @@ function bindEvents() {
     $('#budget-translation').textContent = describeBudget(Number(event.target.value) || 0);
     markLoadoutDirty();
   });
+  $('#architecture-empty-action').addEventListener('click', () => refreshSystems());
+  $('#agents-empty-action').addEventListener('click', () => { $('#agent-category').value = 'all'; renderAgents(); });
   $('#knowledge-empty-action').addEventListener('click', () => {
     $('#knowledge-search').value = '';
     state.knowledgeCategory = 'all';

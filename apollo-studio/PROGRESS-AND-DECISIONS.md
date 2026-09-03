@@ -1088,3 +1088,71 @@ have not had their pass yet: Architecture, Agent profiles, Oracle and Runs.
 **Next slice:** P4 pass 6 — Runs, then the empty states for the three surfaces the plan's
 pass list does not name individually (Architecture, Agent profiles, Oracle), which is what
 T9 needs to reach 8 of 8.
+
+## 2026-09-03 — P4 pass 6: Runs, and all eleven thresholds pass
+
+**Slice:** P4, surface 6 of 6. Complete. **T1–T11 all pass.**
+
+### Runs: one history, not two
+
+The plan's cut was explicit — "cut the Runs / Browser-experiments split until real MCP
+traffic justifies two histories" — and the reason is a reading problem. Two sections asked
+you to know which list a run would be in before you could look for it, and neither list was
+long enough to need its own chronology.
+
+There is now one list, newest first, and **source is a property of a row**: each carries
+`MCP host` or `This browser`, with the host's lifecycle status beside it where there is one.
+`renderConnectedHistory` is gone; `renderHistory` merges both sources and sorts by time. When
+the MCP stream is unavailable the error states that browser runs are still listed rather than
+replacing the whole surface with a failure.
+
+### T9 closed: the four remaining surfaces
+
+Architecture, Agent profiles, Oracle and Runs each got the state they were missing, written
+as static markup toggled with `hidden` rather than rebuilt from strings on every render:
+
+- **Runs** — what will land here and where it comes from, with the comparison as its action.
+- **Architecture** — "No roster loaded", stating that the five agents are fixed so an empty
+  map is a load failure and not a configuration, with a reload action.
+- **Agent profiles** — "No agents match this filter", with an action that clears it.
+- **Oracle** — "No host activity yet", stating that only explicit MCP and Oracle events
+  appear there, with an action that would produce one.
+
+Each names what is absent, why, and the one action that changes it. `renderAgents` also
+stopped returning early on an empty roster, which is what had made its empty state
+unreachable.
+
+### The whole board
+
+| # | Threshold | Baseline | Now | Target | State |
+|---|---|---:|---:|---:|---|
+| T1 | Rendered text below 13px | 3105 | **0** | 0 | PASS |
+| T2 | Body text size | 16 | 16 | >=15 | PASS |
+| T3 | Type in rem; holds at 200% zoom | 0% | **100%** | 100% | PASS |
+| T4 | Contrast failures (AA) | 501 | **0** | 0 | PASS |
+| T5 | Controls under 36/44px | 1017 | **0** | 0 | PASS |
+| T6 | Distinct visual systems | 3 | **1** | 1 | PASS |
+| T7 | Non-semantic accent hues | 3 | **1** | <=1 | PASS |
+| T8 | Unique radii | 19 | **2** | <=4 | PASS |
+| T9 | Views with empty state + action | 1 | **8** | 8 | PASS |
+| T10 | Decorative media references | 5 | **0** | 0 | PASS |
+| T11 | Destructive actions without undo | 7 | **0** | 0 | PASS |
+
+**All eleven hold, across all eight views, at 1280x800, 1440x900 and 1920x1080.** Console
+clean, reduced motion honoured (worst computed duration 0.01ms under the emulated
+preference), no horizontal overflow under the element-level check.
+
+Per LOADOUT-PLAN.md §07, the stop condition is *all eleven holding for two consecutive
+slices*. This is the first. It is not the end of the program and the next slice must
+re-measure rather than assume.
+
+### What the numbers do not say
+
+The thresholds are legibility, predictability and not-having-to-look-twice made countable.
+They are the floor. They do not say the interface is good, and passing them is the point at
+which judgement starts rather than stops — that is written into DESIGN.md and is worth
+repeating here so a later session does not read eleven PASSes as permission to stop looking.
+
+**Next slice:** P5 standing critique — a second consecutive clean measurement, an independent
+read of the surfaces against DESIGN.md rather than against the thresholds, and the stop
+condition written into CONTINUOUS-IMPROVEMENT-PLAN.md so it cannot be quietly extended.

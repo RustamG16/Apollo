@@ -74,6 +74,11 @@
         <section class="architecture-agents" aria-labelledby="architecture-agents-title">
           <div class="panel-heading"><div><h2 id="architecture-agents-title">Agents by phase</h2><p>The roster is fixed. Select an agent to jump to the loadout slots it owns.</p></div><button class="quiet-action" data-view-target="systems">Open loadouts</button></div>
           <div class="architecture-agent-lanes" id="architecture-agent-lanes"></div>
+          <div class="empty-state" data-empty-state id="architecture-empty" hidden>
+            <strong>No roster loaded.</strong>
+            <p>The pipeline could not be read, so the map has nothing to draw. The five agents and their phases are fixed, so this is a load failure rather than a configuration.</p>
+            <button class="primary-action" data-primary-action type="button" id="architecture-empty-action">Reload the pipeline</button>
+          </div>
         </section>
 
         <p class="sr-only" id="graph-keyboard-help">Select a workflow node, then use the arrow keys to move it. Hold Shift for larger steps. Press Delete to remove a custom node, or Escape to cancel a connection.</p>
@@ -253,6 +258,11 @@
         <div class="library-switcher" role="navigation" aria-label="Library categories"><button class="is-active" data-view-target="agents" type="button">Agents</button><button data-view-target="knowledge" type="button">Skills & knowledge</button></div>
         <div class="agent-filterbar"><label>Category<select id="agent-category"><option value="all">All agents</option><option value="Direction">Direction</option><option value="Research">Research</option><option value="Production">Production</option><option value="Delivery">Delivery</option></select></label><label class="search-field">Search profiles<input id="agent-search" type="search" placeholder="Name, role, skill…"></label></div>
         <div class="agent-registry" id="agent-registry" aria-live="polite"></div>
+        <div class="empty-state" data-empty-state id="agents-empty" hidden>
+          <strong>No agents match this filter.</strong>
+          <p>The five Olympus agents are fixed and load with the pipeline. Clear the filter to see all of them.</p>
+          <button class="primary-action" data-primary-action type="button" id="agents-empty-action">Show all agents</button>
+        </div>
       </section>
 
       <section class="view" id="knowledge" aria-labelledby="knowledge-title">
@@ -319,21 +329,25 @@
               <p class="integration-recommendation" id="integration-recommendation"></p>
               <div class="activity-heading"><div><h2>Shared host activity</h2><p>Only explicit MCP and Oracle events appear here.</p></div><button type="button" class="quiet-action" id="refresh-events">Refresh</button></div>
               <div id="host-event-list" class="host-event-list" aria-live="polite"></div>
+              <div class="empty-state" data-empty-state id="oracle-events-empty" hidden>
+                <strong>No host activity yet.</strong>
+                <p>Only explicit MCP and Oracle events appear here. Nothing has been published by a connected host in this workspace.</p>
+                <button class="primary-action" data-primary-action type="button" data-view-target="playground">Run something to publish an event</button>
+              </div>
             </section>
           </aside>
         </div>
       </section>
 
       <section class="view" id="runs" aria-labelledby="runs-title">
-        <div class="section-heading"><div><h1 id="runs-title">Run history</h1><p>Codex and other connected hosts arrive through Apollo MCP. Playground comparisons remain private to this browser.</p></div><div class="heading-actions"><button class="quiet-action" id="refresh-runs">Refresh</button><button class="quiet-action" id="export-runs">Export JSON</button><button class="danger-action" data-undo id="clear-runs">Clear local</button></div></div>
-        <section class="history-section" aria-labelledby="connected-runs-title">
-          <div class="history-section-heading"><div><h2 id="connected-runs-title">Connected host runs</h2><p>Explicit lifecycle events published by Codex, Cursor, Claude, or Oracle.</p></div><span class="history-source is-connected">MCP event stream</span></div>
-          <div class="run-history" id="connected-run-history" aria-live="polite"></div>
-        </section>
-        <section class="history-section" aria-labelledby="local-runs-title">
-          <div class="history-section-heading"><div><h2 id="local-runs-title">Browser experiments</h2><p>Same-prompt comparisons created in this Studio browser.</p></div><span class="history-source">Local storage</span></div>
-          <div class="run-history" id="run-history"></div>
-        </section>
+        <div class="section-heading"><div><h1 id="runs-title">Run history</h1><p>One history, newest first. Each row says where it came from: a connected host through Apollo MCP, or this browser.</p></div><div class="heading-actions"><button class="quiet-action" id="refresh-runs">Refresh</button><button class="quiet-action" id="export-runs">Export JSON</button><button class="danger-action" data-undo id="clear-runs">Clear local</button></div></div>
+        <div class="history-legend"><span class="history-source is-connected">MCP host</span><span class="history-source">This browser</span></div>
+        <div class="run-history" id="run-history" aria-live="polite"></div>
+        <div class="empty-state" data-empty-state id="runs-empty" hidden>
+          <strong>No runs yet.</strong>
+          <p>Runs published by a connected host through Apollo MCP and comparisons made in this browser both land here, newest first.</p>
+          <button class="primary-action" data-primary-action type="button" data-view-target="playground">Run a comparison</button>
+        </div>
       </section>
     </main>
 
