@@ -12,6 +12,7 @@ import { initializeEventStore, listEvents, publishEvent } from './events.mjs';
 import { createProfileFromDoctrine, deleteProfile, getDesignDna, restoreProfile, updateProfile } from './design-dna.mjs';
 import { agentTemplates, createSystem, createLoadout, deleteLoadout, deleteSystem, getOutputPreview, initializeSystems, listLoadouts, listSystems, recordSystemOutput, restoreLoadout, setActiveLoadout, setActiveSystem, updateLoadout, updateSystem } from './systems.mjs';
 import { addAttachment, addMessage, chatDetail, createChat, createProject, createProposal, initializeWorkspace, listWorkspace, resolveProposal, unlinkAttachment } from './workspace.mjs';
+import { resolveLoadoutContext } from './loadout-context.mjs';
 
 const root = fileURLToPath(new URL('./public/', import.meta.url));
 const port = Number(process.env.PORT || 4173);
@@ -38,7 +39,10 @@ const readJson = async request => {
 
 const outputText = response => response.output_text || response.output?.flatMap(item => item.content || []).find(item => item.type === 'output_text')?.text || 'No text output returned.';
 
-async function composeInstructions(selectedIds) {
+// The loadout's context goes AHEAD of the capabilities, because it constrains them. A
+// capability that would otherwise reach for a decorative gradient must meet the avoid-list
+// before it meets its own runtimePrompt, not after.
+async function composeInstructions(selectedIds, context = '') {
   const inventory = await allSkills();
   const selected = selectedIds.map(id => inventory.find(skill => skill.id === id)).filter(skill => skill?.enabled);
   return [
@@ -46,6 +50,7 @@ async function composeInstructions(selectedIds) {
     'Treat the activated capabilities below as one coordinated instruction set, not separate personas.',
     'Do not claim to have inspected files, browsers, analytics, or references unless the prompt includes that evidence.',
     'If a capability is irrelevant, keep it dormant rather than forcing it into the answer.',
+    ...(context ? [context] : []),
     ...selected.map(skill => `CAPABILITY — ${skill.name}: ${skill.runtimePrompt}`)
   ].join('\n\n');
 }
@@ -67,7 +72,7 @@ async function runLive({ prompt, variant, model, reasoning, maxOutputTokens }) {
   const apiResponse = await fetch('https://api.openai.com/v1/responses', {
     method: 'POST',
     headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json' },
-    body: JSON.stringify({ model, instructions: await composeInstructions(variant.skills), input: prompt, reasoning: { effort: reasoning }, max_output_tokens: maxOutputTokens, tools: enabledTools, store: false })
+    body: JSON.stringify({ model, instructions: await composeInstructions(variant.skills, variant.context), input: prompt, reasoning: { effort: reasoning }, max_output_tokens: maxOutputTokens, tools: enabledTools, store: false })
   });
   const body = await apiResponse.json();
   if (!apiResponse.ok) throw new Error(body.error?.message || `OpenAI request failed with ${apiResponse.status}.`);
@@ -83,7 +88,11 @@ async function runDemo({ prompt, variant }) {
   return {
     id: `demo_${crypto.randomUUID()}`,
     mode: 'demo',
-    text: ['DEMO MODE — no model request was made.', '', `Prompt focus: ${prompt.slice(0, 220)}${prompt.length > 220 ? '…' : ''}`, '', `Activated route: ${phaseMix || 'none'}`, `Capabilities: ${selected.map(skill => skill.name).join(', ') || 'No skills selected'}`, '', selected.some(skill => skill.id === 'ux-evidence-audit') ? 'This route begins with evidence and separates observations from inferences.' : 'No dedicated evidence audit is active.', selected.some(skill => skill.id === 'concept-studio') ? 'It produces three structurally distinct directions before implementation.' : 'It answers without a formal three-concept phase.', selected.some(skill => skill.id === 'visual-qa') ? 'A bounded desktop/mobile verification pass is included.' : 'Release verification is not included.'].join('\n'),
+    // Demo mode reports the resolved context too. If it did not, the one mode a person
+    // can run for free would be the one mode that cannot show them what their brief and
+    // taste profile changed - which is the whole point of comparing two loadouts.
+    text: ['DEMO MODE — no model request was made.', '', `Prompt focus: ${prompt.slice(0, 220)}${prompt.length > 220 ? '…' : ''}`, '', `Activated route: ${phaseMix || 'none'}`, `Capabilities: ${selected.map(skill => skill.name).join(', ') || 'No skills selected'}`, '', variant.context ? `Loadout context sent ahead of every capability:
+${variant.context}` : 'No brief and no Design DNA attached: this loadout adds no context of its own.', '', selected.some(skill => skill.id === 'ux-evidence-audit') ? 'This route begins with evidence and separates observations from inferences.' : 'No dedicated evidence audit is active.', selected.some(skill => skill.id === 'concept-studio') ? 'It produces three structurally distinct directions before implementation.' : 'It answers without a formal three-concept phase.', selected.some(skill => skill.id === 'visual-qa') ? 'A bounded desktop/mobile verification pass is included.' : 'Release verification is not included.'].join('\n'),
     latencyMs: Math.round(performance.now() - started),
     usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0 }
   };
@@ -100,10 +109,21 @@ async function handleCompare(request, response) {
     const inventory = await allSkills();
     if (prompt.length < 3 || prompt.length > 20_000) return json(response, 400, { error: 'Prompt must contain 3–20,000 characters.' });
     if (variants.length < 2) return json(response, 400, { error: 'Choose at least two variants.' });
-    const normalized = variants.map((variant, index) => ({
-      name: String(variant.name || `Variant ${index + 1}`).slice(0, 60),
-      skills: [...new Set((variant.skills || []).filter(id => inventory.some(skill => skill.id === id && skill.enabled)))],
-      tools: [...new Set((variant.tools || []).filter(id => tools.some(tool => tool.id === id && tool.usable)))]
+    // The loadout is resolved HERE, from its id, not trusted from the client. Comparing two
+    // loadouts meant comparing two flat skill lists the browser had derived; the brief, the
+    // taste profile, the budget and the approvals never left the page.
+    const { loadouts } = await listLoadouts();
+    const normalized = await Promise.all(variants.map(async (variant, index) => {
+      const loadout = loadouts.find(item => item.id === variant.loadoutId) || null;
+      const { context } = await resolveLoadoutContext(loadout);
+      return {
+        name: String(variant.name || `Variant ${index + 1}`).slice(0, 60),
+        loadoutId: loadout?.id || null,
+        loadoutName: loadout?.name || null,
+        context,
+        skills: [...new Set((variant.skills || []).filter(id => inventory.some(skill => skill.id === id && skill.enabled)))],
+        tools: [...new Set((variant.tools || []).filter(id => tools.some(tool => tool.id === id && tool.usable)))]
+      };
     }));
     const runner = apiKey && body.mode !== 'demo' ? runLive : runDemo;
     const settled = await Promise.allSettled(normalized.map(variant => runner({ prompt, variant, model, reasoning, maxOutputTokens })));
@@ -128,19 +148,23 @@ async function handleOracle(request, response, planOnly = false) {
     await publishEvent({ host: 'apollo', kind: 'run.started', runId, summary: `${apiKey && body.mode !== 'demo' ? 'Live' : 'Demo'} Oracle run started.`, data: { systemId: plan.system.id, systemName: plan.system.name, specialists: executable.map(step => step.name), waiting: waiting.map(step => step.name), phase: 'plan', agent: 'Apollo Orchestrator', tokens: 0 } });
     if (!apiKey || body.mode === 'demo') {
       const route = executable.length ? executable.map(step => `${step.name} [${step.skills.join(', ')}]`).join('\n') : 'No specialist matched this request.';
-      const answer = `DEMO MODE — Apollo planned the request but made no model calls.\n\nActivated specialists:\n${route}\n\n${waiting.length ? `Waiting for approval: ${waiting.map(step => step.name).join(', ')}\n\n` : ''}Open this workspace in a supported host or configure OPENAI_API_KEY for live execution.`;
+      const contextNote = plan.context
+        ? `\nLoadout context sent ahead of every capability:\n${plan.context}\n`
+        : '\nNo brief and no Design DNA attached: this loadout adds no context of its own.\n';
+      const answer = `DEMO MODE — Apollo planned the request but made no model calls.\n\nActivated specialists:\n${route}\n${contextNote}\n${waiting.length ? `Waiting for approval: ${waiting.map(step => step.name).join(', ')}\n\n` : ''}Open this workspace in a supported host or configure OPENAI_API_KEY for live execution.`;
       for (const step of executable) await publishEvent({ host: 'apollo', kind: 'run.progress', runId, summary: `${step.name} simulated in demo mode.`, data: { systemId: plan.system.id, phase: step.phase, agent: step.name, tokens: 0, status: 'simulated' } });
       const output = await recordSystemOutput(plan.system.id, { name: `Oracle · ${prompt.slice(0, 72)}`, type: 'Oracle run', status: 'Demo', runId, summary: 'Planned route preview; no model tokens were consumed.', content: answer });
       await publishEvent({ host: 'apollo', kind: 'run.completed', runId, summary: 'Demo Oracle run completed without model usage.', data: { systemId: plan.system.id, outputId: output.id, phase: 'synthesize', agent: 'Apollo Orchestrator', tokens: 0 } });
       return json(response, 200, { runId, mode: 'demo', plan, waiting, output, trace: executable.map(step => ({ agent: step.name, status: 'simulated', budget: step.budget, skills: step.skills })), answer });
     }
     const model = allowedModels.has(body.model) ? body.model : 'gpt-5.6-terra';
+    const loadoutContext = plan.context || '';
     const specialistResults = [];
     for (let index = 0; index < executable.length; index += plan.concurrency) {
       const batch = executable.slice(index, index + plan.concurrency);
       const settled = await Promise.allSettled(batch.map(async step => {
         const inventory = [`Skills: ${step.skills.join(', ') || 'none'}`, `MCP/tools requested: ${step.mcp.join(', ') || 'none'}`, `Plugins requested: ${step.plugins.join(', ') || 'none'}`].join('\n');
-        const result = await requestOpenAI({ input: prompt, instructions: `${await composeInstructions(step.skills)}\n\nSYSTEM ORCHESTRATOR RULES\n${plan.system.instructions}\n\nSYSTEM AGENT INSTRUCTIONS\n${step.instructions}\n\nINVENTORY\n${inventory}\n\nYou are the bounded ${step.name}. Return findings for the Apollo orchestrator; do not delegate.`, model, maxOutputTokens: Math.min(8000, step.budget) });
+        const result = await requestOpenAI({ input: prompt, instructions: `${await composeInstructions(step.skills, loadoutContext)}\n\nSYSTEM ORCHESTRATOR RULES\n${plan.system.instructions}\n\nSYSTEM AGENT INSTRUCTIONS\n${step.instructions}\n\nINVENTORY\n${inventory}\n\nYou are the bounded ${step.name}. Return findings for the Apollo orchestrator; do not delegate.`, model, maxOutputTokens: Math.min(8000, step.budget) });
         return { step, result };
       }));
       for (let offset = 0; offset < settled.length; offset += 1) {
@@ -151,7 +175,7 @@ async function handleOracle(request, response, planOnly = false) {
       }
     }
     const packets = specialistResults.map(item => `## ${item.step.name}\n${item.error || item.result.text}`).join('\n\n');
-    const synthesis = await requestOpenAI({ input: `USER REQUEST\n${prompt}\n\nSPECIALIST PACKETS\n${packets || 'No specialist was required.'}`, instructions: `You are Apollo Orchestrator. ${plan.system.instructions}\nProduce one direct, coherent answer. Use only relevant specialist evidence, expose material uncertainties and approvals, and do not claim tools were used beyond the packets.`, model, maxOutputTokens: Math.min(10_000, Math.max(1000, budget - plan.allocatedBudget)) });
+    const synthesis = await requestOpenAI({ input: `USER REQUEST\n${prompt}\n\nSPECIALIST PACKETS\n${packets || 'No specialist was required.'}`, instructions: `You are Apollo Orchestrator. ${plan.system.instructions}\n${loadoutContext}\nProduce one direct, coherent answer. Use only relevant specialist evidence, expose material uncertainties and approvals, and do not claim tools were used beyond the packets.`, model, maxOutputTokens: Math.min(10_000, Math.max(1000, budget - plan.allocatedBudget)) });
     const usage = specialistResults.reduce((sum, item) => sum + (item.result?.usage.totalTokens || 0), synthesis.usage.totalTokens);
     const output = await recordSystemOutput(plan.system.id, { name: `Oracle · ${prompt.slice(0, 72)}`, type: 'Oracle run', status: 'Complete', runId, summary: synthesis.text.slice(0, 500), content: synthesis.text });
     await publishEvent({ host: 'apollo', kind: 'run.completed', runId, summary: 'Live Oracle run completed.', data: { systemId: plan.system.id, outputId: output.id, phase: 'synthesize', agent: 'Apollo Orchestrator', tokens: synthesis.usage.totalTokens, totalRunTokens: usage, specialists: specialistResults.length } });

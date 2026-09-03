@@ -94,11 +94,19 @@ export async function buildPlan(prompt, totalBudget = 30_000, options = {}) {
     const largest = steps.filter(step => step.budget > 500).sort((a, b) => b.budget - a.budget)[0];
     largest.budget -= 100;
   }
+  // The context the loadout contributes, resolved once and carried on the plan so the caller
+  // sends it and the UI can show it. A plan that does not carry it is a plan that cannot be
+  // checked against what was actually sent.
+  const { resolveLoadoutContext } = await import('./loadout-context.mjs');
+  const { context, profile } = await resolveLoadoutContext(loadout);
+
   return {
     system: { id: system.id, name: system.name, instructions: system.instructions, locked: true },
     loadout: loadout
       ? { id: loadout.id, name: loadout.name, slots: loadout.slots, designDna: loadout.designDna }
       : null,
+    context,
+    designDna: profile ? { profileId: profile.profileId, displayName: profile.displayName, avoidCount: (profile.avoidList || []).length } : null,
     orchestrator: { name: 'Apollo Orchestrator', skill: 'olympus-design-director', role: 'Plans, invokes only matched specialists, integrates the answer, and prevents nested delegation.' },
     prompt: String(prompt || '').trim(),
     requestedBudget,

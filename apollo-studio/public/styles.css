@@ -1611,3 +1611,11 @@ textarea { min-height: calc(var(--control-h) * 2); }
    saturation they put magenta and violet on a screen whose whole colour system is one accent
    plus status. Held back so identity survives and the neon stops competing. */
 .agent-portrait img { filter: saturate(.45) contrast(1.02); }
+
+/* The loadout's own contribution to the request, shown in the plan. Collapsed by default:
+   it is long, and the fact THAT it is sent is the part that has to be visible at a glance. */
+.plan-context { margin-top: var(--space-5); border:1px solid var(--line); border-radius:var(--radius-3); background:var(--surface); }
+.plan-context > summary { min-height:var(--control-h); display:flex; align-items:center; padding: var(--space-4) var(--space-5); color:var(--fg-muted); font-size:var(--text-meta); cursor:pointer; }
+.plan-context > summary:hover { color:var(--fg); }
+.plan-context pre { margin: 0; padding: 0 var(--space-5) var(--space-5); overflow-x:auto; color:var(--fg-muted); font-family:var(--font-ui); font-size:var(--text-label); line-height:var(--leading-prose); white-space:pre-wrap; overflow-wrap:anywhere; }
+.plan-context p { margin: 0; padding: 0 var(--space-5) var(--space-5); color:var(--fg-dim); font-size:var(--text-label); }

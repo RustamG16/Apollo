@@ -1699,7 +1699,26 @@ function renderOraclePlan() {
     return article;
   });
   const dormant = document.createElement('p'); dormant.className = 'dormant-note'; dormant.textContent = `${plan.dormant.length} dormant: ${plan.dormant.join(', ') || 'none'}`;
-  host.replaceChildren(summary, ...steps, dormant);
+  // What the loadout itself contributes, shown rather than implied. The brief and the
+  // avoid-list are sent ahead of every capability; before B1 they were sent nowhere, and the
+  // only way to know either way was to read the server.
+  const contextBlock = document.createElement('details');
+  contextBlock.className = 'plan-context';
+  const contextSummary = document.createElement('summary');
+  contextSummary.textContent = plan.context
+    ? 'Loadout context sent ahead of every capability' + (plan.designDna ? ` · ${plan.designDna.avoidCount} hard constraints` : '')
+    : 'This loadout adds no context of its own';
+  contextBlock.append(contextSummary);
+  if (plan.context) {
+    const body = document.createElement('pre');
+    body.textContent = plan.context;
+    contextBlock.append(body);
+  } else {
+    const note = document.createElement('p');
+    note.textContent = 'No brief and no Design DNA are attached, so only the eight decisions change what this run does.';
+    contextBlock.append(note);
+  }
+  host.replaceChildren(summary, ...steps, contextBlock, dormant);
 }
 
 async function askOracle(planOnly) {

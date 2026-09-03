@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T15:45:19.455Z",
-  "durationMs": 297326,
+  "generatedAt": "2026-09-03T15:58:48.156Z",
+  "durationMs": 296967,
   "thresholds": {
     "B1": {
       "name": "Controls with no listener and no form owner",
@@ -65,14 +65,11 @@
     },
     "B4": {
       "name": "Loadout decisions that do not change the request",
-      "value": 2,
+      "value": 0,
       "target": 0,
-      "pass": false,
+      "pass": true,
       "unit": "of 12 decisions",
-      "detail": [
-        "brief",
-        "designDna"
-      ]
+      "detail": []
     },
     "B5": {
       "name": "Client stores written and read by nothing",
@@ -311,12 +308,12 @@
     {
       "field": "brief",
       "kind": "field",
-      "differs": false
+      "differs": true
     },
     {
       "field": "designDna",
       "kind": "field",
-      "differs": false
+      "differs": true
     },
     {
       "field": "budget",
@@ -364,13 +361,6 @@
   "diff": {
     "firstRun": false,
     "regressions": [],
-    "improvements": [
-      {
-        "id": "B2",
-        "name": "Clicks that change nothing observable",
-        "before": 23,
-        "after": 12
-      }
-    ]
+    "improvements": []
   }
 }
