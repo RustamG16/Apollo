@@ -1628,3 +1628,61 @@ overflow or clipping at 390, 820, 1280, 1440, 1920.
 - 314 off-scale spacing literals under the ratchet.
 - The uppercase-tracked label register (DESIGN.md-sanctioned for metadata) is still the
   dominant secondary type treatment.
+
+## 2026-09-03 — P5 stop condition met; the improvement loop terminates
+
+**Slice:** P5, part 11. Not a change slice — the verification that ends the loop.
+
+`LOADOUT-PLAN.md` §07 and `CONTINUOUS-IMPROVEMENT-PLAN.md` define exactly one termination
+condition: **all eleven thresholds hold across all eight views for two consecutive slices
+that each changed something and each measured clean.**
+
+That is now satisfied by three consecutive slices:
+
+| Commit | What changed | `npm run check` | 11/11 |
+|---|---|---|---|
+| `1c5ae62` | 2nd independent critique acted on; harness hardened (T4 boundary contrast, 390px viewport, keyframe/animation motion, reduced-motion transforms) | exit 0 | yes |
+| `ba694e4` | project tabs stop uppercasing chat names | exit 0 | yes |
+| `bb27b74` | 178 on-scale spacing literals → `--space-*` tokens | exit 0 | yes |
+
+Each changed the tree, each measured clean, and the harness is stricter than at T0 — the
+condition is not being met by a weaker check. Definition changes this program (T4 gaining
+1.4.11 boundary contrast; the matrix gaining 390px) were each made *stricter*, each caused a
+temporary FAIL that real work then cleared, and each is journalled — compliant with
+`CONTINUOUS-IMPROVEMENT-PLAN.md` rule 3.
+
+Per-slice P5 checks on the terminating slice: `node scripts/ui-metrics.mjs` — 11/11 + 4
+standing rules; console clean; reduced motion honoured (durations and transforms); keyboard
+Tab path through the Playground comparison flow reaches every control with a visible 2px
+`--focus` ring (verified with real key events, not programmatic focus); no horizontal
+overflow or clipping at 390/820/1280/1440/1920.
+
+### The loop stops here
+
+`CONTINUOUS-IMPROVEMENT-PLAN.md` rule 5: when the condition is met the loop stops and does
+not roll into a backlog by default — "a further slice needs a stated defect or a stated goal,
+not momentum." There is no open defect. The eleven thresholds are the floor, not a claim the
+interface is good; the last external read put it at **62/100** (up from 52 at the start of
+the program), and the remaining gap is taste-level, which §06 deliberately excludes from the
+stop condition.
+
+### Carried forward — each needs a decision, not another loop slice
+
+1. **Two agent portraits** (Calliope, Hephaestus) are full-saturation neon held back to
+   `saturate(.45)` in CSS. Resolving at the asset level — crop, regenerate against the
+   one-accent palette, or replace — is authorized by `PRODUCT.md` (new still media via
+   OpenAI image generation, recorded in the Olympus manifest) but is asset production, not a
+   CSS slice.
+2. **314 off-scale spacing literals** (7, 9, 11, 13, 14, 18, 20px…) under the ratchet.
+   Snapping them to the scale redraws the spacing rhythm — a deliberate design pass.
+3. **The uppercase-tracked label register.** `--text-label` (13px, 600, +0.06em, uppercase)
+   is DESIGN.md's specified style for metadata and is used correctly on eyebrows, column
+   headers and field labels; the open question is whether it is applied so widely that it
+   reads as the default secondary register. A register decision, not a defect.
+
+### If a future session resumes
+
+The measurable program P0–P5 is complete. Do not reopen the loop for momentum. A new slice
+needs one of the three items above turned into a stated goal, or a new defect with evidence
+from `scripts/ui-metrics.mjs`. `main` and `unification` are untouched in both repos; the
+whole program is on `redesign/loadout-program`, committed locally, never pushed.

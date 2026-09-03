@@ -92,6 +92,24 @@ This is written here so it cannot be quietly extended. The rules around it:
 An unattended session that reaches its context limit before the condition is met stops by
 journalling its state, never by declaring the program complete.
 
+### Condition met — 2026-09-03
+
+All eleven thresholds hold across all eight views (and across 390/820/1280/1440/1920) for
+three consecutive slices that each changed something and each measured clean:
+`1c5ae62` (second independent critique acted on + harness hardened), `ba694e4` (project-tab
+casing), `bb27b74` (spacing-token adoption, 492→314 literals). `npm run check` exits 0 on
+each. The harness is materially stricter than at T0: T4 now includes WCAG 1.4.11 boundary
+contrast, the viewport matrix includes a 390px narrow column, and the motion budget covers
+`animation` shorthand and `@keyframes` translation.
+
+Per rule 5 the loop **stops here**. It does not roll into a backlog. Three items are recorded
+as carried-forward in `PROGRESS-AND-DECISIONS.md`, each needing a stated decision rather than
+loop momentum: two agent portraits held back by a `saturate()` filter (an asset-production
+decision), 314 off-scale spacing literals under the ratchet (a spacing-rhythm decision), and
+the uppercase-tracked label register (DESIGN.md-sanctioned; a register decision). The last
+external read scored the interface 62/100 — above the 52 it started this program at, and the
+gap to "good" is taste-level, which section 06 deliberately keeps out of the stop condition.
+
 ## Stop conditions (pausing, not terminating)
 
 Pause only when a decision changes product direction, cost, privacy, or architecture; a required asset or permission is unavailable; the loop bounds in `AGENTS.md` are reached (QA repair or anti-loop); or the user explicitly pauses the loop. Do not stop because one page or iteration is complete.
