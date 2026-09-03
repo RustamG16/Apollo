@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T06:13:39.313Z",
-  "durationMs": 22872,
+  "generatedAt": "2026-09-03T06:17:55.952Z",
+  "durationMs": 22961,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -210,7 +210,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            128
+            121
           ]
         },
         "systems": {
@@ -336,7 +336,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            128
+            121
           ]
         },
         "systems": {
@@ -462,7 +462,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            128
+            121
           ]
         },
         "systems": {
@@ -588,7 +588,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            128
+            121
           ]
         },
         "systems": {
@@ -686,8 +686,8 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 351,
-    "14.0": 598,
+    "13.0": 358,
+    "14.0": 591,
     "16.0": 309,
     "18.0": 20,
     "22.0": 21,
@@ -697,8 +697,8 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 108024,
-        "lines": 1498
+        "bytes": 107847,
+        "lines": 1481
       }
     ],
     "fontSizeUnits": {
@@ -712,14 +712,14 @@
     "radii": [
       "0"
     ],
-    "customPropertyCount": 93,
+    "customPropertyCount": 71,
     "tokenFamilies": {
-      "color": 52,
+      "color": 32,
       "space": 10,
       "radius": 4,
       "motion": 4,
-      "elevation": 8,
-      "type": 15
+      "elevation": 7,
+      "type": 14
     },
     "hexLiterals": 0,
     "rgbaLiterals": 0,
@@ -754,7 +754,7 @@
       "2",
       "3"
     ],
-    "spacingLiterals": 499,
+    "spacingLiterals": 495,
     "ornament": [],
     "longMotion": [],
     "decorativeMediaRefs": []
@@ -875,8 +875,8 @@
     },
     "spacingTokens": {
       "name": "Spacing literals in rules (DESIGN.md Token Rule) - ratchet",
-      "value": 499,
-      "target": 499,
+      "value": 495,
+      "target": 495,
       "pass": true,
       "note": "A ratchet, not a gate: the debt is paid down surface by surface and may never rise."
     },

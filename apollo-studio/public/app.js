@@ -168,7 +168,9 @@ function renderWork() {
   const detail = state.work.detail || { messages: [], attachments: [] }; const messages = $('#work-messages'); messages.replaceChildren(...detail.messages.map(message => { const article = document.createElement('article'); article.className = `work-message ${message.role}`; const label = document.createElement('span'); label.textContent = message.role === 'assistant' ? 'Apollo' : 'You'; const text = document.createElement('p'); text.textContent = message.text; article.append(label, text); return article; }));
   const linkedCount = detail.attachments.filter(item => item.status === 'linked').length;
   $('#work-title').textContent = project.name; $('#work-prompt').placeholder = `Ask Apollo to help with ${project.name}…`; $('#context-title').textContent = chat.name; $('#context-attachments').textContent = linkedCount ? `${linkedCount} authorized link${linkedCount === 1 ? '' : 's'}` : 'No sources';
-  $('#work-context-count').textContent = linkedCount;
+  const contextCount = $('#work-context-count');
+  contextCount.textContent = linkedCount;
+  contextCount.classList.toggle('is-zero', linkedCount === 0);
   const activeLoadout = state.loadouts?.loadouts.find(item => item.id === state.loadouts.activeLoadoutId);
   if (activeLoadout) {
     // The loadout is stated once, in the toolbar. The inspector carries what is not stated
