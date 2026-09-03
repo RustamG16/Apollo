@@ -215,7 +215,139 @@ function showWorkError(error, draft) {
 
 async function sendWorkMessage(role, text) { const chat = workChat(); if (!chat) return; await api(`/api/chats/${chat.id}/messages`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ role, text }) }); state.work.detail = await api(`/api/chats/${chat.id}`); renderWork(); }
 async function stageProposal(input) { const proposal = await api('/api/proposals', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(input) }); const dialog = $('#proposal-dialog'); dialog.dataset.proposalId = proposal.id; dialog.dataset.operation = JSON.stringify(input.operation || null); $('#proposal-title').textContent = proposal.title; $('#proposal-summary').textContent = proposal.summary; $('#proposal-affected').replaceChildren(...proposal.affected.map(item => { const li = document.createElement('li'); li.textContent = item; return li; })); dialog.showModal(); }
-function toggleOracle(force) { const dock = $('#oracle-dock'); const trigger = $('#toggle-oracle'); const open = typeof force === 'boolean' ? force : dock.getAttribute('aria-hidden') === 'true'; dock.setAttribute('aria-hidden', String(!open)); dock.inert = !open; trigger.setAttribute('aria-expanded', String(open)); $('#oracle-context-name').textContent = state.view === 'work' ? 'Work' : state.view[0].toUpperCase() + state.view.slice(1); if (open) $('#oracle-show-how').focus(); else trigger.focus(); }
+function toggleOracle(force) {
+  const dock = $('#oracle-dock'); const trigger = $('#toggle-oracle');
+  const open = typeof force === 'boolean' ? force : dock.getAttribute('aria-hidden') === 'true';
+  dock.setAttribute('aria-hidden', String(!open)); dock.inert = !open;
+  trigger.setAttribute('aria-expanded', String(open));
+  $('#oracle-context-name').textContent = state.view === 'work' ? 'Work' : state.view[0].toUpperCase() + state.view.slice(1);
+  // The dock's answer belongs to the context it was opened in; carrying it to another view
+  // would be showing someone the previous screen's advice.
+  if (open) { $('#oracle-dock-answer').replaceChildren(); renderDockAvailability(); $('#oracle-show-how').focus(); }
+  else trigger.focus();
+}
+
+
+// ---------------------------------------------------------------------------
+// The Oracle dock, doing what its two buttons say.
+//
+// "Show me how" navigated to the Oracle view and prefilled a textarea. "Do it for me"
+// navigated to the Oracle view and prefilled a different textarea. Neither showed anything
+// and neither did anything, while the dock's own safety copy promised that Oracle "will never
+// save, change, or connect anything without a visible proposal and your confirmation" - a
+// promise about machinery that existed, was correct, and was wired to nothing but attachment
+// unlink. The label-truth table caught both.
+// ---------------------------------------------------------------------------
+
+// What Oracle can actually do here. A view with no real mutation gets a disabled button and a
+// reason, because a control that cannot act should not claim it can.
+function dockAction() {
+  const view = state.view;
+  if (view === 'systems' || view === 'architecture') {
+    const loadout = selectedLoadout();
+    if (loadout && loadout.id !== state.loadouts?.activeLoadoutId) {
+      return {
+        title: 'Use this loadout for the next run',
+        summary: `Make “${loadout.name}” the active loadout. The next run — in Work, in Playground or from a connected host — uses its eight decisions, its brief and its Design DNA.`,
+        affected: [loadout.name, 'The active loadout for this workspace'],
+        operation: { type: 'activate-loadout', loadoutId: loadout.id, name: loadout.name, previousId: state.loadouts?.activeLoadoutId || null },
+      };
+    }
+    return { blocked: 'That loadout is already the active one, so there is nothing to change.' };
+  }
+  if (view === 'work') {
+    const chat = workChat();
+    const last = [...(state.work.detail?.messages || [])].reverse().find(message => message.role === 'user');
+    if (chat && last) {
+      return {
+        title: 'Plan this request against the active loadout',
+        summary: 'Route the last message through the locked pipeline and record the plan in this chat. Planning is local and spends no tokens; nothing is executed.',
+        affected: [chat.name, 'One new assistant message in this chat'],
+        operation: { type: 'plan-chat', chatId: chat.id, prompt: last.text },
+      };
+    }
+    return { blocked: 'Write a message first — there is nothing here to plan yet.' };
+  }
+  return { blocked: `Oracle has no change to propose in ${view}. Open Loadouts or Work and it will.` };
+}
+
+function renderDockAvailability() {
+  const button = $('#oracle-do-it');
+  if (!button) return;
+  const action = dockAction();
+  button.disabled = Boolean(action.blocked);
+  button.title = action.blocked || action.title;
+}
+
+async function showMeHow() {
+  const host = $('#oracle-dock-answer');
+  host.replaceChildren();
+  const heading = document.createElement('h3');
+  heading.textContent = 'The next step here';
+  host.append(heading);
+  try {
+    // Plan-only is local and free, which is exactly why this never needed to be a textarea.
+    const context = {
+      work: 'Send this project a request. Apollo routes it through the locked pipeline using the active loadout.',
+      systems: 'Change one of the eight decisions, save, then compare it against the loadout you started from.',
+      architecture: 'Select a stage to see what it carries this run. The route itself is locked.',
+      playground: 'Give two loadouts the same task, run it small, then keep the winner.',
+      knowledge: 'Pick a capability to read what it does and which slot it answers.',
+      agents: 'Adjust an agent\u2019s budget or approval. The roster itself is fixed.',
+      runs: 'Open a run to see the route it took, its gates and what each stage spent.',
+      oracle: 'Describe a task. Planning is local and free; execution happens only when you ask.',
+    }[state.view] || 'Pick a destination in the top bar to begin.';
+
+    const list = document.createElement('ol');
+    const first = document.createElement('li');
+    first.innerHTML = '<strong></strong>';
+    first.querySelector('strong').textContent = context;
+    list.append(first);
+
+    const loadout = state.loadouts?.loadouts.find(item => item.id === state.loadouts.activeLoadoutId);
+    if (loadout) {
+      const second = document.createElement('li');
+      const changed = (state.loadouts.slots || []).filter(slot => loadout.slots[slot.id] !== slot.default);
+      second.textContent = `The active loadout is ${loadout.name} — ${changed.length ? changed.length + ' of 8 changed from default' : 'all eight at their default'}.`;
+      list.append(second);
+    }
+    const action = dockAction();
+    const third = document.createElement('li');
+    third.textContent = action.blocked ? action.blocked : `“Do it for me” will propose: ${action.title}.`;
+    list.append(third);
+    host.append(list);
+
+    const note = document.createElement('p');
+    note.textContent = 'Nothing above was sent anywhere. This is read from the workspace you already have open.';
+    host.append(note);
+  } catch (error) {
+    const note = document.createElement('p');
+    note.textContent = 'Could not read the current context: ' + error.message;
+    host.append(note);
+  }
+}
+
+async function doItForMe() {
+  const action = dockAction();
+  const host = $('#oracle-dock-answer');
+  if (action.blocked) {
+    host.replaceChildren();
+    const note = document.createElement('p');
+    note.textContent = action.blocked;
+    host.append(note);
+    return;
+  }
+  // A real proposal, through the machinery that already existed: createProposal, the
+  // dialog, resolveProposal. It mutates nothing until it is approved.
+  try {
+    await stageProposal(action);
+  } catch (error) {
+    host.replaceChildren();
+    const note = document.createElement('p');
+    note.textContent = 'Could not draft that proposal: ' + error.message;
+    host.append(note);
+  }
+}
 
 function skillToggle(skill) {
   const label = document.createElement('label');
@@ -1978,8 +2110,8 @@ function bindEvents() {
     if ($('#oracle-dock').getAttribute('aria-hidden') === 'true') { $('#toggle-oracle').focus(); return; }
     toggleOracle(false);
   });
-  $('#oracle-show-how').addEventListener('click', () => { toggleOracle(false); navigate('oracle'); $('#oracle-prompt').value = `Explain the next safe step for the current ${state.view} context.`; $('#oracle-prompt').focus(); });
-  $('#oracle-do-it').addEventListener('click', () => { toggleOracle(false); navigate('oracle'); $('#oracle-prompt').value = `Draft a proposal for the current ${state.view} context. Do not apply it without my approval.`; $('#oracle-prompt').focus(); });
+  $('#oracle-show-how').addEventListener('click', showMeHow);
+  $('#oracle-do-it').addEventListener('click', doItForMe);
   $('#new-project').addEventListener('click', async () => { try { const created = await api('/api/projects', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({}) }); state.work.activeProjectId = created.project.id; state.work.activeChatId = created.chat.id; await refreshWork(); $('#work-prompt').focus(); } catch (error) { $('#work-status').textContent = error.message; } });
   $('#new-chat').addEventListener('click', async () => { const project = workProject(); if (!project) return; try { const chat = await api(`/api/projects/${project.id}/chats`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({}) }); state.work.activeChatId = chat.id; await refreshWork(); } catch (error) { $('#work-status').textContent = error.message; } });
   $('#work-empty-action').addEventListener('click', () => $('#work-prompt').focus());
@@ -2021,7 +2153,21 @@ function bindEvents() {
   });
   $('.attachment-button').addEventListener('click', () => $('#work-file-picker').click());
   $('#work-file-picker').addEventListener('change', async event => { const chat = workChat(); const files = [...event.target.files]; if (!chat || !files.length) return; try { for (const file of files) await api(`/api/chats/${chat.id}/attachments`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: file.name, size: file.size, type: file.type }) }); state.work.detail = await api(`/api/chats/${chat.id}`); renderWork(); $('#work-status').textContent = `${files.length} local reference${files.length === 1 ? '' : 's'} linked`; } catch (error) { $('#work-status').textContent = error.message; } finally { event.target.value = ''; } });
-  $('#proposal-dialog').addEventListener('close', async event => { const dialog = event.currentTarget; const approved = dialog.returnValue === 'approve'; const proposalId = dialog.dataset.proposalId; if (!proposalId) return; try { await api(`/api/proposals/${proposalId}`, { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ approved }) }); const operation = JSON.parse(dialog.dataset.operation || 'null'); if (approved && operation?.type === 'unlink-attachment') { await api(`/api/chats/${operation.chatId}/attachments/${operation.attachmentId}`, { method: 'DELETE' }); state.work.detail = await api(`/api/chats/${operation.chatId}`); renderWork(); $('#work-status').textContent = 'Attachment unlinked. Source file was not changed.'; offerUndo(`Unlinked “${operation.name}”.`, async () => { await api(`/api/chats/${operation.chatId}/attachments`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: operation.name, size: operation.size, type: operation.fileType }) }); state.work.detail = await api(`/api/chats/${operation.chatId}`); renderWork(); $('#work-status').textContent = 'Attachment re-linked.'; }); } else if (!approved) $('#work-status').textContent = 'Change cancelled. Nothing was persisted.'; } catch (error) { $('#work-status').textContent = error.message; } finally { delete dialog.dataset.proposalId; delete dialog.dataset.operation; } });
+  $('#proposal-dialog').addEventListener('close', async event => { const dialog = event.currentTarget; const approved = dialog.returnValue === 'approve'; const proposalId = dialog.dataset.proposalId; if (!proposalId) return; try { await api(`/api/proposals/${proposalId}`, { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ approved }) }); const operation = JSON.parse(dialog.dataset.operation || 'null'); if (approved && operation?.type === 'activate-loadout') {
+        await api('/api/loadouts/active', { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: operation.loadoutId }) });
+        await refreshLoadouts(operation.loadoutId);
+        $('#work-status').textContent = operation.name + ' is now the active loadout.';
+        if (operation.previousId) offerUndo('Activated ' + operation.name + '.', async () => {
+          await api('/api/loadouts/active', { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: operation.previousId }) });
+          await refreshLoadouts(operation.previousId);
+        });
+      } else if (approved && operation?.type === 'plan-chat') {
+        const planned = await api('/api/oracle/plan', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ prompt: operation.prompt, budget: state.loadouts?.loadouts.find(item => item.id === state.loadouts.activeLoadoutId)?.budget?.totalTokens || 30000 }) });
+        state.oraclePlan = planned.plan; renderOraclePlan();
+        const route = planned.plan.steps.map((step, index) => `${String(index + 1).padStart(2, '0')}  ${step.name} — ${step.skills.join(', ')} (${step.budget.toLocaleString()} tokens)`).join('\n');
+        await sendWorkMessage('assistant', `Planned route for “${operation.prompt.slice(0, 80)}”\n\n${route}\n\nDormant: ${planned.plan.dormant.join(', ') || 'none'}.\nNo tokens were spent — this is the plan, not the answer.`);
+        $('#work-status').textContent = 'Plan recorded in this chat. Nothing was executed.';
+      } else if (approved && operation?.type === 'unlink-attachment') { await api(`/api/chats/${operation.chatId}/attachments/${operation.attachmentId}`, { method: 'DELETE' }); state.work.detail = await api(`/api/chats/${operation.chatId}`); renderWork(); $('#work-status').textContent = 'Attachment unlinked. Source file was not changed.'; offerUndo(`Unlinked “${operation.name}”.`, async () => { await api(`/api/chats/${operation.chatId}/attachments`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: operation.name, size: operation.size, type: operation.fileType }) }); state.work.detail = await api(`/api/chats/${operation.chatId}`); renderWork(); $('#work-status').textContent = 'Attachment re-linked.'; }); } else if (!approved) $('#work-status').textContent = 'Change cancelled. Nothing was persisted.'; } catch (error) { $('#work-status').textContent = error.message; } finally { delete dialog.dataset.proposalId; delete dialog.dataset.operation; } });
   $('#project-search').addEventListener('input', event => $$('.project-item').forEach(item => item.hidden = !item.textContent.toLowerCase().includes(event.target.value.trim().toLowerCase())));
   $('#phase-filter').addEventListener('change', () => {
     const phase = $('#phase-filter').value;

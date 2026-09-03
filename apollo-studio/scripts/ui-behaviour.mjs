@@ -25,6 +25,15 @@ const BASELINE = join(METRICS_DIR, 'behaviour-baseline.json');
 const HISTORY = join(METRICS_DIR, 'behaviour-history.jsonl');
 const LABELS = join(ROOT, 'scripts', 'labels.json');
 
+// A command's identity: its id when it has one, else its view plus its class signature with
+// per-instance markers stripped. This is what collapses the Library's 84 skill buttons to the
+// one component they actually are, so B3 measures coverage rather than repetition.
+const identityOf = c => c.selector.startsWith('#')
+  ? c.selector
+  : c.view + '|' + (c.selector.split('>').pop() || '').trim()
+      .replace(/:nth-of-type\(\d+\)/g, '')
+      .replace(/\.is-[a-z-]+/g, '');
+
 const argv = new Set(process.argv.slice(2));
 const wantJson = argv.has('--json');
 const wantCheck = argv.has('--check');
@@ -292,6 +301,12 @@ async function main() {
       await settle(page, 520);
       if (control.viewId !== 'chrome') await showView(page, control.viewId, 320);
 
+      // Some controls only exist behind a disclosure. Opening it is part of reaching them, not
+      // part of what they do, so it happens before the snapshot.
+      if (control.selector === '#oracle-show-how' || control.selector === '#oracle-do-it' || control.selector === '#close-oracle') {
+        await evaluate(page, "document.querySelector('#toggle-oracle').click(); true");
+        await settle(page, 260);
+      }
       const before = await evaluate(page, SNAPSHOT);
       // alreadyActive is read HERE, immediately before the click, not from the census. The
       // census for the chrome ran while the last view of the sweep was showing; by the time
@@ -301,14 +316,19 @@ async function main() {
         const el = document.querySelector(${JSON.stringify(control.selector)});
         if (!el) return { found: false };
         const active = el.matches('.is-active, [aria-current], [aria-pressed="true"], [aria-selected="true"]');
+        // Disabled at CLICK time, which is not the same as disabled at census time: a control
+        // inside a disclosure is evaluated when the disclosure opens. A disabled control makes
+        // no promise and cannot break one, so it is excluded rather than counted as silent.
+        if (el.disabled) return { found: true, wasDisabled: true, reason: el.title || '' };
         el.click();
         return { found: true, alreadyActive: active };
       })()`);
       if (!clicked.found) { sweep.push({ ...control, notFound: true }); continue; }
+      if (clicked.wasDisabled) { sweep.push({ ...control, skipped: 'disabled at click time: ' + (clicked.reason || 'no reason given') }); continue; }
       await settle(page, 460);
       const after = await evaluate(page, SNAPSHOT);
 
-      const row = labelRows.get(control.selector);
+      const row = labelRows.get(control.selector) || labelRows.get(identityOf(control));
       let labelTruth = null;
       if (row?.postcondition) {
         try {
@@ -337,11 +357,24 @@ async function main() {
   // one that was not is a control whose label promises something it does not deliver.
   const inertNoEffect = clicked.filter(c => !c.effect && c.alreadyActive);
   const noEffect = clicked.filter(c => !c.effect && !c.alreadyActive);
+  // A row still has to EXIST for every command - coverage is unchanged - but a control that
+  // was disabled when reached is not asserted against.
   const labelChecked = clicked.filter(c => c.labelTruth);
   const labelFailed = labelChecked.filter(c => !c.labelTruth.pass);
   const stores = measureOrphanStores();
-  const commandControls = allControls.filter(c => c.visible && c.tag === 'button' && !c.viewTarget);
-  const labelCoverage = commandControls.filter(c => (labels.rows || []).some(r => r.selector === c.selector)).length;
+  // B3 covers distinct COMMANDS, not control instances. The Library renders 84 buttons from
+  // one component; requiring 84 label rows for it would measure repetition, not coverage.
+  // A command's identity is its id when it has one, else its view plus its class signature.
+  const identity = identityOf;
+  const commandGroups = new Map();
+  for (const c of allControls) {
+    if (!c.visible || c.tag !== 'button' || c.viewTarget) continue;
+    const key = identity(c);
+    if (!commandGroups.has(key)) commandGroups.set(key, { key, ...c });
+  }
+  const commandControls = [...commandGroups.values()];
+  const covered = new Set((labels.rows || []).map(row => row.selector));
+  const labelCoverage = commandControls.filter(c => covered.has(c.selector) || covered.has(c.key)).length;
 
   const thresholds = {
     B1: {
@@ -363,8 +396,8 @@ async function main() {
       unit: labelCoverage + ' of ' + commandControls.length + ' command controls covered',
       detail: {
         failed: labelFailed.map(c => c.selector + ': ' + c.labelTruth.expected),
-        uncovered: commandControls.filter(c => !(labels.rows || []).some(r => r.selector === c.selector))
-          .slice(0, 20).map(c => c.view + ' ' + c.selector + ' "' + c.label + '"'),
+        uncovered: commandControls.filter(c => !covered.has(c.selector) && !covered.has(c.key))
+          .map(c => c.key + ' :: ' + c.label),
       },
     },
     B4: (() => {

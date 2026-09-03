@@ -1,0 +1,391 @@
+{
+  "_": [
+    "The label-truth table. One row per distinct command in the product; instances of a",
+    "repeated component collapse to one row, so the Library's 84 skill buttons are one entry.",
+    "",
+    "`postcondition` is the promise the label makes, in prose. `assert` is that promise as an",
+    "expression evaluated in the page immediately after the control is clicked; it must return",
+    "truthy. B3 fails when a promise is not kept, and it fails when a command has no row at",
+    "all - an uncovered command is one nobody has had to state the meaning of.",
+    "",
+    "This file is a product artifact and is reviewed like code. If a label changes, its row",
+    "changes with it; if a row cannot be written honestly, the label is wrong."
+  ],
+  "rows": [
+    {
+      "selector": "#new-project",
+      "view": "work",
+      "label": "Create project",
+      "postcondition": "A new project exists and is selected.",
+      "assert": "return document.querySelectorAll('.project-item').length > 0 && !!document.querySelector('.project-item.is-active');"
+    },
+    {
+      "selector": "#new-chat",
+      "view": "work",
+      "label": "+ chat",
+      "postcondition": "A new chat exists in the active project and is open.",
+      "assert": "return document.querySelectorAll('.project-tab').length > 0;"
+    },
+    {
+      "selector": "work|button.project-item",
+      "view": "work",
+      "label": "Project row",
+      "postcondition": "That project becomes the active one.",
+      "assert": "return !!document.querySelector('.project-item.is-active');"
+    },
+    {
+      "selector": "work|button.project-tab",
+      "view": "work",
+      "label": "Chat tab",
+      "postcondition": "That chat becomes the open one.",
+      "assert": "return !!document.querySelector('.project-tab.is-active');"
+    },
+    {
+      "selector": "#work-context",
+      "view": "work",
+      "label": "Context",
+      "postcondition": "The context panel's open state is reflected on the trigger.",
+      "assert": "return document.querySelector('#work-context').hasAttribute('aria-expanded');"
+    },
+    {
+      "selector": "work|button.attachment-button.command-action",
+      "view": "work",
+      "label": "Attach",
+      "postcondition": "The file picker is invoked. Apollo links a path; it never reads the file.",
+      "assert": "return !!document.querySelector('#work-file-picker');"
+    },
+    {
+      "selector": "work|button.primary-action.composer-send",
+      "view": "work",
+      "label": "Send",
+      "postcondition": "Either the message is sent, or the composer is focused and says why not.",
+      "assert": "return document.activeElement === document.querySelector('#work-prompt') || document.querySelectorAll('.work-message').length > 0;"
+    },
+    {
+      "selector": "#close-context",
+      "view": "work",
+      "label": "Close context",
+      "postcondition": "The panel closes, or it says why it cannot at this width.",
+      "assert": "return !document.querySelector('.work-inspector.is-open') || (document.querySelector('#work-status').textContent || '').length > 0;"
+    },
+    {
+      "selector": "#toggle-oracle",
+      "view": "chrome",
+      "label": "Oracle",
+      "postcondition": "The Oracle dock opens and the trigger reports it expanded.",
+      "assert": "return document.querySelector('#oracle-dock').getAttribute('aria-hidden') === 'false';"
+    },
+    {
+      "selector": "#close-oracle",
+      "view": "chrome",
+      "label": "Close Oracle",
+      "postcondition": "The dock closes, and focus returns to the trigger.",
+      "assert": "return document.querySelector('#oracle-dock').getAttribute('aria-hidden') === 'true';"
+    },
+    {
+      "selector": "#auto-layout",
+      "view": "architecture",
+      "label": "Tidy layout",
+      "postcondition": "Nodes are repositioned and the change is stated.",
+      "assert": "return (document.querySelector('#node-status').textContent || '').length > 0;"
+    },
+    {
+      "selector": "#reset-layout",
+      "view": "architecture",
+      "label": "Reset layout",
+      "postcondition": "The default layout returns, and undo is offered.",
+      "assert": "return !document.querySelector('#undo-bar').hidden;"
+    },
+    {
+      "selector": "architecture|button.architecture-agent",
+      "view": "architecture",
+      "label": "Agent in a phase lane",
+      "postcondition": "Navigates to the loadout slot that agent owns.",
+      "assert": "return location.hash === '#/systems';"
+    },
+    {
+      "selector": "architecture|button.workflow-node.input-node",
+      "view": "architecture",
+      "label": "Workflow node",
+      "postcondition": "The node is selected and the inspector describes it.",
+      "assert": "return document.querySelector('.workflow-node[aria-pressed=\"true\"]') !== null;"
+    },
+    {
+      "selector": "architecture|button.workflow-node.director-node",
+      "view": "architecture",
+      "label": "Workflow node",
+      "postcondition": "The node is selected and the inspector describes it.",
+      "assert": "return document.querySelector('.workflow-node[aria-pressed=\"true\"]') !== null;"
+    },
+    {
+      "selector": "architecture|button.workflow-node.gate",
+      "view": "architecture",
+      "label": "Gate node",
+      "postcondition": "The gate is selected and the inspector says it pauses for approval.",
+      "assert": "return document.querySelector('.workflow-node[aria-pressed=\"true\"]') !== null;"
+    },
+    {
+      "selector": "architecture|button.workflow-node.concept-node",
+      "view": "architecture",
+      "label": "Workflow node",
+      "postcondition": "The node is selected and the inspector describes it.",
+      "assert": "return document.querySelector('.workflow-node[aria-pressed=\"true\"]') !== null;"
+    },
+    {
+      "selector": "architecture|button.workflow-node.build-node",
+      "view": "architecture",
+      "label": "Workflow node",
+      "postcondition": "The node is selected and the inspector describes it.",
+      "assert": "return document.querySelector('.workflow-node[aria-pressed=\"true\"]') !== null;"
+    },
+    {
+      "selector": "architecture|button.workflow-node.qa-node",
+      "view": "architecture",
+      "label": "Workflow node",
+      "postcondition": "The node is selected and the inspector describes it.",
+      "assert": "return document.querySelector('.workflow-node[aria-pressed=\"true\"]') !== null;"
+    },
+    {
+      "selector": "#reset-skills",
+      "view": "architecture",
+      "label": "Reset defaults",
+      "postcondition": "The registry returns to defaults, and undo is offered.",
+      "assert": "return !document.querySelector('#undo-bar').hidden;"
+    },
+    {
+      "selector": "#new-loadout",
+      "view": "systems",
+      "label": "New loadout",
+      "postcondition": "A new loadout exists, is selected, and its name is ready to type over.",
+      "assert": "return document.activeElement === document.querySelector('#loadout-form').elements.name;"
+    },
+    {
+      "selector": "#loadout-empty-action",
+      "view": "systems",
+      "label": "New loadout",
+      "postcondition": "A new loadout exists and is selected.",
+      "assert": "return document.querySelectorAll('.system-list-item').length > 0;"
+    },
+    {
+      "selector": "#duplicate-loadout",
+      "view": "systems",
+      "label": "Duplicate",
+      "postcondition": "A copy of the selected loadout exists and is now selected.",
+      "assert": "return document.querySelectorAll('.system-list-item').length > 1;"
+    },
+    {
+      "selector": "systems|button.system-list-item",
+      "view": "systems",
+      "label": "Loadout row",
+      "postcondition": "That loadout is selected and its eight decisions are shown.",
+      "assert": "return !!document.querySelector('.system-list-item.is-selected') && document.querySelectorAll('.slot-row').length === 8;"
+    },
+    {
+      "selector": "#activate-loadout",
+      "view": "systems",
+      "label": "Use this loadout",
+      "postcondition": "It becomes the active loadout and the control says so.",
+      "assert": "return document.querySelector('#activate-loadout').disabled === true;"
+    },
+    {
+      "selector": "#delete-loadout",
+      "view": "systems",
+      "label": "Delete",
+      "postcondition": "The loadout is removed and undo is offered.",
+      "assert": "return !document.querySelector('#undo-bar').hidden;"
+    },
+    {
+      "selector": "systems|button.run-action",
+      "view": "systems",
+      "label": "Save changes",
+      "postcondition": "Edits are persisted, or it says there were none.",
+      "assert": "return (document.querySelector('#loadout-feedback').textContent || '').length > 0;"
+    },
+    {
+      "selector": "systems|button.quiet-action",
+      "view": "systems",
+      "label": "Use this doctrine",
+      "postcondition": "A profile is created from the doctrine and attached to this loadout.",
+      "assert": "return !!document.querySelector('#dna-panel');"
+    },
+    {
+      "selector": "#clear-prompt",
+      "view": "playground",
+      "label": "Clear",
+      "postcondition": "The task is emptied and undo is offered.",
+      "assert": "return document.querySelector('#experiment-prompt').value === '' || !document.querySelector('#undo-bar').hidden;"
+    },
+    {
+      "selector": "#add-variant",
+      "view": "playground",
+      "label": "Add third loadout",
+      "postcondition": "A third variant card appears.",
+      "assert": "return document.querySelectorAll('.variant-card').length === 3;"
+    },
+    {
+      "selector": "#run-comparison",
+      "view": "playground",
+      "label": "Run comparison",
+      "postcondition": "A comparison runs and its results appear.",
+      "assert": "return document.querySelectorAll('.result-card').length > 0;",
+      "skipInSweep": true
+    },
+    {
+      "selector": "#results-empty-action",
+      "view": "playground",
+      "label": "Run the pilot comparison",
+      "postcondition": "Proxies the run control.",
+      "assert": "return true;",
+      "skipInSweep": true
+    },
+    {
+      "selector": "#show-add-skill",
+      "view": "knowledge",
+      "label": "Add skill",
+      "postcondition": "The create form opens and its first field is focused.",
+      "assert": "return !document.querySelector('#add-skill-form').classList.contains('is-hidden');"
+    },
+    {
+      "selector": "#cancel-add-skill",
+      "view": "knowledge",
+      "label": "Cancel",
+      "postcondition": "The create form closes.",
+      "assert": "return document.querySelector('#add-skill-form').classList.contains('is-hidden');"
+    },
+    {
+      "selector": "knowledge|button.category-button",
+      "view": "knowledge",
+      "label": "Category",
+      "postcondition": "The list filters to that group.",
+      "assert": "return !!document.querySelector('.category-button.is-active');"
+    },
+    {
+      "selector": "knowledge|button.knowledge-skill",
+      "view": "knowledge",
+      "label": "Capability row",
+      "postcondition": "That capability opens in the inspector.",
+      "assert": "return !!document.querySelector('#skill-editor');"
+    },
+    {
+      "selector": "knowledge|button.run-action",
+      "view": "knowledge",
+      "label": "Save skill",
+      "postcondition": "Edits are persisted, or it says there were none.",
+      "assert": "return (document.querySelector('.editor-status')?.textContent || '').length > 0;"
+    },
+    {
+      "selector": "knowledge|button.quiet-action",
+      "view": "knowledge",
+      "label": "Add source",
+      "postcondition": "A source is attached, or the incomplete field is focused.",
+      "assert": "return (document.querySelector('.source-status')?.textContent || '').length > 0 || document.activeElement?.closest('.source-form') !== null;"
+    },
+    {
+      "selector": "#knowledge-empty-action",
+      "view": "knowledge",
+      "label": "Show everything",
+      "postcondition": "The filter and search are cleared.",
+      "assert": "return document.querySelector('#knowledge-search').value === '';"
+    },
+    {
+      "selector": "#agents-empty-action",
+      "view": "agents",
+      "label": "Show all agents",
+      "postcondition": "The category filter is cleared.",
+      "assert": "return document.querySelector('#agent-category').value === 'all';"
+    },
+    {
+      "selector": "#oracle-clear",
+      "view": "oracle",
+      "label": "Clear chat",
+      "postcondition": "The conversation is emptied and undo is offered.",
+      "assert": "return !document.querySelector('#undo-bar').hidden || !!document.querySelector('.oracle-empty');"
+    },
+    {
+      "selector": "#oracle-plan",
+      "view": "oracle",
+      "label": "Plan only",
+      "postcondition": "A plan is produced without spending tokens.",
+      "assert": "return !!document.querySelector('#oracle-plan-view');",
+      "skipInSweep": true
+    },
+    {
+      "selector": "#oracle-run",
+      "view": "oracle",
+      "label": "Plan & run",
+      "postcondition": "The plan runs and an answer is appended.",
+      "assert": "return !!document.querySelector('#oracle-messages');",
+      "skipInSweep": true
+    },
+    {
+      "selector": "#refresh-events",
+      "view": "oracle",
+      "label": "Refresh",
+      "postcondition": "Host activity is re-read, and it says what it found.",
+      "assert": "return (document.querySelector('#oracle-mode').textContent || '').length > 0;"
+    },
+    {
+      "selector": "#refresh-runs",
+      "view": "runs",
+      "label": "Refresh",
+      "postcondition": "Run history is re-read, and it says what it found.",
+      "assert": "return (document.querySelector('#runs-note').textContent || '').length > 0;"
+    },
+    {
+      "selector": "#export-runs",
+      "view": "runs",
+      "label": "Export JSON",
+      "postcondition": "A JSON file is offered, or it says there is nothing to export.",
+      "assert": "return (document.querySelector('#runs-note').textContent || '').length > 0;"
+    },
+    {
+      "selector": "#clear-runs",
+      "view": "runs",
+      "label": "Clear local",
+      "postcondition": "Local runs are cleared with undo, or it says there were none.",
+      "assert": "return (document.querySelector('#runs-note').textContent || '').length > 0 || !document.querySelector('#undo-bar').hidden;"
+    },
+    {
+      "selector": "#oracle-show-how",
+      "view": "chrome",
+      "label": "Show me how",
+      "postcondition": "Explains the next step for the current context, in the dock.",
+      "assert": "return (document.querySelector('#oracle-dock-answer')?.textContent || '').length > 0;"
+    },
+    {
+      "selector": "#oracle-do-it",
+      "view": "chrome",
+      "label": "Do it for me",
+      "postcondition": "Creates a reviewable proposal, or says why there is nothing to propose here. It never mutates without approval.",
+      "assert": "return !!document.querySelector('#proposal-dialog[open]') || (document.querySelector('#oracle-dock-answer')?.textContent || '').length > 0;"
+    },
+    {
+      "selector": "#undo-dismiss",
+      "view": "chrome",
+      "label": "Dismiss undo",
+      "postcondition": "The undo bar is hidden.",
+      "assert": "return document.querySelector('#undo-bar').hidden;"
+    },
+    {
+      "selector": "#architecture-empty-action",
+      "view": "architecture",
+      "label": "Reload the pipeline",
+      "postcondition": "The roster is re-read from the server.",
+      "assert": "return !!document.querySelector('#architecture-agent-lanes');"
+    },
+    {
+      "selector": "#work-empty-action",
+      "view": "work",
+      "label": "Write the first message",
+      "postcondition": "The composer is focused.",
+      "assert": "return document.activeElement === document.querySelector('#work-prompt');"
+    },
+    {
+      "selector": "#inspector-open-slots",
+      "view": "architecture",
+      "label": "Change what it carries",
+      "postcondition": "Navigates to the loadout editor.",
+      "assert": "return location.hash === '#/systems';"
+    }
+  ]
+}

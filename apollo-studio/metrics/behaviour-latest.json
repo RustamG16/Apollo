@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T16:41:41.884Z",
-  "durationMs": 293317,
+  "generatedAt": "2026-09-03T17:16:18.643Z",
+  "durationMs": 293704,
   "thresholds": {
     "B1": {
       "name": "Controls with no listener and no form owner",
@@ -15,39 +15,18 @@
       "value": 0,
       "target": 0,
       "pass": true,
-      "unit": "of 206 clicked (12 already in their target state, excluded)",
+      "unit": "of 205 clicked (12 already in their target state, excluded)",
       "detail": []
     },
     "B3": {
       "name": "Label-truth rows failing their postcondition",
       "value": 0,
       "target": 0,
-      "pass": false,
-      "unit": "0 of 156 command controls covered",
+      "pass": true,
+      "unit": "45 of 45 command controls covered",
       "detail": {
         "failed": [],
-        "uncovered": [
-          "work #new-project \"Create project\"",
-          "work #new-chat \"+ chat\"",
-          "work div#project-list > button.project-item.is-active \"WKO launch narrativeLaunch planning\"",
-          "work div#project-tabs > button.project-tab.is-active \"Launch planning\"",
-          "work #work-context \"Context0\"",
-          "work form#work-composer > div.composer-footer > div.composer-options:nth-of-type(1) > button.attachment-button.command-action \"Attach\"",
-          "work form#work-composer > div.composer-footer > div.composer-submit:nth-of-type(2) > button.primary-action.composer-send \"SendEnter\"",
-          "work #close-context \"Close context\"",
-          "work #toggle-oracle \"Oracle Ctrl K\"",
-          "architecture #auto-layout \"Tidy layout\"",
-          "architecture #reset-layout \"Reset layout\"",
-          "architecture div#architecture-agent-lanes > section.agent-lane:nth-of-type(1) > div > button.architecture-agent \"Athena3 skills\"",
-          "architecture div#architecture-agent-lanes > section.agent-lane:nth-of-type(2) > div > button.architecture-agent \"Calliope2 skills\"",
-          "architecture div#architecture-agent-lanes > section.agent-lane:nth-of-type(3) > div > button.architecture-agent \"Hephaestus4 skills\"",
-          "architecture div#architecture-agent-lanes > section.agent-lane:nth-of-type(4) > div > button.architecture-agent \"Hermes3 skills\"",
-          "architecture section#workflow-canvas > div.workflow-grid > button.workflow-node.input-node:nth-of-type(1) \"EvidenceIntake & auditPage · source · references · analytics\"",
-          "architecture section#workflow-canvas > div.workflow-grid > button.workflow-node.director-node:nth-of-type(2) \"OrchestratorApollo Design DirectorOwns the brief, routing, g\"",
-          "architecture section#workflow-canvas > div.workflow-grid > button.workflow-node.gate:nth-of-type(3) \"Gate ABrief approvedProblem · audience · constraints\"",
-          "architecture section#workflow-canvas > div.workflow-grid > button.workflow-node.concept-node:nth-of-type(4) \"DirectionConcept studioThree routes · independent critique\"",
-          "architecture section#workflow-canvas > div.workflow-grid > button.workflow-node.gate:nth-of-type(5) \"Gate BDirection selectedOne concept becomes build truth\""
-        ]
+        "uncovered": []
       }
     },
     "B4": {
@@ -116,8 +95,8 @@
   "controls": {
     "total": 567,
     "visible": 548,
-    "clicked": 206,
-    "skipped": 5
+    "clicked": 205,
+    "skipped": 6
   },
   "unwired": [],
   "noEffect": [],

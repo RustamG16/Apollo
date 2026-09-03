@@ -1622,3 +1622,14 @@ textarea { min-height: calc(var(--control-h) * 2); }
 
 /* Runs had no status line, so three of its four controls could decline silently. */
 .runs-note { margin-left:auto; color:var(--fg-muted); font-size:var(--text-meta); }
+
+/* The dock answers in place. "Show me how" used to navigate away and prefill a textarea,
+   which is not showing anyone anything. */
+.oracle-dock-answer:empty { display:none; }
+.oracle-dock-answer { margin-top: var(--space-5); border-top:1px solid var(--line); padding-top: var(--space-5); }
+.oracle-dock-answer h3 { margin: 0 0 var(--space-4); color:var(--fg-dim); font-size:var(--text-label); font-weight:600; letter-spacing:var(--track-label); text-transform:uppercase; }
+.oracle-dock-answer ol { margin: 0; padding-left: var(--space-7); display:grid; gap: var(--space-3); }
+.oracle-dock-answer li { color:var(--fg-muted); font-size:var(--text-meta); line-height:var(--leading-ui); }
+.oracle-dock-answer li strong { color:var(--fg); font-weight:600; }
+.oracle-dock-answer li code { color:var(--fg-dim); font-family:var(--font-mono); font-size:var(--text-label); }
+.oracle-dock-answer p { margin: var(--space-4) 0 0; color:var(--fg-dim); font-size:var(--text-label); line-height:var(--leading-prose); }
