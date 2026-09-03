@@ -109,6 +109,8 @@ function summarise(runs) {
       targetFloor,
       overflow: rows.filter(r => r.probe.overflow.horizontal > 0)
         .map(r => ({ view: r.view, px: r.probe.overflow.horizontal })),
+      clipped: rows.filter(r => r.probe.overflow.clippedCount > 0)
+        .map(r => ({ view: r.view, count: r.probe.overflow.clippedCount, worst: r.probe.overflow.clipped[0] })),
       families: [...new Set(rows.flatMap(r => r.probe.families))].sort(),
       perView: Object.fromEntries(rows.map(r => [r.view, {
         textNodes: r.probe.text.length,
@@ -467,6 +469,15 @@ async function main() {
       target: previousSpacingLiterals,
       pass: css.spacingLiterals <= previousSpacingLiterals,
       note: 'A ratchet, not a gate: the debt is paid down surface by surface and may never rise.',
+    },
+    clipping: {
+      name: 'Nothing clipped by its own container at any measured viewport',
+      value: Object.values(report.perViewport).reduce((n, v) => n + v.clipped.reduce((m, c) => m + c.count, 0), 0),
+      target: 0,
+      pass: Object.values(report.perViewport).every(v => v.clipped.length === 0),
+      detail: Object.entries(report.perViewport)
+        .flatMap(([vp, v]) => v.clipped.map(c => vp + ' ' + c.view + ': ' + c.count + ' (' + (c.worst?.sample || c.worst?.cls) + ' cut ' + c.worst?.cut + 'px)'))
+        .slice(0, 8),
     },
     specificity: {
       name: 'No !important outside the reduced-motion reset',

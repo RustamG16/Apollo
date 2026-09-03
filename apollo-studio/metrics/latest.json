@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T06:23:22.396Z",
-  "durationMs": 22831,
+  "generatedAt": "2026-09-03T10:05:13.492Z",
+  "durationMs": 23258,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -174,16 +174,17 @@
   },
   "perViewport": {
     "820x1180": {
-      "textNodes": 1318,
+      "textNodes": 1327,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
-      "controls": 490,
+      "controls": 491,
       "targetFloor": 44,
       "overflow": [],
+      "clipped": [],
       "families": [
         "ui-monospace",
         "ui-sans-serif"
@@ -214,7 +215,7 @@
           ]
         },
         "systems": {
-          "textNodes": 185,
+          "textNodes": 188,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -222,11 +223,11 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            108
+            109
           ]
         },
         "playground": {
-          "textNodes": 247,
+          "textNodes": 249,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -234,7 +235,7 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            207
+            209
           ]
         },
         "agents": {
@@ -262,7 +263,7 @@
           ]
         },
         "oracle": {
-          "textNodes": 45,
+          "textNodes": 49,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -270,7 +271,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            21
+            22
           ]
         },
         "runs": {
@@ -300,16 +301,17 @@
       }
     },
     "1280x800": {
-      "textNodes": 1318,
+      "textNodes": 1327,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
-      "controls": 490,
+      "controls": 491,
       "targetFloor": 36,
       "overflow": [],
+      "clipped": [],
       "families": [
         "ui-monospace",
         "ui-sans-serif"
@@ -340,7 +342,7 @@
           ]
         },
         "systems": {
-          "textNodes": 185,
+          "textNodes": 188,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -348,11 +350,11 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            108
+            109
           ]
         },
         "playground": {
-          "textNodes": 247,
+          "textNodes": 249,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -360,7 +362,7 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            207
+            209
           ]
         },
         "agents": {
@@ -388,7 +390,7 @@
           ]
         },
         "oracle": {
-          "textNodes": 45,
+          "textNodes": 49,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -396,7 +398,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            21
+            22
           ]
         },
         "runs": {
@@ -426,16 +428,17 @@
       }
     },
     "1440x900": {
-      "textNodes": 1318,
+      "textNodes": 1327,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
-      "controls": 490,
+      "controls": 491,
       "targetFloor": 36,
       "overflow": [],
+      "clipped": [],
       "families": [
         "ui-monospace",
         "ui-sans-serif"
@@ -466,7 +469,7 @@
           ]
         },
         "systems": {
-          "textNodes": 185,
+          "textNodes": 188,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -474,11 +477,11 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            108
+            109
           ]
         },
         "playground": {
-          "textNodes": 247,
+          "textNodes": 249,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -486,7 +489,7 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            207
+            209
           ]
         },
         "agents": {
@@ -514,7 +517,7 @@
           ]
         },
         "oracle": {
-          "textNodes": 45,
+          "textNodes": 49,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -522,7 +525,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            21
+            22
           ]
         },
         "runs": {
@@ -552,16 +555,17 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1318,
+      "textNodes": 1327,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
-      "controls": 490,
+      "controls": 491,
       "targetFloor": 36,
       "overflow": [],
+      "clipped": [],
       "families": [
         "ui-monospace",
         "ui-sans-serif"
@@ -592,7 +596,7 @@
           ]
         },
         "systems": {
-          "textNodes": 185,
+          "textNodes": 188,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -600,11 +604,11 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            108
+            109
           ]
         },
         "playground": {
-          "textNodes": 247,
+          "textNodes": 249,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -612,7 +616,7 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            207
+            209
           ]
         },
         "agents": {
@@ -640,7 +644,7 @@
           ]
         },
         "oracle": {
-          "textNodes": 45,
+          "textNodes": 49,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -648,7 +652,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            21
+            22
           ]
         },
         "runs": {
@@ -686,9 +690,9 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 358,
-    "14.0": 334,
-    "16.0": 566,
+    "13.0": 363,
+    "14.0": 337,
+    "16.0": 567,
     "18.0": 20,
     "22.0": 21,
     "32.0": 8
@@ -697,8 +701,8 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 108006,
-        "lines": 1486
+        "bytes": 108657,
+        "lines": 1495
       }
     ],
     "fontSizeUnits": {
@@ -896,6 +900,13 @@
       "target": 495,
       "pass": true,
       "note": "A ratchet, not a gate: the debt is paid down surface by surface and may never rise."
+    },
+    "clipping": {
+      "name": "Nothing clipped by its own container at any measured viewport",
+      "value": 0,
+      "target": 0,
+      "pass": true,
+      "detail": []
     },
     "specificity": {
       "name": "No !important outside the reduced-motion reset",

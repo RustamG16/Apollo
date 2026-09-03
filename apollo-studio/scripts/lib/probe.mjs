@@ -231,7 +231,36 @@ export const PROBE_SOURCE = String(function apolloProbe(scope, revealDisclosures
       sample: (el.textContent || '').trim().slice(0, 32),
     });
   }
+  // Clipped inside a component, rather than past the viewport. A caption cut off by its own
+  // card is as unreadable as one pushed off the page, and a viewport test cannot see it.
+  const clipped = [];
+  for (const el of document.querySelectorAll('body *')) {
+    const rect = el.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) continue;
+    if (!visible(el)) continue;
+    if (el.children.length) continue;
+    let node = el.parentElement;
+    while (node && node !== document.body) {
+      const cs = getComputedStyle(node);
+      if (/(hidden|clip)/.test(cs.overflowX) || /(hidden|clip)/.test(cs.overflowY)) {
+        const box = node.getBoundingClientRect();
+        const cut = Math.max(0, rect.right - box.right) + Math.max(0, rect.bottom - box.bottom)
+          + Math.max(0, box.left - rect.left) + Math.max(0, box.top - rect.top);
+        if (cut > 2) clipped.push({
+          tag: el.tagName.toLowerCase(),
+          cls: typeof el.className === 'string' ? el.className.slice(0, 40) : '',
+          sample: (el.textContent || '').trim().slice(0, 28),
+          cut: Math.round(cut),
+        });
+        break;
+      }
+      node = node.parentElement;
+    }
+  }
+
   const overflow = {
+    clipped: clipped.slice(0, 10),
+    clippedCount: clipped.length,
     scrollWidth: document.documentElement.scrollWidth,
     clientWidth: viewportWidth,
     spills: spills.slice(0, 10),

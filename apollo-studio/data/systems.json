@@ -168,7 +168,7 @@
       ]
     }
   ],
-  "activeLoadoutId": "lean-audit",
+  "activeLoadoutId": "lean-audit-copy",
   "loadouts": [
     {
       "id": "lean-audit",
@@ -203,7 +203,7 @@
       "advancedSkills": [],
       "seeded": true,
       "createdAt": "2026-09-03T05:01:55.772Z",
-      "updatedAt": "2026-09-03T06:23:28.780Z"
+      "updatedAt": "2026-09-03T10:05:19.595Z"
     },
     {
       "id": "concept-lab",
@@ -238,7 +238,7 @@
       "advancedSkills": [],
       "seeded": true,
       "createdAt": "2026-09-03T05:01:55.773Z",
-      "updatedAt": "2026-09-03T06:23:28.780Z"
+      "updatedAt": "2026-09-03T10:05:19.595Z"
     },
     {
       "id": "premium-build",
@@ -273,7 +273,7 @@
       "advancedSkills": [],
       "seeded": true,
       "createdAt": "2026-09-03T05:01:55.773Z",
-      "updatedAt": "2026-09-03T06:23:28.780Z"
+      "updatedAt": "2026-09-03T10:05:19.595Z"
     },
     {
       "id": "delivery-qa",
@@ -308,7 +308,42 @@
       "advancedSkills": [],
       "seeded": true,
       "createdAt": "2026-09-03T05:01:55.773Z",
-      "updatedAt": "2026-09-03T06:23:28.780Z"
+      "updatedAt": "2026-09-03T10:05:19.595Z"
+    },
+    {
+      "id": "lean-audit-copy",
+      "name": "Lean audit copy",
+      "description": "Migrated from the Lean audit preset.",
+      "slots": {
+        "craft": "ui-ux",
+        "direction": "concept-studio",
+        "evidence": "ux-evidence-audit",
+        "structure": "site-architecture",
+        "motion": "gsap-core",
+        "media": "asset-director",
+        "copy": "copywriting",
+        "verify": "visual-qa"
+      },
+      "designDna": null,
+      "brief": "",
+      "tools": {
+        "mcp": [],
+        "plugins": []
+      },
+      "budget": {
+        "totalTokens": 30000,
+        "approvals": {
+          "apollo-director": false,
+          "athena-evidence": false,
+          "calliope-experience": false,
+          "hephaestus-build": false,
+          "hermes-delivery": true
+        }
+      },
+      "advancedSkills": [],
+      "seeded": false,
+      "createdAt": "2026-09-03T06:25:08.233Z",
+      "updatedAt": "2026-09-03T10:05:19.595Z"
     }
   ],
   "migrations": [

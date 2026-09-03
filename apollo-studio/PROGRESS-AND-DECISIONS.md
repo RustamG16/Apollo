@@ -1430,3 +1430,65 @@ honoured.
 identify nothing and import off-palette hues (an asset decision, not a CSS one), 495 spacing
 literals under a ratchet, and the uppercase-tracked label register remains dominant even after
 the promotion.
+
+## 2026-09-03 — P5: clipping made a standing rule, portrait palette held back, phase closed
+
+**Slice:** P5, part 8. Closing slice for this phase at the user's instruction — the run
+continues in a new session.
+
+### The defect a viewport test cannot see
+
+Screenshot evidence (`metrics/shots/agents-1440x900.png`) showed the availability caption
+("Available") cut off by the agent card's own right edge at every measured width — not pushed
+past the viewport, clipped by a component with `overflow` set. No prior check could see this
+class of defect: T5/overflow tests measure against the viewport, not against an arbitrary
+ancestor's box. The probe now walks every leaf node up its ancestor chain for any container
+that clips, and a new standing rule — **`clipping`: nothing clipped by its own container at
+any measured viewport** — gates it. Currently 0 across 820x1180, 1280x800, 1440x900 and
+1920x1080.
+
+Fixed the actual defect alongside it: `.agent-controls` was a three-column grid with no room
+for the caption; it is two columns now, with the switch and its caption wrapping as one unit.
+
+### Portrait palette
+
+Read `Calliope`'s and `Hermes`'s source images directly (not taking the prior critique's
+characterisation on faith): both are full-saturation neon — magenta, cyan, violet circuitry
+motifs — genuinely a second, uncontrolled palette on a screen whose entire colour system is
+one accent plus status. `PRODUCT.md` keeps the mythological portraits as content, so they are
+not deleted; `saturate(.45) contrast(1.02)` on `.agent-portrait img` holds the identity while
+retiring the competing hues. This is a CSS-only mitigation — the asset-level decision (crop,
+regenerate, or replace) stays open and undecided, not silently resolved.
+
+### The second independent critique
+
+Launched a second blind critique (same constraints: no journal, no plan file, fresh read of
+`DESIGN.md`/`PRODUCT.md`/source only) specifically to adversarially re-test the harness after
+the first critique's central finding — that the harness was passing rather than the artefact.
+**It failed on a platform rate limit before returning a result**, not on a content or
+methodology problem. No score or findings from it are recorded here; nothing was fabricated in
+its place. Re-running it is the first item for the next session, not a decision to skip it.
+
+### State at close
+
+All eleven thresholds pass. All four standing rules pass (motion budget in CSS and script,
+spacing-literal ratchet at 495, no clipping, `!important` confined to the reduced-motion
+reset). `npm.cmd run check` exits 0. Console clean; reduced motion honoured; no horizontal
+overflow and nothing clipped at 820, 1280, 1440 or 1920px; nothing clipped at 200% text zoom.
+Screenshots refreshed in `metrics/shots/`.
+
+**Known open items, explicitly not resolved this slice:**
+- The second independent critique has not actually run; its result and score are pending.
+- 495 spacing literals remain, under a ratchet that can only fall.
+- The uppercase-tracked label register is still the dominant secondary type treatment;
+  reduced from 74% to 53% at 13-14px, not eliminated.
+- Two agent portraits are held back by a filter, not resolved at the asset level.
+
+### Handoff to the next session
+
+Read the tail of this file, then run `node scripts/ui-metrics.mjs` to reconfirm the state
+recorded above before doing anything else — this is the resume procedure `RUN-PROMPT.md`
+specifies. If it reconfirms clean, the next slice is either: (a) re-run the independent
+critique properly and act on its findings, or (b) proceed to whatever the next phase in the
+plan calls for. Do not restart at P0 — P0 through P5's first eight parts are committed and
+verified in both repos on `redesign/loadout-program`.

@@ -1468,11 +1468,6 @@ textarea { min-height: calc(var(--control-h) * 2); }
 
 /* The availability caption is a third column the agent controls grid has no room for below
    about 900px; it takes its own line there rather than pushing the card past the viewport. */
-@media (max-width: 1320px) {
-  .agent-controls { grid-template-columns: minmax(0, 1fr) auto; }
-  .agent-availability { flex-wrap: wrap; justify-content: flex-end; }
-  .switch-caption { flex-basis: 100%; text-align: end; }
-}
 
 @media (max-width: 900px) {
   .oracle-trigger { min-height: var(--control-h-narrow); }
@@ -1483,3 +1478,17 @@ textarea { min-height: calc(var(--control-h) * 2); }
 /* The accent marks the stage you have selected. That is what it is for. */
 .workflow-node[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 .workflow-node[aria-pressed="true"] > span { color: var(--accent); }
+
+/* The availability caption was being cut off by the card at every width: a three-column
+   controls row has no slack for it. Two columns, with the switch and its caption as one
+   wrapping pair. */
+.agent-controls { grid-template-columns: minmax(0, 1fr) auto; row-gap: var(--space-4); }
+.agent-availability { flex-wrap: wrap; justify-content: flex-end; min-width: 0; }
+.agent-availability .switch-caption { flex: 0 0 auto; }
+.agent-profile { overflow: visible; }
+
+/* The agent portraits are content - they identify an agent, and PRODUCT.md keeps the
+   mythological identities. They are not a licence to import a second palette: at full
+   saturation they put magenta and violet on a screen whose whole colour system is one accent
+   plus status. Held back so identity survives and the neon stops competing. */
+.agent-portrait img { filter: saturate(.45) contrast(1.02); }
