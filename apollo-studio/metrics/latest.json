@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T05:36:57.036Z",
-  "durationMs": 15591,
+  "generatedAt": "2026-09-03T05:41:43.567Z",
+  "durationMs": 15597,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -115,27 +115,23 @@
     },
     "T11": {
       "name": "Destructive actions without undo",
-      "value": 3,
+      "value": 0,
       "target": 0,
-      "pass": false,
+      "pass": true,
       "unit": "distinct controls",
-      "detail": [
-        "Reset",
-        "Delete node",
-        "Reset defaults"
-      ]
+      "detail": []
     }
   },
   "perViewport": {
     "1280x800": {
-      "textNodes": 1372,
+      "textNodes": 1364,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 13,
-      "controls": 495,
+      "controls": 489,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -156,7 +152,7 @@
           ]
         },
         "architecture": {
-          "textNodes": 356,
+          "textNodes": 348,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -164,7 +160,7 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
-            126
+            128
           ]
         },
         "systems": {
@@ -254,14 +250,14 @@
       }
     },
     "1440x900": {
-      "textNodes": 1372,
+      "textNodes": 1364,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 13,
-      "controls": 495,
+      "controls": 489,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -282,7 +278,7 @@
           ]
         },
         "architecture": {
-          "textNodes": 356,
+          "textNodes": 348,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -290,7 +286,7 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
-            126
+            128
           ]
         },
         "systems": {
@@ -380,14 +376,14 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1372,
+      "textNodes": 1364,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 13,
-      "controls": 495,
+      "controls": 489,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -408,7 +404,7 @@
           ]
         },
         "architecture": {
-          "textNodes": 356,
+          "textNodes": 348,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -416,7 +412,7 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
-            126
+            128
           ]
         },
         "systems": {
@@ -514,9 +510,9 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 412,
-    "14.0": 592,
-    "16.0": 310,
+    "13.0": 405,
+    "14.0": 594,
+    "16.0": 307,
     "18.0": 18,
     "22.0": 21,
     "32.0": 8
@@ -525,13 +521,13 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 104908,
-        "lines": 1409
+        "bytes": 105447,
+        "lines": 1415
       }
     ],
     "fontSizeUnits": {
-      "total": 235,
-      "rem": 235,
+      "total": 237,
+      "rem": 237,
       "px": 0,
       "em": 0,
       "other": 0
@@ -681,13 +677,6 @@
   "diff": {
     "firstRun": false,
     "regressions": [],
-    "improvements": [
-      {
-        "id": "T11",
-        "name": "Destructive actions without undo",
-        "before": 4,
-        "after": 3
-      }
-    ]
+    "improvements": []
   }
 }

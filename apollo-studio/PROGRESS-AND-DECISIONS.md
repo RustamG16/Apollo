@@ -1009,3 +1009,82 @@ gain an undo.
 **Next slice:** P4 pass 5 — the Pipeline map. The plan's position is that node editing
 authored a second system the loadout has replaced: keep the graph interactive for inspection
 and layout, not for authoring nodes no run will execute.
+
+## 2026-09-03 — P4 pass 5: the Pipeline map
+
+**Slice:** P4, surface 5 of 6. Complete. **T11 reaches zero.**
+
+### The position, from the plan
+
+Node editing authored a second system that the loadout replaces. The map keeps its
+interactivity for **inspection and layout**, and loses it for authoring nodes no run will
+ever execute. That is not a reduction in capability: a custom node had no route, no owner
+and no effect on any plan — it was a drawing.
+
+### Removed
+
+- **Add node, Connect, and Delete node.** With them went `addGraphNode`,
+  `deleteSelectedNode`, `cancelGraphInteraction`, connect-mode state, and the
+  Delete/Backspace destroy path — roughly 60 lines of code whose entire output was a shape
+  on a canvas. Delete on a stage now says why it cannot: *"The pipeline is locked. Change
+  what a stage carries in Loadouts."*
+- **The node editor form.** Name, phase and purpose fields let you rename a stage of a
+  pipeline that is product truth. The inspector is a `<div>` now, not a `<form>`.
+- The heading no longer says "Shape the system. Move, rename, add, and connect nodes."
+  It says what the surface is: **Pipeline map**, and that the route is fixed.
+
+### Kept, and made to mean something
+
+Drag-to-arrange, keyboard nudging, Tidy layout and Reset layout all stay — arranging a map
+for reading is a real need and touches nothing but local presentation. **Reset layout now
+offers undo.**
+
+The inspector answers the question the map is opened with: *what does this stage own, and
+what is it carrying on this run?*
+
+| Stage | Owns | Carrying, under Lean audit |
+|---|---|---|
+| Intake & audit | Evidence, Structure | ux-evidence-audit, site-architecture |
+| Apollo Design Director | the answer — no slot to swap | olympus-design-director, taste-first… |
+| Brief approved | a gate — nothing to configure | the run pauses here for approval |
+| Concept studio | Direction, Copy | concept-studio, copywriting |
+| Assets & implementation | Craft, Motion | ui-ux, gsap-core |
+| Visual QA & handoff | Media, Verify | asset-director, visual-qa |
+
+### Defect found and repaired inside the slice
+
+The first version of the inspector matched a graph node to its agent by looking for the
+agent's name inside the node's display text. It never matched once — the node titles are
+"Intake & audit" and "Concept studio", the agents are Athena and Calliope. Every stage read
+"no loadout slot", which was wrong and would have been easy to ship because it looked
+plausible. The graph node ids and the agent ids are two vocabularies for one pipeline and
+nothing had ever joined them; `NODE_OWNER` now does, explicitly. Caught by reading the
+output for all seven nodes instead of one.
+
+### The last undo
+
+`Reset defaults` in the skill registry was the final destructive action without a way back.
+It now restores the previous set. **T11: 8 at the start of P3, now 0.**
+
+### Metrics
+
+| # | Threshold | Now | Target | State |
+|---|---|---:|---:|---|
+| T1 | Text below 13px | 0 | 0 | PASS |
+| T2 | Body text size | 16 | 15 | PASS |
+| T3 | Type in rem / 200% zoom | 100% | 100% | PASS |
+| T4 | Contrast failures (AA) | 0 | 0 | PASS |
+| T5 | Controls under 36/44px | 0 | 0 | PASS |
+| T6 | Distinct visual systems | 1 | 1 | PASS |
+| T7 | Non-semantic accent hues | 1 | 1 | PASS |
+| T8 | Unique radii | 2 | 4 | PASS |
+| T9 | Views with empty state + action | 4 | 8 | FAIL |
+| T10 | Decorative media references | 0 | 0 | PASS |
+| T11 | Destructive actions without undo | **0** | 0 | PASS |
+
+**Ten of eleven pass.** Only T9 remains, and it is a content task on the four surfaces that
+have not had their pass yet: Architecture, Agent profiles, Oracle and Runs.
+
+**Next slice:** P4 pass 6 — Runs, then the empty states for the three surfaces the plan's
+pass list does not name individually (Architecture, Agent profiles, Oracle), which is what
+T9 needs to reach 8 of 8.

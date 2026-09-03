@@ -124,8 +124,6 @@ const defaultGraphPositions = {
 let graphPositions = storage.read('apollo-graph-positions', structuredClone(defaultGraphPositions));
 let graphPhases = storage.read('apollo-graph-phases', {});
 let selectedNodeId = 'director';
-let graphConnectMode = false;
-let connectSourceId = null;
 
 function navigate(view, { updateHash = true, scrollBehavior = 'smooth', animate = false } = {}) {
   view = views.has(view) ? view : 'architecture';
@@ -267,6 +265,17 @@ function filterSkills() {
   const phase = $('#skill-phase-filter').value;
   $$('.skill-row').forEach(row => row.classList.toggle('is-filtered', !(row.dataset.search.includes(query) && (phase === 'all' || row.dataset.phase === phase))));
 }
+
+// Which agent stands at each stage of the map. The graph node ids and the agent ids are
+// two different vocabularies for the same pipeline, and nothing had ever joined them - the
+// inspector's owner lookup was matching on display text and silently never matching.
+const NODE_OWNER = {
+  intake: 'athena-evidence',
+  director: 'apollo-director',
+  concepts: 'calliope-experience',
+  build: 'hephaestus-build',
+  qa: 'hermes-delivery'
+};
 
 const phaseLabels = { always: 'Orchestrate', plan: 'Plan', diagnose: 'Diagnose', direct: 'Direct', prepare: 'Prepare', build: 'Build', verify: 'Verify', synthesize: 'Synthesize' };
 const phaseSequence = ['plan', 'diagnose', 'direct', 'prepare', 'build', 'verify', 'synthesize'];
@@ -788,26 +797,20 @@ function selectNode(button, { animate = true } = {}) {
   $('#inspector-phase').textContent = phase;
   $('#inspector-title').textContent = title;
   $('#inspector-copy').textContent = copy;
-  $('#node-name').value = title;
-  $('#node-phase').value = button.dataset.phase || 'all';
-  $('#node-description').value = copy;
-  $('#delete-node').disabled = !button.classList.contains('custom-node');
-  if (graphConnectMode) {
-    if (!connectSourceId) {
-      connectSourceId = button.dataset.node;
-      $('#node-status').textContent = `Choose a destination for ${title}.`;
-      button.classList.add('is-connect-source');
-    } else if (connectSourceId !== button.dataset.node) {
-      const exists = edges.some(edge => edge.from === connectSourceId && edge.to === button.dataset.node);
-      if (!exists) edges.push({ from: connectSourceId, to: button.dataset.node, phase: button.dataset.phase === 'all' ? 'prepare' : button.dataset.phase });
-      graphConnectMode = false; connectSourceId = null;
-      $('#connect-node').setAttribute('aria-pressed', 'false');
-      setCommandLabel($('#connect-node'), 'Connect');
-      $$('.workflow-node').forEach(node => node.classList.remove('is-connect-source'));
-      persistGraph(); drawConnections();
-      $('#node-status').textContent = exists ? 'That connection already exists.' : 'Connection added.';
-    }
-  }
+  // Selecting a stage tells you what it owns and what it is carrying on this run. It does
+  // not let you rename it: the pipeline is product truth, and a node authored here would
+  // never be executed by anything.
+  const agent = (activeSystem()?.agents || []).find(item => item.id === NODE_OWNER[button.dataset.node]);
+  const slots = (state.loadouts?.slots || []).filter(slot => agent && slot.owner === agent.id);
+  const loadout = state.loadouts?.loadouts.find(item => item.id === state.loadouts.activeLoadoutId);
+  $('#inspector-owns').textContent = slots.length
+    ? slots.map(slot => slot.name).join(', ')
+    : (agent ? 'the answer — no slot to swap' : 'a gate — nothing to configure');
+  $('#inspector-skills').textContent = slots.length && loadout
+    ? slots.map(slot => loadout.slots[slot.id] || slot.default).join(', ')
+    : (agent ? agent.skills.join(', ') : 'the run pauses here for approval');
+  const openSlots = $('#inspector-open-slots');
+  if (openSlots) openSlots.hidden = !slots.length;
   if (animate) animatePulse(button);
 }
 
@@ -828,7 +831,7 @@ function applyGraphPositions() {
 }
 
 function startNodeDrag(event) {
-  if (event.button !== 0 || graphConnectMode) return;
+  if (event.button !== 0) return;
   const node = event.currentTarget;
   const canvas = $('#workflow-canvas');
   const canvasRect = canvas.getBoundingClientRect();
@@ -859,13 +862,6 @@ function startNodeDrag(event) {
   node.addEventListener('pointermove', move); node.addEventListener('pointerup', end); node.addEventListener('pointercancel', end);
 }
 
-function cancelGraphInteraction(message = 'Connection mode cancelled.') {
-  graphConnectMode = false; connectSourceId = null;
-  $('#connect-node').setAttribute('aria-pressed', 'false');
-  setCommandLabel($('#connect-node'), 'Connect');
-  $$('.workflow-node').forEach(node => node.classList.remove('is-connect-source'));
-  $('#node-status').textContent = message;
-}
 
 function moveGraphNodeWithKeyboard(node, key, accelerated = false) {
   const canvas = $('#workflow-canvas'); const bounds = canvas.getBoundingClientRect();
@@ -894,33 +890,13 @@ function bindGraphNode(node) {
   node.addEventListener('keydown', event => {
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveGraphNodeWithKeyboard(node, event.key, event.shiftKey); return; }
     if (event.key === 'Delete' || event.key === 'Backspace') {
-      event.preventDefault(); selectNode(node, { animate: false });
-      if (node.classList.contains('custom-node')) deleteSelectedNode();
-      else $('#node-status').textContent = 'Core workflow nodes are protected. Only custom nodes can be removed.';
-      return;
+      event.preventDefault();
+      $('#node-status').textContent = 'The pipeline is locked. Change what a stage carries in Loadouts.';
     }
-    if (event.key === 'Escape' && graphConnectMode) { event.preventDefault(); cancelGraphInteraction(); }
   });
 }
 
-function addGraphNode() {
-  const id = `custom-${crypto.randomUUID()}`;
-  const node = document.createElement('button'); node.type = 'button'; node.className = 'workflow-node custom-node';
-  node.dataset.node = id; node.dataset.phase = 'prepare'; node.setAttribute('aria-pressed', 'false');
-  node.innerHTML = '<span>Custom node</span><strong>New capability</strong><small>Describe what this node contributes</small>';
-  nodeCopy[id] = ['Custom node', 'New capability', 'Describe what this node contributes.'];
-  graphPhases[id] = 'prepare';
-  graphPositions[id] = { x: 38, y: 58 };
-  $('.workflow-grid').append(node); bindGraphNode(node); applyGraphPositions(); persistGraph(); selectNode(node); $('#node-name').focus();
-}
 
-function deleteSelectedNode() {
-  const node = $(`.workflow-node[data-node="${CSS.escape(selectedNodeId)}"]`); if (!node) return;
-  if (!node.classList.contains('custom-node')) { $('#node-status').textContent = 'Core workflow nodes are protected. Only custom nodes can be removed.'; return; }
-  node.remove(); delete nodeCopy[selectedNodeId]; delete graphPositions[selectedNodeId]; edges = edges.filter(edge => edge.from !== selectedNodeId && edge.to !== selectedNodeId);
-  delete graphPhases[selectedNodeId];
-  persistGraph(); selectNode($('.workflow-node[data-node="director"]')); drawConnections(); $('#node-status').textContent = 'Node removed from this local setup.';
-}
 
 function autoLayoutGraph(animate = true) {
   const nodes = $$('.workflow-node');
@@ -1677,22 +1653,14 @@ function bindEvents() {
   $$('[data-view-target]').forEach(button => button.addEventListener('click', event => navigate(button.dataset.viewTarget, { animate: event.detail !== 0 })));
   $$('.workflow-node').forEach(bindGraphNode);
   bindRovingToolbar($('.node-tools'));
-  $('#add-node').addEventListener('click', addGraphNode);
-  $('#connect-node').addEventListener('click', event => {
-    graphConnectMode = !graphConnectMode; connectSourceId = null;
-    event.currentTarget.setAttribute('aria-pressed', String(graphConnectMode)); setCommandLabel(event.currentTarget, graphConnectMode ? 'Choose start node' : 'Connect');
-    $$('.workflow-node').forEach(node => node.classList.remove('is-connect-source'));
-    $('#node-status').textContent = graphConnectMode ? 'Select the start node, then its destination.' : 'Connection mode cancelled.';
-  });
   $('#auto-layout').addEventListener('click', event => autoLayoutGraph(event.detail !== 0));
-  $('#reset-layout').addEventListener('click', resetGraph);
-  $('#delete-node').addEventListener('click', deleteSelectedNode);
-  $('#node-inspector').addEventListener('submit', event => {
-    event.preventDefault(); const node = $(`.workflow-node[data-node="${CSS.escape(selectedNodeId)}"]`); if (!node) return;
-    const title = $('#node-name').value.trim() || 'Untitled node'; const copy = $('#node-description').value.trim() || 'No purpose has been defined yet.'; const phase = $('#node-phase').value;
-    nodeCopy[selectedNodeId][1] = title; nodeCopy[selectedNodeId][2] = copy; graphPhases[selectedNodeId] = phase; node.dataset.phase = phase;
-    node.querySelector('strong').textContent = title; node.querySelector('small').textContent = copy;
-    $('#inspector-title').textContent = title; $('#inspector-copy').textContent = copy; persistGraph(); drawConnections(); $('#node-status').textContent = 'Node settings saved locally.'; animatePulse(node);
+  $('#reset-layout').addEventListener('click', () => {
+    const previous = { positions: structuredClone(graphPositions), phases: structuredClone(graphPhases) };
+    resetGraph();
+    offerUndo('Reset the map layout.', () => {
+      graphPositions = previous.positions; graphPhases = previous.phases;
+      persistGraph(); applyGraphPositions(); drawConnections();
+    });
   });
   $('#toggle-oracle').addEventListener('click', () => toggleOracle()); $('#close-oracle').addEventListener('click', () => toggleOracle(false));
   $('#oracle-show-how').addEventListener('click', () => { toggleOracle(false); navigate('oracle'); $('#oracle-prompt').value = `Explain the next safe step for the current ${state.view} context.`; $('#oracle-prompt').focus(); });
@@ -1761,7 +1729,15 @@ function bindEvents() {
   });
   $('#refresh-events').addEventListener('click', refreshEvents);
   $('#refresh-runs').addEventListener('click', refreshEvents);
-  $('#reset-skills').addEventListener('click', () => { state.activeSkills = new Set(state.config.skills.filter(skill => skill.defaultOn).map(skill => skill.id)); renderSkillRegistry(); });
+  $('#reset-skills').addEventListener('click', () => {
+    const previous = new Set(state.activeSkills);
+    state.activeSkills = new Set(state.config.skills.filter(skill => skill.defaultOn).map(skill => skill.id));
+    renderSkillRegistry();
+    offerUndo('Reset the skill registry to its defaults.', () => {
+      state.activeSkills = previous;
+      renderSkillRegistry();
+    });
+  });
   $('#add-variant').addEventListener('click', () => { if (state.variants.length < 3) { state.variants.push(createVariant('Setup C', state.loadouts?.loadouts[2]?.id)); renderVariants(); } });
   $('#run-comparison').addEventListener('click', runComparison);
   $('#run-scale').addEventListener('change', event => {

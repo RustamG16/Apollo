@@ -52,7 +52,7 @@
       </section>
       <section class="view" id="architecture" aria-labelledby="architecture-title">
         <div class="section-heading">
-          <div><h1 id="architecture-title">Shape the system.</h1><p>Move, rename, add, and connect nodes. Save different setups, then test them in Playground before a full run.</p></div>
+          <div><h1 id="architecture-title">Pipeline map</h1><p>How a run moves through the locked Olympus pipeline. Drag a node to arrange the map for reading; the route itself is fixed, and what changes between runs is the loadout.</p></div>
           <div class="heading-actions"><button class="quiet-action command-action" data-view-target="systems"><i data-lucide="settings-2" aria-hidden="true"></i><span>System settings</span></button><button class="primary-action command-action" data-view-target="playground"><i data-lucide="flask-conical" aria-hidden="true"></i><span>Test this setup</span></button></div>
         </div>
 
@@ -67,12 +67,12 @@
               <option value="verify">Verify</option>
             </select>
           </label>
-          <div class="node-tools" role="toolbar" aria-label="Node editor tools"><button class="quiet-action command-action" id="add-node" type="button"><i data-lucide="plus" aria-hidden="true"></i><span>Add node</span></button><button class="quiet-action command-action" id="connect-node" type="button" aria-pressed="false"><i data-lucide="waypoints" aria-hidden="true"></i><span>Connect</span></button><button class="quiet-action command-action" id="auto-layout" type="button"><i data-lucide="layout-grid" aria-hidden="true"></i><span>Auto layout</span></button><button class="quiet-action command-action" id="reset-layout" type="button"><i data-lucide="rotate-ccw" aria-hidden="true"></i><span>Reset</span></button></div>
+          <div class="node-tools" role="toolbar" aria-label="Pipeline map tools"><button class="quiet-action command-action" id="auto-layout" type="button"><i data-lucide="layout-grid" aria-hidden="true"></i><span>Tidy layout</span></button><button class="quiet-action command-action" data-undo id="reset-layout" type="button"><i data-lucide="rotate-ccw" aria-hidden="true"></i><span>Reset layout</span></button></div>
           <div class="active-system-summary" aria-live="polite"><span>Active system</span><strong id="architecture-system-name">Loading…</strong><small id="architecture-system-count">0 agents</small></div>
         </div>
 
         <section class="architecture-agents" aria-labelledby="architecture-agents-title">
-          <div class="panel-heading"><div><h2 id="architecture-agents-title">Agents by phase</h2><p>The active saved system owns this roster. Select an agent to inspect its inventory.</p></div><button class="quiet-action" data-view-target="systems">Change roster</button></div>
+          <div class="panel-heading"><div><h2 id="architecture-agents-title">Agents by phase</h2><p>The roster is fixed. Select an agent to jump to the loadout slots it owns.</p></div><button class="quiet-action" data-view-target="systems">Open loadouts</button></div>
           <div class="architecture-agent-lanes" id="architecture-agent-lanes"></div>
         </section>
 
@@ -95,11 +95,11 @@
           </div>
         </section>
 
-        <form class="node-inspector" id="node-inspector" aria-label="Selected node settings"><div class="node-inspector-copy"><span id="inspector-phase">Orchestrator</span><strong id="inspector-title">Apollo Design Director</strong><p id="inspector-copy">One manager keeps ownership while selected skills contribute bounded judgment.</p></div><div class="node-inspector-fields"><label>Name<input id="node-name" maxlength="64"></label><label>Phase<select id="node-phase"><option value="all">Always</option><option value="diagnose">Diagnose</option><option value="direct">Direct</option><option value="prepare">Prepare</option><option value="build">Build</option><option value="verify">Verify</option></select></label><label class="node-description">Purpose<input id="node-description" maxlength="140"></label></div><div class="node-inspector-actions"><span id="node-status" role="status">Drag nodes to reposition</span><button class="danger-action" id="delete-node" type="button">Delete node</button><button class="run-action" type="submit">Save node</button></div></form>
+        <div class="node-inspector" id="node-inspector" aria-label="Selected stage"><div class="node-inspector-copy"><span id="inspector-phase">Orchestrator</span><strong id="inspector-title">Apollo Design Director</strong><p id="inspector-copy">One manager keeps ownership while selected skills contribute bounded judgment.</p></div><dl class="node-facts"><dt>Owns</dt><dd id="inspector-owns">the answer</dd><dt>Skills this run</dt><dd id="inspector-skills">—</dd></dl><div class="node-inspector-actions"><span id="node-status" role="status">Drag a node to arrange the map. The route is fixed.</span><button class="quiet-action" type="button" id="inspector-open-slots" data-view-target="systems">Change what it carries</button></div></div>
 
         <div class="configuration-layout">
           <section class="skills-panel" aria-labelledby="skills-title">
-            <div class="panel-heading"><div><h2 id="skills-title">Skill registry</h2><p>Every switch changes the instructions sent by this configuration.</p></div><button class="quiet-action" id="reset-skills">Reset defaults</button></div>
+            <div class="panel-heading"><div><h2 id="skills-title">Skill registry</h2><p>Every switch changes the instructions sent by this configuration.</p></div><button class="quiet-action" data-undo id="reset-skills">Reset defaults</button></div>
             <div class="registry-controls">
               <label class="search-field"><span class="sr-only">Search skills</span><input id="skill-search" type="search" placeholder="Search skills"></label>
               <label><span class="sr-only">Filter skill phase</span><select id="skill-phase-filter"><option value="all">All phases</option><option value="diagnose">Diagnose</option><option value="direct">Direct</option><option value="prepare">Prepare</option><option value="build">Build</option><option value="verify">Verify</option></select></label>
