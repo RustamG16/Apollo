@@ -10,7 +10,7 @@ colors:
   surface-2: "#1A1D21"
   surface-3: "#22262B"
   line: "#2A2E34"
-  line-strong: "#5E646E"
+  line-strong: "#727884"
   fg: "#EEF0F3"
   fg-muted: "#A7AEB8"
   fg-dim: "#8B929C"
@@ -287,16 +287,19 @@ theme; v2's reads as unpainted metal, which is what lets one accent mean somethi
 | `--surface-2` | `#1A1D21` | nested content, secondary buttons, selected rows |
 | `--surface-3` | `#22262B` | hover, active navigation, tags |
 | `--line` | `#2A2E34` | separators inside a group |
-| `--line-strong` | `#5E646E` | the boundary of any control, field, or switch |
+| `--line-strong` | `#727884` | the boundary of any control, field, or switch |
 
 Hierarchy is built by moving down this ladder before any border, and by any border before
 any shadow. There is exactly one shadow in the system.
 
 **`--line` and `--line-strong` are not interchangeable.** `--line` is a 1.4:1 separator
 and is only legal where the grouping is *also* carried by spacing and alignment; it may
-never be the sole boundary of an interactive element. `--line-strong` is 3.3:1 against the
-ground and is required wherever WCAG 1.4.11 applies — the edge of a field, a secondary
-button, a switch track, a selectable cell.
+never be the sole boundary of an interactive element. `--line-strong` clears 3:1 against
+*every* surface in the ladder — 4.4:1 on `--bg`, 3.4:1 on `--surface-3` — not only against
+the ground, because a field, a secondary button or a switch track sits on a raised surface
+as often as on `--bg`. It is required wherever WCAG 1.4.11 applies: the edge of a field, a
+secondary button, a switch track, a selectable cell. `scripts/ui-metrics.mjs` measures the
+rendered border of every control against the surface behind it as part of T4.
 
 ### Foreground
 
@@ -472,8 +475,10 @@ Each of these names a measured defect in v1 and is checked on every run.
 
 ## How this file is enforced
 
-`scripts/ui-metrics.mjs` boots the app, walks all eight views at 1280x800, 1440x900 and
-1920x1080, reads computed styles rather than markup, and emits T1-T11. `npm run check`
+`scripts/ui-metrics.mjs` boots the app, walks all eight views at 390x844, 820x1180,
+1280x800, 1440x900 and 1920x1080, reads computed styles rather than markup, and emits
+T1-T11. The 390px column is the narrow-target commitment in `PRODUCT.md`; nothing may
+overflow or clip there either. `npm run check`
 fails on any regression. The markup-pattern detector that reported this interface clean
 while 165 text nodes failed contrast is not evidence and is not accepted as evidence.
 

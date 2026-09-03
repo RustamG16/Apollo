@@ -25,6 +25,7 @@ const HISTORY = join(METRICS_DIR, 'history.jsonl');
 
 const VIEWS = ['work', 'architecture', 'systems', 'playground', 'agents', 'knowledge', 'oracle', 'runs'];
 const VIEWPORTS = [
+  { name: '390x844', width: 390, height: 844, narrow: true },
   { name: '820x1180', width: 820, height: 1180, narrow: true },
   { name: '1280x800', width: 1280, height: 800 },
   { name: '1440x900', width: 1440, height: 900 },
@@ -96,12 +97,15 @@ function summarise(runs) {
     const rows = runs.filter(r => r.viewport === vp.name);
     const text = rows.flatMap(r => r.probe.text.map(t => ({ ...t, view: r.view })));
     const controls = rows.flatMap(r => r.probe.controls.map(c => ({ ...c, view: r.view })));
+    const boundaries = rows.flatMap(r => (r.probe.boundaries || []).map(b => ({ ...b, view: r.view })));
     const targetFloor = vp.width < 900 ? 44 : 36;
     perViewport[vp.name] = {
       textNodes: text.length,
       belowThirteen: text.filter(t => t.size < 13).length,
       contrastFails: text.filter(t => !t.pass).length,
       contrastFailsUnverifiable: text.filter(t => t.rendered && t.imageBacked).length,
+      boundaryFails: boundaries.filter(b => !b.pass).length,
+      boundaryWorst: boundaries.filter(b => !b.pass).sort((a, b) => a.ratio - b.ratio).slice(0, 6),
       targetsBelowFloor: controls.filter(c => c.min < targetFloor).length,
       targetsBelow32: controls.filter(c => c.min < 32).length,
       unmeasuredControls: rows.reduce((n, r) => n + r.probe.unmeasured.length, 0),
@@ -178,13 +182,19 @@ function buildThresholds({ perViewport, css, viewFacts, zoom, runs }) {
     },
     T4: (() => {
       const unverifiable = total('contrastFailsUnverifiable');
+      const boundaryFails = total('boundaryFails');
       return {
-        name: 'Contrast failures (WCAG AA)',
-        value: allContrast + unverifiable,
+        name: 'Contrast failures (WCAG AA + 1.4.11 boundaries)',
+        value: allContrast + unverifiable + boundaryFails,
         target: 0,
-        pass: allContrast === 0 && unverifiable === 0,
-        unit: 'text nodes (all viewports); a node over a gradient is unverifiable, not passing',
-        detail: { measuredFailures: allContrast, unverifiableOverImage: unverifiable },
+        pass: allContrast === 0 && unverifiable === 0 && boundaryFails === 0,
+        unit: 'text nodes + control boundaries under 3:1 (all viewports)',
+        detail: {
+          measuredFailures: allContrast,
+          unverifiableOverImage: unverifiable,
+          boundaryFailures: boundaryFails,
+          boundaryWorst: perViewport[PRIMARY_VIEWPORT]?.boundaryWorst || [],
+        },
       };
     })(),
     T5: {
@@ -401,13 +411,19 @@ async function main() {
       '(() => {',
       '  const ms = v => v.split(",").map(x => parseFloat(x) * (x.includes("ms") ? 1 : 1000));',
       '  let worst = 0, offender = null;',
+      '  const animating = [];',
       '  for (const el of document.querySelectorAll("*")) {',
       '    const cs = getComputedStyle(el);',
       '    for (const v of [...ms(cs.transitionDuration), ...ms(cs.animationDuration)]) {',
       '      if (v > worst) { worst = v; offender = el.tagName + "." + String(el.className).slice(0, 40); }',
       '    }',
+      // DESIGN.md: under reduced motion no transform is applied. A keyframe still named here
+      // (even at ~0ms) can leave a translate on screen; the view container is the known case.
+      '    if (cs.animationName !== "none" && el.matches(".view.is-active, .view.is-active *")) {',
+      '      animating.push(el.tagName + "." + String(el.className).slice(0, 40) + " -> " + cs.animationName);',
+      '    }',
       '  }',
-      '  return { worstDurationMs: worst, offender, honoured: worst <= 1 };',
+      '  return { worstDurationMs: worst, offender, animatingUnderReduce: animating.slice(0, 6), honoured: worst <= 1 && animating.length === 0 };',
       '})()',
     ].join(String.fromCharCode(10)));
     await page.send('Emulation.setEmulatedMedia', { features: [] });
@@ -464,11 +480,16 @@ async function main() {
       },
     },
     spacingTokens: {
-      name: 'Spacing literals in rules (DESIGN.md Token Rule) - ratchet',
+      name: 'Spacing literals in rules (DESIGN.md Token Rule) - ratchet to 0',
       value: css.spacingLiterals,
       target: previousSpacingLiterals,
+      // The end state is 0. The ratchet only enforces "never rises"; a churn that removes one
+      // literal and adds another elsewhere still passes, so this is a floor on regression,
+      // not evidence the rule is met. It is "ratcheting", never "ok", until it reaches 0.
       pass: css.spacingLiterals <= previousSpacingLiterals,
-      note: 'A ratchet, not a gate: the debt is paid down surface by surface and may never rise.',
+      met: css.spacingLiterals === 0,
+      remaining: css.spacingLiterals,
+      note: 'Ratchet, not a gate. Met only at 0; ' + css.spacingLiterals + ' literals still in the sheet.',
     },
     clipping: {
       name: 'Nothing clipped by its own container at any measured viewport',
@@ -534,7 +555,9 @@ async function main() {
       log('  console: clean');
     }
     for (const [key, rule] of Object.entries(report.standingRules)) {
-      log('  ' + (rule.pass ? 'rule ok  ' : 'RULE FAIL') + '  ' + key + ': ' + rule.value + ' (target ' + rule.target + ')');
+      const state = !rule.pass ? 'RULE FAIL'
+        : (rule.met === false ? 'ratcheting' : 'rule ok  ');
+      log('  ' + state + '  ' + key + ': ' + rule.value + ' (target ' + rule.target + ')');
     }
     log('  reduced motion: ' + (reducedMotion.honoured ? 'honoured' : 'NOT honoured - worst ' + reducedMotion.worstDurationMs + 'ms on ' + reducedMotion.offender));
     if (report.diff.firstRun) {

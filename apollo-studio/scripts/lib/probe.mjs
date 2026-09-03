@@ -175,6 +175,52 @@ export const PROBE_SOURCE = String(function apolloProbe(scope, revealDisclosures
     }
   }
 
+  // Non-text contrast (WCAG 1.4.11, and DESIGN.md's Contrast Rule: "Boundaries that carry
+  // meaning meet 3:1"). T4 only ever looked at text, so a control edge at 2.5:1 passed. This
+  // walks the boundary of every interactive control and measures the border it is drawn with
+  // against the surface immediately outside it. A control with no border at all delineates by
+  // fill or context and is a separate question; it is skipped, not failed.
+  const BOUNDARY_SELECTOR = [
+    'button', 'input:not([type=hidden]):not([type=checkbox]):not([type=radio])',
+    'select', 'textarea', '[role=switch]', '.switch-track',
+  ].join(',');
+  const boundaries = [];
+  for (const root of roots) {
+    if (!root) continue;
+    for (const el of root.querySelectorAll(BOUNDARY_SELECTOR)) {
+      if (scope !== 'chrome' && inChrome(el)) continue;
+      if (!visible(el)) continue;
+      const cs = getComputedStyle(el);
+      // A transparent border is a layout placeholder (so a state can add a coloured edge with
+      // no shift), not a boundary. Only an actually-painted border counts.
+      const sides = ['Top', 'Right', 'Bottom', 'Left']
+        .map(s => ({ w: parseFloat(cs['border' + s + 'Width']) || 0, style: cs['border' + s + 'Style'], raw: parseRgb(cs['border' + s + 'Color']), color: cs['border' + s + 'Color'] }))
+        .filter(b => b.w >= 1 && b.style !== 'none' && b.style !== 'hidden' && b.raw && b.raw.a >= 0.15);
+      // One or two painted sides is a separator or rule between grouped items - DESIGN.md
+      // permits --line there. Only a box the control is fully enclosed by (>=3 sides) is a
+      // sole boundary, which is what WCAG 1.4.11 and the Contrast Rule require to reach 3:1.
+      if (sides.length < 3) continue;
+      const outside = backdrop(el.parentElement || el);
+      const inside = backdrop(el);
+      let best = 0, worstColor = sides[0].color;
+      for (const b of sides) {
+        const composited = b.raw.a < 1 ? over(b.raw, outside.color) : b.raw;
+        // The edge is legible if it stands out from EITHER the surface outside the control or
+        // the fill inside it - whichever it manages. 1.4.11 asks for 3:1 against adjacent
+        // colour, and a border between two surfaces has two.
+        const r = Math.max(contrast(composited, outside.color), contrast(composited, inside.color));
+        if (r > best) { best = r; worstColor = b.color; }
+      }
+      boundaries.push({
+        tag: el.tagName.toLowerCase(),
+        cls: typeof el.className === 'string' ? el.className.slice(0, 40) : '',
+        ratio: Math.round(best * 100) / 100,
+        pass: best >= 3,
+        color: worstColor,
+      });
+    }
+  }
+
   // T9: does the view carry an empty state and a primary action?
   const view = scope === 'chrome' ? roots[0] : (document.querySelector('.view.is-active') || document.body);
   const emptyStates = view ? view.querySelectorAll('.empty-state,[data-empty-state]').length : 0;
@@ -277,5 +323,5 @@ export const PROBE_SOURCE = String(function apolloProbe(scope, revealDisclosures
 
   for (const d of reopened) d.open = false;
 
-  return { text, controls, unmeasured, sizeTally, emptyStates, primaryActions, emptyStateHasAction, destructive, overflow, bodySize, rootSize, families };
+  return { text, controls, unmeasured, boundaries, sizeTally, emptyStates, primaryActions, emptyStateHasAction, destructive, overflow, bodySize, rootSize, families };
 });

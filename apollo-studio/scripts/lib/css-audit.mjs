@@ -195,6 +195,20 @@ export function auditCss(paths) {
       if (ms > 150) longMotion.push(m[0]);
     }
   }
+  for (const m of strip.matchAll(/animation(?:-duration)?\s*:\s*([^;}]+)/gi)) {
+    for (const d of m[1].matchAll(/([\d.]+)(ms|s)\b/g)) {
+      const ms = d[2] === 's' ? Number(d[1]) * 1000 : Number(d[1]);
+      if (ms > 150) longMotion.push('animation ' + d[0]);
+    }
+  }
+  for (const block of strip.matchAll(/@keyframes\s+([\w-]+)\s*\{([\s\S]*?\}\s*)\}/g)) {
+    const name = block[1];
+    for (const t of block[2].matchAll(/translate(?:X|Y|3d)?\s*\(([^)]*)\)|translate\s*:\s*([^;}]+)/gi)) {
+      for (const px of (t[1] || t[2] || '').matchAll(/(-?[\d.]+)px/g)) {
+        if (Math.abs(Number(px[1])) > 4) longMotion.push('keyframe ' + name + ' ' + px[0]);
+      }
+    }
+  }
 
   return {
     files: sources.map(s => ({ path: s.path, bytes: s.text.length, lines: s.text.split('\n').length })),

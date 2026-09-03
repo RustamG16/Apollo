@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T10:05:13.492Z",
-  "durationMs": 23258,
+  "generatedAt": "2026-09-03T10:57:07.405Z",
+  "durationMs": 27795,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -77,14 +77,16 @@
       }
     },
     "T4": {
-      "name": "Contrast failures (WCAG AA)",
+      "name": "Contrast failures (WCAG AA + 1.4.11 boundaries)",
       "value": 0,
       "target": 0,
       "pass": true,
-      "unit": "text nodes (all viewports); a node over a gradient is unverifiable, not passing",
+      "unit": "text nodes + control boundaries under 3:1 (all viewports)",
       "detail": {
         "measuredFailures": 0,
-        "unverifiableOverImage": 0
+        "unverifiableOverImage": 0,
+        "boundaryFailures": 0,
+        "boundaryWorst": []
       }
     },
     "T5": {
@@ -173,15 +175,17 @@
     }
   },
   "perViewport": {
-    "820x1180": {
-      "textNodes": 1327,
+    "390x844": {
+      "textNodes": 1324,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
+      "boundaryFails": 0,
+      "boundaryWorst": [],
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 16,
-      "controls": 491,
+      "unmeasuredControls": 31,
+      "controls": 474,
       "targetFloor": 44,
       "overflow": [],
       "clipped": [],
@@ -191,7 +195,31 @@
       ],
       "perView": {
         "work": {
-          "textNodes": 43,
+          "textNodes": 40,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 11,
+          "dominantSize": [
+            "13.0",
+            13
+          ]
+        },
+        "architecture": {
+          "textNodes": 348,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 6,
+          "dominantSize": [
+            "16.0",
+            205
+          ]
+        },
+        "systems": {
+          "textNodes": 188,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -199,7 +227,112 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            17
+            109
+          ]
+        },
+        "playground": {
+          "textNodes": 249,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 3,
+          "dominantSize": [
+            "14.0",
+            209
+          ]
+        },
+        "agents": {
+          "textNodes": 80,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 1,
+          "dominantSize": [
+            "13.0",
+            46
+          ]
+        },
+        "knowledge": {
+          "textNodes": 349,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 8,
+          "dominantSize": [
+            "16.0",
+            176
+          ]
+        },
+        "oracle": {
+          "textNodes": 49,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 1,
+          "dominantSize": [
+            "14.0",
+            20
+          ]
+        },
+        "runs": {
+          "textNodes": 10,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
+          "dominantSize": [
+            "16.0",
+            6
+          ]
+        },
+        "_chrome": {
+          "textNodes": 11,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
+          "dominantSize": [
+            "16.0",
+            8
+          ]
+        }
+      }
+    },
+    "820x1180": {
+      "textNodes": 1324,
+      "belowThirteen": 0,
+      "contrastFails": 0,
+      "contrastFailsUnverifiable": 0,
+      "boundaryFails": 0,
+      "boundaryWorst": [],
+      "targetsBelowFloor": 0,
+      "targetsBelow32": 0,
+      "unmeasuredControls": 18,
+      "controls": 487,
+      "targetFloor": 44,
+      "overflow": [],
+      "clipped": [],
+      "families": [
+        "ui-monospace",
+        "ui-sans-serif"
+      ],
+      "perView": {
+        "work": {
+          "textNodes": 40,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 3,
+          "dominantSize": [
+            "16.0",
+            14
           ]
         },
         "architecture": {
@@ -271,7 +404,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            22
+            20
           ]
         },
         "runs": {
@@ -301,14 +434,16 @@
       }
     },
     "1280x800": {
-      "textNodes": 1327,
+      "textNodes": 1324,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
+      "boundaryFails": 0,
+      "boundaryWorst": [],
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
-      "controls": 491,
+      "controls": 489,
       "targetFloor": 36,
       "overflow": [],
       "clipped": [],
@@ -318,7 +453,7 @@
       ],
       "perView": {
         "work": {
-          "textNodes": 43,
+          "textNodes": 40,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -326,7 +461,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            17
+            14
           ]
         },
         "architecture": {
@@ -398,7 +533,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            22
+            20
           ]
         },
         "runs": {
@@ -428,14 +563,16 @@
       }
     },
     "1440x900": {
-      "textNodes": 1327,
+      "textNodes": 1324,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
+      "boundaryFails": 0,
+      "boundaryWorst": [],
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
-      "controls": 491,
+      "controls": 489,
       "targetFloor": 36,
       "overflow": [],
       "clipped": [],
@@ -445,7 +582,7 @@
       ],
       "perView": {
         "work": {
-          "textNodes": 43,
+          "textNodes": 40,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -453,7 +590,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            17
+            14
           ]
         },
         "architecture": {
@@ -525,7 +662,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            22
+            20
           ]
         },
         "runs": {
@@ -555,14 +692,16 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1327,
+      "textNodes": 1324,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
+      "boundaryFails": 0,
+      "boundaryWorst": [],
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
-      "controls": 491,
+      "controls": 489,
       "targetFloor": 36,
       "overflow": [],
       "clipped": [],
@@ -572,7 +711,7 @@
       ],
       "perView": {
         "work": {
-          "textNodes": 43,
+          "textNodes": 40,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -580,7 +719,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            17
+            14
           ]
         },
         "architecture": {
@@ -652,7 +791,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            22
+            20
           ]
         },
         "runs": {
@@ -690,9 +829,9 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 363,
-    "14.0": 337,
-    "16.0": 567,
+    "13.0": 364,
+    "14.0": 335,
+    "16.0": 565,
     "18.0": 20,
     "22.0": 21,
     "32.0": 8
@@ -701,13 +840,13 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 108657,
-        "lines": 1495
+        "bytes": 111918,
+        "lines": 1540
       }
     ],
     "fontSizeUnits": {
-      "total": 245,
-      "rem": 245,
+      "total": 247,
+      "rem": 247,
       "px": 0,
       "em": 0,
       "other": 0
@@ -737,13 +876,14 @@
       "blue"
     ],
     "important": 3,
-    "transitionDeclarations": 13,
+    "transitionDeclarations": 12,
     "transitionDurations": [
       ".01ms",
       "120ms",
       "150ms"
     ],
     "zIndexSpellings": [
+      "0",
       "1",
       "2",
       "3",
@@ -754,11 +894,12 @@
       "var(--z-toast)"
     ],
     "zIndexLiterals": [
+      "0",
       "1",
       "2",
       "3"
     ],
-    "spacingLiterals": 495,
+    "spacingLiterals": 492,
     "ornament": [],
     "longMotion": [],
     "decorativeMediaRefs": []
@@ -767,6 +908,7 @@
   "reducedMotion": {
     "worstDurationMs": 0.01,
     "offender": "HTML.",
+    "animatingUnderReduce": [],
     "honoured": true
   },
   "scriptMotion": {
@@ -895,11 +1037,13 @@
       }
     },
     "spacingTokens": {
-      "name": "Spacing literals in rules (DESIGN.md Token Rule) - ratchet",
-      "value": 495,
-      "target": 495,
+      "name": "Spacing literals in rules (DESIGN.md Token Rule) - ratchet to 0",
+      "value": 492,
+      "target": 492,
       "pass": true,
-      "note": "A ratchet, not a gate: the debt is paid down surface by surface and may never rise."
+      "met": false,
+      "remaining": 492,
+      "note": "Ratchet, not a gate. Met only at 0; 492 literals still in the sheet."
     },
     "clipping": {
       "name": "Nothing clipped by its own container at any measured viewport",

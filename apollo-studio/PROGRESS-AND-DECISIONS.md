@@ -1492,3 +1492,104 @@ specifies. If it reconfirms clean, the next slice is either: (a) re-run the inde
 critique properly and act on its findings, or (b) proceed to whatever the next phase in the
 plan calls for. Do not restart at P0 — P0 through P5's first eight parts are committed and
 verified in both repos on `redesign/loadout-program`.
+
+## 2026-09-03 — P5: the second independent critique, run and acted on
+
+**Slice:** P5, part 9. Re-runs the blind critique that died on a rate limit last session, then
+verifies and acts on what it found.
+
+### The critique
+
+Ran the `independent-critic` subagent blind — told explicitly not to read this journal, the
+plan, or the run prompt; given only `DESIGN.md`, `PRODUCT.md`, the three files under `public/`
+and the harness under `scripts/`. Asked specifically to audit the harness for holes, verify
+the reported numbers independently, and score.
+
+**Score: ~62/100** (weights: legibility 30, hierarchy 20, coherence 20, interaction 15,
+honesty 15; per-axis /10: legibility 7, hierarchy 7, coherence 6, interaction 5, honesty 6).
+Up from the first critique's 52. It independently confirmed the typography floor, the rem
+discipline, zero colour literals, and the sub-150ms motion — "a genuine improvement, well
+short of what eleven green checks implies."
+
+### Harness holes it found — verified, and closed
+
+| Hole | Verified? | What was done |
+|---|---|---|
+| **No non-text / boundary contrast check** (T4 only ever read text; DESIGN.md's Contrast Rule and WCAG 1.4.11 require control edges at 3:1) | Real. `--line-strong` `#5E646E` measured **2.55:1 on `--surface-3`**, and form fields were drawn with `--line` at **1.34:1** | `probe.mjs` now measures the painted border of every control (>=3 enclosed sides) against the surface behind it; folded into T4. `--line-strong` moved to `#727884` (3.4:1 on `--surface-3`, 4.4:1 on `--bg`); the base field rule moved from `--line` to `--line-strong`; `.system-pill` given a real `--line-strong` border |
+| **Viewport matrix stopped at 820px** (PRODUCT.md commits to a 44px narrow target) | Real | Added **390x844** to the matrix. It surfaced four genuine cascade bugs (below) |
+| **Motion budget missed `animation:` and keyframe translation** (`@keyframes view-in` moved `translateY(5px)`, over the 4px cap) | Real | `css-audit.mjs` now scans `animation`/`animation-duration` for >150ms and every `@keyframes` block for a translate over 4px. The `view-in` keyframe is opacity-only now |
+| **Reduced motion checked duration, not transform** ("no transform is applied") | Real | The `:active` scale feedback and `.workflow-node:hover` lift are now `transform:none` under `prefers-reduced-motion`; the reduced-motion probe also fails if any `.view` still carries a running `animation-name` |
+| **T11 undo = attribute presence; "unlink" not in the destructive regex; a dialog is not an undo** | Real | The attachment-unlink flow now calls `offerUndo()` after the delete — re-links from the staged operation. Still gated by the proposal dialog for the mutation itself, with a real inline undo after |
+| **`spacingTokens` ratchet reads "rule ok" while frozen at a high number** | Fair | It now prints **`ratcheting`**, not `rule ok`, until it reaches 0, and carries `met`/`remaining`. The churn-neutral hole (remove one literal, add another) is documented, not closed — that needs per-declaration tracking |
+
+### The cascade bugs the 390px column exposed — all pre-existing, all real
+
+Every one was a base rule authored *later* in the sheet than its own responsive override, so
+source order (or a 3-class selector out-specifying a media block) silently undid the narrow
+layout:
+
+1. **The Work context drawer never engaged below 1080px.** `.project-sidebar,.work-area,.work-inspector { position:relative }` (0,3,0) beat `@media (max-width:1080px){ .work-inspector{ position:fixed } }` (0,1,0), so the "drawer" was an off-canvas `position:relative` block adding ~570px of page width. Split the selector; the drawer is `position:fixed` and simply `display:none` when closed (a fixed element parked off the right edge still expands scroll width). `aria-expanded`/`aria-controls` wired; focus returns to the trigger on close.
+2. **`.playground-workbench` stayed two-column at 375px** — its base rule sits ~40 lines below the `@media (max-width:760px)` override. Moved a single-column narrow block to *after* every base `.playground-workbench` / `.run-bar` rule.
+3. **`@media (min-width:761px)` was missing** on one of two `max-width:1080px` workspace-frame rules, so a 2-col grid re-asserted itself at phone width.
+4. **Grid children with `min-width:auto`** (`.skill-row`, `.configuration-layout > *`) refused to shrink and stretched their 1fr column ~75px past the viewport. `min-width:0` where it was missing.
+
+Result: **no horizontal overflow and nothing clipped at 390, 820, 1280, 1440 or 1920.**
+
+### Interface defects it found — verified and fixed
+
+- **Portrait monogram fallback did not exist** (DESIGN.md Media requires "a CSS-only monogram
+  fallback ... a complete substitute"). Added: `.agent-portrait::before` paints the agent's
+  initial in `--surface-2` / `--fg-muted` behind the image; `renderAgents` sets
+  `data-monogram` and hides the `<img>` on `error`. Verified by forcing a 404 — box holds its
+  278px, no shift, no overlapping alt.
+- **`radius-round` on non-round things** — the nav rail, the Oracle trigger, the brand mark,
+  the agent category/state pills, the playground step badges. All moved to `--radius-2` (or
+  `--radius-1` for the pills). `radius-round` is now switch thumbs and status dots only.
+- **Dead controls.** `#work-model` (a styled Balanced/Fast `<select>` with zero references in
+  `app.js`) removed with its CSS. `#oracle-provider` (one option, never read) replaced with a
+  static labelled value.
+- **The accent spent on metadata** — the agent category pill was `--accent`; it is
+  `--fg-muted` now. The state pill reads with the status palette: green Available, amber
+  Paused.
+- **`h1` metrics drifted from the scale** — `line-height:.98`, `font-weight:570`,
+  `letter-spacing:-.055em` in three places. All to `var(--leading-tight)` / 600 /
+  `var(--track-display)`.
+- **Sticky run bar occluded the diff table** — `.playground-workbench` gets
+  `padding-bottom:var(--space-10)` so the last row clears the bar.
+
+### What the critic flagged that was left as-is, with reason
+
+- **Portrait hues (Calliope, Hephaestus).** Still `saturate(.45)`. The asset-level fix (crop,
+  regenerate, replace) is a `PRODUCT.md` content decision, not a CSS one — unchanged from the
+  last entry.
+- **`.work-message p` line-height 1.7, `.skill-row` `--line` bottom separator, list-row
+  hairlines.** DESIGN.md explicitly permits `--line` as a separator "where the grouping is
+  *also* carried by spacing and alignment." The boundary check only flags a border on >=3
+  enclosed sides for this reason; one- and two-side rules are legal.
+- **495->492 spacing literals.** Ratchet dropped 3 from the `.model-choice` removal. A real
+  burn-down is a separate focused pass; the rule now says "ratcheting", not "ok".
+- **Work chat canned reply, panel-level empty states with no action.** Labelled demo;
+  panel-level empties are inside populated views, not dead-end views (T9 is about views).
+
+### State
+
+`npm.cmd run check` exits 0. All eleven thresholds pass under the hardened harness (T4 now
+includes non-text boundary contrast; the matrix includes 390x844). motionBudget 0 (CSS +
+script + keyframe translation + animation shorthand), spacingTokens **ratcheting at 492**,
+clipping 0, specificity 0. Console clean; reduced motion honoured including transforms; no
+horizontal overflow or clipping at 390, 820, 1280, 1440, 1920; nothing clipped at 200% text.
+
+`DESIGN.md` updated: `--line-strong` value and its contrast note; the enforcement section now
+lists the 390px column.
+
+### Known open, carried forward
+
+- Two agent portraits held back by `saturate(.45)`, not resolved at the asset level.
+- 492 spacing literals under a ratchet; the churn-neutral hole in the ratchet is documented,
+  not closed.
+- The uppercase-tracked label register is still the dominant secondary type treatment.
+
+### Next
+
+The independent critique is done and acted on. The next slice is whatever the plan calls for
+after P5 — or a spacing-literal burn-down pass if continuing to harden. Do not restart at P0.
