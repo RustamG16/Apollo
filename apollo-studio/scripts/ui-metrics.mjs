@@ -25,6 +25,7 @@ const HISTORY = join(METRICS_DIR, 'history.jsonl');
 
 const VIEWS = ['work', 'architecture', 'systems', 'playground', 'agents', 'knowledge', 'oracle', 'runs'];
 const VIEWPORTS = [
+  { name: '820x1180', width: 820, height: 1180, narrow: true },
   { name: '1280x800', width: 1280, height: 800 },
   { name: '1440x900', width: 1440, height: 900 },
   { name: '1920x1080', width: 1920, height: 1080 },
@@ -100,7 +101,7 @@ function summarise(runs) {
       textNodes: text.length,
       belowThirteen: text.filter(t => t.size < 13).length,
       contrastFails: text.filter(t => !t.pass).length,
-      contrastFailsOnImage: text.filter(t => !t.pass && t.imageBacked).length,
+      contrastFailsUnverifiable: text.filter(t => t.rendered && t.imageBacked).length,
       targetsBelowFloor: controls.filter(c => c.min < targetFloor).length,
       targetsBelow32: controls.filter(c => c.min < 32).length,
       unmeasuredControls: rows.reduce((n, r) => n + r.probe.unmeasured.length, 0),
@@ -142,8 +143,11 @@ function buildThresholds({ perViewport, css, viewFacts, zoom, runs }) {
     destructive.filter(d => !d.hasUndo).map(d => d.label + '|' + d.cls)
   ).size;
 
+  // An empty state passes when it carries its own action. A primary action elsewhere in the
+  // view is not the same thing, and counting it that way let a bare actionless empty state
+  // pass because an unrelated button existed on the page.
   const viewsWithEmptyState = Object.values(viewFacts)
-    .filter(v => v.emptyStates > 0 && v.primaryActions > 0).length;
+    .filter(v => v.emptyStates > 0 && v.emptyStateHasAction).length;
 
   const bodySizes = runs.map(r => r.probe.bodySize).filter(Number.isFinite);
   const minBody = bodySizes.length ? Math.min(...bodySizes) : 0;
@@ -165,14 +169,22 @@ function buildThresholds({ perViewport, css, viewFacts, zoom, runs }) {
       value: css.fontSizeUnits.total ? Math.round((css.fontSizeUnits.rem / css.fontSizeUnits.total) * 1000) / 10 : 0,
       target: 100,
       pass: css.fontSizeUnits.total > 0 && css.fontSizeUnits.rem === css.fontSizeUnits.total
-        && zoom.scalesWithRoot && zoom.overflow <= 0,
+        && zoom.scalesWithRoot && zoom.overflow <= 0
+        && (zoom.clippedAtZoom || []).length === 0 && (zoom.overflowAtZoom || []).length === 0,
       unit: '% of font-size declarations in rem', higherIsBetter: true,
       detail: zoom,
     },
-    T4: {
-      name: 'Contrast failures (WCAG AA)',
-      value: allContrast, target: 0, pass: allContrast === 0, unit: 'text nodes (all viewports)',
-    },
+    T4: (() => {
+      const unverifiable = total('contrastFailsUnverifiable');
+      return {
+        name: 'Contrast failures (WCAG AA)',
+        value: allContrast + unverifiable,
+        target: 0,
+        pass: allContrast === 0 && unverifiable === 0,
+        unit: 'text nodes (all viewports); a node over a gradient is unverifiable, not passing',
+        detail: { measuredFailures: allContrast, unverifiableOverImage: unverifiable },
+      };
+    })(),
     T5: {
       name: 'Controls under 36px desktop / 44px narrow',
       value: allTargets, target: 0, pass: allTargets === 0, unit: 'controls (all viewports)',
@@ -207,13 +219,20 @@ function buildThresholds({ perViewport, css, viewFacts, zoom, runs }) {
       value: viewsWithEmptyState, target: VIEWS.length, pass: viewsWithEmptyState === VIEWS.length,
       unit: 'of ' + VIEWS.length + ' views', higherIsBetter: true,
       detail: Object.fromEntries(Object.entries(viewFacts)
-        .map(([k, v]) => [k, v.emptyStates > 0 && v.primaryActions > 0])),
+        .map(([k, v]) => [k, v.emptyStates > 0 && v.emptyStateHasAction])),
     },
-    T10: {
-      name: 'Decorative media with no informational role',
-      value: css.decorativeMediaRefs.length, target: 0, pass: css.decorativeMediaRefs.length === 0,
-      unit: 'stylesheet references', detail: css.decorativeMediaRefs,
-    },
+    T10: (() => {
+      // Ornament by any means, not just an image URL. Removing five photographs while
+      // shipping a fractal-noise data URI, radial accent washes, vignettes and connector
+      // glow is not what this threshold was written to measure.
+      const value = css.decorativeMediaRefs.length + css.ornament.length;
+      return {
+        name: 'Decorative media and ornament with no informational role',
+        value, target: 0, pass: value === 0,
+        unit: 'stylesheet references and decorative layers',
+        detail: { mediaRefs: css.decorativeMediaRefs, ornament: css.ornament.slice(0, 12) },
+      };
+    })(),
     T11: {
       name: 'Destructive actions without undo',
       value: destructiveNoUndo, target: 0, pass: destructiveNoUndo === 0, unit: 'distinct controls',
@@ -308,6 +327,44 @@ async function main() {
     await page.send('Emulation.setDeviceMetricsOverride', {
       width: 1440, height: 900, deviceScaleFactor: 1, mobile: false,
     });
+    // T3's name is "UI holds at 200% text zoom" and it only ever visited one view. The
+    // composer on Work was clipped out of existence at 200% and the threshold said 100%.
+    const zoomViews = {};
+    for (const view of VIEWS) {
+      await evaluate(page, "location.hash = '/" + view + "'");
+      await settle(page, 320);
+      zoomViews[view] = await evaluate(page, [
+        '(() => {',
+        '  const root = document.documentElement;',
+        '  const prior = root.style.fontSize;',
+        "  root.style.fontSize = '32px';",
+        '  void root.offsetWidth;',
+        '  const clipped = [];',
+        '  const vw = root.clientWidth, vh = root.clientHeight;',
+        "  const controls = '.view.is-active button, .view.is-active a[href], .view.is-active input, .view.is-active select, .view.is-active textarea, .view.is-active summary';",
+        '  for (const el of document.querySelectorAll(controls)) {',
+        '    const r = el.getBoundingClientRect();',
+        '    if (!r.width || !r.height) continue;',
+        '    let n = el.parentElement;',
+        '    while (n) {',
+        '      const cs = getComputedStyle(n);',
+        "      const clips = /(hidden|clip)/.test(cs.overflowY) || /(hidden|clip)/.test(cs.overflowX);",
+        '      if (clips) {',
+        '        const b = n.getBoundingClientRect();',
+        '        const cut = Math.max(0, r.bottom - b.bottom) + Math.max(0, b.top - r.top)',
+        '          + Math.max(0, r.right - b.right) + Math.max(0, b.left - r.left);',
+        "        if (cut > 2) clipped.push(el.tagName + '.' + String(el.className).slice(0, 26) + ' cut ' + Math.round(cut) + 'px');",
+        '        break;',
+        '      }',
+        '      n = n.parentElement;',
+        '    }',
+        '  }',
+        '  const overflow = root.scrollWidth - root.clientWidth;',
+        '  root.style.fontSize = prior;',
+        '  return { overflow, clipped: clipped.slice(0, 6), clippedCount: clipped.length };',
+        '})()',
+      ].join(String.fromCharCode(10)));
+    }
     await evaluate(page, "location.hash = '/knowledge'");
     await settle(page, 400);
     zoom = await evaluate(page, [
@@ -323,6 +380,11 @@ async function main() {
       '  return { bodyAt100: before, bodyAt200: after, scalesWithRoot: after >= before * 1.6, overflow };',
       '})()',
     ].join('\n'));
+    zoom.perView = zoomViews;
+    zoom.clippedAtZoom = Object.entries(zoomViews)
+      .filter(([, v]) => v.clippedCount > 0)
+      .map(([view, v]) => view + ': ' + v.clippedCount + ' (' + v.clipped[0] + ')');
+    zoom.overflowAtZoom = Object.entries(zoomViews).filter(([, v]) => v.overflow > 0).map(([view]) => view);
     // Reduced motion is a promise the product makes; a rule that exists is not evidence
     // that it wins, so this reads the computed durations under the emulated preference.
     await page.send('Emulation.setEmulatedMedia', {
@@ -382,8 +444,33 @@ async function main() {
       .sort((a, b) => a.min - b.min).slice(0, 15),
   };
 
+  const priorReport = existsSync(LATEST) ? JSON.parse(readFileSync(LATEST, 'utf8')) : null;
+  const previousSpacingLiterals = priorReport?.css?.spacingLiterals ?? css.spacingLiterals;
+
+  report.standingRules = {
+    motionBudget: {
+      name: 'No transition or animation over 150ms (DESIGN.md motion)',
+      value: css.longMotion.length, target: 0, pass: css.longMotion.length === 0,
+      detail: [...new Set(css.longMotion)],
+    },
+    spacingTokens: {
+      name: 'Spacing literals in rules (DESIGN.md Token Rule) - ratchet',
+      value: css.spacingLiterals,
+      target: previousSpacingLiterals,
+      pass: css.spacingLiterals <= previousSpacingLiterals,
+      note: 'A ratchet, not a gate: the debt is paid down surface by surface and may never rise.',
+    },
+    specificity: {
+      name: 'No !important outside the reduced-motion reset',
+      value: css.important - 3, target: 0, pass: css.important <= 3,
+    },
+  };
+
   const previous = existsSync(LATEST) ? JSON.parse(readFileSync(LATEST, 'utf8')) : null;
   report.diff = diff(previous?.thresholds, thresholds);
+  const ruleDiff = diff(previous?.standingRules, report.standingRules);
+  report.diff.regressions.push(...ruleDiff.regressions);
+  report.diff.improvements.push(...ruleDiff.improvements);
 
   writeFileSync(LATEST, JSON.stringify(report, null, 2));
   appendFileSync(HISTORY, JSON.stringify({
@@ -426,6 +513,9 @@ async function main() {
       for (const e of consoleErrors.slice(0, 5)) log('    [' + e.type + '] ' + e.text);
     } else {
       log('  console: clean');
+    }
+    for (const [key, rule] of Object.entries(report.standingRules)) {
+      log('  ' + (rule.pass ? 'rule ok  ' : 'RULE FAIL') + '  ' + key + ': ' + rule.value + ' (target ' + rule.target + ')');
     }
     log('  reduced motion: ' + (reducedMotion.honoured ? 'honoured' : 'NOT honoured - worst ' + reducedMotion.worstDurationMs + 'ms on ' + reducedMotion.offender));
     if (report.diff.firstRun) {

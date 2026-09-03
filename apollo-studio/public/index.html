@@ -4,18 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Configure, inspect, and compare Apollo skill combinations.">
-  <title>Apollo Orchestration Studio</title>
+  <title>Apollo Studio</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <!--
-  THESIS: Apollo is a composable orchestration instrument, not a decorative architecture poster or a fixed agent roster.
-  OWN-WORLD: Carbon operator surface, crisp measured paths, cyan execution, violet approvals, zero false connectivity.
-  STORY: Build named systems from replaceable agents and inventories, understand their route, inspect outputs, then compare or run them.
-  FIRST VIEWPORT: Persistent command rail, live architecture graph with phase-owned agents, selected-node evidence, and direct entry into the system composer.
-  FORM: Code-led orchestration workbench; single selected concept; seed key apollo-control-plane.
-  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+  Apollo Studio - Apollo Workbench (DESIGN.md v2, resolved 2026-09-03).
+  An instrument, not a stage: the Olympus pipeline is locked and read-only, and everything a
+  run can vary lives in a named loadout. Structure is drawn with rules and aligned columns,
+  colour is state, one accent, and density comes from geometry rather than from type.
   -->
   <div class="app-shell">
     <header class="topbar">
@@ -29,7 +27,7 @@
         <button class="nav-item" data-view-target="knowledge">Library</button>
         <button class="nav-item" data-view-target="playground">Playground</button>
       </nav>
-      <div class="topbar-actions"><button class="oracle-trigger" id="toggle-oracle" type="button" aria-expanded="false" aria-controls="oracle-dock">Oracle <kbd>⌘</kbd></button><div class="runtime-state"><span class="state-dot" aria-hidden="true"></span><span id="runtime-label">Connecting…</span><span id="run-count" hidden>0</span></div></div>
+      <div class="topbar-actions"><button class="oracle-trigger" id="toggle-oracle" type="button" aria-expanded="false" aria-controls="oracle-dock">Oracle <kbd id="oracle-shortcut">Ctrl K</kbd></button><div class="runtime-state"><span class="state-dot" aria-hidden="true"></span><span id="runtime-label">Connecting…</span><span id="run-count" hidden>0</span></div></div>
     </header>
 
     <main>
@@ -37,7 +35,7 @@
         <div class="workspace-frame">
           <aside class="project-sidebar" aria-label="Projects and chats">
             <div class="sidebar-brandline"><div><span class="eyebrow">Workspace</span><strong class="workspace-name">Local archive</strong></div><button class="icon-action" id="new-project" type="button" aria-label="Create project">+</button></div>
-            <label class="project-search"><span class="sr-only">Search projects</span><input id="project-search" type="search" placeholder="Search projects"><kbd>Ctrl K</kbd></label>
+            <label class="project-search"><span class="sr-only">Search projects</span><input id="project-search" type="search" placeholder="Search projects"><kbd id="search-shortcut">Ctrl /</kbd></label>
             <div class="project-list-label"><span>Active projects</span><button class="text-action" id="new-chat" type="button">+ chat</button></div>
             <div id="project-list" class="project-list" aria-live="polite"></div>
             <div class="sidebar-footer"><span class="local-dot"></span><span>Private by default</span><button class="text-action" data-view-target="runs" type="button">Run log →</button></div>
@@ -53,7 +51,7 @@
       <section class="view" id="architecture" aria-labelledby="architecture-title">
         <div class="section-heading">
           <div><h1 id="architecture-title">Pipeline map</h1><p>How a run moves through the locked Olympus pipeline. Drag a node to arrange the map for reading; the route itself is fixed, and what changes between runs is the loadout.</p></div>
-          <div class="heading-actions"><button class="quiet-action command-action" data-view-target="systems"><i data-lucide="settings-2" aria-hidden="true"></i><span>System settings</span></button><button class="primary-action command-action" data-view-target="playground"><i data-lucide="flask-conical" aria-hidden="true"></i><span>Test this setup</span></button></div>
+          <div class="heading-actions"><button class="quiet-action command-action" data-view-target="systems"><i data-lucide="settings-2" aria-hidden="true"></i><span>Edit the loadout</span></button><button class="primary-action command-action" data-view-target="playground"><i data-lucide="flask-conical" aria-hidden="true"></i><span>Compare loadouts</span></button></div>
         </div>
 
         <div class="architecture-toolbar">
@@ -68,7 +66,7 @@
             </select>
           </label>
           <div class="node-tools" role="toolbar" aria-label="Pipeline map tools"><button class="quiet-action command-action" id="auto-layout" type="button"><i data-lucide="layout-grid" aria-hidden="true"></i><span>Tidy layout</span></button><button class="quiet-action command-action" data-undo id="reset-layout" type="button"><i data-lucide="rotate-ccw" aria-hidden="true"></i><span>Reset layout</span></button></div>
-          <div class="active-system-summary" aria-live="polite"><span>Active system</span><strong id="architecture-system-name">Loading…</strong><small id="architecture-system-count">0 agents</small></div>
+          <div class="active-system-summary" aria-live="polite"><strong id="architecture-system-name">Loading…</strong><small id="architecture-system-count">0 agents</small></div>
         </div>
 
         <section class="architecture-agents" aria-labelledby="architecture-agents-title">
@@ -201,7 +199,7 @@
 
       <section class="view" id="playground" aria-labelledby="playground-title">
         <div class="section-heading">
-          <div><h1 id="playground-title">Test small. Commit with evidence.</h1><p>Give two or three setups the same task, compare the result, then keep the winner for the full plan.</p></div>
+          <div><h1 id="playground-title">Test small. Commit with evidence.</h1><p>Give two or three loadouts the same task, compare what came back, then keep the winner for the full plan.</p></div>
           <div class="runtime-note" id="playground-mode">Checking runtime…</div>
         </div>
 
@@ -209,7 +207,7 @@
         <div class="playground-workbench">
           <div class="playground-task-rail">
             <section class="prompt-composer">
-              <label for="experiment-prompt">The task every setup must solve</label>
+              <label for="experiment-prompt">The task every loadout must solve</label>
               <textarea id="experiment-prompt" rows="4" maxlength="20000" placeholder="Describe the same task every setup should solve…">Redesign a SaaS agency homepage so founders understand the offer in ten seconds and can confidently book a strategy call. Explain the recommended structure, interaction, and verification plan.</textarea>
               <div class="prompt-footer"><span id="prompt-length">0 / 20,000</span><button class="quiet-action command-action" data-undo id="clear-prompt"><i data-lucide="eraser" aria-hidden="true"></i><span>Clear</span></button></div>
             </section>
@@ -365,7 +363,7 @@
   <dialog class="proposal-dialog" id="proposal-dialog" aria-labelledby="proposal-title"><form method="dialog"><p class="eyebrow">Review required</p><h2 id="proposal-title">Proposed change</h2><p id="proposal-summary"></p><ul id="proposal-affected"></ul><div class="proposal-actions"><button class="quiet-action" value="cancel">Cancel</button><button class="run-action" id="approve-proposal" value="approve">Approve change</button></div></form></dialog>
   <template id="variant-template">
     <article class="variant-card">
-      <div class="variant-title-row"><label>Variant name<input class="variant-name" maxlength="60"></label><button class="icon-action remove-variant" data-undo aria-label="Remove variant">&#215;</button></div>
+      <div class="variant-title-row"><label>Name<input class="variant-name" maxlength="60"></label><button class="icon-action remove-variant" data-undo aria-label="Remove variant">&#215;</button></div>
       <label>Loadout<select class="variant-loadout"></select></label>
       <div class="variant-summary"><strong class="variant-count">8 slots</strong><span class="variant-groups"></span></div>
       <details class="variant-advanced"><summary>Advanced: the flat skill list</summary><p class="advanced-note">Every routed skill, independent of the slot model. Nothing possible before is impossible now.</p><div class="variant-skills"></div></details>

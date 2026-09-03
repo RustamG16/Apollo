@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T05:54:31.593Z",
-  "durationMs": 15565,
+  "generatedAt": "2026-09-03T06:13:39.313Z",
+  "durationMs": 22872,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -29,7 +29,51 @@
         "bodyAt100": 16,
         "bodyAt200": 32,
         "scalesWithRoot": true,
-        "overflow": 0
+        "overflow": 0,
+        "perView": {
+          "work": {
+            "overflow": 0,
+            "clipped": [],
+            "clippedCount": 0
+          },
+          "architecture": {
+            "overflow": 0,
+            "clipped": [],
+            "clippedCount": 0
+          },
+          "systems": {
+            "overflow": 0,
+            "clipped": [],
+            "clippedCount": 0
+          },
+          "playground": {
+            "overflow": 0,
+            "clipped": [],
+            "clippedCount": 0
+          },
+          "agents": {
+            "overflow": 0,
+            "clipped": [],
+            "clippedCount": 0
+          },
+          "knowledge": {
+            "overflow": 0,
+            "clipped": [],
+            "clippedCount": 0
+          },
+          "oracle": {
+            "overflow": 0,
+            "clipped": [],
+            "clippedCount": 0
+          },
+          "runs": {
+            "overflow": 0,
+            "clipped": [],
+            "clippedCount": 0
+          }
+        },
+        "clippedAtZoom": [],
+        "overflowAtZoom": []
       }
     },
     "T4": {
@@ -37,7 +81,11 @@
       "value": 0,
       "target": 0,
       "pass": true,
-      "unit": "text nodes (all viewports)"
+      "unit": "text nodes (all viewports); a node over a gradient is unverifiable, not passing",
+      "detail": {
+        "measuredFailures": 0,
+        "unverifiableOverImage": 0
+      }
     },
     "T5": {
       "name": "Controls under 36px desktop / 44px narrow",
@@ -105,12 +153,15 @@
       }
     },
     "T10": {
-      "name": "Decorative media with no informational role",
+      "name": "Decorative media and ornament with no informational role",
       "value": 0,
       "target": 0,
       "pass": true,
-      "unit": "stylesheet references",
-      "detail": []
+      "unit": "stylesheet references and decorative layers",
+      "detail": {
+        "mediaRefs": [],
+        "ornament": []
+      }
     },
     "T11": {
       "name": "Destructive actions without undo",
@@ -122,11 +173,137 @@
     }
   },
   "perViewport": {
-    "1280x800": {
-      "textNodes": 1321,
+    "820x1180": {
+      "textNodes": 1318,
       "belowThirteen": 0,
       "contrastFails": 0,
-      "contrastFailsOnImage": 0,
+      "contrastFailsUnverifiable": 0,
+      "targetsBelowFloor": 0,
+      "targetsBelow32": 0,
+      "unmeasuredControls": 16,
+      "controls": 490,
+      "targetFloor": 44,
+      "overflow": [],
+      "families": [
+        "ui-monospace",
+        "ui-sans-serif"
+      ],
+      "perView": {
+        "work": {
+          "textNodes": 43,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 1,
+          "dominantSize": [
+            "16.0",
+            16
+          ]
+        },
+        "architecture": {
+          "textNodes": 348,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 1,
+          "dominantSize": [
+            "14.0",
+            128
+          ]
+        },
+        "systems": {
+          "textNodes": 185,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 1,
+          "dominantSize": [
+            "14.0",
+            67
+          ]
+        },
+        "playground": {
+          "textNodes": 247,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 3,
+          "dominantSize": [
+            "14.0",
+            221
+          ]
+        },
+        "agents": {
+          "textNodes": 80,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 1,
+          "dominantSize": [
+            "13.0",
+            46
+          ]
+        },
+        "knowledge": {
+          "textNodes": 349,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 8,
+          "dominantSize": [
+            "14.0",
+            128
+          ]
+        },
+        "oracle": {
+          "textNodes": 45,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 1,
+          "dominantSize": [
+            "14.0",
+            22
+          ]
+        },
+        "runs": {
+          "textNodes": 10,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
+          "dominantSize": [
+            "16.0",
+            5
+          ]
+        },
+        "_chrome": {
+          "textNodes": 11,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 0,
+          "dominantSize": [
+            "16.0",
+            8
+          ]
+        }
+      }
+    },
+    "1280x800": {
+      "textNodes": 1318,
+      "belowThirteen": 0,
+      "contrastFails": 0,
+      "contrastFailsUnverifiable": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
@@ -151,7 +328,7 @@
           ]
         },
         "architecture": {
-          "textNodes": 351,
+          "textNodes": 348,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -159,7 +336,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            129
+            128
           ]
         },
         "systems": {
@@ -249,10 +426,10 @@
       }
     },
     "1440x900": {
-      "textNodes": 1321,
+      "textNodes": 1318,
       "belowThirteen": 0,
       "contrastFails": 0,
-      "contrastFailsOnImage": 0,
+      "contrastFailsUnverifiable": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
@@ -277,7 +454,7 @@
           ]
         },
         "architecture": {
-          "textNodes": 351,
+          "textNodes": 348,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -285,7 +462,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            129
+            128
           ]
         },
         "systems": {
@@ -375,10 +552,10 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1321,
+      "textNodes": 1318,
       "belowThirteen": 0,
       "contrastFails": 0,
-      "contrastFailsOnImage": 0,
+      "contrastFailsUnverifiable": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
@@ -403,7 +580,7 @@
           ]
         },
         "architecture": {
-          "textNodes": 351,
+          "textNodes": 348,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -411,7 +588,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            129
+            128
           ]
         },
         "systems": {
@@ -509,8 +686,8 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 353,
-    "14.0": 599,
+    "13.0": 351,
+    "14.0": 598,
     "16.0": 309,
     "18.0": 20,
     "22.0": 21,
@@ -520,8 +697,8 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 106902,
-        "lines": 1448
+        "bytes": 108024,
+        "lines": 1498
       }
     ],
     "fontSizeUnits": {
@@ -563,7 +740,6 @@
       "150ms"
     ],
     "zIndexSpellings": [
-      "0",
       "1",
       "2",
       "3",
@@ -574,12 +750,13 @@
       "var(--z-toast)"
     ],
     "zIndexLiterals": [
-      "0",
       "1",
       "2",
       "3"
     ],
-    "spacingLiterals": 500,
+    "spacingLiterals": 499,
+    "ornament": [],
+    "longMotion": [],
     "decorativeMediaRefs": []
   },
   "consoleErrors": [],
@@ -688,6 +865,28 @@
     }
   ],
   "smallestTargets": [],
+  "standingRules": {
+    "motionBudget": {
+      "name": "No transition or animation over 150ms (DESIGN.md motion)",
+      "value": 0,
+      "target": 0,
+      "pass": true,
+      "detail": []
+    },
+    "spacingTokens": {
+      "name": "Spacing literals in rules (DESIGN.md Token Rule) - ratchet",
+      "value": 499,
+      "target": 499,
+      "pass": true,
+      "note": "A ratchet, not a gate: the debt is paid down surface by surface and may never rise."
+    },
+    "specificity": {
+      "name": "No !important outside the reduced-motion reset",
+      "value": 0,
+      "target": 0,
+      "pass": true
+    }
+  },
   "diff": {
     "firstRun": false,
     "regressions": [],

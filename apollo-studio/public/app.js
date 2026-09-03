@@ -129,7 +129,8 @@ function navigate(view, { updateHash = true, scrollBehavior = 'smooth', animate 
   view = views.has(view) ? view : 'architecture';
   state.view = view;
   $$('.view').forEach(section => section.classList.toggle('is-active', section.id === view));
-  const navView = view === 'architecture' ? 'systems' : view === 'agents' ? 'knowledge' : view;
+  const NAV_OWNER = { architecture: 'systems', agents: 'knowledge', oracle: 'work', runs: 'work' };
+  const navView = NAV_OWNER[view] || view;
   $$('.nav-item').forEach(button => {
     const active = button.dataset.viewTarget === navView;
     button.classList.toggle('is-active', active);
@@ -300,17 +301,26 @@ function renderArchitectureAgents() {
   if (!system) { host.replaceChildren(); return; }
   $('#architecture-system-name').textContent = system.name;
   $('#architecture-system-count').textContent = `${system.agents.filter(agent => agent.enabled).length} active agents`;
-  const phases = ['diagnose', 'direct', 'prepare', 'build', 'verify'];
+  // The roster is fixed and no agent owns `prepare`, so that lane could only ever read
+  // "No agent" - a permanently empty column stating an absence that is not a problem and
+  // cannot be fixed. Only phases the pipeline actually uses are drawn.
+  const phases = ['diagnose', 'direct', 'prepare', 'build', 'verify']
+    .filter(phase => system.agents.some(agent => agent.phase === phase));
   host.replaceChildren(...phases.map(phase => {
     const lane = document.createElement('section'); lane.className = 'agent-lane'; lane.dataset.phase = phase;
     const heading = document.createElement('h3'); heading.textContent = phaseLabels[phase];
     const agents = system.agents.filter(agent => agent.phase === phase && agent.enabled);
     const list = document.createElement('div');
-    if (!agents.length) { const empty = document.createElement('span'); empty.className = 'lane-empty'; empty.textContent = 'No agent'; list.append(empty); }
+    if (!agents.length) { const empty = document.createElement('span'); empty.className = 'lane-empty'; empty.textContent = 'Paused'; list.append(empty); }
     agents.forEach(agent => {
       const button = document.createElement('button'); button.type = 'button'; button.className = 'architecture-agent';
       const name = document.createElement('strong'); name.textContent = agent.name;
-      const meta = document.createElement('small'); meta.textContent = `${agent.skills.length} skills · ${agent.mcp.length} MCP · ${agent.plugins.length} plugins`;
+      const meta = document.createElement('small');
+      meta.textContent = [
+        `${agent.skills.length} skill${agent.skills.length === 1 ? '' : 's'}`,
+        agent.mcp.length ? `${agent.mcp.length} MCP` : null,
+        agent.plugins.length ? `${agent.plugins.length} plugins` : null
+      ].filter(Boolean).join(' · ');
       button.append(name, meta);
       button.addEventListener('click', () => { const slot = (state.loadouts?.slots || []).find(item => item.owner === agent.id); navigate('systems'); requestAnimationFrame(() => document.querySelector(slot ? '[data-slot="' + slot.id + '"]' : '.pipeline-strip')?.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })); });
       list.append(button);
@@ -1865,6 +1875,25 @@ function bindEvents() {
   });
   $('#results-empty-action').addEventListener('click', () => $('#run-comparison').click());
   $('#experiment-prompt').addEventListener('input', () => renderPlaygroundSteps('idle'));
+  // The two shortcuts the chrome advertises. A <kbd> hint for a handler that does not exist
+  // is the interface telling the user something untrue.
+  const shortcutGlyph = /mac|iphone|ipad/i.test(navigator.platform || navigator.userAgent) ? 'Cmd' : 'Ctrl';
+  const oracleHint = $('#oracle-shortcut');
+  const searchHint = $('#search-shortcut');
+  if (oracleHint) oracleHint.textContent = shortcutGlyph + ' K';
+  if (searchHint) searchHint.textContent = shortcutGlyph + ' /';
+  window.addEventListener('keydown', event => {
+    const modifier = event.metaKey || event.ctrlKey;
+    if (!modifier) return;
+    if (event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      toggleOracle();
+    } else if (event.key === '/') {
+      event.preventDefault();
+      navigate('work');
+      requestAnimationFrame(() => $('#project-search')?.focus());
+    }
+  });
   $('#undo-dismiss').addEventListener('click', dismissUndo);
   const observer = new ResizeObserver(() => requestAnimationFrame(drawConnections)); observer.observe($('#workflow-canvas'));
   window.addEventListener('resize', drawConnections, { passive: true });

@@ -214,6 +214,16 @@ export const PROBE_SOURCE = String(function apolloProbe(scope, revealDisclosures
     if (!visible(el)) continue;
     const cs = getComputedStyle(el);
     if (cs.position === 'fixed') continue;
+    // Content extending past the viewport inside a container that scrolls is not overflow -
+    // it is a diagram or a table doing what DESIGN.md asks of wide content. Only a spill the
+    // user cannot reach counts.
+    let scroller = el.parentElement, reachable = false;
+    while (scroller) {
+      const sc = getComputedStyle(scroller);
+      if (/(auto|scroll)/.test(sc.overflowX) && scroller.scrollWidth > scroller.clientWidth) { reachable = true; break; }
+      scroller = scroller.parentElement;
+    }
+    if (reachable) continue;
     spills.push({
       tag: el.tagName.toLowerCase(),
       cls: typeof el.className === 'string' ? el.className.slice(0, 50) : '',

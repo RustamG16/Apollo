@@ -152,6 +152,36 @@ export function auditCss(paths) {
 
   const mediaRefs = [...new Set([...strip.matchAll(/url\(['"]?(\/media\/[^'")]+)/gi)].map(m => m[1]))];
 
+  // Ornament, by whatever means. A gradient between two identical colours, or from a colour
+  // to transparent, is decoration; a gradient that draws a rule or a scrim is structure, so
+  // the test is whether it carries an accent or status hue for mood.
+  const ornament = [];
+  for (const m of strip.matchAll(/(?:linear|radial|conic)-gradient\([^;{}]*\)/gi)) {
+    const value = m[0];
+    const decorative = /accent|--signal|--intelligence|--cyan|--violet/i.test(value)
+      && !/transparent 0/.test(value);
+    if (decorative) ornament.push({ kind: 'accent-gradient', value: value.slice(0, 80) });
+  }
+  for (const m of strip.matchAll(/url\(["']?data:image\/[^)]*\)/gi)) {
+    ornament.push({ kind: 'inline-image', value: m[0].slice(0, 48) + '…' });
+  }
+  for (const m of strip.matchAll(/filter\s*:\s*drop-shadow\([^;}]*\)/gi)) {
+    ornament.push({ kind: 'glow', value: m[0].slice(0, 60) });
+  }
+  for (const m of strip.matchAll(/mix-blend-mode\s*:\s*(?!normal)[a-z-]+/gi)) {
+    ornament.push({ kind: 'blend', value: m[0] });
+  }
+
+  // The motion budget is a stated rule with no threshold behind it: DESIGN.md caps every
+  // duration at 150ms and every animated translation at 4px.
+  const longMotion = [];
+  for (const t of transitions) {
+    for (const m of t.matchAll(/([\d.]+)(ms|s)/g)) {
+      const ms = m[2] === 's' ? Number(m[1]) * 1000 : Number(m[1]);
+      if (ms > 150) longMotion.push(m[0]);
+    }
+  }
+
   return {
     files: sources.map(s => ({ path: s.path, bytes: s.text.length, lines: s.text.split('\n').length })),
     fontSizeUnits,
@@ -169,6 +199,8 @@ export function auditCss(paths) {
     zIndexSpellings: [...zIndex].sort(),
     zIndexLiterals: [...zIndexLiterals].sort(),
     spacingLiterals,
+    ornament,
+    longMotion,
     decorativeMediaRefs: mediaRefs,
   };
 }
