@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T05:20:08.559Z",
-  "durationMs": 15532,
+  "generatedAt": "2026-09-03T05:23:52.402Z",
+  "durationMs": 15572,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -89,7 +89,7 @@
     },
     "T9": {
       "name": "Views with an empty state and one primary action",
-      "value": 1,
+      "value": 2,
       "target": 8,
       "pass": false,
       "unit": "of 8 views",
@@ -98,7 +98,7 @@
         "work": false,
         "architecture": false,
         "systems": true,
-        "playground": false,
+        "playground": true,
         "agents": false,
         "knowledge": false,
         "oracle": false,
@@ -131,13 +131,13 @@
   },
   "perViewport": {
     "1280x800": {
-      "textNodes": 1290,
+      "textNodes": 1307,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 10,
+      "unmeasuredControls": 11,
       "controls": 503,
       "targetFloor": 36,
       "overflow": [],
@@ -183,15 +183,15 @@
           ]
         },
         "playground": {
-          "textNodes": 227,
+          "textNodes": 244,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 2,
+          "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            209
+            220
           ]
         },
         "agents": {
@@ -257,13 +257,13 @@
       }
     },
     "1440x900": {
-      "textNodes": 1290,
+      "textNodes": 1307,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 10,
+      "unmeasuredControls": 11,
       "controls": 503,
       "targetFloor": 36,
       "overflow": [],
@@ -309,15 +309,15 @@
           ]
         },
         "playground": {
-          "textNodes": 227,
+          "textNodes": 244,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 2,
+          "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            209
+            220
           ]
         },
         "agents": {
@@ -383,13 +383,13 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1290,
+      "textNodes": 1307,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 10,
+      "unmeasuredControls": 11,
       "controls": 503,
       "targetFloor": 36,
       "overflow": [],
@@ -435,15 +435,15 @@
           ]
         },
         "playground": {
-          "textNodes": 227,
+          "textNodes": 244,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 2,
+          "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            209
+            220
           ]
         },
         "agents": {
@@ -517,10 +517,10 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 338,
-    "14.0": 595,
-    "16.0": 303,
-    "18.0": 14,
+    "13.0": 339,
+    "14.0": 606,
+    "16.0": 307,
+    "18.0": 15,
     "22.0": 21,
     "32.0": 8
   },
@@ -528,13 +528,13 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 99399,
-        "lines": 1276
+        "bytes": 101278,
+        "lines": 1323
       }
     ],
     "fontSizeUnits": {
-      "total": 223,
-      "rem": 223,
+      "total": 230,
+      "rem": 230,
       "px": 0,
       "em": 0,
       "other": 0
@@ -617,6 +617,12 @@
       "view": "playground",
       "tag": "button",
       "cls": "icon-action remove-variant",
+      "inDisclosure": false
+    },
+    {
+      "view": "playground",
+      "tag": "button",
+      "cls": "primary-action",
       "inDisclosure": false
     },
     {

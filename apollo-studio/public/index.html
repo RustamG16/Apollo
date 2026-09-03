@@ -219,8 +219,21 @@
           </div>
 
           <section class="variant-section" aria-labelledby="variants-title">
-            <div class="panel-heading"><div><h2 id="variants-title">Setups to compare</h2><p>Change skills and tools, not the task.</p></div><button class="quiet-action command-action" id="add-variant"><i data-lucide="plus" aria-hidden="true"></i><span>Add third setup</span></button></div>
+            <div class="panel-heading"><div><h2 id="variants-title">Loadouts to compare</h2><p>Change the loadout, not the task.</p></div><button class="quiet-action command-action" id="add-variant"><i data-lucide="plus" aria-hidden="true"></i><span>Add third loadout</span></button></div>
             <div class="variant-grid" id="variant-grid"></div>
+
+            <div class="slot-diff" id="slot-diff" aria-live="polite">
+              <div class="empty-state" data-empty-state id="diff-empty" hidden>
+                <strong>These loadouts are identical.</strong>
+                <p>Every one of the eight decisions matches, so the run would compare the same configuration against itself. Change a slot to make the comparison mean something.</p>
+                <button class="primary-action" data-primary-action type="button" data-view-target="systems">Edit a loadout</button>
+              </div>
+              <table class="diff-table" id="diff-table">
+                <caption>Only the decisions that differ</caption>
+                <thead><tr id="diff-head"></tr></thead>
+                <tbody id="diff-body"></tbody>
+              </table>
+            </div>
           </section>
         </div>
 
@@ -328,10 +341,10 @@
   <dialog class="proposal-dialog" id="proposal-dialog" aria-labelledby="proposal-title"><form method="dialog"><p class="eyebrow">Review required</p><h2 id="proposal-title">Proposed change</h2><p id="proposal-summary"></p><ul id="proposal-affected"></ul><div class="proposal-actions"><button class="quiet-action" value="cancel">Cancel</button><button class="run-action" id="approve-proposal" value="approve">Approve change</button></div></form></dialog>
   <template id="variant-template">
     <article class="variant-card">
-      <div class="variant-title-row"><label>Variant name<input class="variant-name" maxlength="60"></label><button class="icon-action remove-variant" aria-label="Remove variant">×</button></div>
-      <label>Preset<select class="variant-preset"></select></label>
-      <div class="variant-summary"><strong class="variant-count">0 skills</strong><span class="variant-groups"></span></div>
-      <details><summary>Customize skills</summary><div class="variant-skills"></div></details>
+      <div class="variant-title-row"><label>Variant name<input class="variant-name" maxlength="60"></label><button class="icon-action remove-variant" data-undo aria-label="Remove variant">&#215;</button></div>
+      <label>Loadout<select class="variant-loadout"></select></label>
+      <div class="variant-summary"><strong class="variant-count">8 slots</strong><span class="variant-groups"></span></div>
+      <details class="variant-advanced"><summary>Advanced: the flat skill list</summary><p class="advanced-note">Every routed skill, independent of the slot model. Nothing possible before is impossible now.</p><div class="variant-skills"></div></details>
       <label class="tool-option"><input type="checkbox" class="variant-web-search"> <span><strong>OpenAI web search</strong><small>Live mode only; may increase latency and cost.</small></span></label>
     </article>
   </template>

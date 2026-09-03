@@ -717,3 +717,67 @@ overflow at 1280x800, 1440x900 or 1920x1080 under the stricter check.
 
 **Next slice:** P3 slice 4 — Playground compares two loadouts, diffed by slot, showing only
 what differs. That is the last item in P3's exit gate.
+
+## 2026-09-03 — P3 slice 4: Playground compares loadouts, diffed by slot
+
+**Slice:** P3, slice 4. Complete. **P3 is complete.**
+
+A variant is now a loadout under test rather than a preset plus a private set of 84
+checkboxes. Each card picks a loadout and states how many of the eight decisions it has
+moved from their defaults, how many skills that resolves to, and which Design DNA profile it
+carries. `resolveLoadoutSkills()` applies the same rule the server applies in `agents.mjs`,
+so what the card claims and what the run executes cannot drift.
+
+**The diff shows only what differs.** Comparing `Lean audit` against `Concept lab` renders
+exactly two rows — Craft and Verify — out of eight decisions, each with the chosen skill and
+the one line describing what that choice changes. The six decisions both loadouts agree on
+are not rendered at all. **This is the P3 exit gate: two loadouts run in Playground and the
+diff is legible without expanding anything.** Verified in the live app.
+
+When two variants resolve to the same loadout the table is replaced by an empty state that
+says so — *"These loadouts are identical. Every one of the eight decisions matches, so the
+run would compare the same configuration against itself."* — with one primary action that
+goes to the editor. A comparison of a thing with itself is a failure mode worth naming
+rather than a table of eight identical rows. T9 moved from 1 to 2 of 8 on the strength of it.
+
+**The Advanced escape hatch is kept, as the plan requires.** Each card still holds the full
+flat skill list behind a disclosure labelled "Advanced: the flat skill list", with a note
+saying nothing possible before is impossible now. It is no longer the first thing you see,
+and it is no longer how you are expected to work.
+
+Removing a third variant is undoable and restores it at its original index. The compare
+payload now carries `loadoutId` per variant, so a recorded run is traceable back to the
+configuration that produced it. A demo comparison run was executed end to end after the
+change and returned two results.
+
+### P3 exit gate, all three clauses
+
+| Clause | State |
+|---|---|
+| A Craft-slot swap changes the plan `agents.mjs` produces | **Met** — verified through the UI and `/api/oracle/plan` in slice 1 |
+| Two loadouts run in Playground and the diff is legible without expanding anything | **Met** — two rows out of eight, verified live |
+| Nothing in the pipeline is UI-editable | **Met** — `createSystem`/`deleteSystem` throw, `updateSystem` refuses an `agents` payload, and the Loadouts view has no control that touches the roster |
+
+### Metrics
+
+| # | Threshold | Now | Target | State |
+|---|---|---:|---:|---|
+| T1 | Text below 13px | 0 | 0 | PASS |
+| T2 | Body text size | 16 | 15 | PASS |
+| T3 | Type in rem / 200% zoom | 100% | 100% | PASS |
+| T4 | Contrast failures (AA) | 0 | 0 | PASS |
+| T5 | Controls under 36/44px | 0 | 0 | PASS |
+| T6 | Distinct visual systems | 1 | 1 | PASS |
+| T7 | Non-semantic accent hues | 1 | 1 | PASS |
+| T8 | Unique radii | 2 | 4 | PASS |
+| T9 | Views with empty state + action | **2** | 8 | FAIL |
+| T10 | Decorative media references | 0 | 0 | PASS |
+| T11 | Destructive actions without undo | 6 | 0 | FAIL |
+
+`npm.cmd run check` exits 0. Console clean, reduced motion honoured, no overflow at any of
+the three viewports under the stricter element-level check.
+
+**Next slice:** P4 surface passes, in the plan's order — Work first. Per pass: observe the
+real task end to end, name the single highest-friction moment, remove redundancy before
+adding anything (Work states "Olympus" three times within 900px), write the empty and error
+states, re-measure. T9 and T11 are retired across these passes.

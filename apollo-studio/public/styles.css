@@ -1273,3 +1273,50 @@ textarea { min-height: calc(var(--control-h) * 2); }
 .compact-check { flex-wrap: wrap; }
 .compact-check > span { min-width: 0; overflow-wrap: anywhere; }
 .tool-option > span { min-width: 0; }
+
+/* ---------------------------------------------------------------------------
+   The comparison. A table that repeats the decisions both sides agree on is a
+   table nobody reads, so this shows only what differs.
+   --------------------------------------------------------------------------- */
+
+.slot-diff { margin-block-start: var(--space-8); }
+
+.diff-table { width: 100%; border-collapse: collapse; font-size: var(--text-meta); }
+.diff-table caption {
+  margin-block-end: var(--space-5);
+  color: var(--fg-dim);
+  font-size: var(--text-label);
+  letter-spacing: var(--track-label);
+  text-align: start;
+  text-transform: uppercase;
+}
+.diff-table th,
+.diff-table td {
+  padding: var(--space-5) var(--space-5) var(--space-5) 0;
+  border-block-end: 1px solid var(--line);
+  text-align: start;
+  vertical-align: top;
+}
+.diff-table thead th {
+  border-block-end: 1px solid var(--line-strong);
+  color: var(--fg);
+  font-size: var(--text-body);
+}
+.diff-table tbody th { display: grid; gap: var(--space-2); min-width: 0; padding-inline-end: var(--space-6); font-weight: 600; }
+.diff-question { color: var(--fg-muted); font-size: var(--text-meta); font-weight: 400; }
+.diff-table td { min-width: 0; }
+.diff-table code {
+  display: inline-block;
+  margin-block-end: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-1);
+  color: var(--accent);
+  background: var(--accent-quiet);
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+}
+.diff-consequence { display: block; max-width: 34ch; color: var(--fg-muted); }
+
+.variant-advanced summary { color: var(--fg-muted); font-size: var(--text-meta); }
+.advanced-note { margin: var(--space-3) 0; max-width: var(--measure-prose); color: var(--fg-dim); font-size: var(--text-meta); }
+.variant-skills { display: grid; max-height: 18rem; overflow-y: auto; padding-inline-end: var(--space-4); }

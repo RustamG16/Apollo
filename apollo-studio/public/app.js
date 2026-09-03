@@ -852,10 +852,99 @@ function presetOptions(select) {
   select.innerHTML = '<option value="current">Current architecture selection</option>' + state.config.presets.map(preset => `<option value="${preset.id}">${preset.name}</option>`).join('') + '<option value="custom">Custom</option>';
 }
 
-function createVariant(name, presetId, skillIds) {
-  const id = crypto.randomUUID();
-  const preset = state.config.presets.find(item => item.id === presetId);
-  return { id, name, presetId, skills: new Set(skillIds || preset?.skills || [...state.activeSkills]), tools: new Set() };
+// A variant is a loadout under test. The flat skill set stays available behind Advanced so
+// nothing that was possible with 84 checkboxes becomes impossible, but the comparison the
+// product is for is a comparison of loadouts.
+function createVariant(name, loadoutId, skillIds) {
+  const loadout = state.loadouts?.loadouts.find(item => item.id === loadoutId) || state.loadouts?.loadouts[0];
+  return {
+    id: crypto.randomUUID(),
+    name,
+    loadoutId: loadout?.id || null,
+    skills: new Set(skillIds || resolveLoadoutSkills(loadout)),
+    tools: new Set()
+  };
+}
+
+// The skills a loadout actually carries: its eight answers, plus anything the user added
+// through Advanced. This is the same rule agents.mjs applies server-side.
+function resolveLoadoutSkills(loadout) {
+  if (!loadout) return [...state.activeSkills];
+  const slots = state.loadouts?.slots || [];
+  const chosen = slots.map(slot => loadout.slots[slot.id] || slot.default);
+  return [...new Set([...chosen, ...(loadout.advancedSkills || [])])];
+}
+
+function variantLoadout(variant) {
+  return state.loadouts?.loadouts.find(item => item.id === variant.loadoutId) || null;
+}
+
+function loadoutOptions(select) {
+  select.replaceChildren(...(state.loadouts?.loadouts || []).map(loadout => {
+    const option = document.createElement('option');
+    option.value = loadout.id;
+    option.textContent = loadout.name;
+    return option;
+  }));
+}
+
+// Differences only. A table that repeats the six decisions both sides agree on is a table
+// nobody reads; the comparison is the four lines that differ.
+function renderSlotDiff() {
+  const head = $('#diff-head');
+  const body = $('#diff-body');
+  const table = $('#diff-table');
+  const empty = $('#diff-empty');
+  if (!head || !state.loadouts) return;
+
+  const loadouts = state.variants.map(variantLoadout);
+  const slots = state.loadouts.slots || [];
+  const differing = slots.filter(slot => {
+    const values = loadouts.map(loadout => loadout ? (loadout.slots[slot.id] || slot.default) : null);
+    return new Set(values).size > 1;
+  });
+
+  const identical = differing.length === 0;
+  empty.hidden = !identical;
+  table.hidden = identical;
+  if (identical) { head.replaceChildren(); body.replaceChildren(); return; }
+
+  const headCells = [document.createElement('th')];
+  headCells[0].scope = 'col';
+  headCells[0].textContent = 'Decision';
+  for (const variant of state.variants) {
+    const cell = document.createElement('th');
+    cell.scope = 'col';
+    cell.textContent = variant.name;
+    headCells.push(cell);
+  }
+  head.replaceChildren(...headCells);
+
+  body.replaceChildren(...differing.map(slot => {
+    const row = document.createElement('tr');
+    const label = document.createElement('th');
+    label.scope = 'row';
+    const name = document.createElement('strong');
+    name.textContent = slot.name;
+    const question = document.createElement('span');
+    question.className = 'diff-question';
+    question.textContent = slot.question;
+    label.append(name, question);
+    row.append(label);
+
+    for (const loadout of loadouts) {
+      const cell = document.createElement('td');
+      const choice = loadout ? (loadout.slots[slot.id] || slot.default) : slot.default;
+      const value = document.createElement('code');
+      value.textContent = choice;
+      const consequence = document.createElement('span');
+      consequence.className = 'diff-consequence';
+      consequence.textContent = slot.candidates.find(candidate => candidate.skill === choice)?.changes || '';
+      cell.append(value, consequence);
+      row.append(cell);
+    }
+    return row;
+  }));
 }
 
 function renderVariants() {
@@ -866,13 +955,30 @@ function renderVariants() {
     card.dataset.id = variant.id;
     const name = card.querySelector('.variant-name');
     name.value = variant.name;
-    name.addEventListener('input', () => variant.name = name.value);
+    name.addEventListener('input', () => { variant.name = name.value; renderSlotDiff(); });
+
     const remove = card.querySelector('.remove-variant');
     remove.hidden = state.variants.length <= 2;
-    remove.addEventListener('click', () => { state.variants = state.variants.filter(item => item.id !== variant.id); renderVariants(); });
-    const preset = card.querySelector('.variant-preset');
-    presetOptions(preset);
-    preset.value = variant.presetId;
+    remove.addEventListener('click', () => {
+      const removed = variant;
+      const index = state.variants.indexOf(variant);
+      state.variants = state.variants.filter(item => item.id !== variant.id);
+      renderVariants();
+      offerUndo('Removed ' + removed.name + '.', async () => {
+        state.variants.splice(index, 0, removed);
+        renderVariants();
+      });
+    });
+
+    const loadoutSelect = card.querySelector('.variant-loadout');
+    loadoutOptions(loadoutSelect);
+    loadoutSelect.value = variant.loadoutId || '';
+    loadoutSelect.addEventListener('change', () => {
+      variant.loadoutId = loadoutSelect.value;
+      variant.skills = new Set(resolveLoadoutSkills(variantLoadout(variant)));
+      renderVariants();
+    });
+
     const skillsHost = card.querySelector('.variant-skills');
     state.config.skills.forEach(skill => {
       const label = document.createElement('label');
@@ -880,33 +986,40 @@ function renderVariants() {
       label.innerHTML = '<input type="checkbox"><span></span>';
       const input = label.querySelector('input');
       input.checked = variant.skills.has(skill.id);
-      label.querySelector('span').textContent = `${skill.name} · ${skill.phase}`;
+      label.querySelector('span').textContent = skill.name + ' · ' + skill.phase;
       input.addEventListener('change', () => {
-        input.checked ? variant.skills.add(skill.id) : variant.skills.delete(skill.id);
-        variant.presetId = 'custom'; preset.value = 'custom'; updateVariantSummary(card, variant);
+        if (input.checked) variant.skills.add(skill.id); else variant.skills.delete(skill.id);
+        updateVariantSummary(card, variant);
       });
       skillsHost.append(label);
     });
-    preset.addEventListener('change', () => {
-      variant.presetId = preset.value;
-      const chosen = state.config.presets.find(item => item.id === preset.value);
-      variant.skills = new Set(preset.value === 'current' ? [...state.activeSkills] : chosen?.skills || variant.skills);
-      renderVariants();
-    });
+
     const webSearch = card.querySelector('.variant-web-search');
     webSearch.checked = variant.tools.has('web_search');
     webSearch.disabled = state.config.mode !== 'live';
-    webSearch.addEventListener('change', () => webSearch.checked ? variant.tools.add('web_search') : variant.tools.delete('web_search'));
+    webSearch.addEventListener('change', () => { if (webSearch.checked) variant.tools.add('web_search'); else variant.tools.delete('web_search'); });
+
     updateVariantSummary(card, variant);
     return card;
   }));
   $('#add-variant').hidden = state.variants.length === 3;
+  renderSlotDiff();
 }
 
 function updateVariantSummary(card, variant) {
-  card.querySelector('.variant-count').textContent = `${variant.skills.size} skill${variant.skills.size === 1 ? '' : 's'}`;
-  const groups = [...new Set([...variant.skills].map(id => state.config.skills.find(skill => skill.id === id)?.group).filter(Boolean))];
-  card.querySelector('.variant-groups').textContent = groups.join(' · ');
+  const loadout = variantLoadout(variant);
+  const slots = state.loadouts?.slots || [];
+  const changed = loadout ? slots.filter(slot => (loadout.slots[slot.id] || slot.default) !== slot.default).length : 0;
+  card.querySelector('.variant-count').textContent = changed
+    ? changed + ' of ' + slots.length + ' changed'
+    : 'All ' + slots.length + ' at default';
+  const dnaName = loadout?.designDna
+    ? (state.designDna?.profiles || []).find(profile => profile.profileId === loadout.designDna)?.displayName
+    : null;
+  card.querySelector('.variant-groups').textContent = [
+    variant.skills.size + ' skills',
+    dnaName ? 'DNA: ' + dnaName : 'No Design DNA'
+  ].join(' · ');
 }
 
 function renderResults(run) {
@@ -959,7 +1072,7 @@ async function runComparison() {
         reasoning: $('#reasoning-select').value,
         maxOutputTokens: Number($('#max-output').value),
         mode: state.config.mode,
-        variants: state.variants.map(variant => ({ name: variant.name, skills: [...variant.skills], tools: [...variant.tools] }))
+        variants: state.variants.map(variant => ({ name: variant.name, loadoutId: variant.loadoutId, skills: [...variant.skills], tools: [...variant.tools] }))
       })
     });
     const run = await response.json();
@@ -1425,7 +1538,7 @@ function bindEvents() {
   $('#refresh-events').addEventListener('click', refreshEvents);
   $('#refresh-runs').addEventListener('click', refreshEvents);
   $('#reset-skills').addEventListener('click', () => { state.activeSkills = new Set(state.config.skills.filter(skill => skill.defaultOn).map(skill => skill.id)); renderSkillRegistry(); });
-  $('#add-variant').addEventListener('click', () => { if (state.variants.length < 3) { state.variants.push(createVariant('Setup C', 'delivery-qa')); renderVariants(); } });
+  $('#add-variant').addEventListener('click', () => { if (state.variants.length < 3) { state.variants.push(createVariant('Setup C', state.loadouts?.loadouts[2]?.id)); renderVariants(); } });
   $('#run-comparison').addEventListener('click', runComparison);
   $('#run-scale').addEventListener('change', event => {
     const values = { pilot: 700, standard: 1600, full: 3000 }; const labels = { pilot: 'Run pilot comparison', standard: 'Run standard comparison', full: 'Run full comparison' };
@@ -1494,7 +1607,7 @@ async function init() {
     state.activeSkills = new Set(stored && storedVersion >= skillDefaultsVersion ? stored.filter(id => configuredIds.has(id)) : defaults);
     state.runs = storage.read('apollo-runs', []);
     await refreshWork({ preserve: false });
-    state.variants = [createVariant('Setup A', 'lean-audit'), createVariant('Setup B', 'concept-lab')];
+    state.variants = [createVariant('Setup A', loadoutData.loadouts[0]?.id), createVariant('Setup B', loadoutData.loadouts[1]?.id || loadoutData.loadouts[0]?.id)];
     $('#model-select').innerHTML = state.config.models.map(model => `<option value="${model}"${model === 'gpt-5.6-terra' ? ' selected' : ''}>${model}</option>`).join('');
     $('#oracle-model').innerHTML = state.config.models.map(model => `<option value="${model}"${model === 'gpt-5.6-terra' ? ' selected' : ''}>${model}</option>`).join('');
     $('#integration-recommendation').textContent = integrationData.recommendation;
