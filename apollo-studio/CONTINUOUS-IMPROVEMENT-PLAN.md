@@ -1,6 +1,6 @@
 # Apollo Studio Continuous Improvement Plan
 
-Status: Superseded by `LOADOUT-PLAN.md` for phase ordering, the direction rule, and gates. Retained for the anti-AI rules and the standing loop shape.
+Status: Superseded by `LOADOUT-PLAN.md` for phase ordering, the direction rule, and gates. Retained for the anti-AI rules, the standing loop shape, and the termination condition below.
 
 ## Target outcome
 
@@ -60,6 +60,38 @@ A slice passes only when no critical or high defects remain, the primary task is
 - No feature added only to make the interface appear advanced.
 - No design drift after the direction is locked.
 
-## Stop conditions
+## The termination condition — binding, and not extendable
+
+`LOADOUT-PLAN.md` section 06 defines eleven falsifiable thresholds, T1-T11, and section 07
+defines exactly one condition under which the improvement loop stops:
+
+> **All eleven thresholds hold across all eight views for two consecutive slices.**
+
+This is written here so it cannot be quietly extended. The rules around it:
+
+1. **The measurement is `scripts/ui-metrics.mjs`, and only that.** A markup-pattern detector
+   is not evidence — one reported this interface clean while 165 text nodes failed contrast
+   and 289 controls were under the stated minimum. `npm run check` runs the script and fails
+   the build on any regression.
+2. **"Two consecutive slices" means two slices that each changed something and each
+   measured clean.** Re-running the script twice on an unchanged tree is one slice, not two.
+3. **A threshold may not be redefined to make it pass.** Definitions changed during the
+   program on three occasions and each is recorded in `PROGRESS-AND-DECISIONS.md` with the
+   reason and the check on that reason: T5 (a target is the activation area, not the widget),
+   T6 (monospace is a data type, not a second visual world), and T9 (measured on markup
+   present, not on markup currently rendered). Any further change to a definition must be
+   journalled the same way, must make the threshold *stricter or more faithful*, and must not
+   be the change that causes the threshold to pass.
+4. **Passing eleven thresholds is not a claim that the interface is good.** Each T is
+   legibility, predictability or not-having-to-look-twice made countable. They are the floor.
+   Beauty is deliberately not a threshold, because chasing taste first is what produced a
+   gold serif headline sitting on top of 9px labels.
+5. **When the condition is met, the loop stops.** It does not roll into a new backlog by
+   default. A further slice needs a stated defect or a stated goal, not momentum.
+
+An unattended session that reaches its context limit before the condition is met stops by
+journalling its state, never by declaring the program complete.
+
+## Stop conditions (pausing, not terminating)
 
 Pause only when a decision changes product direction, cost, privacy, or architecture; a required asset or permission is unavailable; the loop bounds in `AGENTS.md` are reached (QA repair or anti-loop); or the user explicitly pauses the loop. Do not stop because one page or iteration is complete.

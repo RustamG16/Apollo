@@ -139,7 +139,7 @@ body { margin:0; min-width:320px; background:var(--ink); color:var(--text); }
 button, input, select, textarea { font:inherit; }
 button { color:inherit; }
 button, select, input, textarea { outline:none; }
-button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible { outline:2px solid var(--focus); outline-offset:2px; }
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline:2px solid var(--focus); outline-offset:2px; }
 ::selection { color:var(--ink); background:var(--cyan); }
 ::-webkit-scrollbar { width:10px; height:10px; }
 ::-webkit-scrollbar-track { background:var(--ink); }
@@ -841,7 +841,7 @@ button,input,select,textarea { caret-color:var(--intelligence); }
 .node-tools { padding:5px; border:1px solid var(--line); background:var(--surface-2); }
 .node-tools .quiet-action { min-height:var(--control-h); border-color:transparent; background:transparent; }
 .node-tools .quiet-action:hover,.node-tools .quiet-action:focus-visible { border-color:var(--line-strong); background:var(--surface-2); }
-.workflow-node:focus-visible { outline:2px solid var(--intelligence); outline-offset:2px; box-shadow: none; }
+.workflow-node:focus-visible { outline:2px solid var(--focus); outline-offset:2px; box-shadow: none; }
 
 .playground-workbench { display:grid; grid-template-columns:minmax(300px,.72fr) minmax(0,1.4fr); gap:18px; align-items:start; }
 .playground-task-rail { position:sticky; top:88px; display:grid; gap:12px; }

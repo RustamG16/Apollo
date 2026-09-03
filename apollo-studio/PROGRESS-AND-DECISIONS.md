@@ -1156,3 +1156,59 @@ repeating here so a later session does not read eleven PASSes as permission to s
 **Next slice:** P5 standing critique — a second consecutive clean measurement, an independent
 read of the surfaces against DESIGN.md rather than against the thresholds, and the stop
 condition written into CONTINUOUS-IMPROVEMENT-PLAN.md so it cannot be quietly extended.
+
+## 2026-09-03 — P5: keyboard pass, focus repair, and the termination condition written down
+
+**Slice:** P5, standing critique, part 1. An independent critique is running in parallel and
+its findings will be recorded in the next entry.
+
+### Keyboard-only pass of the primary flow
+
+Walked Work with real Tab keypresses — 40 focus stops, in a sensible order: sidebar create,
+search, new chat, project list, run log, chat tabs, the loadout pill, Context, Node view, the
+composer, Attach, model, Send, then the inspector.
+
+**Defect found and repaired.** Every stop carried the system's `2px #9BD1FF` ring except the
+brand link, which rendered the **browser's own 1px orange ring**. Cause: the `:focus-visible`
+rule listed `button, select, input, textarea, summary` and never `a`, so anchors fell through
+to the user agent — a colour that is not in the palette at a width that is not the system's.
+Anchors and `[tabindex]` are now in the rule. Re-walked: 40 stops, all `2px rgb(155,209,255)`,
+none missing.
+
+A second, quieter one went with it: `.workflow-node:focus-visible` used `var(--intelligence)`
+— the withdrawn editorial teal, aliased to the accent — rather than the focus token. The map's
+focus ring was therefore the wrong colour by inheritance. It uses `--focus` now.
+
+**A note on how this was found, because the first attempt was wrong.** Focusing each element
+programmatically and reading its computed outline reported *every* control as having no ring.
+That result was an artefact: `:focus-visible` deliberately does not match programmatic focus.
+Driving real Tab keypresses gave the true answer. A test that reports everything as broken is
+usually testing itself.
+
+### The termination condition is now written where it cannot be quietly extended
+
+`CONTINUOUS-IMPROVEMENT-PLAN.md` carries it, per the plan's instruction. Five clauses:
+the measurement is `scripts/ui-metrics.mjs` and only that; two consecutive slices means two
+slices that each changed something; **a threshold may not be redefined to make it pass**, and
+the three definitions that did change during this program are named there with their reasons
+and the check on each; passing eleven thresholds is not a claim the interface is good; and
+when the condition is met the loop stops rather than rolling into a new backlog by momentum.
+
+### Measured state
+
+All eleven thresholds pass, for the **second consecutive slice**:
+
+| T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9 | T10 | T11 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 0 | 16 | 100% | 0 | 0 | 1 | 1 | 2 | 8/8 | 0 | 0 |
+
+`npm.cmd run check` exits 0. Console clean at 1280x800, 1440x900 and 1920x1080 across all
+eight views. Reduced motion honoured at 0.01ms worst observed. No horizontal overflow under
+the element-level check. Keyboard path complete with a visible system ring at every stop.
+
+**The measured stop condition in LOADOUT-PLAN.md section 07 is met.** It is deliberately not
+being called complete yet: the independent critique has not reported, and the whole point of
+having a critic blind to the implementer's rationale is that the implementer does not get to
+close the loop on their own evidence.
+
+**Next slice:** act on the independent critique.
