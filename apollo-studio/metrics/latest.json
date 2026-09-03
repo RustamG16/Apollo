@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T05:47:49.832Z",
-  "durationMs": 15585,
+  "generatedAt": "2026-09-03T05:49:21.162Z",
+  "durationMs": 15566,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -124,7 +124,7 @@
   },
   "perViewport": {
     "1280x800": {
-      "textNodes": 1368,
+      "textNodes": 1378,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
@@ -188,7 +188,7 @@
           ]
         },
         "agents": {
-          "textNodes": 70,
+          "textNodes": 80,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -196,7 +196,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "13.0",
-            41
+            46
           ]
         },
         "knowledge": {
@@ -250,7 +250,7 @@
       }
     },
     "1440x900": {
-      "textNodes": 1368,
+      "textNodes": 1378,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
@@ -314,7 +314,7 @@
           ]
         },
         "agents": {
-          "textNodes": 70,
+          "textNodes": 80,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -322,7 +322,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "13.0",
-            41
+            46
           ]
         },
         "knowledge": {
@@ -376,7 +376,7 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1368,
+      "textNodes": 1378,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
@@ -440,7 +440,7 @@
           ]
         },
         "agents": {
-          "textNodes": 70,
+          "textNodes": 80,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -448,7 +448,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "13.0",
-            41
+            46
           ]
         },
         "knowledge": {
@@ -510,8 +510,8 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 405,
-    "14.0": 594,
+    "13.0": 410,
+    "14.0": 599,
     "16.0": 309,
     "18.0": 20,
     "22.0": 21,
@@ -521,13 +521,13 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 106507,
-        "lines": 1436
+        "bytes": 107099,
+        "lines": 1444
       }
     ],
     "fontSizeUnits": {
-      "total": 241,
-      "rem": 241,
+      "total": 244,
+      "rem": 244,
       "px": 0,
       "em": 0,
       "other": 0

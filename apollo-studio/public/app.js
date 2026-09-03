@@ -1359,7 +1359,7 @@ function renderAgents() {
     const article = document.createElement('article');
     const category = categoryById[agent.id] || 'Direction';
     article.className = `agent-profile${agent.enabled ? '' : ' is-dormant'}`;
-    article.innerHTML = `<div class="agent-portrait"><img src="/media/gods/Apollo/Character_202607032015.jpeg" alt="" loading="lazy"><span class="agent-category"></span><span class="agent-state"></span></div><div class="agent-profile-main"><div class="agent-identity"><div><strong></strong><p></p></div></div><div class="agent-activation"><span>When this agent joins</span><p></p></div><div class="agent-skills"></div></div><div class="agent-controls"><label>Token budget<input type="number" min="500" max="50000" step="500"></label><label class="compact-check"><input class="approval-toggle" type="checkbox"> Review before action</label><label class="switch"><input class="agent-toggle" type="checkbox"><span class="switch-track" aria-hidden="true"></span></label></div>`;
+    article.innerHTML = `<div class="agent-portrait"><img src="/media/gods/Apollo/Character_202607032015.jpeg" alt="" loading="lazy"><span class="agent-category"></span><span class="agent-state"></span></div><div class="agent-profile-main"><div class="agent-identity"><div><strong></strong><p></p></div></div><div class="agent-activation"><span>When this agent joins</span><p></p></div><div class="agent-skills"></div></div><div class="agent-controls"><label class="agent-budget">Token budget<input type="number" min="500" max="50000" step="500"><small class="budget-translation"></small></label><label class="compact-check"><input class="approval-toggle" type="checkbox"> <span>Pause for approval before acting</span></label><label class="switch agent-availability"><input class="agent-toggle" type="checkbox"><span class="switch-track" aria-hidden="true"></span><span class="switch-caption"></span></label></div>`;
     const portrait = article.querySelector('.agent-portrait img'); portrait.src = mediaById[agent.id] || mediaById['apollo-director']; portrait.alt = `${agent.name} profile portrait`;
     article.querySelector('.agent-category').textContent = category;
     article.querySelector('.agent-state').textContent = agent.enabled ? 'Available' : 'Paused';
@@ -1371,6 +1371,20 @@ function renderAgents() {
     const budget = article.querySelector('input[type="number"]'); budget.value = agent.budget;
     const approval = article.querySelector('.approval-toggle'); approval.checked = agent.approval;
     const enabled = article.querySelector('.agent-toggle'); enabled.checked = agent.enabled; enabled.setAttribute('aria-label', `Enable ${agent.name}`);
+    const caption = article.querySelector('.switch-caption');
+    const describeAvailability = () => { caption.textContent = enabled.checked ? 'Available' : 'Paused'; };
+    describeAvailability();
+    enabled.addEventListener('change', describeAvailability);
+    // A budget is a number of tokens; a raw number is not a budget until it says what it buys.
+    const translation = article.querySelector('.budget-translation');
+    const describeAgentBudget = () => {
+      const tokens = Number(budget.value) || 0;
+      translation.textContent = tokens
+        ? `about ${Math.max(1, Math.round(tokens / 750))} pages of reasoning for this phase`
+        : 'no budget set';
+    };
+    describeAgentBudget();
+    budget.addEventListener('input', describeAgentBudget);
     const save = async () => {
       try {
         const updated = await api(`/api/agents/${agent.id}`, { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ budget: Number(budget.value), approval: approval.checked, enabled: enabled.checked }) });

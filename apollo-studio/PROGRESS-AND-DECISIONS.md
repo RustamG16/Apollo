@@ -1212,3 +1212,28 @@ having a critic blind to the implementer's rationale is that the implementer doe
 close the loop on their own evidence.
 
 **Next slice:** act on the independent critique.
+
+## 2026-09-03 — P5: the last two MEDIUM defects in Agent Profiles
+
+**Slice:** P5, part 2. Short slice closing the two audit defects that no threshold measured.
+
+`LOADOUT-PLAN.md` section 04 listed as MEDIUM: *"unlabelled checkbox beside every agent
+approval toggle. Token budget is a raw number with no unit or cost translation."* Neither is
+caught by T1-T11, which is exactly why they survived four phases of threshold work — a useful
+reminder that the thresholds are a floor and not a specification.
+
+- **The availability switch had no visible caption.** It carried an `aria-label`, so a screen
+  reader was fine and a person looking at it was not: a bare track with no statement of which
+  way it meant. It now reads **Available** or **Paused** beside the track and updates on
+  change. The approval checkbox's text became a real `<span>` so it can be styled as the
+  label it is rather than a loose text node.
+- **The budget was a bare number.** It now says what the number buys — *"about 8 pages of
+  reasoning for this phase"* — and updates as you type, matching the translation already
+  shipped on the Loadouts budget field.
+
+Every defect in the audit's ranked list is now closed: two CRITICAL, three HIGH, three
+MEDIUM.
+
+All eleven thresholds still pass; `npm.cmd run check` exits 0; console clean; no overflow.
+
+**Next:** the independent critique's findings.

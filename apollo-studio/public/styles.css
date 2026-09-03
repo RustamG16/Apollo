@@ -1433,3 +1433,11 @@ textarea { min-height: calc(var(--control-h) * 2); }
 @media (max-width: 1180px) {
   .history-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
 }
+
+/* An availability switch with no caption states nothing, and a budget is not a budget until
+   it says what the number buys. Both were MEDIUM defects in the audit. */
+.agent-availability { display: flex; align-items: center; gap: var(--space-4); }
+.switch-caption { color: var(--fg-muted); font-size: var(--text-meta); }
+.agent-budget { display: grid; gap: var(--space-2); }
+.agent-budget .budget-translation { color: var(--fg-dim); font-size: var(--text-label); letter-spacing: normal; text-transform: none; }
+.compact-check > span { color: var(--fg-muted); font-size: var(--text-meta); }
