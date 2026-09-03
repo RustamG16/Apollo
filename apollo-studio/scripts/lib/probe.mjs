@@ -202,11 +202,35 @@ export const PROBE_SOURCE = String(function apolloProbe(scope, revealDisclosures
     }
   }
 
+  // Document scrollWidth alone misses an element that spills past the viewport inside a
+  // container that happens to clip or scroll. The element-level sweep is what actually
+  // catches a grid child refusing to shrink, which is the common cause.
+  const viewportWidth = document.documentElement.clientWidth;
+  const spills = [];
+  for (const el of document.querySelectorAll('body *')) {
+    const rect = el.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) continue;
+    if (rect.right <= viewportWidth + 1) continue;
+    if (!visible(el)) continue;
+    const cs = getComputedStyle(el);
+    if (cs.position === 'fixed') continue;
+    spills.push({
+      tag: el.tagName.toLowerCase(),
+      cls: typeof el.className === 'string' ? el.className.slice(0, 50) : '',
+      by: Math.round(rect.right - viewportWidth),
+      sample: (el.textContent || '').trim().slice(0, 32),
+    });
+  }
   const overflow = {
     scrollWidth: document.documentElement.scrollWidth,
-    clientWidth: document.documentElement.clientWidth,
+    clientWidth: viewportWidth,
+    spills: spills.slice(0, 10),
+    spillCount: spills.length,
   };
-  overflow.horizontal = overflow.scrollWidth - overflow.clientWidth;
+  overflow.horizontal = Math.max(
+    overflow.scrollWidth - overflow.clientWidth,
+    spills.reduce((worst, item) => Math.max(worst, item.by), 0)
+  );
 
   const bodySize = parseFloat(getComputedStyle(document.body).fontSize);
   const rootSize = parseFloat(getComputedStyle(document.documentElement).fontSize);

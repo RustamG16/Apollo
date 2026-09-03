@@ -630,3 +630,90 @@ at 1280x800, 1440x900 or 1920x1080. `python library/tools/project.py all` and
 placed avoid-list, and the two interview skills as entry points, writing to
 `library/design-dna/`), plus brief, tools/MCP and budget as three further loadout sections.
 Then P3 slice 4: Playground compares two loadouts diffed by slot, differences only.
+
+## 2026-09-03 — P3 slice 3: Design DNA, brief, tools, budget
+
+**Slice:** P3, slice 3. Complete.
+
+### Design DNA exists in the product for the first time
+
+The library has shipped a complete taste-profile system since 2026-08-28 — a JSON schema,
+four doctrines each with a `profile.json` and a `design.md`, and two interview skills — and
+`library/design-dna/` held exactly one `.gitkeep`. Nothing in the interface could create,
+show or attach a profile. `design-dna.mjs` is the missing half:
+
+- `listDoctrines()` reads the four shipped doctrines and takes each one's summary from its
+  own `design.md` rather than restating it, so there is one source of truth per fact.
+- `createProfileFromDoctrine()` writes a real, schema-valid profile into
+  `library/design-dna/` rather than storing a pointer, because the profile is the thing
+  that persists across projects and a doctrine may change underneath it.
+- `updateProfile()` enforces the schema's own load-bearing clause in code: `avoidList`
+  **unions** and is never overridden.
+- `deleteProfile()` returns the removed record and `restoreProfile()` puts it back, so the
+  action is undoable like every other destructive action in the model.
+
+Routes: `GET/POST /api/design-dna`, `PATCH/DELETE /api/design-dna/:id`,
+`POST /api/design-dna/restore`.
+
+**Verified end to end through the interface:** attaching `apollo-instrument` to the Lean
+audit loadout wrote `instrument-default-lean-audit-ytkkzs.json`, which validates against
+`library/schemas/taste-profile.schema.json` with no missing and no unknown fields and a
+`source` inside the declared enum. Detach, delete and restore all work. The test profile was
+then removed; `library/design-dna/` is left with its `.gitkeep` because the user's taste
+profile should be the user's to create.
+
+### The avoid-list is drawn as loudly as the preferences
+
+The plan asked for this specifically and the schema explains why: `avoidList` unions across
+profiles and is never overridden by a doctrine default, which makes it the most consequential
+field in the record and, until now, the least visible. It renders as its own bordered block
+headed **"Never, in any run"**, with the note that these union and are never overridden, and
+each entry as a discrete chip. Instrument's seven — hero sections, marketing copy, decorative
+imagery, cards as default container, colour used for mood, proportional numerals in data,
+motion that delays a state change — read at `--text-meta`, not as a footnote. The doctrine
+cards in the picker each lead with how many things that doctrine refuses.
+
+### The interviews are described honestly
+
+`apollo-style-picker` and `apollo-taste-interview` are agent-host skills, not server
+features. The panel says so, names each one's cost (fast / deep), says what each produces,
+and states that they write into `library/design-dna/` where this panel will pick the result
+up. A button that silently could not do anything would have been worse than the truth.
+
+### Brief, Tools & MCP, Budget
+
+Three further loadout sections, all persisted through `PATCH /api/loadouts/:id`:
+
+- **Brief** — what every run of this loadout is trying to achieve, capped at the prose
+  measure.
+- **Tools & MCP** — keeps the existing honest availability reporting, which was already
+  right: an unavailable tool is shown with its real status and a disabled control, never
+  hidden.
+- **Budget & approval** — the token ceiling, and which of the five agents pause for a human.
+  The MEDIUM defect "token budget is a raw number with no unit or cost translation" is
+  fixed: the field now reads *"30,000 tokens — roughly 6,000 per agent across the five
+  stages, or about 40 pages of text"*, and it updates as you type.
+
+### Defects found and repaired inside the slice
+
+1. **A real horizontal overflow, and an instrument that could not see it.** The approval
+   list overflowed the viewport by 37px at 1440 and 42px at 1280 — grid and flex children
+   default to `min-width: auto`, so the five "…pauses for approval" labels refused to shrink.
+   The layout fix is `min-width: 0` on the dense rows plus wrapping on the label.
+
+   The more important half: **`node scripts/ui-metrics.mjs` reported "overflow: none" while
+   this was on screen.** The probe was reading only
+   `documentElement.scrollWidth - clientWidth`, which misses an element spilling past the
+   viewport inside a container that clips or scrolls. It now also sweeps every visible
+   element for a right edge beyond the viewport and reports the worst offender by name.
+   This was found by measuring the live page by hand after the automated check passed —
+   which is the argument for doing both, and it is now automated so the next one is caught.
+
+### Metrics
+
+All eleven unchanged from the previous slice: nine pass, T9 (1 of 8) and T11 (6) outstanding
+and owned by P4. `npm.cmd run check` exits 0, console clean, reduced motion honoured, no
+overflow at 1280x800, 1440x900 or 1920x1080 under the stricter check.
+
+**Next slice:** P3 slice 4 — Playground compares two loadouts, diffed by slot, showing only
+what differs. That is the last item in P3's exit gate.

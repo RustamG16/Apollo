@@ -1161,3 +1161,115 @@ textarea { min-height: calc(var(--control-h) * 2); }
   letter-spacing: var(--track-label);
   text-transform: uppercase;
 }
+
+/* ---------------------------------------------------------------------------
+   Design DNA, brief, tools, budget. The avoid-list is drawn at least as loud as
+   the preferences: it unions across profiles and is never overridden, which
+   makes it the most consequential field in the schema.
+   --------------------------------------------------------------------------- */
+
+.dna-panel { border-block-start: 1px solid var(--line); padding-block-start: var(--space-6); }
+.dna-intro { margin: 0 0 var(--space-5); max-width: var(--measure-prose); color: var(--fg-muted); font-size: var(--text-meta); }
+
+.doctrine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-6);
+}
+.doctrine-card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-3);
+  background: var(--surface);
+}
+.doctrine-card strong { font-size: var(--text-title); }
+.doctrine-id { color: var(--fg-dim); font-family: var(--font-mono); font-size: var(--text-label); }
+.doctrine-card p { margin: 0; color: var(--fg-muted); font-size: var(--text-meta); }
+.doctrine-avoids { color: var(--warn); font-size: var(--text-label); letter-spacing: var(--track-label); text-transform: uppercase; }
+.doctrine-card .quiet-action { justify-self: start; margin-block-start: var(--space-3); border: 1px solid var(--line-strong); }
+
+.interview-list { margin-block-start: var(--space-8); padding-block-start: var(--space-6); border-block-start: 1px solid var(--line); display: grid; gap: var(--space-4); }
+.interview-list > strong { font-size: var(--text-title); }
+.interview-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-4); color: var(--fg-muted); font-size: var(--text-meta); }
+.interview-row code { color: var(--accent); font-family: var(--font-mono); font-size: var(--text-meta); }
+.interview-cost { color: var(--fg-dim); font-size: var(--text-label); letter-spacing: var(--track-label); text-transform: uppercase; }
+
+.dna-profile { display: grid; gap: var(--space-6); }
+.dna-profile-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-5); }
+.dna-profile-head strong { font-size: var(--text-title); }
+.dna-meta { color: var(--fg-dim); font-size: var(--text-meta); }
+.dna-profile-head .quiet-action { margin-inline-start: auto; border: 1px solid var(--line-strong); }
+
+.dna-prefs { display: grid; grid-template-columns: minmax(96px, auto) minmax(0, 1fr); gap: 0; margin: 0; }
+.dna-prefs dt {
+  padding: var(--space-4) var(--space-5) var(--space-4) 0;
+  border-block-start: 1px solid var(--line);
+  color: var(--fg-dim);
+  font-size: var(--text-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+}
+.dna-prefs dd {
+  margin: 0;
+  padding: var(--space-4) 0;
+  border-block-start: 1px solid var(--line);
+  color: var(--fg);
+  font-size: var(--text-meta);
+}
+
+.avoid-block {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: 1px solid var(--warn);
+  border-radius: var(--radius-3);
+  background: var(--warn-quiet);
+}
+.avoid-block > strong { font-size: var(--text-title); }
+.avoid-note { margin: 0; color: var(--fg-muted); font-size: var(--text-meta); }
+.avoid-list { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-2) 0 0; padding: 0; list-style: none; }
+.avoid-list li {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-1);
+  background: var(--surface);
+  font-size: var(--text-meta);
+}
+.avoid-list .avoid-empty { border-style: dashed; color: var(--fg-dim); }
+
+.brief-section textarea,
+.slot-section select,
+.budget-section input {
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-2);
+  color: var(--fg);
+  background: var(--bg);
+  font-family: inherit;
+  font-size: var(--text-body);
+}
+.brief-section textarea { max-width: var(--measure-prose); line-height: var(--leading-prose); resize: vertical; }
+
+.budget-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-7); align-items: start; }
+.budget-total { display: grid; gap: var(--space-3); color: var(--fg-muted); font-size: var(--text-label); letter-spacing: var(--track-label); text-transform: uppercase; }
+.budget-total input { max-width: 12rem; letter-spacing: normal; }
+.budget-translation { max-width: var(--measure-prose); color: var(--fg-muted); font-size: var(--text-meta); letter-spacing: normal; text-transform: none; }
+.approval-list { display: grid; gap: var(--space-2); }
+
+.dna-section, .brief-section, .tools-section, .budget-section { display: grid; gap: var(--space-5); }
+
+/* Grid and flex children default to min-width:auto, so a long label refuses to shrink and
+   pushes the document wider than the viewport. Every dense row in the loadout editor opts
+   out of that explicitly. */
+.approval-list,
+.budget-grid > *,
+.loadout-editor > *,
+.tool-list > * { min-width: 0; }
+
+.compact-check { flex-wrap: wrap; }
+.compact-check > span { min-width: 0; overflow-wrap: anywhere; }
+.tool-option > span { min-width: 0; }

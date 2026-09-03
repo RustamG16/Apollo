@@ -203,7 +203,7 @@
       "advancedSkills": [],
       "seeded": true,
       "createdAt": "2026-09-03T05:01:55.772Z",
-      "updatedAt": "2026-09-03T05:11:21.453Z"
+      "updatedAt": "2026-09-03T05:19:53.102Z"
     },
     {
       "id": "concept-lab",
@@ -238,7 +238,7 @@
       "advancedSkills": [],
       "seeded": true,
       "createdAt": "2026-09-03T05:01:55.773Z",
-      "updatedAt": "2026-09-03T05:11:21.453Z"
+      "updatedAt": "2026-09-03T05:19:53.102Z"
     },
     {
       "id": "premium-build",
@@ -273,7 +273,7 @@
       "advancedSkills": [],
       "seeded": true,
       "createdAt": "2026-09-03T05:01:55.773Z",
-      "updatedAt": "2026-09-03T05:11:21.453Z"
+      "updatedAt": "2026-09-03T05:19:53.102Z"
     },
     {
       "id": "delivery-qa",
@@ -308,7 +308,7 @@
       "advancedSkills": [],
       "seeded": true,
       "createdAt": "2026-09-03T05:01:55.773Z",
-      "updatedAt": "2026-09-03T05:11:21.453Z"
+      "updatedAt": "2026-09-03T05:19:53.102Z"
     }
   ],
   "migrations": [

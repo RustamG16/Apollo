@@ -9,6 +9,7 @@ import { plugins, tools, presets } from './skills.mjs';
 import { addSource, allSkills, createSkill, initializeKnowledge, listKnowledge, updateSkill } from './knowledge.mjs';
 import { buildPlan, listAgents, updateAgent } from './agents.mjs';
 import { initializeEventStore, listEvents, publishEvent } from './events.mjs';
+import { createProfileFromDoctrine, deleteProfile, getDesignDna, restoreProfile, updateProfile } from './design-dna.mjs';
 import { agentTemplates, createSystem, createLoadout, deleteLoadout, deleteSystem, getOutputPreview, initializeSystems, listLoadouts, listSystems, recordSystemOutput, restoreLoadout, setActiveLoadout, setActiveSystem, updateLoadout, updateSystem } from './systems.mjs';
 import { addAttachment, addMessage, chatDetail, createChat, createProject, createProposal, initializeWorkspace, listWorkspace, resolveProposal, unlinkAttachment } from './workspace.mjs';
 
@@ -237,6 +238,20 @@ const server = http.createServer(async (request, response) => {
     const systemMatch = path.match(/^\/api\/systems\/([a-z0-9-]+)$/);
     if (request.method === 'PATCH' && systemMatch) return json(response, 200, await updateSystem(systemMatch[1], await readJson(request)));
     if (request.method === 'DELETE' && systemMatch) return json(response, 200, await deleteSystem(systemMatch[1]));
+    // Design DNA: the taste profile that persists across projects. Writes into
+    // library/design-dna/, which is where the schema and the two interview skills expect it.
+    if (request.method === 'GET' && path === '/api/design-dna') return json(response, 200, await getDesignDna());
+    if (request.method === 'POST' && path === '/api/design-dna') {
+      const body = await readJson(request);
+      return json(response, 201, await createProfileFromDoctrine(body.doctrine, body.displayName));
+    }
+    if (request.method === 'POST' && path === '/api/design-dna/restore') {
+      return json(response, 200, await restoreProfile((await readJson(request)).profile));
+    }
+    const profileMatch = path.match(/^\/api\/design-dna\/([a-z0-9-]+)$/);
+    if (request.method === 'PATCH' && profileMatch) return json(response, 200, await updateProfile(profileMatch[1], await readJson(request)));
+    if (request.method === 'DELETE' && profileMatch) return json(response, 200, await deleteProfile(profileMatch[1]));
+
     // Loadouts: the open half of the model. The pipeline above them is locked.
     if (request.method === 'GET' && path === '/api/loadouts') return json(response, 200, await listLoadouts());
     if (request.method === 'POST' && path === '/api/loadouts') return json(response, 201, await createLoadout(await readJson(request)));

@@ -378,6 +378,221 @@ function readSlotSelections() {
   return slots;
 }
 
+
+// ---------------------------------------------------------------------------
+// Design DNA, brief, tools and budget: the rest of the loadout.
+// ---------------------------------------------------------------------------
+
+async function refreshDesignDna() {
+  state.designDna = await api('/api/design-dna');
+}
+
+function renderAvoidList(avoidList) {
+  // The schema's avoidList unions and is never overridden by a doctrine default, which makes
+  // it the most load-bearing field in the profile. It is rendered at least as prominently as
+  // the preferences, not folded into a summary line.
+  const block = document.createElement('div');
+  block.className = 'avoid-block';
+  const heading = document.createElement('strong');
+  heading.textContent = 'Never, in any run';
+  const note = document.createElement('p');
+  note.className = 'avoid-note';
+  note.textContent = 'These union across profiles and are never overridden by a doctrine default.';
+  const list = document.createElement('ul');
+  list.className = 'avoid-list';
+  if (!avoidList.length) {
+    const item = document.createElement('li');
+    item.className = 'avoid-empty';
+    item.textContent = 'Nothing ruled out yet.';
+    list.append(item);
+  } else {
+    for (const entry of avoidList) {
+      const item = document.createElement('li');
+      item.textContent = entry;
+      list.append(item);
+    }
+  }
+  block.append(heading, note, list);
+  return block;
+}
+
+function renderProfileSummary(profile) {
+  const wrap = document.createElement('div');
+  wrap.className = 'dna-profile';
+
+  const head = document.createElement('div');
+  head.className = 'dna-profile-head';
+  const name = document.createElement('strong');
+  name.textContent = profile.displayName;
+  const meta = document.createElement('span');
+  meta.className = 'dna-meta';
+  meta.textContent = (profile.doctrine ? profile.doctrine : 'bespoke') + ' · ' + profile.source
+    + ' · confidence ' + Math.round((profile.confidence?.overall ?? 0) * 100) + '%';
+  const detach = document.createElement('button');
+  detach.type = 'button';
+  detach.className = 'quiet-action';
+  detach.textContent = 'Detach';
+  detach.addEventListener('click', async () => {
+    const form = $('#loadout-form');
+    await api('/api/loadouts/' + selectedLoadout().id, {
+      method: 'PATCH',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ designDna: '', name: form.elements.name.value })
+    });
+    await refreshLoadouts(selectedLoadout().id);
+  });
+  head.append(name, meta, detach);
+
+  const prefs = document.createElement('dl');
+  prefs.className = 'dna-prefs';
+  for (const [field, value] of Object.entries(profile.explicitPreferences || {})) {
+    const term = document.createElement('dt');
+    term.textContent = field;
+    const def = document.createElement('dd');
+    def.textContent = Array.isArray(value) ? value.join(' · ') : String(value);
+    prefs.append(term, def);
+  }
+
+  wrap.append(head, prefs, renderAvoidList(profile.avoidList || []));
+  return wrap;
+}
+
+function renderDoctrinePicker() {
+  const wrap = document.createElement('div');
+  wrap.className = 'doctrine-picker';
+  const intro = document.createElement('p');
+  intro.className = 'dna-intro';
+  intro.textContent = 'No profile attached. Pick a shipped doctrine to start from, or run an interview for something bespoke.';
+  wrap.append(intro);
+
+  const grid = document.createElement('div');
+  grid.className = 'doctrine-grid';
+  for (const doctrine of state.designDna?.doctrines || []) {
+    const card = document.createElement('div');
+    card.className = 'doctrine-card';
+    const name = document.createElement('strong');
+    name.textContent = doctrine.name;
+    const id = document.createElement('span');
+    id.className = 'doctrine-id';
+    id.textContent = doctrine.id;
+    const summary = document.createElement('p');
+    summary.textContent = doctrine.summary;
+    const avoids = document.createElement('span');
+    avoids.className = 'doctrine-avoids';
+    avoids.textContent = doctrine.avoidList.length + ' things it refuses';
+    const use = document.createElement('button');
+    use.type = 'button';
+    use.className = 'quiet-action';
+    use.textContent = 'Use this doctrine';
+    use.addEventListener('click', async () => {
+      const loadout = selectedLoadout();
+      const form = $('#loadout-form');
+      try {
+        const profile = await api('/api/design-dna', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ doctrine: doctrine.id, displayName: doctrine.name + ' — ' + loadout.name })
+        });
+        await api('/api/loadouts/' + loadout.id, {
+          method: 'PATCH',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ designDna: profile.profileId, name: form.elements.name.value })
+        });
+        await refreshDesignDna();
+        await refreshLoadouts(loadout.id);
+      } catch (error) { $('#loadout-feedback').textContent = error.message; }
+    });
+    card.append(name, id, summary, avoids, use);
+    grid.append(card);
+  }
+  wrap.append(grid);
+
+  const interviews = document.createElement('div');
+  interviews.className = 'interview-list';
+  const interviewHeading = document.createElement('strong');
+  interviewHeading.textContent = 'Or build one by interview';
+  const interviewNote = document.createElement('p');
+  interviewNote.className = 'dna-intro';
+  interviewNote.textContent = 'These run in the agent host, not in this browser. Invoke the skill by name and it writes a schema-valid profile into library/design-dna/, where this panel will pick it up.';
+  interviews.append(interviewHeading, interviewNote);
+  for (const interview of state.designDna?.interviews || []) {
+    const row = document.createElement('div');
+    row.className = 'interview-row';
+    const label = document.createElement('code');
+    label.textContent = interview.id;
+    const cost = document.createElement('span');
+    cost.className = 'interview-cost';
+    cost.textContent = interview.cost;
+    const description = document.createElement('span');
+    description.textContent = interview.description;
+    row.append(label, cost, description);
+    interviews.append(row);
+  }
+  wrap.append(interviews);
+  return wrap;
+}
+
+function renderDesignDnaPanel(loadout) {
+  const host = $('#dna-panel');
+  if (!host) return;
+  const profile = (state.designDna?.profiles || []).find(item => item.profileId === loadout.designDna);
+  host.replaceChildren(profile ? renderProfileSummary(profile) : renderDoctrinePicker());
+}
+
+function renderLoadoutTools(loadout) {
+  const host = $('#loadout-tools');
+  if (!host) return;
+  const available = state.systems?.inventory?.mcp || [];
+  host.replaceChildren(...available.map(tool => {
+    const label = document.createElement('label');
+    label.className = 'tool-option';
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.checked = loadout.tools.mcp.includes(tool.id);
+    input.disabled = tool.usable === false;
+    input.addEventListener('change', markLoadoutDirty);
+    input.dataset.toolId = tool.id;
+    const copy = document.createElement('span');
+    const name = document.createElement('strong');
+    name.textContent = tool.name;
+    const detail = document.createElement('small');
+    // The existing honest availability reporting is kept: an unavailable tool is shown
+    // with its real status rather than hidden or silently disabled.
+    detail.textContent = tool.usable === false
+      ? (tool.status || 'unavailable') + ' — cannot be used in this environment'
+      : (tool.status || 'available');
+    copy.append(name, detail);
+    label.append(input, copy);
+    return label;
+  }));
+}
+
+function renderApprovals(loadout) {
+  const host = $('#approval-list');
+  if (!host) return;
+  const agents = activeSystem()?.agents || [];
+  host.replaceChildren(...agents.map(agent => {
+    const label = document.createElement('label');
+    label.className = 'compact-check';
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.checked = Boolean(loadout.budget.approvals[agent.id]);
+    input.dataset.approvalFor = agent.id;
+    input.addEventListener('change', markLoadoutDirty);
+    const copy = document.createElement('span');
+    copy.textContent = agent.name + ' pauses for approval';
+    label.append(input, copy);
+    return label;
+  }));
+}
+
+function describeBudget(tokens) {
+  // A raw number with no unit is not a budget. Translate it into the thing it buys.
+  const perAgent = Math.round(tokens / 5 / 100) * 100;
+  return tokens.toLocaleString() + ' tokens — roughly ' + perAgent.toLocaleString()
+    + ' per agent across the five stages, or about ' + Math.round(tokens / 750).toLocaleString() + ' pages of text.';
+}
+
 function renderSystems() {
   if (!state.loadouts || !$('#loadout-list')) return;
   renderPipelineStrip();
@@ -396,6 +611,12 @@ function renderSystems() {
   $('#activate-loadout').disabled = loadout.id === state.loadouts.activeLoadoutId;
   $('#delete-loadout').disabled = state.loadouts.loadouts.length <= 1;
   $('#slot-rows').replaceChildren(...state.loadouts.slots.map(slot => renderSlotRow(slot, loadout)));
+  renderDesignDnaPanel(loadout);
+  renderLoadoutTools(loadout);
+  renderApprovals(loadout);
+  $('#loadout-brief').value = loadout.brief || '';
+  $('#loadout-budget').value = loadout.budget.totalTokens;
+  $('#budget-translation').textContent = describeBudget(loadout.budget.totalTokens);
   $('#loadout-feedback').textContent = '';
   renderOutputs(activeSystem());
 }
@@ -1091,7 +1312,18 @@ async function saveSelectedLoadout(event) {
     await api(`/api/loadouts/${loadout.id}`, {
       method: 'PATCH',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ name: form.elements.name.value, description: form.elements.description.value, slots: readSlotSelections() })
+      body: JSON.stringify({
+        name: form.elements.name.value,
+        description: form.elements.description.value,
+        slots: readSlotSelections(),
+        designDna: loadout.designDna || '',
+        brief: $('#loadout-brief').value,
+        tools: { mcp: $$('#loadout-tools input:checked').map(input => input.dataset.toolId), plugins: loadout.tools.plugins },
+        budget: {
+          totalTokens: Number($('#loadout-budget').value) || loadout.budget.totalTokens,
+          approvals: Object.fromEntries($$('#approval-list input').map(input => [input.dataset.approvalFor, input.checked]))
+        }
+      })
     });
     await refreshLoadouts(loadout.id);
     $('#loadout-feedback').textContent = 'Saved. New plans use this loadout when it is active.';
@@ -1230,6 +1462,11 @@ function bindEvents() {
       });
     } catch (error) { $('#loadout-feedback').textContent = error.message; }
   });
+  $('#loadout-brief').addEventListener('input', markLoadoutDirty);
+  $('#loadout-budget').addEventListener('input', event => {
+    $('#budget-translation').textContent = describeBudget(Number(event.target.value) || 0);
+    markLoadoutDirty();
+  });
   $('#undo-dismiss').addEventListener('click', dismissUndo);
   const observer = new ResizeObserver(() => requestAnimationFrame(drawConnections)); observer.observe($('#workflow-canvas'));
   window.addEventListener('resize', drawConnections, { passive: true });
@@ -1241,11 +1478,12 @@ async function init() {
     const response = await fetch('/api/config');
     if (!response.ok) throw new Error('Configuration endpoint unavailable.');
     state.config = await response.json();
-    const [knowledge, agents, integrationData, eventData, systemsData, loadoutData] = await Promise.all([api('/api/knowledge'), api('/api/agents'), api('/api/integrations'), api('/api/events?limit=200'), api('/api/systems'), api('/api/loadouts')]);
+    const [knowledge, agents, integrationData, eventData, systemsData, loadoutData, dnaData] = await Promise.all([api('/api/knowledge'), api('/api/agents'), api('/api/integrations'), api('/api/events?limit=200'), api('/api/systems'), api('/api/loadouts'), api('/api/design-dna')]);
     state.knowledge = knowledge; state.agents = agents.agents; state.integrations = integrationData.integrations;
     state.events = eventData.events;
     state.systems = systemsData;
     state.loadouts = loadoutData; state.selectedLoadoutId = loadoutData.activeLoadoutId;
+    state.designDna = dnaData;
     state.selectedSkillId = knowledge.skills[0]?.id || null;
     state.oracleMessages = storage.read('apollo-oracle-messages', []);
     state.oraclePlan = storage.read('apollo-oracle-plan', null);

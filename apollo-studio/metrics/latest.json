@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T05:11:36.810Z",
-  "durationMs": 15431,
+  "generatedAt": "2026-09-03T05:20:08.559Z",
+  "durationMs": 15532,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -131,14 +131,14 @@
   },
   "perViewport": {
     "1280x800": {
-      "textNodes": 1233,
+      "textNodes": 1290,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 10,
-      "controls": 486,
+      "controls": 503,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -171,15 +171,15 @@
           ]
         },
         "systems": {
-          "textNodes": 127,
+          "textNodes": 184,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
           "unmeasuredControls": 1,
           "dominantSize": [
-            "16.0",
-            53
+            "14.0",
+            66
           ]
         },
         "playground": {
@@ -257,14 +257,14 @@
       }
     },
     "1440x900": {
-      "textNodes": 1233,
+      "textNodes": 1290,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 10,
-      "controls": 486,
+      "controls": 503,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -297,15 +297,15 @@
           ]
         },
         "systems": {
-          "textNodes": 127,
+          "textNodes": 184,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
           "unmeasuredControls": 1,
           "dominantSize": [
-            "16.0",
-            53
+            "14.0",
+            66
           ]
         },
         "playground": {
@@ -383,14 +383,14 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1233,
+      "textNodes": 1290,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 10,
-      "controls": 486,
+      "controls": 503,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -423,15 +423,15 @@
           ]
         },
         "systems": {
-          "textNodes": 127,
+          "textNodes": 184,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
           "unmeasuredControls": 1,
           "dominantSize": [
-            "16.0",
-            53
+            "14.0",
+            66
           ]
         },
         "playground": {
@@ -517,24 +517,24 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 321,
-    "14.0": 568,
-    "16.0": 299,
-    "18.0": 9,
-    "22.0": 17,
+    "13.0": 338,
+    "14.0": 595,
+    "16.0": 303,
+    "18.0": 14,
+    "22.0": 21,
     "32.0": 8
   },
   "css": {
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 94195,
-        "lines": 1164
+        "bytes": 99399,
+        "lines": 1276
       }
     ],
     "fontSizeUnits": {
-      "total": 204,
-      "rem": 204,
+      "total": 223,
+      "rem": 223,
       "px": 0,
       "em": 0,
       "other": 0

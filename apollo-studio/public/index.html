@@ -160,6 +160,33 @@
               <div class="slot-rows" id="slot-rows"></div>
             </section>
 
+            <section class="dna-section" aria-labelledby="dna-section-title">
+              <div class="system-section-heading"><div><h2 id="dna-section-title">Design DNA</h2><p>The taste profile this loadout runs against. It persists across projects.</p></div></div>
+              <div class="dna-panel" id="dna-panel"></div>
+            </section>
+
+            <section class="brief-section" aria-labelledby="brief-section-title">
+              <div class="system-section-heading"><div><h2 id="brief-section-title">Brief</h2><p>What every run of this loadout is trying to achieve. Carried into the plan.</p></div></div>
+              <label class="sr-only" for="loadout-brief">Brief</label>
+              <textarea id="loadout-brief" rows="4" maxlength="8000" placeholder="The outcome, the audience, and the constraints that do not move…"></textarea>
+            </section>
+
+            <section class="tools-section" aria-labelledby="tools-section-title">
+              <div class="system-section-heading"><div><h2 id="tools-section-title">Tools &amp; MCP</h2><p>Availability is reported honestly: an unavailable tool is shown, not hidden.</p></div></div>
+              <div class="tool-list" id="loadout-tools"></div>
+            </section>
+
+            <section class="budget-section" aria-labelledby="budget-section-title">
+              <div class="system-section-heading"><div><h2 id="budget-section-title">Budget &amp; approval</h2><p>The ceiling for one run, and which agents pause for a human first.</p></div></div>
+              <div class="budget-grid">
+                <label class="budget-total">Token ceiling for one run
+                  <input id="loadout-budget" type="number" min="1000" max="300000" step="1000" inputmode="numeric">
+                  <span class="budget-translation" id="budget-translation"></span>
+                </label>
+                <div class="approval-list" id="approval-list" role="group" aria-label="Approval before action"></div>
+              </div>
+            </section>
+
             <section class="output-library" aria-labelledby="output-library-title">
               <div class="system-section-heading"><div><h2 id="output-library-title">Output library</h2><p>Project previews stay attached to the pipeline that produced them.</p></div><span id="output-count">0 outputs</span></div>
               <div class="output-grid" id="output-grid"></div>
