@@ -1,0 +1,198 @@
+{
+  "version": 1,
+  "note": "The loadout slot map. Eight questions with real answers, replacing a flat list of 84 checkboxes. Authored here and joined onto the registry by apollo-studio/skills.mjs; deliberately NOT a field inside skills.registry.json, which library/tools/project.py regenerates. Every slot has a default, so a loadout is valid untouched. A skill with no slot is not a choice - it is the browsable capability library.",
+  "slots": [
+    {
+      "id": "craft",
+      "name": "Craft",
+      "owner": "hephaestus-build",
+      "question": "What does finished feel like?",
+      "why": "The one slot that changes the output most. Swapping it produces three genuinely different builds from one brief.",
+      "default": "apple-design",
+      "candidates": [
+        {
+          "skill": "apple-design",
+          "changes": "Fluid, physical motion and interruptible gestures; restraint over ornament."
+        },
+        {
+          "skill": "emil-design-eng",
+          "changes": "Component-level polish: the invisible details, states and transitions between them."
+        },
+        {
+          "skill": "awwwards-web-design",
+          "changes": "Editorial typography and scroll choreography; the loudest of the five."
+        },
+        {
+          "skill": "impeccable",
+          "changes": "Hierarchy, accessibility and anti-pattern removal before any expression."
+        },
+        {
+          "skill": "ui-ux",
+          "changes": "Conventional, familiar patterns; the safest and the least distinctive."
+        }
+      ]
+    },
+    {
+      "id": "direction",
+      "name": "Direction",
+      "owner": "calliope-experience",
+      "question": "How is the concept formed?",
+      "why": "Decides whether the run arrives at a direction by construction, by taste, or by scoring.",
+      "default": "concept-studio",
+      "candidates": [
+        {
+          "skill": "concept-studio",
+          "changes": "One direction built from the brief's constraints and defended in writing."
+        },
+        {
+          "skill": "taste-first-experience-design",
+          "changes": "The taste profile leads; the brief is fitted to it rather than the reverse."
+        },
+        {
+          "skill": "award-rubric",
+          "changes": "The direction is scored against an explicit rubric before it is committed to."
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "name": "Evidence",
+      "owner": "athena-evidence",
+      "question": "What grounds the decision?",
+      "why": "Determines what the director is allowed to call a fact.",
+      "default": "ux-evidence-audit",
+      "candidates": [
+        {
+          "skill": "ux-evidence-audit",
+          "changes": "The existing page is the evidence: computed styles, real behaviour, measured defects."
+        },
+        {
+          "skill": "reference-deconstruction",
+          "changes": "Supplied references are the evidence. The entry point for greenfield work."
+        },
+        {
+          "skill": "customer-research",
+          "changes": "People are the evidence. Slowest, and the only one that can contradict the brief."
+        },
+        {
+          "skill": "design-analytics",
+          "changes": "Measurement is the evidence, and every claim carries an event contract."
+        }
+      ]
+    },
+    {
+      "id": "structure",
+      "name": "Structure",
+      "owner": "athena-evidence",
+      "question": "How is the product organised?",
+      "why": "Chooses whether the run reasons about information first or about components first.",
+      "default": "site-architecture",
+      "candidates": [
+        {
+          "skill": "site-architecture",
+          "changes": "Information architecture first: routes, hierarchy and navigation before any screen."
+        },
+        {
+          "skill": "pick-ui-library",
+          "changes": "Component inventory first: the library's primitives set what the screens can be."
+        }
+      ]
+    },
+    {
+      "id": "motion",
+      "name": "Motion",
+      "owner": "hephaestus-build",
+      "question": "How does it move?",
+      "why": "Motion is the easiest place to spend a budget with nothing to show. The default is the smallest thing that works.",
+      "default": "gsap-core",
+      "candidates": [
+        {
+          "skill": "gsap-core",
+          "changes": "State feedback only: tweens, easing, reduced-motion. Nothing scroll-driven."
+        },
+        {
+          "skill": "gsap-timeline",
+          "changes": "Adds sequencing, for choreography that has to arrive in an order."
+        },
+        {
+          "skill": "gsap-scrolltrigger",
+          "changes": "Adds scroll-linked motion, pinning and parallax. The most expensive answer here."
+        },
+        {
+          "skill": "gsap-react",
+          "changes": "For a React or Next.js target: useGSAP, refs and cleanup on unmount."
+        },
+        {
+          "skill": "webgl-experience",
+          "changes": "A WebGL surface with a non-WebGL fallback. Opt-in, and it must earn its cost."
+        }
+      ]
+    },
+    {
+      "id": "media",
+      "name": "Media",
+      "owner": "hermes-delivery",
+      "question": "Where do assets come from?",
+      "why": "The slot that decides whether anything is generated at all, and who owns the rights.",
+      "default": "asset-director",
+      "candidates": [
+        {
+          "skill": "asset-director",
+          "changes": "Nothing is produced without an approved manifest. Sourcing before generation."
+        },
+        {
+          "skill": "higgsfield-generate",
+          "changes": "Generated stills and video, recorded in the manifest with their prompts."
+        },
+        {
+          "skill": "garden-gpt-image-2",
+          "changes": "Generated stills only, through the image model already available."
+        },
+        {
+          "skill": "image",
+          "changes": "Transform and prepare media that already exists. Generates nothing."
+        }
+      ]
+    },
+    {
+      "id": "copy",
+      "name": "Copy",
+      "owner": "calliope-experience",
+      "question": "Who writes the words?",
+      "why": "An interface is mostly language, and this is the only slot that owns it.",
+      "default": "copywriting",
+      "candidates": [
+        {
+          "skill": "copywriting",
+          "changes": "New copy written against the positioning: headlines, value propositions, calls to action."
+        },
+        {
+          "skill": "copy-editing",
+          "changes": "The existing copy is kept and sharpened. Preserves the client's voice."
+        }
+      ]
+    },
+    {
+      "id": "verify",
+      "name": "Verify",
+      "owner": "hermes-delivery",
+      "question": "What counts as done?",
+      "why": "Whatever is chosen here is the only definition of finished the run will honour.",
+      "default": "visual-qa",
+      "candidates": [
+        {
+          "skill": "visual-qa",
+          "changes": "States, viewports, keyboard, reduced motion and console health, observed not asserted."
+        },
+        {
+          "skill": "award-rubric",
+          "changes": "Scored against the rubric. Catches a weak concept that passes every check."
+        },
+        {
+          "skill": "gsap-performance",
+          "changes": "Frame cost and jank. Only meaningful when the Motion slot bought something expensive."
+        }
+      ]
+    }
+  ]
+}

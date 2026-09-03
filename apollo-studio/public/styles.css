@@ -985,3 +985,179 @@ textarea { min-height: calc(var(--control-h) * 2); }
   }
   .icon-action { min-inline-size: var(--control-h-narrow); }
 }
+
+/* ---------------------------------------------------------------------------
+   Loadouts. A locked pipeline drawn as a read-only strip, above the one thing
+   on this screen that is editable. Structure is drawn: rules and aligned
+   columns, no cards.
+   --------------------------------------------------------------------------- */
+
+.pipeline-strip {
+  margin-block-end: var(--space-8);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-3);
+  background: var(--surface);
+}
+
+.pipeline-strip-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border-block-end: 1px solid var(--line);
+}
+
+.pipeline-strip-head h2 { margin: 0; font-size: var(--text-title); }
+.pipeline-strip-head p { margin: var(--space-2) 0 0; max-width: var(--measure-prose); color: var(--fg-muted); font-size: var(--text-meta); }
+
+.lock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 0 0 auto;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-2);
+  color: var(--fg-muted);
+  font-size: var(--text-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+}
+.lock-badge span { color: var(--fg-dim); }
+
+.pipeline-stages {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pipeline-stage {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-6);
+  border-inline-end: 1px solid var(--line);
+}
+.pipeline-stage:last-child { border-inline-end: 0; }
+.stage-phase { color: var(--fg-dim); font-size: var(--text-label); letter-spacing: var(--track-label); text-transform: uppercase; }
+.pipeline-stage strong { font-size: var(--text-body); }
+.pipeline-stage p { margin: 0; color: var(--fg-muted); font-size: var(--text-meta); }
+.stage-owns { color: var(--accent); font-size: var(--text-meta); }
+
+.loadout-workbench {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.loadout-library {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-3);
+  background: var(--surface);
+}
+.loadout-library .panel-heading { padding: var(--space-6); border-block-end: 1px solid var(--line); }
+.loadout-list { display: grid; }
+
+.loadout-editor { display: grid; gap: var(--space-8); min-width: 0; }
+
+.loadout-form { display: grid; gap: var(--space-5); }
+.loadout-identity { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-5); }
+.loadout-identity label { display: grid; gap: var(--space-3); color: var(--fg-muted); font-size: var(--text-label); letter-spacing: var(--track-label); text-transform: uppercase; }
+.loadout-identity input { color: var(--fg); font-size: var(--text-body); letter-spacing: normal; text-transform: none; }
+.loadout-actions { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+
+/* One row per question, with the answer and its consequence on the same line. */
+.slot-rows { border-block-start: 1px solid var(--line); }
+
+.slot-row {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(0, 2fr);
+  gap: var(--space-6);
+  align-items: start;
+  padding: var(--space-6) 0;
+  border-block-end: 1px solid var(--line);
+}
+
+.slot-heading { display: grid; gap: var(--space-2); min-width: 0; }
+.slot-heading strong { font-size: var(--text-body); }
+.slot-question { margin: 0; color: var(--fg-muted); font-size: var(--text-meta); }
+.slot-owner { color: var(--fg-dim); font-size: var(--text-label); letter-spacing: var(--track-label); text-transform: uppercase; }
+
+.slot-control { display: grid; gap: var(--space-3); min-width: 0; }
+.slot-control select { width: 100%; max-width: 26rem; }
+.slot-changes { margin: 0; max-width: var(--measure-prose); color: var(--fg-muted); font-size: var(--text-meta); }
+
+/* A slot that differs from its default is the only thing worth marking. */
+.slot-row.is-changed .slot-heading strong { box-shadow: inset 0 -2px 0 var(--accent); }
+
+.empty-state {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-3);
+  background: var(--surface);
+}
+.empty-state strong { font-size: var(--text-title); }
+.empty-state p { margin: 0; max-width: var(--measure-prose); color: var(--fg-muted); font-size: var(--text-meta); }
+
+.undo-bar {
+  position: fixed;
+  z-index: var(--z-toast);
+  inset-inline: 0;
+  bottom: var(--space-7);
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  width: fit-content;
+  max-width: calc(100vw - var(--space-8));
+  margin-inline: auto;
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-6);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-3);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-float);
+}
+.undo-message { font-size: var(--text-body); }
+.undo-action {
+  min-height: var(--control-h);
+  padding: 0 var(--space-5);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-2);
+  background: var(--accent-quiet);
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+}
+.undo-action:hover { background: var(--accent); color: var(--fg-on-accent); }
+
+@media (max-width: 1180px) {
+  .loadout-workbench { grid-template-columns: minmax(0, 1fr); }
+  .pipeline-stages { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pipeline-stage { border-block-end: 1px solid var(--line); }
+  .slot-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+}
+
+/* `hidden` is a promise the platform makes, and a component rule that sets `display`
+   silently breaks it. A doubled attribute selector outranks any single class without
+   reaching for !important. */
+[hidden][hidden] { display: none; }
+
+/* The director node's phase label and its "always active" status were absolutely
+   positioned on top of each other; at 9px they happened to miss, at 13px they collide.
+   The fix is the layout, not the type: the status sits in the flow, on its own line. */
+.workflow-node em {
+  position: static;
+  margin-block-end: var(--space-3);
+  color: var(--ok);
+  font-size: var(--text-label);
+  font-style: normal;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+}

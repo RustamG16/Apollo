@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "activeSystemId": "untitled-system",
+  "version": 2,
+  "activeSystemId": "olympus-web-system",
   "systems": [
     {
       "id": "olympus-web-system",
@@ -166,16 +166,153 @@
           "previewPath": "test_projects/Savra_Restraunt/.olympus/evidence/qa/desktop-1440x900.png"
         }
       ]
+    }
+  ],
+  "activeLoadoutId": "lean-audit",
+  "loadouts": [
+    {
+      "id": "lean-audit",
+      "name": "Lean audit",
+      "description": "Migrated from the Lean audit preset.",
+      "slots": {
+        "craft": "ui-ux",
+        "direction": "concept-studio",
+        "evidence": "ux-evidence-audit",
+        "structure": "site-architecture",
+        "motion": "gsap-core",
+        "media": "asset-director",
+        "copy": "copywriting",
+        "verify": "visual-qa"
+      },
+      "designDna": null,
+      "brief": "",
+      "tools": {
+        "mcp": [],
+        "plugins": []
+      },
+      "budget": {
+        "totalTokens": 30000,
+        "approvals": {
+          "apollo-director": false,
+          "athena-evidence": false,
+          "calliope-experience": false,
+          "hephaestus-build": false,
+          "hermes-delivery": true
+        }
+      },
+      "advancedSkills": [],
+      "seeded": true,
+      "createdAt": "2026-09-03T05:01:55.772Z",
+      "updatedAt": "2026-09-03T05:11:21.453Z"
     },
     {
-      "id": "untitled-system",
-      "name": "Untitled system",
-      "description": "",
-      "instructions": "",
-      "createdAt": "2026-08-31T23:29:58.438Z",
-      "updatedAt": "2026-08-31T23:29:58.438Z",
-      "agents": [],
-      "outputs": []
+      "id": "concept-lab",
+      "name": "Concept lab",
+      "description": "Migrated from the Concept lab preset.",
+      "slots": {
+        "craft": "apple-design",
+        "direction": "concept-studio",
+        "evidence": "ux-evidence-audit",
+        "structure": "site-architecture",
+        "motion": "gsap-core",
+        "media": "asset-director",
+        "copy": "copywriting",
+        "verify": "award-rubric"
+      },
+      "designDna": null,
+      "brief": "",
+      "tools": {
+        "mcp": [],
+        "plugins": []
+      },
+      "budget": {
+        "totalTokens": 30000,
+        "approvals": {
+          "apollo-director": false,
+          "athena-evidence": false,
+          "calliope-experience": false,
+          "hephaestus-build": false,
+          "hermes-delivery": true
+        }
+      },
+      "advancedSkills": [],
+      "seeded": true,
+      "createdAt": "2026-09-03T05:01:55.773Z",
+      "updatedAt": "2026-09-03T05:11:21.453Z"
+    },
+    {
+      "id": "premium-build",
+      "name": "Premium build",
+      "description": "Migrated from the Premium build preset.",
+      "slots": {
+        "craft": "apple-design",
+        "direction": "concept-studio",
+        "evidence": "ux-evidence-audit",
+        "structure": "site-architecture",
+        "motion": "gsap-core",
+        "media": "asset-director",
+        "copy": "copywriting",
+        "verify": "visual-qa"
+      },
+      "designDna": null,
+      "brief": "",
+      "tools": {
+        "mcp": [],
+        "plugins": []
+      },
+      "budget": {
+        "totalTokens": 30000,
+        "approvals": {
+          "apollo-director": false,
+          "athena-evidence": false,
+          "calliope-experience": false,
+          "hephaestus-build": false,
+          "hermes-delivery": true
+        }
+      },
+      "advancedSkills": [],
+      "seeded": true,
+      "createdAt": "2026-09-03T05:01:55.773Z",
+      "updatedAt": "2026-09-03T05:11:21.453Z"
+    },
+    {
+      "id": "delivery-qa",
+      "name": "Delivery QA",
+      "description": "Migrated from the Delivery QA preset.",
+      "slots": {
+        "craft": "apple-design",
+        "direction": "concept-studio",
+        "evidence": "design-analytics",
+        "structure": "site-architecture",
+        "motion": "gsap-core",
+        "media": "asset-director",
+        "copy": "copywriting",
+        "verify": "visual-qa"
+      },
+      "designDna": null,
+      "brief": "",
+      "tools": {
+        "mcp": [],
+        "plugins": []
+      },
+      "budget": {
+        "totalTokens": 30000,
+        "approvals": {
+          "apollo-director": false,
+          "athena-evidence": false,
+          "calliope-experience": false,
+          "hephaestus-build": false,
+          "hermes-delivery": true
+        }
+      },
+      "advancedSkills": [],
+      "seeded": true,
+      "createdAt": "2026-09-03T05:01:55.773Z",
+      "updatedAt": "2026-09-03T05:11:21.453Z"
     }
+  ],
+  "migrations": [
+    "removed the editable system \"Untitled system\"; the pipeline is locked",
+    "active system was \"untitled-system\"; repointed to the Olympus pipeline"
   ]
 }

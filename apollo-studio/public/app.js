@@ -14,7 +14,7 @@ const state = {
   events: [],
   eventsError: null,
   systems: null,
-  selectedSystemId: null,
+  selectedLoadoutId: null,
   view: 'work',
   work: { projects: [], proposals: [], activeProjectId: null, activeChatId: null, detail: null }
 };
@@ -216,13 +216,9 @@ function activeSystem() {
   return state.systems?.systems.find(system => system.id === state.systems.activeSystemId) || state.systems?.systems[0] || null;
 }
 
-function selectedSystem() {
-  return state.systems?.systems.find(system => system.id === state.selectedSystemId) || activeSystem();
-}
-
-async function refreshSystems(selectId = state.selectedSystemId) {
+// The pipeline is refreshed for display only; nothing on any screen can change it.
+async function refreshSystems() {
   state.systems = await api('/api/systems');
-  state.selectedSystemId = state.systems.systems.some(system => system.id === selectId) ? selectId : state.systems.activeSystemId;
   renderSystems();
   renderArchitectureAgents();
 }
@@ -245,101 +241,11 @@ function renderArchitectureAgents() {
       const name = document.createElement('strong'); name.textContent = agent.name;
       const meta = document.createElement('small'); meta.textContent = `${agent.skills.length} skills · ${agent.mcp.length} MCP · ${agent.plugins.length} plugins`;
       button.append(name, meta);
-      button.addEventListener('click', () => { state.selectedSystemId = system.id; navigate('systems'); requestAnimationFrame(() => document.querySelector(`[data-system-agent-id="${CSS.escape(agent.id)}"]`)?.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })); });
+      button.addEventListener('click', () => { const slot = (state.loadouts?.slots || []).find(item => item.owner === agent.id); navigate('systems'); requestAnimationFrame(() => document.querySelector(slot ? '[data-slot="' + slot.id + '"]' : '.pipeline-strip')?.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })); });
       list.append(button);
     });
     lane.append(heading, list); return lane;
   }));
-}
-
-function renderSystemList() {
-  const host = $('#system-list');
-  if (!host || !state.systems) return;
-  host.replaceChildren(...state.systems.systems.map(system => {
-    const button = document.createElement('button'); button.type = 'button';
-    button.className = `system-list-item${system.id === state.selectedSystemId ? ' is-selected' : ''}${system.id === state.systems.activeSystemId ? ' is-active-system' : ''}`;
-    const title = document.createElement('strong'); title.textContent = system.name;
-    const meta = document.createElement('span'); meta.textContent = `${system.agents.length} agent${system.agents.length === 1 ? '' : 's'} · ${system.outputs.length} output${system.outputs.length === 1 ? '' : 's'}`;
-    const stateLabel = document.createElement('small'); stateLabel.textContent = system.id === state.systems.activeSystemId ? 'Active' : 'Saved';
-    button.append(title, meta, stateLabel);
-    button.addEventListener('click', () => { state.selectedSystemId = system.id; renderSystems(); });
-    return button;
-  }));
-}
-
-function inventoryPicker(title, items, selected, onChange) {
-  const group = document.createElement('fieldset'); group.className = 'inventory-picker';
-  const legend = document.createElement('legend'); legend.textContent = title;
-  const list = document.createElement('div');
-  items.forEach(item => {
-    const label = document.createElement('label'); label.className = 'inventory-option';
-    const input = document.createElement('input'); input.type = 'checkbox'; input.checked = selected.includes(item.id);
-    const copy = document.createElement('span');
-    const name = document.createElement('strong'); name.textContent = item.name;
-    const detail = document.createElement('small'); detail.textContent = item.status || item.phase || item.group || '';
-    copy.append(name, detail); label.append(input, copy);
-    input.addEventListener('change', () => onChange(item.id, input.checked));
-    list.append(label);
-  });
-  group.append(legend, list); return group;
-}
-
-function replaceAgentFromTemplate(agent, templateId) {
-  const template = state.systems.templates.find(item => item.id === templateId);
-  if (!template) return;
-  const index = selectedSystem().agents.indexOf(agent);
-  selectedSystem().agents[index] = { ...structuredClone(template), id: agent.id };
-  renderSystems();
-}
-
-function renderSystemAgent(agent, index) {
-  const details = document.createElement('details'); details.className = 'system-agent-card'; details.dataset.systemAgentId = agent.id;
-  const summary = document.createElement('summary');
-  const identity = document.createElement('span'); identity.className = 'agent-card-identity';
-  const name = document.createElement('strong'); name.textContent = agent.name;
-  const role = document.createElement('small'); role.textContent = agent.description;
-  identity.append(name, role);
-  const phase = document.createElement('span'); phase.className = 'agent-card-phase'; phase.textContent = phaseLabels[agent.phase] || agent.phase;
-  const inventory = document.createElement('span'); inventory.className = 'agent-card-inventory'; inventory.textContent = `${agent.skills.length + agent.mcp.length + agent.plugins.length} inventory · ${agent.budget.toLocaleString()} tokens`;
-  summary.append(identity, phase, inventory);
-
-  const body = document.createElement('div'); body.className = 'system-agent-body';
-  const replace = document.createElement('div'); replace.className = 'agent-replace-row';
-  const templateSelect = document.createElement('select'); templateSelect.innerHTML = '<option value="">Choose an agent template…</option>' + state.systems.templates.map(template => `<option value="${template.id}">${template.name}</option>`).join('');
-  const replaceButton = document.createElement('button'); replaceButton.type = 'button'; replaceButton.className = 'quiet-action'; replaceButton.textContent = 'Replace agent'; replaceButton.addEventListener('click', () => replaceAgentFromTemplate(agent, templateSelect.value));
-  replace.append(templateSelect, replaceButton);
-
-  const fields = document.createElement('div'); fields.className = 'agent-field-grid';
-  const field = (labelText, control) => { const label = document.createElement('label'); label.textContent = labelText; label.append(control); return label; };
-  const nameInput = document.createElement('input'); nameInput.value = agent.name; nameInput.maxLength = 80; nameInput.addEventListener('input', () => agent.name = nameInput.value);
-  const phaseSelect = document.createElement('select'); ['diagnose','direct','prepare','build','verify'].forEach(value => { const option = document.createElement('option'); option.value = value; option.textContent = phaseLabels[value]; option.selected = agent.phase === value; phaseSelect.append(option); }); phaseSelect.addEventListener('change', () => agent.phase = phaseSelect.value);
-  const budget = document.createElement('input'); budget.type = 'number'; budget.min = '500'; budget.max = '50000'; budget.step = '500'; budget.value = agent.budget; budget.addEventListener('change', () => agent.budget = Math.min(50000, Math.max(500, Number(budget.value) || 3000)));
-  const priority = document.createElement('input'); priority.type = 'number'; priority.min = '0'; priority.max = '100'; priority.value = agent.priority; priority.addEventListener('change', () => agent.priority = Number(priority.value) || 1);
-  fields.append(field('Agent name', nameInput), field('Phase', phaseSelect), field('Token budget', budget), field('Priority', priority));
-
-  const description = document.createElement('textarea'); description.rows = 2; description.maxLength = 500; description.value = agent.description; description.addEventListener('input', () => agent.description = description.value);
-  const activation = document.createElement('textarea'); activation.rows = 2; activation.maxLength = 500; activation.value = agent.activation; activation.addEventListener('input', () => agent.activation = activation.value);
-  const triggers = document.createElement('input'); triggers.value = agent.triggers.join(', '); triggers.placeholder = 'design, build, test'; triggers.addEventListener('change', () => agent.triggers = [...new Set(triggers.value.split(',').map(value => value.trim().toLowerCase()).filter(Boolean))]);
-  const instructions = document.createElement('textarea'); instructions.rows = 5; instructions.maxLength = 6000; instructions.value = agent.instructions; instructions.addEventListener('input', () => agent.instructions = instructions.value);
-  const longFields = document.createElement('div'); longFields.className = 'agent-long-fields';
-  longFields.append(field('Responsibility', description), field('Activation rule', activation), field('Trigger words', triggers), field('Agent instructions', instructions));
-
-  const inventoryGrid = document.createElement('div'); inventoryGrid.className = 'agent-inventory-grid';
-  const toggle = key => (id, checked) => { agent[key] = checked ? [...new Set([...agent[key], id])] : agent[key].filter(item => item !== id); };
-  inventoryGrid.append(
-    inventoryPicker('Skills', state.systems.inventory.skills.filter(item => item.enabled !== false), agent.skills, toggle('skills')),
-    inventoryPicker('MCP & tools', state.systems.inventory.mcp, agent.mcp, toggle('mcp')),
-    inventoryPicker('Plugins', state.systems.inventory.plugins, agent.plugins, toggle('plugins'))
-  );
-
-  const footer = document.createElement('div'); footer.className = 'agent-card-footer';
-  const enabled = document.createElement('label'); enabled.className = 'compact-check'; const enabledInput = document.createElement('input'); enabledInput.type = 'checkbox'; enabledInput.checked = agent.enabled; enabledInput.addEventListener('change', () => agent.enabled = enabledInput.checked); enabled.append(enabledInput, document.createTextNode(' Enabled'));
-  const approval = document.createElement('label'); approval.className = 'compact-check'; const approvalInput = document.createElement('input'); approvalInput.type = 'checkbox'; approvalInput.checked = agent.approval; approvalInput.addEventListener('change', () => agent.approval = approvalInput.checked); approval.append(approvalInput, document.createTextNode(' Approval required'));
-  const controls = document.createElement('div'); controls.className = 'agent-order-actions';
-  const move = (label, offset) => { const button = document.createElement('button'); button.type = 'button'; button.className = 'quiet-action'; button.textContent = label; button.disabled = index + offset < 0 || index + offset >= selectedSystem().agents.length; button.addEventListener('click', () => { const list = selectedSystem().agents; [list[index], list[index + offset]] = [list[index + offset], list[index]]; renderSystems(); }); return button; };
-  const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'danger-action'; remove.textContent = 'Remove'; remove.addEventListener('click', () => { selectedSystem().agents.splice(index, 1); renderSystems(); });
-  controls.append(move('Move up', -1), move('Move down', 1), remove); footer.append(enabled, approval, controls);
-  body.append(replace, fields, longFields, inventoryGrid, footer); details.append(summary, body); return details;
 }
 
 function renderOutputs(system) {
@@ -360,19 +266,138 @@ function renderOutputs(system) {
   }));
 }
 
+// ---------------------------------------------------------------------------
+// Loadouts. The pipeline above them is read-only by construction: it is rendered from the
+// server's roster and there is no control on this screen that can change it.
+// ---------------------------------------------------------------------------
+
+const PHASE_LABEL = { always: 'Owns the answer', diagnose: 'Diagnose', direct: 'Direct', prepare: 'Prepare', build: 'Build', verify: 'Verify' };
+
+function selectedLoadout() {
+  return state.loadouts?.loadouts.find(item => item.id === state.selectedLoadoutId)
+    || state.loadouts?.loadouts.find(item => item.id === state.loadouts.activeLoadoutId)
+    || state.loadouts?.loadouts[0] || null;
+}
+
+async function refreshLoadouts(selectId = state.selectedLoadoutId) {
+  state.loadouts = await api('/api/loadouts');
+  state.selectedLoadoutId = state.loadouts.loadouts.some(item => item.id === selectId) ? selectId : state.loadouts.activeLoadoutId;
+  renderSystems();
+  renderArchitectureAgents();
+}
+
+function renderPipelineStrip() {
+  const host = $('#pipeline-stages');
+  if (!host) return;
+  const system = activeSystem();
+  const agents = system?.agents || [];
+  host.replaceChildren(...agents.map(agent => {
+    const item = document.createElement('li');
+    item.className = 'pipeline-stage';
+    const phase = document.createElement('span'); phase.className = 'stage-phase'; phase.textContent = PHASE_LABEL[agent.phase] || agent.phase;
+    const name = document.createElement('strong'); name.textContent = agent.name;
+    const role = document.createElement('p'); role.textContent = agent.description;
+    const owns = document.createElement('span'); owns.className = 'stage-owns';
+    const owned = (state.loadouts?.slots || []).filter(slot => slot.owner === agent.id);
+    owns.textContent = owned.length ? `Owns ${owned.map(slot => slot.name).join(', ')}` : 'Owns no loadout slot';
+    item.append(phase, name, role, owns);
+    return item;
+  }));
+}
+
+function renderLoadoutList() {
+  const host = $('#loadout-list');
+  if (!host || !state.loadouts) return;
+  host.replaceChildren(...state.loadouts.loadouts.map(loadout => {
+    const button = document.createElement('button'); button.type = 'button';
+    button.className = `system-list-item${loadout.id === state.selectedLoadoutId ? ' is-selected' : ''}${loadout.id === state.loadouts.activeLoadoutId ? ' is-active-system' : ''}`;
+    const title = document.createElement('strong'); title.textContent = loadout.name;
+    const changed = (state.loadouts.slots || []).filter(slot => loadout.slots[slot.id] !== slot.default).length;
+    const meta = document.createElement('span');
+    meta.textContent = changed ? `${changed} of 8 changed from default` : 'All eight at their default';
+    const stateLabel = document.createElement('small');
+    stateLabel.textContent = loadout.id === state.loadouts.activeLoadoutId ? 'Active' : 'Saved';
+    button.append(title, meta, stateLabel);
+    button.addEventListener('click', () => { state.selectedLoadoutId = loadout.id; renderSystems(); });
+    return button;
+  }));
+}
+
+// One row per question. The row states what the slot decides, who owns it, and - the part
+// the flat checkbox list could never say - what changes if you switch it.
+function renderSlotRow(slot, loadout) {
+  const row = document.createElement('div');
+  row.className = 'slot-row';
+  row.dataset.slot = slot.id;
+
+  const heading = document.createElement('div'); heading.className = 'slot-heading';
+  const name = document.createElement('strong'); name.textContent = slot.name;
+  const question = document.createElement('p'); question.className = 'slot-question'; question.textContent = slot.question;
+  const owner = document.createElement('span'); owner.className = 'slot-owner';
+  const ownerAgent = activeSystem()?.agents.find(agent => agent.id === slot.owner);
+  owner.textContent = ownerAgent ? ownerAgent.name : slot.owner;
+  heading.append(name, question, owner);
+
+  const control = document.createElement('div'); control.className = 'slot-control';
+  const label = document.createElement('label'); label.className = 'sr-only';
+  const selectId = `slot-${slot.id}`;
+  label.setAttribute('for', selectId); label.textContent = slot.question;
+  const select = document.createElement('select'); select.id = selectId;
+  for (const candidate of slot.candidates) {
+    const option = document.createElement('option');
+    option.value = candidate.skill;
+    option.textContent = candidate.skill === slot.default ? `${candidate.skill} (default)` : candidate.skill;
+    select.append(option);
+  }
+  select.value = loadout.slots[slot.id] || slot.default;
+
+  const changes = document.createElement('p'); changes.className = 'slot-changes';
+  const describe = () => {
+    const chosen = slot.candidates.find(candidate => candidate.skill === select.value);
+    changes.textContent = chosen ? chosen.changes : '';
+    row.classList.toggle('is-changed', select.value !== slot.default);
+  };
+  describe();
+  select.addEventListener('change', () => { describe(); markLoadoutDirty(); });
+
+  control.append(label, select, changes);
+  row.append(heading, control);
+  return row;
+}
+
+function markLoadoutDirty() {
+  const feedback = $('#loadout-feedback');
+  if (feedback) feedback.textContent = 'Unsaved changes.';
+}
+
+function readSlotSelections() {
+  const slots = {};
+  $$('#slot-rows .slot-row').forEach(row => {
+    slots[row.dataset.slot] = row.querySelector('select').value;
+  });
+  return slots;
+}
+
 function renderSystems() {
-  if (!state.systems || !$('#system-list')) return;
-  renderSystemList();
-  const system = selectedSystem();
-  if (!system) return;
-  const form = $('#system-form'); form.elements.name.value = system.name; form.elements.description.value = system.description; form.elements.instructions.value = system.instructions;
-  $('#activate-system').textContent = system.id === state.systems.activeSystemId ? 'Active system' : 'Use this system';
-  $('#activate-system').disabled = system.id === state.systems.activeSystemId;
-  $('#delete-system').disabled = state.systems.systems.length <= 1;
-  const host = $('#system-agent-list');
-  if (!system.agents.length) host.innerHTML = '<div class="empty-state compact"><strong>No agents in this system.</strong><p>Add an agent, then assign its phase and inventory.</p></div>';
-  else host.replaceChildren(...system.agents.map(renderSystemAgent));
-  renderOutputs(system);
+  if (!state.loadouts || !$('#loadout-list')) return;
+  renderPipelineStrip();
+  renderLoadoutList();
+  const loadout = selectedLoadout();
+  const form = $('#loadout-form');
+  const empty = $('#loadout-empty');
+  empty.hidden = Boolean(loadout);
+  form.hidden = !loadout;
+  $('.slot-section').hidden = !loadout;
+  if (!loadout) return;
+
+  form.elements.name.value = loadout.name;
+  form.elements.description.value = loadout.description;
+  $('#activate-loadout').textContent = loadout.id === state.loadouts.activeLoadoutId ? 'Active loadout' : 'Use this loadout';
+  $('#activate-loadout').disabled = loadout.id === state.loadouts.activeLoadoutId;
+  $('#delete-loadout').disabled = state.loadouts.loadouts.length <= 1;
+  $('#slot-rows').replaceChildren(...state.loadouts.slots.map(slot => renderSlotRow(slot, loadout)));
+  $('#loadout-feedback').textContent = '';
+  renderOutputs(activeSystem());
 }
 
 function drawConnections() {
@@ -1056,27 +1081,57 @@ function bindRovingToolbar(toolbar) {
   });
 }
 
-async function saveSelectedSystem(event) {
+async function saveSelectedLoadout(event) {
   event.preventDefault();
-  const system = selectedSystem();
-  const form = $('#system-form');
-  const feedback = $('#system-feedback');
-  feedback.textContent = 'Saving system…';
+  const loadout = selectedLoadout();
+  const form = $('#loadout-form');
+  const feedback = $('#loadout-feedback');
+  feedback.textContent = 'Saving…';
   try {
-    await api(`/api/systems/${system.id}`, { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: form.elements.name.value, description: form.elements.description.value, instructions: form.elements.instructions.value, agents: system.agents }) });
-    await refreshSystems(system.id);
-    $('#system-feedback').textContent = 'Saved. New Oracle plans now use this configuration when it is active.';
+    await api(`/api/loadouts/${loadout.id}`, {
+      method: 'PATCH',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ name: form.elements.name.value, description: form.elements.description.value, slots: readSlotSelections() })
+    });
+    await refreshLoadouts(loadout.id);
+    $('#loadout-feedback').textContent = 'Saved. New plans use this loadout when it is active.';
   } catch (error) { feedback.textContent = error.message; }
 }
 
-async function createNewSystem(sourceSystemId) {
+async function createNewLoadout(sourceLoadoutId) {
   try {
-    const result = await api('/api/systems', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(sourceSystemId ? { sourceSystemId } : {}) });
-    await refreshSystems(result.system.id);
+    const result = await api('/api/loadouts', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(sourceLoadoutId ? { sourceLoadoutId } : {})
+    });
+    await refreshLoadouts(result.loadout.id);
     navigate('systems');
-    $('#system-form').elements.name.focus();
-    $('#system-form').elements.name.select();
-  } catch (error) { $('#system-feedback').textContent = error.message; }
+    $('#loadout-form').elements.name.focus();
+    $('#loadout-form').elements.name.select();
+  } catch (error) { $('#loadout-feedback').textContent = error.message; }
+}
+
+// Undo, not a confirmation dialog. DESIGN.md's Undo Rule is explicit that a dialog asking
+// "are you sure" is not an undo: it makes the user decide before they can see the result.
+// The delete happens, and the way back stays on screen until the next action.
+function offerUndo(message, restore) {
+  const host = $('#undo-bar');
+  if (!host) return;
+  host.hidden = false;
+  host.querySelector('.undo-message').textContent = message;
+  const button = host.querySelector('.undo-action');
+  const clone = button.cloneNode(true);
+  button.replaceWith(clone);
+  clone.addEventListener('click', async () => {
+    host.hidden = true;
+    await restore();
+  });
+}
+
+function dismissUndo() {
+  const host = $('#undo-bar');
+  if (host) host.hidden = true;
 }
 
 function bindEvents() {
@@ -1149,25 +1204,33 @@ function bindEvents() {
   $('#clear-prompt').addEventListener('click', () => { $('#experiment-prompt').value = ''; $('#experiment-prompt').dispatchEvent(new Event('input')); $('#experiment-prompt').focus(); });
   $('#export-runs').addEventListener('click', exportRuns);
   $('#clear-runs').addEventListener('click', () => { if (confirm('Clear browser-only experiment history? Connected MCP runs will remain available.')) { state.runs = []; storage.write('apollo-runs', []); renderHistory(); } });
-  $('#system-form').addEventListener('submit', saveSelectedSystem);
-  $('#new-system').addEventListener('click', () => createNewSystem());
-  $('#duplicate-system').addEventListener('click', () => createNewSystem(state.systems.activeSystemId));
-  $('#activate-system').addEventListener('click', async () => {
-    const system = selectedSystem();
-    try { await api('/api/systems/active', { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: system.id }) }); await refreshSystems(system.id); }
-    catch (error) { $('#system-feedback').textContent = error.message; }
+  $('#loadout-form').addEventListener('submit', saveSelectedLoadout);
+  $('#new-loadout').addEventListener('click', () => createNewLoadout());
+  $('#loadout-empty-action').addEventListener('click', () => createNewLoadout());
+  $('#duplicate-loadout').addEventListener('click', () => createNewLoadout(selectedLoadout()?.id));
+  $('#activate-loadout').addEventListener('click', async () => {
+    const loadout = selectedLoadout();
+    try {
+      await api('/api/loadouts/active', { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: loadout.id }) });
+      await refreshLoadouts(loadout.id);
+    } catch (error) { $('#loadout-feedback').textContent = error.message; }
   });
-  $('#delete-system').addEventListener('click', async () => {
-    const system = selectedSystem();
-    if (!confirm(`Delete the saved system “${system.name}”? Its historical run events will remain.`)) return;
-    try { const result = await api(`/api/systems/${system.id}`, { method: 'DELETE' }); await refreshSystems(result.activeSystemId); }
-    catch (error) { $('#system-feedback').textContent = error.message; }
+  $('#delete-loadout').addEventListener('click', async () => {
+    const loadout = selectedLoadout();
+    try {
+      const result = await api('/api/loadouts/' + loadout.id, { method: 'DELETE' });
+      await refreshLoadouts(result.activeLoadoutId);
+      offerUndo('Deleted the loadout ' + result.removed.name + '.', async () => {
+        await api('/api/loadouts/restore', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ loadout: result.removed, restoreIndex: result.restoreIndex })
+        });
+        await refreshLoadouts(result.removed.id);
+      });
+    } catch (error) { $('#loadout-feedback').textContent = error.message; }
   });
-  $('#add-system-agent').addEventListener('click', () => {
-    selectedSystem().agents.push({ id: `agent-${crypto.randomUUID()}`, name: 'New agent', description: 'Custom bounded specialist.', phase: 'prepare', activation: 'Activate when the plan requires this specialist.', triggers: [], skills: [], mcp: [], plugins: [], instructions: 'Work only within this responsibility and return a bounded phase packet.', budget: 3000, approval: false, priority: 1, enabled: true });
-    renderSystems();
-    requestAnimationFrame(() => $('#system-agent-list details:last-child')?.setAttribute('open', ''));
-  });
+  $('#undo-dismiss').addEventListener('click', dismissUndo);
   const observer = new ResizeObserver(() => requestAnimationFrame(drawConnections)); observer.observe($('#workflow-canvas'));
   window.addEventListener('resize', drawConnections, { passive: true });
   window.addEventListener('hashchange', () => navigate(viewFromHash(), { updateHash: false, scrollBehavior: 'auto' }));
@@ -1178,10 +1241,11 @@ async function init() {
     const response = await fetch('/api/config');
     if (!response.ok) throw new Error('Configuration endpoint unavailable.');
     state.config = await response.json();
-    const [knowledge, agents, integrationData, eventData, systemsData] = await Promise.all([api('/api/knowledge'), api('/api/agents'), api('/api/integrations'), api('/api/events?limit=200'), api('/api/systems')]);
+    const [knowledge, agents, integrationData, eventData, systemsData, loadoutData] = await Promise.all([api('/api/knowledge'), api('/api/agents'), api('/api/integrations'), api('/api/events?limit=200'), api('/api/systems'), api('/api/loadouts')]);
     state.knowledge = knowledge; state.agents = agents.agents; state.integrations = integrationData.integrations;
     state.events = eventData.events;
-    state.systems = systemsData; state.selectedSystemId = systemsData.activeSystemId;
+    state.systems = systemsData;
+    state.loadouts = loadoutData; state.selectedLoadoutId = loadoutData.activeLoadoutId;
     state.selectedSkillId = knowledge.skills[0]?.id || null;
     state.oracleMessages = storage.read('apollo-oracle-messages', []);
     state.oraclePlan = storage.read('apollo-oracle-plan', null);

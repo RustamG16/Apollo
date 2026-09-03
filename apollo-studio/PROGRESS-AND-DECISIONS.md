@@ -510,3 +510,123 @@ registry into a new `library/registry/slots.json` keyed by skill id (never added
 `loadouts` store beside the frozen Olympus pipeline, migrate the four presets to four seed
 loadouts, and make the empty-active-system state unreachable with a save guard plus an
 on-load migration in `systems.mjs`.
+
+## 2026-09-03 — P3 slices 1-2: the loadout model, data and view
+
+**Slice:** P3, slices 1 and 2, committed together. See "why together" below.
+
+### The model
+
+`library/registry/slots.json` is new: eight slots, 28 candidates, every slot with a default
+and every candidate with a one-line statement of **what changes if you switch it**. It is a
+separate file, not a field on `skills.registry.json`, because `library/tools/project.py`
+regenerates the registry and a `slot` field there would not survive a rebuild.
+`skills.mjs` joins it, so every skill now carries `slot`, `isSlotDefault` and `slotChanges`;
+27 skills answer a question and 57 are the browsable capability library. That is the whole
+point of the model: **the 58 unrouted entries stop being choices**.
+
+`systems.mjs` gained the loadout store beside the frozen pipeline — normalisation that
+rejects any slot value that is not a declared candidate, four seed loadouts migrated from the
+four shipped presets by reading each preset's skill list as answers to the eight questions,
+and full CRUD with `restoreLoadout` for undo. `server.mjs` exposes
+`/api/loadouts`, `/api/loadouts/active`, `/api/loadouts/restore` and `/api/loadouts/:id`.
+Every pre-existing `/api/*` contract keeps its shape.
+
+`agents.mjs` now applies the loadout: an agent's skills are its base inventory with the
+answers substituted in for the slots that agent owns. **This is the exit gate, and it is
+met** — with `Lean audit` active, Hephaestus carries `ui-ux`; switching the Craft slot to
+`awwwards-web-design` in the interface and saving changes the plan the Oracle returns to
+`gsap-performance, awwwards-web-design, gsap-core`. Verified through the real UI and the real
+endpoint, not in a unit test. `specializedSkills` — which keyed off an agent id
+(`motion-engineer`) that does not exist in this product and therefore never fired — is gone;
+the conditional GSAP expansion it was meant to provide now hangs off the Motion slot.
+
+### The CRITICAL defect, fixed the way the contract required
+
+`data/systems.json` was not hand-edited. `migrateStore()` runs on every load: it repoints an
+active system that has no agents, folds away any system authored by the removed "New system"
+button (handing its recorded outputs to the pipeline first), seeds loadouts if there are
+none, and writes what it did into a `migrations` log in the store. `saveStore()` now refuses
+to persist a store whose active system has no agents, and `setActiveSystem` refuses to point
+at one. On the real data file the migration recorded:
+
+- `removed the editable system "Untitled system"; the pipeline is locked`
+- `active system was "untitled-system"; repointed to the Olympus pipeline`
+
+Architecture's header read **"0 active agents"** before this slice and reads **"5 active
+agents"** after it. Five "No agent" lanes became the real roster.
+
+### The view
+
+Systems is now **Loadouts**: a read-only pipeline strip above the one editable thing on the
+screen. The strip renders the five agents from the server with their phase, their role and
+which slots each one owns, and carries a "Locked" badge. There is no control on the screen
+that can change it — `createSystem` and `deleteSystem` now throw, and `updateSystem` refuses
+any payload containing `agents`.
+
+Below it: the saved-loadout list, the identity form, and **eight slot rows**. Each row states
+the slot, the question it answers, the agent that owns it, the current answer, and the
+consequence of the current answer. A row whose answer differs from the default is marked.
+
+**The measured result of replacing 84 checkboxes with 8 questions: the Systems view went
+from 637 rendered text nodes to 127.** The 637 was itself new information — before the
+migration the view rendered almost nothing because the active system was empty, so the
+84-checkbox inventory picker had never actually been on screen in the measured baseline.
+
+### Undo, and why not a dialog
+
+`DESIGN.md`'s Undo Rule says a confirmation dialog is not an undo, because it makes the user
+decide before they can see the result. Deleting a loadout now happens, and an undo bar
+appears with the way back; `deleteLoadout` returns the removed record and its index, and
+`restoreLoadout` puts it back in the same position. Verified end to end: delete, undo,
+order preserved. T11 fell from 8 to 6.
+
+### Why slices 1 and 2 are one commit
+
+Slice 1 left the build red, and the reason is worth recording. Fixing the empty-active-system
+bug made the Systems view render for the first time, which exposed the 84-checkbox inventory
+picker (30 text nodes to 637) and moved two counters: T11 8 to 9, because a ninth destructive
+control became measurable, and **T9 1 to 0**. That T9 movement was not a regression — the one
+view that had been counted as having an empty state was Systems, and the "empty state" being
+counted was the bug's own symptom, the five "No agent" lanes. The true value had always been
+0. Rather than commit a red build or silently re-baseline, slice 2 was completed first; the
+Loadouts view has a real empty state with one primary action, and T9 is back to 1 honestly.
+
+### Defects found and repaired inside the slice
+
+1. **`[hidden]` was not being honoured.** The new `.empty-state` and `.undo-bar` rules set
+   `display`, which outranks the `hidden` attribute, so both rendered permanently — the
+   empty state sat above a fully populated form. Fixed with `[hidden][hidden] { display: none }`
+   at the end of the sheet: a doubled attribute selector outranks any single class without
+   an `!important`. This is a general fix, not a local one.
+2. **The director node's labels collided.** "Orchestrator" and the absolutely-positioned
+   "Always active" badge overlapped once type went from 9px to 13px. Fixed by putting the
+   status in the flow on its own line — the layout, not the type. Checked by walking every
+   workflow node's children for intersecting boxes; zero overlaps remain.
+3. The Architecture lane buttons pointed at an agent card that no longer exists; they now
+   scroll to the slot that agent owns, which is the thing you can actually change.
+
+### Metrics, before and after
+
+| # | Threshold | Before | After | State |
+|---|---|---:|---:|---|
+| T1 | Text below 13px | 0 | 0 | PASS |
+| T2 | Body text size | 16 | 16 | PASS |
+| T3 | Type in rem / 200% zoom | 100% | 100% | PASS |
+| T4 | Contrast failures (AA) | 0 | 0 | PASS |
+| T5 | Controls under 36/44px | 0 | 0 | PASS |
+| T6 | Distinct visual systems | 1 | 1 | PASS |
+| T7 | Non-semantic accent hues | 1 | 1 | PASS |
+| T8 | Unique radii | 2 | 2 | PASS |
+| T9 | Views with empty state + action | 1 | 1 | FAIL |
+| T10 | Decorative media references | 0 | 0 | PASS |
+| T11 | Destructive actions without undo | 8 | **6** | FAIL |
+
+`npm.cmd run check` exits 0. Console clean, reduced motion honoured, no horizontal overflow
+at 1280x800, 1440x900 or 1920x1080. `python library/tools/project.py all` and
+`library/tools/verify.py` both clean after the registry addition.
+
+**Next slice:** P3 slice 3 — Design DNA panel (doctrine picker, profile summary, a prominently
+placed avoid-list, and the two interview skills as entry points, writing to
+`library/design-dna/`), plus brief, tools/MCP and budget as three further loadout sections.
+Then P3 slice 4: Playground compares two loadouts diffed by slot, differences only.

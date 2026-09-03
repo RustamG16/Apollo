@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T01:55:16.826Z",
-  "durationMs": 15451,
+  "generatedAt": "2026-09-03T05:11:36.810Z",
+  "durationMs": 15431,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -115,7 +115,7 @@
     },
     "T11": {
       "name": "Destructive actions without undo",
-      "value": 8,
+      "value": 6,
       "target": 0,
       "pass": false,
       "unit": "distinct controls",
@@ -123,9 +123,7 @@
         "Reset",
         "Delete node",
         "Reset defaults",
-        "Delete",
         "Clear",
-        "Remove variant ×",
         "Clear chat",
         "Clear local"
       ]
@@ -133,14 +131,14 @@
   },
   "perViewport": {
     "1280x800": {
-      "textNodes": 1129,
+      "textNodes": 1233,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 7,
-      "controls": 477,
+      "unmeasuredControls": 10,
+      "controls": 486,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -161,7 +159,7 @@
           ]
         },
         "architecture": {
-          "textNodes": 352,
+          "textNodes": 356,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -173,15 +171,15 @@
           ]
         },
         "systems": {
-          "textNodes": 30,
+          "textNodes": 127,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 0,
+          "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            13
+            53
           ]
         },
         "playground": {
@@ -190,7 +188,7 @@
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 0,
+          "unmeasuredControls": 2,
           "dominantSize": [
             "14.0",
             209
@@ -221,7 +219,7 @@
           ]
         },
         "oracle": {
-          "textNodes": 39,
+          "textNodes": 42,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -229,7 +227,7 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
-            20
+            21
           ]
         },
         "runs": {
@@ -259,14 +257,14 @@
       }
     },
     "1440x900": {
-      "textNodes": 1129,
+      "textNodes": 1233,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 7,
-      "controls": 477,
+      "unmeasuredControls": 10,
+      "controls": 486,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -287,7 +285,7 @@
           ]
         },
         "architecture": {
-          "textNodes": 352,
+          "textNodes": 356,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -299,15 +297,15 @@
           ]
         },
         "systems": {
-          "textNodes": 30,
+          "textNodes": 127,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 0,
+          "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            13
+            53
           ]
         },
         "playground": {
@@ -316,7 +314,7 @@
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 0,
+          "unmeasuredControls": 2,
           "dominantSize": [
             "14.0",
             209
@@ -347,7 +345,7 @@
           ]
         },
         "oracle": {
-          "textNodes": 39,
+          "textNodes": 42,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -355,7 +353,7 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
-            20
+            21
           ]
         },
         "runs": {
@@ -385,14 +383,14 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1129,
+      "textNodes": 1233,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 7,
-      "controls": 477,
+      "unmeasuredControls": 10,
+      "controls": 486,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -413,7 +411,7 @@
           ]
         },
         "architecture": {
-          "textNodes": 352,
+          "textNodes": 356,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -425,15 +423,15 @@
           ]
         },
         "systems": {
-          "textNodes": 30,
+          "textNodes": 127,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 0,
+          "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            13
+            53
           ]
         },
         "playground": {
@@ -442,7 +440,7 @@
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 0,
+          "unmeasuredControls": 2,
           "dominantSize": [
             "14.0",
             209
@@ -473,7 +471,7 @@
           ]
         },
         "oracle": {
-          "textNodes": 39,
+          "textNodes": 42,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -481,7 +479,7 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "14.0",
-            20
+            21
           ]
         },
         "runs": {
@@ -519,10 +517,10 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 291,
-    "14.0": 536,
-    "16.0": 260,
-    "18.0": 6,
+    "13.0": 321,
+    "14.0": 568,
+    "16.0": 299,
+    "18.0": 9,
     "22.0": 17,
     "32.0": 8
   },
@@ -530,13 +528,13 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 87840,
-        "lines": 988
+        "bytes": 94195,
+        "lines": 1164
       }
     ],
     "fontSizeUnits": {
-      "total": 187,
-      "rem": 187,
+      "total": 204,
+      "rem": 204,
       "px": 0,
       "em": 0,
       "other": 0
@@ -582,7 +580,8 @@
       "var(--z-dock)",
       "var(--z-overlay)",
       "var(--z-raised)",
-      "var(--z-sticky)"
+      "var(--z-sticky)",
+      "var(--z-toast)"
     ],
     "zIndexLiterals": [
       "-1",
@@ -602,6 +601,24 @@
   },
   "worstContrast": [],
   "unmeasuredControls": [
+    {
+      "view": "systems",
+      "tag": "button",
+      "cls": "primary-action",
+      "inDisclosure": false
+    },
+    {
+      "view": "playground",
+      "tag": "button",
+      "cls": "icon-action remove-variant",
+      "inDisclosure": false
+    },
+    {
+      "view": "playground",
+      "tag": "button",
+      "cls": "icon-action remove-variant",
+      "inDisclosure": false
+    },
     {
       "view": "knowledge",
       "tag": "button",

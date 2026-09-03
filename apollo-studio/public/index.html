@@ -117,35 +117,51 @@
 
       <section class="view" id="systems" aria-labelledby="systems-title">
         <div class="section-heading">
-          <div><h1 id="systems-title">Compose the system. Keep the recipe.</h1><p>Create named orchestration systems, replace their agents, and assign the skills, MCP tools, plugins, instructions, and token boundaries each specialist carries.</p></div>
-          <div class="heading-actions"><button class="quiet-action" data-view-target="architecture">Open node editor</button><button class="quiet-action" id="duplicate-system">Duplicate active</button><button class="primary-action" id="new-system">New system</button></div>
+          <div><h1 id="systems-title">Loadouts</h1><p>The pipeline is fixed. What changes between runs is the loadout: eight decisions, a taste profile, the brief, the tools, and the budget.</p></div>
+          <div class="heading-actions"><button class="quiet-action" id="duplicate-loadout">Duplicate</button><button class="primary-action" data-primary-action id="new-loadout">New loadout</button></div>
         </div>
-        <div class="systems-workbench">
-          <aside class="system-library" aria-labelledby="saved-systems-title">
-            <div class="panel-heading"><div><h2 id="saved-systems-title">Saved systems</h2><p>Reusable, server-backed configurations.</p></div></div>
-            <div class="system-list" id="system-list"></div>
-            <p class="system-library-note">The active system drives Architecture and new Oracle plans. Saving never changes historical run evidence.</p>
+
+        <section class="pipeline-strip" aria-labelledby="pipeline-strip-title">
+          <div class="pipeline-strip-head">
+            <div><h2 id="pipeline-strip-title">Olympus pipeline</h2><p>Five agents, three gates, one owner of the answer. Locked: a run executes this and nothing else.</p></div>
+            <span class="lock-badge"><span aria-hidden="true">&#9679;</span> Locked</span>
+          </div>
+          <ol class="pipeline-stages" id="pipeline-stages"></ol>
+        </section>
+
+        <div class="loadout-workbench">
+          <aside class="loadout-library" aria-labelledby="saved-loadouts-title">
+            <div class="panel-heading"><div><h2 id="saved-loadouts-title">Saved loadouts</h2><p>Named, duplicated, compared.</p></div></div>
+            <div class="loadout-list" id="loadout-list"></div>
           </aside>
-          <section class="system-editor" id="system-editor" aria-live="polite">
-            <form id="system-form">
-              <div class="system-editor-head">
-                <div class="system-identity-grid">
-                  <label>System name<input name="name" required maxlength="100"></label>
-                  <label>Description<input name="description" maxlength="700"></label>
-                </div>
-                <div class="system-actions"><button type="button" class="quiet-action" id="activate-system">Use this system</button><button type="button" class="danger-action" id="delete-system">Delete</button><button class="run-action" type="submit">Save changes</button></div>
+
+          <section class="loadout-editor" id="loadout-editor" aria-live="polite">
+            <div class="empty-state" data-empty-state id="loadout-empty" hidden>
+              <strong>No loadout selected.</strong>
+              <p>A loadout answers eight questions about how a run is carried out. Every one has a default, so a new loadout is ready to run untouched.</p>
+              <button class="primary-action" data-primary-action type="button" id="loadout-empty-action">New loadout</button>
+            </div>
+
+            <form id="loadout-form" class="loadout-form">
+              <div class="loadout-identity">
+                <label>Loadout name<input name="name" required maxlength="100"></label>
+                <label>What it is for<input name="description" maxlength="700"></label>
               </div>
-              <label class="system-instructions">Orchestrator instructions<textarea name="instructions" rows="4" maxlength="8000" placeholder="Rules every run of this system must follow…"></textarea></label>
-              <p class="form-feedback" id="system-feedback" role="status"></p>
+              <div class="loadout-actions">
+                <button type="button" class="quiet-action" id="activate-loadout">Use this loadout</button>
+                <button type="button" class="danger-action" data-undo id="delete-loadout">Delete</button>
+                <button class="run-action" type="submit">Save changes</button>
+              </div>
+              <p class="form-feedback" id="loadout-feedback" role="status"></p>
             </form>
 
-            <section class="system-agents" aria-labelledby="system-agents-title">
-              <div class="system-section-heading"><div><h2 id="system-agents-title">Agent roster</h2><p>Each agent owns one phase and an explicit inventory. Replace from a template or edit every field.</p></div><button type="button" class="quiet-action" id="add-system-agent">Add agent</button></div>
-              <div class="system-agent-list" id="system-agent-list"></div>
+            <section class="slot-section" aria-labelledby="slot-section-title">
+              <div class="system-section-heading"><div><h2 id="slot-section-title">Eight decisions</h2><p>Each one changes what the run actually does. Switch a slot to see what changes.</p></div></div>
+              <div class="slot-rows" id="slot-rows"></div>
             </section>
 
             <section class="output-library" aria-labelledby="output-library-title">
-              <div class="system-section-heading"><div><h2 id="output-library-title">Output library</h2><p>Project previews remain attached to the system that produced them.</p></div><span id="output-count">0 outputs</span></div>
+              <div class="system-section-heading"><div><h2 id="output-library-title">Output library</h2><p>Project previews stay attached to the pipeline that produced them.</p></div><span id="output-count">0 outputs</span></div>
               <div class="output-grid" id="output-grid"></div>
             </section>
           </section>
@@ -270,6 +286,14 @@
         </section>
       </section>
     </main>
+
+    <!-- Undo, not a confirmation. A destructive action happens, and the way back stays on
+         screen until the next one. See The Undo Rule in DESIGN.md. -->
+    <div class="undo-bar" id="undo-bar" role="status" hidden>
+      <span class="undo-message"></span>
+      <button type="button" class="undo-action">Undo</button>
+      <button type="button" class="icon-action" id="undo-dismiss" aria-label="Dismiss">&#215;</button>
+    </div>
     <aside class="oracle-dock" id="oracle-dock" aria-label="Oracle contextual guidance" aria-hidden="true" inert><div class="oracle-dock-head"><div><p class="eyebrow">Oracle</p><h2>Contextual guidance</h2></div><button class="icon-action" id="close-oracle" type="button" aria-label="Close Oracle">×</button></div><p class="oracle-context-copy">You are in <strong id="oracle-context-name">Work</strong>. Oracle can explain the next step or prepare a proposal for your review.</p><div class="oracle-dock-actions"><button class="quiet-action" id="oracle-show-how" type="button">Show me how</button><button class="primary-action" id="oracle-do-it" type="button">Do it for me</button></div><div class="oracle-safety"><span>Approval required</span><p>Oracle will never save, change, or connect anything without a visible proposal and your confirmation.</p></div></aside>
   </div>
 

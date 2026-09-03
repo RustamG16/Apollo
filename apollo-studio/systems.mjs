@@ -2,6 +2,7 @@ import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { agentDefinitions } from './agents.mjs';
+import { slots as slotMap, presets } from './skills.mjs';
 
 const dataPath = fileURLToPath(new URL('./data/systems.json', import.meta.url));
 const apolloRoot = fileURLToPath(new URL('../', import.meta.url));
@@ -53,18 +54,157 @@ function seedSystem() {
   };
 }
 
-const emptyStore = () => ({ version: 1, activeSystemId: 'olympus-web-system', systems: [seedSystem()] });
+// ---------------------------------------------------------------------------
+// Loadouts.
+//
+// The pipeline is locked: five agents, their phases, their ownership and the gates between
+// them are product truth and are not editable, duplicable or deletable. Everything a user
+// can actually change lives in a loadout — eight skill slots, a Design DNA profile, the
+// brief, tools and MCP, and budget and approval. That split is what removes the class of
+// bug that put an empty untitled system in charge of the app: there is nothing to create
+// that could be empty, and the one thing in charge is frozen.
+// ---------------------------------------------------------------------------
+
+const PIPELINE_ID = 'olympus-web-system';
+
+const slotDefaults = () => Object.fromEntries(slotMap.map(slot => [slot.id, slot.default]));
+
+const candidateIds = slotId => {
+  const slot = slotMap.find(item => item.id === slotId);
+  return slot ? slot.candidates.map(candidate => candidate.skill) : [];
+};
+
+function normalizeSlots(input = {}, base = slotDefaults()) {
+  const out = {};
+  for (const slot of slotMap) {
+    const proposed = clean(input?.[slot.id], 80);
+    const allowed = candidateIds(slot.id);
+    out[slot.id] = allowed.includes(proposed)
+      ? proposed
+      : (allowed.includes(base?.[slot.id]) ? base[slot.id] : slot.default);
+  }
+  return out;
+}
+
+function normalizeLoadout(input = {}, current = {}) {
+  const name = clean(input.name ?? current.name, 100) || 'Untitled loadout';
+  const budget = input.budget ?? current.budget ?? {};
+  return {
+    id: current.id || slug(input.id || name) || crypto.randomUUID(),
+    name,
+    description: clean(input.description ?? current.description, 700),
+    slots: normalizeSlots(input.slots ?? current.slots, current.slots || slotDefaults()),
+    designDna: clean(input.designDna ?? current.designDna, 120) || null,
+    brief: clean(input.brief ?? current.brief, 8000),
+    tools: {
+      mcp: stringList(input.tools?.mcp ?? current.tools?.mcp),
+      plugins: stringList(input.tools?.plugins ?? current.tools?.plugins)
+    },
+    budget: {
+      totalTokens: Math.min(300_000, Math.max(1000, Number(budget.totalTokens) || 30_000)),
+      approvals: Object.fromEntries(agentDefinitions.map(agent => [
+        agent.id,
+        typeof budget.approvals?.[agent.id] === 'boolean' ? budget.approvals[agent.id] : agent.approval
+      ]))
+    },
+    // The escape hatch: anything possible with the flat 84-entry list stays possible.
+    advancedSkills: stringList(input.advancedSkills ?? current.advancedSkills, 100),
+    seeded: Boolean(current.seeded || input.seeded),
+    createdAt: current.createdAt || now(),
+    updatedAt: now()
+  };
+}
+
+// The four shipped presets become four seed loadouts: a preset's skill list is read as
+// answers to the eight questions, and any question it did not answer takes the default.
+function seedLoadouts() {
+  return presets.map(preset => {
+    const chosen = new Set(preset.skills);
+    const picked = {};
+    for (const slot of slotMap) {
+      picked[slot.id] = slot.candidates.find(candidate => chosen.has(candidate.skill))?.skill ?? slot.default;
+    }
+    return normalizeLoadout({
+      id: preset.id,
+      name: preset.name,
+      description: `Migrated from the ${preset.name} preset.`,
+      slots: picked,
+      seeded: true
+    });
+  });
+}
+
+const emptyStore = () => {
+  const loadouts = seedLoadouts();
+  return {
+    version: 2,
+    activeSystemId: PIPELINE_ID,
+    systems: [seedSystem()],
+    activeLoadoutId: loadouts[0]?.id || null,
+    loadouts,
+    migrations: []
+  };
+};
+
+// A system with no agents can never be the active one. This runs on every load, so a store
+// already in that state repairs itself; `setActiveSystem` and `saveStore` stop it recurring.
+function migrateStore(parsed) {
+  const store = { ...emptyStore(), ...parsed };
+  const log = Array.isArray(store.migrations) ? [...store.migrations] : [];
+  const note = message => { if (!log.includes(message)) log.push(message); };
+
+  if (!Array.isArray(store.systems) || !store.systems.length) {
+    store.systems = [seedSystem()];
+    note('systems store was empty; the Olympus pipeline was restored');
+  }
+
+  // The pipeline is the only system. Anything else was authored by the removed "New system"
+  // button; an empty one is the bug's residue and is dropped, and one that holds recorded
+  // outputs keeps them by handing them to the pipeline.
+  const pipeline = store.systems.find(system => system.id === PIPELINE_ID) || store.systems[0];
+  const extras = store.systems.filter(system => system !== pipeline);
+  for (const extra of extras) {
+    if (extra.outputs?.length) {
+      pipeline.outputs = [...(extra.outputs || []), ...(pipeline.outputs || [])].slice(0, 100);
+      note(`outputs from "${extra.name}" were moved onto the Olympus pipeline`);
+    }
+    note(`removed the editable system "${extra.name}"; the pipeline is locked`);
+  }
+  if (extras.length) store.systems = [pipeline];
+
+  if (store.activeSystemId !== pipeline.id) {
+    note(`active system was "${store.activeSystemId}"; repointed to the Olympus pipeline`);
+    store.activeSystemId = pipeline.id;
+  }
+
+  if (!Array.isArray(store.loadouts) || !store.loadouts.length) {
+    store.loadouts = seedLoadouts();
+    note('seeded four loadouts from the shipped presets');
+  } else {
+    store.loadouts = store.loadouts.map(loadout => normalizeLoadout(loadout, loadout));
+  }
+  if (!store.loadouts.some(loadout => loadout.id === store.activeLoadoutId)) {
+    store.activeLoadoutId = store.loadouts[0].id;
+  }
+
+  store.version = 2;
+  store.migrations = log;
+  return store;
+}
 
 async function loadStore() {
   try {
-    const parsed = JSON.parse(await readFile(dataPath, 'utf8'));
-    return parsed?.systems?.length ? parsed : emptyStore();
+    return migrateStore(JSON.parse(await readFile(dataPath, 'utf8')));
   } catch {
     return emptyStore();
   }
 }
 
 async function saveStore(store) {
+  // The guard the CRITICAL defect asked for: refuse to persist a store whose active system
+  // has no agents, rather than letting the app degrade into five "No agent" lanes.
+  const active = store.systems.find(system => system.id === store.activeSystemId);
+  if (!active?.agents?.length) throw new Error('Refusing to save: the active system has no agents.');
   await mkdir(dirname(dataPath), { recursive: true });
   await writeFile(dataPath, `${JSON.stringify(store, null, 2)}\n`, 'utf8');
 }
@@ -136,48 +276,108 @@ export async function getActiveSystem() {
   return store.systems.find(system => system.id === store.activeSystemId) || store.systems[0];
 }
 
-export async function createSystem(input = {}) {
-  const store = await loadStore();
-  const source = input.sourceSystemId ? store.systems.find(system => system.id === input.sourceSystemId) : null;
-  const base = source ? { ...structuredClone(source), id: undefined, name: `${source.name} copy`, outputs: [] } : { name: 'Untitled system', description: '', instructions: '', agents: [] };
-  const system = normalizeSystem({ ...base, ...input, agents: input.agents || base.agents });
-  let candidate = system.id;
-  let suffix = 2;
-  while (store.systems.some(item => item.id === candidate)) candidate = `${system.id}-${suffix++}`;
-  system.id = candidate;
-  store.systems.push(system);
-  store.activeSystemId = system.id;
-  await saveStore(store);
-  return { activeSystemId: store.activeSystemId, system };
-}
+// The pipeline is frozen. These three exports stay so every `/api/systems*` contract keeps
+// its shape, and they now refuse rather than author a second system nothing will execute.
+const FROZEN = 'The Olympus pipeline is locked. Change a loadout instead.';
+
+export async function createSystem() { throw new Error(FROZEN); }
 
 export async function updateSystem(id, input = {}) {
   const store = await loadStore();
   const index = store.systems.findIndex(system => system.id === id);
   if (index < 0) throw new Error('System not found.');
-  store.systems[index] = normalizeSystem(input, store.systems[index]);
+  // Node layout is inspection, not authoring: a run executes the pipeline, not a graph.
+  if (Array.isArray(input.agents)) throw new Error(FROZEN);
+  store.systems[index] = normalizeSystem({ ...input, agents: store.systems[index].agents }, store.systems[index]);
   await saveStore(store);
   return store.systems[index];
 }
 
 export async function setActiveSystem(id) {
   const store = await loadStore();
-  if (!store.systems.some(system => system.id === id)) throw new Error('System not found.');
+  const target = store.systems.find(system => system.id === id);
+  if (!target) throw new Error('System not found.');
+  if (!target.agents?.length) throw new Error('That system has no agents and cannot be made active.');
   store.activeSystemId = id;
   await saveStore(store);
   return { activeSystemId: id };
 }
 
-export async function deleteSystem(id) {
+export async function deleteSystem() { throw new Error(FROZEN); }
+
+// ---------------------------------------------------------------- loadout API
+
+export async function listLoadouts() {
   const store = await loadStore();
-  if (store.systems.length <= 1) throw new Error('Apollo must keep at least one saved system.');
-  const index = store.systems.findIndex(system => system.id === id);
-  if (index < 0) throw new Error('System not found.');
-  store.systems.splice(index, 1);
-  if (store.activeSystemId === id) store.activeSystemId = store.systems[0].id;
-  await saveStore(store);
-  return { activeSystemId: store.activeSystemId };
+  return { activeLoadoutId: store.activeLoadoutId, loadouts: store.loadouts, slots: slotMap };
 }
+
+export async function getActiveLoadout() {
+  const store = await loadStore();
+  return store.loadouts.find(loadout => loadout.id === store.activeLoadoutId) || store.loadouts[0];
+}
+
+export async function createLoadout(input = {}) {
+  const store = await loadStore();
+  const source = input.sourceLoadoutId
+    ? store.loadouts.find(loadout => loadout.id === input.sourceLoadoutId)
+    : null;
+  const base = source
+    ? { ...structuredClone(source), id: undefined, name: `${source.name} copy`, seeded: false }
+    : { name: 'New loadout', slots: slotDefaults() };
+  const loadout = normalizeLoadout({ ...base, ...input, id: undefined });
+  let candidate = loadout.id;
+  let suffix = 2;
+  while (store.loadouts.some(item => item.id === candidate)) candidate = `${loadout.id}-${suffix++}`;
+  loadout.id = candidate;
+  store.loadouts.push(loadout);
+  store.activeLoadoutId = loadout.id;
+  await saveStore(store);
+  return { activeLoadoutId: store.activeLoadoutId, loadout };
+}
+
+export async function updateLoadout(id, input = {}) {
+  const store = await loadStore();
+  const index = store.loadouts.findIndex(loadout => loadout.id === id);
+  if (index < 0) throw new Error('Loadout not found.');
+  store.loadouts[index] = normalizeLoadout(input, store.loadouts[index]);
+  await saveStore(store);
+  return store.loadouts[index];
+}
+
+export async function setActiveLoadout(id) {
+  const store = await loadStore();
+  if (!store.loadouts.some(loadout => loadout.id === id)) throw new Error('Loadout not found.');
+  store.activeLoadoutId = id;
+  await saveStore(store);
+  return { activeLoadoutId: id };
+}
+
+// Returns the removed record so the caller can offer an undo. Deleting a loadout is the
+// only destructive action in this module, and it is reversible by construction.
+export async function deleteLoadout(id) {
+  const store = await loadStore();
+  if (store.loadouts.length <= 1) throw new Error('Apollo must keep at least one loadout.');
+  const index = store.loadouts.findIndex(loadout => loadout.id === id);
+  if (index < 0) throw new Error('Loadout not found.');
+  const [removed] = store.loadouts.splice(index, 1);
+  if (store.activeLoadoutId === id) store.activeLoadoutId = store.loadouts[0].id;
+  await saveStore(store);
+  return { activeLoadoutId: store.activeLoadoutId, removed, restoreIndex: index };
+}
+
+export async function restoreLoadout(loadout, restoreIndex = null) {
+  const store = await loadStore();
+  const restored = normalizeLoadout(loadout, loadout);
+  if (store.loadouts.some(item => item.id === restored.id)) return { activeLoadoutId: store.activeLoadoutId, loadout: restored };
+  const at = Number.isInteger(restoreIndex) ? Math.min(Math.max(restoreIndex, 0), store.loadouts.length) : store.loadouts.length;
+  store.loadouts.splice(at, 0, restored);
+  store.activeLoadoutId = restored.id;
+  await saveStore(store);
+  return { activeLoadoutId: store.activeLoadoutId, loadout: restored };
+}
+
+export { slotMap as loadoutSlots };
 
 export async function recordSystemOutput(systemId, input = {}) {
   const store = await loadStore();

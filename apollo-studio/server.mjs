@@ -9,7 +9,7 @@ import { plugins, tools, presets } from './skills.mjs';
 import { addSource, allSkills, createSkill, initializeKnowledge, listKnowledge, updateSkill } from './knowledge.mjs';
 import { buildPlan, listAgents, updateAgent } from './agents.mjs';
 import { initializeEventStore, listEvents, publishEvent } from './events.mjs';
-import { agentTemplates, createSystem, deleteSystem, getOutputPreview, initializeSystems, listSystems, recordSystemOutput, setActiveSystem, updateSystem } from './systems.mjs';
+import { agentTemplates, createSystem, createLoadout, deleteLoadout, deleteSystem, getOutputPreview, initializeSystems, listLoadouts, listSystems, recordSystemOutput, restoreLoadout, setActiveLoadout, setActiveSystem, updateLoadout, updateSystem } from './systems.mjs';
 import { addAttachment, addMessage, chatDetail, createChat, createProject, createProposal, initializeWorkspace, listWorkspace, resolveProposal, unlinkAttachment } from './workspace.mjs';
 
 const root = fileURLToPath(new URL('./public/', import.meta.url));
@@ -237,6 +237,19 @@ const server = http.createServer(async (request, response) => {
     const systemMatch = path.match(/^\/api\/systems\/([a-z0-9-]+)$/);
     if (request.method === 'PATCH' && systemMatch) return json(response, 200, await updateSystem(systemMatch[1], await readJson(request)));
     if (request.method === 'DELETE' && systemMatch) return json(response, 200, await deleteSystem(systemMatch[1]));
+    // Loadouts: the open half of the model. The pipeline above them is locked.
+    if (request.method === 'GET' && path === '/api/loadouts') return json(response, 200, await listLoadouts());
+    if (request.method === 'POST' && path === '/api/loadouts') return json(response, 201, await createLoadout(await readJson(request)));
+    if (request.method === 'PATCH' && path === '/api/loadouts/active') return json(response, 200, await setActiveLoadout((await readJson(request)).id));
+    // Undo for the one destructive action in the model: the delete response carries the
+    // removed record and its index, and this puts it back where it was.
+    if (request.method === 'POST' && path === '/api/loadouts/restore') {
+      const body = await readJson(request);
+      return json(response, 200, await restoreLoadout(body.loadout, body.restoreIndex));
+    }
+    const loadoutMatch = path.match(/^\/api\/loadouts\/([a-z0-9-]+)$/);
+    if (request.method === 'PATCH' && loadoutMatch) return json(response, 200, await updateLoadout(loadoutMatch[1], await readJson(request)));
+    if (request.method === 'DELETE' && loadoutMatch) return json(response, 200, await deleteLoadout(loadoutMatch[1]));
     const outputMatch = path.match(/^\/api\/systems\/([a-z0-9-]+)\/outputs$/);
     if (request.method === 'POST' && outputMatch) return json(response, 201, await recordSystemOutput(outputMatch[1], await readJson(request)));
     const previewMatch = path.match(/^\/api\/systems\/([a-z0-9-]+)\/outputs\/([a-z0-9-]+)\/preview$/);
