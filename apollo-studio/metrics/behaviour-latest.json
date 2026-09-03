@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T17:25:27.892Z",
-  "durationMs": 293896,
+  "generatedAt": "2026-09-03T17:31:16.107Z",
+  "durationMs": 293919,
   "thresholds": {
     "B1": {
       "name": "Controls with no listener and no form owner",

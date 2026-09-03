@@ -1,15 +1,7 @@
 {
   "version": 1,
   "customSkills": [],
-  "overrides": {
-    "agent-identity-and-portfolio": {
-      "group": "Agents",
-      "phase": "prepare",
-      "description": "Defines consistent agent identities, transparent inventory, and evidence-backed marketplace portfolios.",
-      "runtimePrompt": "Keep agent identity memorable but truthful. Specify a reproducible avatar bible, capability and configuration limits, typed inventory availability, and portfolio claims linked to inspectable evidence. Reject fabricated achievements, endorsements, credentials, or deceptive persona claims.",
-      "enabled": true
-    }
-  },
+  "overrides": {},
   "sources": {
     "ui-ux": [
       {

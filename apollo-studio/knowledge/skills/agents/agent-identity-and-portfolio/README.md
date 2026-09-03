@@ -2,6 +2,8 @@
 
 - Category: Agents
 - Phase: prepare
+- Status: stub
+- Routed: yes
 - Skill ID: agent-identity-and-portfolio
 
 Defines consistent agent identities, transparent inventory, and evidence-backed marketplace portfolios.
