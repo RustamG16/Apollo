@@ -1349,3 +1349,8 @@ textarea { min-height: calc(var(--control-h) * 2); }
   font-size: var(--text-meta);
 }
 .work-error .quiet-action { border: 1px solid var(--line-strong); }
+
+/* Unsaved work is stated, and escapable, without a dialog standing in front of it. */
+.form-feedback { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); margin: 0; color: var(--fg-muted); font-size: var(--text-meta); }
+.form-feedback.is-dirty { color: var(--warn); }
+.form-feedback .quiet-action { border: 1px solid var(--line-strong); }

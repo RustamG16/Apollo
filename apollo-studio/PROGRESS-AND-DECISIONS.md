@@ -862,3 +862,51 @@ Playground's prompt "Clear" — owned by the Pipeline map and Playground passes.
 rather than about redundancy: does adding a loadout, changing one decision and making it
 active read as one motion, and what does the surface say when a slot's answer would have no
 effect.
+
+## 2026-09-03 — P4 pass 2: Loadouts
+
+**Slice:** P4, surface 2 of 6. Complete.
+
+### The real task, observed — and a data-loss bug found by doing it
+
+The task is: change one decision, and make that the configuration the next run uses. Walking
+it end to end in the live app surfaced something worse than friction. Changing a slot marked
+the loadout "Unsaved changes."; selecting another loadout in the list **silently discarded
+the edit**, with no warning and no way back. Measured directly: set Motion to
+`gsap-scrolltrigger`, click another loadout, click back — the select reads `gsap-core` and
+the dirty marker is gone.
+
+**The single highest-friction moment: the surface asked you to remember that you had unsaved
+work, and punished you for looking away.**
+
+### The fix, in the same spirit as undo-over-confirm
+
+Pending edits now **travel with the loadout they belong to**. `state.loadoutDrafts` holds one
+draft per loadout id; every control writes into it, rendering reads the draft over the saved
+record, saving clears it. Switch away, switch back, the edit is still there and still marked
+unsaved. There is no dialog, because a dialog would make you decide before you can see the
+result — the same reasoning that put undo ahead of `confirm()` everywhere else in this
+program. A **Discard changes** control sits next to the marker so the pending state is
+escapable in one click.
+
+Verified live: edit, switch away, switch back — `gsap-scrolltrigger` still selected, still
+marked unsaved. Discard returns it to `gsap-core` and the marker clears.
+
+### The second question the surface could not answer
+
+"Does editing this loadout affect anything?" A non-active loadout looked exactly like the
+active one while being inert. The status line now always says which it is: **"Active: the
+next run uses this."** or **"Saved. The next run uses Lean audit."** — naming the loadout
+that will actually run. One line, no new controls, and it answers the question before it is
+asked.
+
+### Metrics
+
+All eleven unchanged: nine pass, T9 at 3 of 8 and T11 at 4. No elements were added beyond
+the one status control, and one class of data loss was removed. `npm.cmd run check` exits 0,
+console clean, reduced motion honoured, no overflow at any viewport.
+
+**Next slice:** P4 pass 3 — Library. The measured defects are: slugs instead of skill names,
+"0 sources" on all 84, nothing marked in-use, an absolute filesystem path in the chrome, and
+two competing taxonomies (`group` vs `category`) with neither explained. The slot map now
+makes "in use / available / unrouted" answerable for the first time.

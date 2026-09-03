@@ -15,6 +15,7 @@ const state = {
   eventsError: null,
   systems: null,
   selectedLoadoutId: null,
+  loadoutDrafts: new Map(),
   view: 'work',
   work: { projects: [], proposals: [], activeProjectId: null, activeChatId: null, detail: null }
 };
@@ -401,9 +402,55 @@ function renderSlotRow(slot, loadout) {
   return row;
 }
 
+// Selecting another loadout used to throw away whatever had been changed, silently. The
+// edits now travel with the loadout they belong to: switch away, switch back, they are
+// still there and still marked unsaved. Nothing is lost and nothing has to be decided.
+function captureLoadoutDraft() {
+  const loadout = selectedLoadout();
+  if (!loadout || !$('#loadout-form')) return;
+  const form = $('#loadout-form');
+  state.loadoutDrafts.set(loadout.id, {
+    name: form.elements.name.value,
+    description: form.elements.description.value,
+    slots: readSlotSelections(),
+    brief: $('#loadout-brief').value,
+    tools: { mcp: $$('#loadout-tools input:checked').map(input => input.dataset.toolId), plugins: loadout.tools.plugins },
+    budget: {
+      totalTokens: Number($('#loadout-budget').value) || loadout.budget.totalTokens,
+      approvals: Object.fromEntries($$('#approval-list input').map(input => [input.dataset.approvalFor, input.checked]))
+    }
+  });
+}
+
 function markLoadoutDirty() {
+  captureLoadoutDraft();
+  renderLoadoutStatus();
+}
+
+function renderLoadoutStatus() {
+  const loadout = selectedLoadout();
   const feedback = $('#loadout-feedback');
-  if (feedback) feedback.textContent = 'Unsaved changes.';
+  if (!loadout || !feedback) return;
+  const dirty = state.loadoutDrafts.has(loadout.id);
+  const isActive = loadout.id === state.loadouts.activeLoadoutId;
+  feedback.replaceChildren();
+  const message = document.createElement('span');
+  message.textContent = dirty
+    ? 'Unsaved changes. They are kept if you look at another loadout.'
+    : (isActive ? 'Active: the next run uses this.' : 'Saved. The next run uses ' + (state.loadouts.loadouts.find(item => item.id === state.loadouts.activeLoadoutId)?.name || 'another loadout') + '.');
+  feedback.append(message);
+  feedback.classList.toggle('is-dirty', dirty);
+  if (dirty) {
+    const discard = document.createElement('button');
+    discard.type = 'button';
+    discard.className = 'quiet-action';
+    discard.textContent = 'Discard changes';
+    discard.addEventListener('click', () => {
+      state.loadoutDrafts.delete(loadout.id);
+      renderSystems();
+    });
+    feedback.append(discard);
+  }
 }
 
 function readSlotSelections() {
@@ -641,19 +688,21 @@ function renderSystems() {
   $('.slot-section').hidden = !loadout;
   if (!loadout) return;
 
-  form.elements.name.value = loadout.name;
-  form.elements.description.value = loadout.description;
+  const draft = state.loadoutDrafts.get(loadout.id);
+  const shown = draft ? { ...loadout, ...draft } : loadout;
+  form.elements.name.value = shown.name;
+  form.elements.description.value = shown.description;
   $('#activate-loadout').textContent = loadout.id === state.loadouts.activeLoadoutId ? 'Active loadout' : 'Use this loadout';
   $('#activate-loadout').disabled = loadout.id === state.loadouts.activeLoadoutId;
   $('#delete-loadout').disabled = state.loadouts.loadouts.length <= 1;
-  $('#slot-rows').replaceChildren(...state.loadouts.slots.map(slot => renderSlotRow(slot, loadout)));
+  $('#slot-rows').replaceChildren(...state.loadouts.slots.map(slot => renderSlotRow(slot, shown)));
   renderDesignDnaPanel(loadout);
-  renderLoadoutTools(loadout);
-  renderApprovals(loadout);
-  $('#loadout-brief').value = loadout.brief || '';
-  $('#loadout-budget').value = loadout.budget.totalTokens;
-  $('#budget-translation').textContent = describeBudget(loadout.budget.totalTokens);
-  $('#loadout-feedback').textContent = '';
+  renderLoadoutTools(shown);
+  renderApprovals(shown);
+  $('#loadout-brief').value = shown.brief || '';
+  $('#loadout-budget').value = shown.budget.totalTokens;
+  $('#budget-translation').textContent = describeBudget(shown.budget.totalTokens);
+  renderLoadoutStatus();
   renderOutputs(activeSystem());
 }
 
@@ -1465,6 +1514,7 @@ async function saveSelectedLoadout(event) {
         description: form.elements.description.value,
         slots: readSlotSelections(),
         designDna: loadout.designDna || '',
+        // fields below come from the form, which is the draft when one exists
         brief: $('#loadout-brief').value,
         tools: { mcp: $$('#loadout-tools input:checked').map(input => input.dataset.toolId), plugins: loadout.tools.plugins },
         budget: {
@@ -1473,8 +1523,8 @@ async function saveSelectedLoadout(event) {
         }
       })
     });
+    state.loadoutDrafts.delete(loadout.id);
     await refreshLoadouts(loadout.id);
-    $('#loadout-feedback').textContent = 'Saved. New plans use this loadout when it is active.';
   } catch (error) { feedback.textContent = error.message; }
 }
 

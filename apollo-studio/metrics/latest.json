@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T05:28:35.380Z",
-  "durationMs": 15524,
+  "generatedAt": "2026-09-03T05:31:17.621Z",
+  "durationMs": 15589,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -129,7 +129,7 @@
   },
   "perViewport": {
     "1280x800": {
-      "textNodes": 1300,
+      "textNodes": 1301,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
@@ -169,7 +169,7 @@
           ]
         },
         "systems": {
-          "textNodes": 184,
+          "textNodes": 185,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -177,7 +177,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            66
+            67
           ]
         },
         "playground": {
@@ -255,7 +255,7 @@
       }
     },
     "1440x900": {
-      "textNodes": 1300,
+      "textNodes": 1301,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
@@ -295,7 +295,7 @@
           ]
         },
         "systems": {
-          "textNodes": 184,
+          "textNodes": 185,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -303,7 +303,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            66
+            67
           ]
         },
         "playground": {
@@ -381,7 +381,7 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1300,
+      "textNodes": 1301,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
@@ -421,7 +421,7 @@
           ]
         },
         "systems": {
-          "textNodes": 184,
+          "textNodes": 185,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -429,7 +429,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            66
+            67
           ]
         },
         "playground": {
@@ -516,7 +516,7 @@
   },
   "sizeHistogram": {
     "13.0": 335,
-    "14.0": 601,
+    "14.0": 602,
     "16.0": 308,
     "18.0": 16,
     "22.0": 21,
@@ -526,13 +526,13 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 102308,
-        "lines": 1352
+        "bytes": 102672,
+        "lines": 1357
       }
     ],
     "fontSizeUnits": {
-      "total": 231,
-      "rem": 231,
+      "total": 232,
+      "rem": 232,
       "px": 0,
       "em": 0,
       "other": 0
