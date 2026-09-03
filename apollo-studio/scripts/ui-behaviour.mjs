@@ -286,7 +286,10 @@ async function main() {
   const allControls = census.flatMap(entry => entry.controls || []);
   const unwired = allControls.filter(c => c.visible && !c.wired && !c.isNativeField);
   const clicked = sweep.filter(c => !c.skipped && !c.notFound);
-  const noEffect = clicked.filter(c => !c.effect);
+  // Split the raw no-ops. A control that was already in its target state is not a defect;
+  // one that was not is a control whose label promises something it does not deliver.
+  const inertNoEffect = clicked.filter(c => !c.effect && c.alreadyActive);
+  const noEffect = clicked.filter(c => !c.effect && !c.alreadyActive);
   const labelChecked = clicked.filter(c => c.labelTruth);
   const labelFailed = labelChecked.filter(c => !c.labelTruth.pass);
   const stores = measureOrphanStores();
@@ -303,7 +306,7 @@ async function main() {
     B2: {
       name: 'Clicks that change nothing observable',
       value: noEffect.length, target: 0, pass: noEffect.length === 0,
-      unit: 'of ' + clicked.length + ' clicked',
+      unit: 'of ' + clicked.length + ' clicked (' + inertNoEffect.length + ' already in their target state, excluded)',
       detail: noEffect.slice(0, 14).map(c => c.view + ' ' + c.selector + ' "' + c.label + '"'),
     },
     B3: {
@@ -358,6 +361,7 @@ async function main() {
     controls: { total: allControls.length, visible: allControls.filter(c => c.visible).length, clicked: clicked.length, skipped: sweep.filter(c => c.skipped).length },
     unwired,
     noEffect: noEffect.map(c => ({ view: c.view, selector: c.selector, label: c.label, boundOn: c.boundOn })),
+    alreadyActiveNoEffect: inertNoEffect.map(c => ({ view: c.view, selector: c.selector, label: c.label })),
     decisions,
     stores,
     persistence,

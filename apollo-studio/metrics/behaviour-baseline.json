@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T15:22:10.071Z",
-  "durationMs": 285502,
+  "generatedAt": "2026-09-03T15:45:19.455Z",
+  "durationMs": 297326,
   "thresholds": {
     "B1": {
       "name": "Controls with no listener and no form owner",
@@ -12,25 +12,23 @@
     },
     "B2": {
       "name": "Clicks that change nothing observable",
-      "value": 22,
+      "value": 12,
       "target": 0,
       "pass": false,
-      "unit": "of 202 clicked",
+      "unit": "of 211 clicked (11 already in their target state, excluded)",
       "detail": [
-        "work div#project-list > button.project-item.is-active \"WKO launch narrativeLaunch planning\"",
-        "work div#project-tabs > button.project-tab.is-active \"Launch planning\"",
         "work form#work-composer > div.composer-footer > div.composer-submit:nth-of-type(2) > button.primary-action.composer-send \"SendEnter\"",
         "work #close-context \"Close context\"",
-        "work body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(1) \"Work\"",
         "systems form#loadout-form > div.loadout-actions:nth-of-type(2) > button.run-action:nth-of-type(3) \"Save changes\"",
-        "systems body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(2) \"Systems\"",
-        "playground body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(4) \"Playground\"",
-        "agents section#agents > div.library-switcher:nth-of-type(2) > button.is-active:nth-of-type(1) \"Agents\"",
-        "knowledge section#knowledge > div.library-switcher:nth-of-type(2) > button.is-active:nth-of-type(2) \"Skills & knowledge\"",
-        "knowledge div#category-list > button.category-button.is-active:nth-of-type(1) \"Everything84\"",
-        "knowledge div#knowledge-skill-list > button.knowledge-skill.is-active:nth-of-type(1) \"Agent Identity and PortfolioAgents · prepareagent-identity-a\"",
         "knowledge form#skill-editor > div.form-status:nth-of-type(3) > button.run-action \"Save skill\"",
-        "knowledge aside#knowledge-inspector > section.source-section > form.source-form > div.form-status:nth-of-type(2) > button.quiet-action \"Add source\""
+        "knowledge aside#knowledge-inspector > section.source-section > form.source-form > div.form-status:nth-of-type(2) > button.quiet-action \"Add source\"",
+        "runs #refresh-runs \"Refresh\"",
+        "runs #export-runs \"Export JSON\"",
+        "runs #clear-runs \"Clear local\"",
+        "runs body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item:nth-of-type(5) \"Runs5\"",
+        "chrome #export-runs \"Export JSON\"",
+        "chrome #clear-runs \"Clear local\"",
+        "chrome #close-oracle \"Close Oracle\""
       ]
     },
     "B3": {
@@ -116,25 +114,13 @@
     }
   },
   "controls": {
-    "total": 1072,
-    "visible": 543,
-    "clicked": 202,
+    "total": 1081,
+    "visible": 552,
+    "clicked": 211,
     "skipped": 5
   },
   "unwired": [],
   "noEffect": [
-    {
-      "view": "work",
-      "selector": "div#project-list > button.project-item.is-active",
-      "label": "WKO launch narrativeLaunch planning",
-      "boundOn": "self"
-    },
-    {
-      "view": "work",
-      "selector": "div#project-tabs > button.project-tab.is-active",
-      "label": "Launch planning",
-      "boundOn": "self"
-    },
     {
       "view": "work",
       "selector": "form#work-composer > div.composer-footer > div.composer-submit:nth-of-type(2) > button.primary-action.composer-send",
@@ -148,52 +134,10 @@
       "boundOn": "self"
     },
     {
-      "view": "work",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(1)",
-      "label": "Work",
-      "boundOn": "self"
-    },
-    {
       "view": "systems",
       "selector": "form#loadout-form > div.loadout-actions:nth-of-type(2) > button.run-action:nth-of-type(3)",
       "label": "Save changes",
       "boundOn": "ancestor"
-    },
-    {
-      "view": "systems",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(2)",
-      "label": "Systems",
-      "boundOn": "self"
-    },
-    {
-      "view": "playground",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(4)",
-      "label": "Playground",
-      "boundOn": "self"
-    },
-    {
-      "view": "agents",
-      "selector": "section#agents > div.library-switcher:nth-of-type(2) > button.is-active:nth-of-type(1)",
-      "label": "Agents",
-      "boundOn": "self"
-    },
-    {
-      "view": "knowledge",
-      "selector": "section#knowledge > div.library-switcher:nth-of-type(2) > button.is-active:nth-of-type(2)",
-      "label": "Skills & knowledge",
-      "boundOn": "self"
-    },
-    {
-      "view": "knowledge",
-      "selector": "div#category-list > button.category-button.is-active:nth-of-type(1)",
-      "label": "Everything84",
-      "boundOn": "self"
-    },
-    {
-      "view": "knowledge",
-      "selector": "div#knowledge-skill-list > button.knowledge-skill.is-active:nth-of-type(1)",
-      "label": "Agent Identity and PortfolioAgents · prepareagent-identity-a",
-      "boundOn": "self"
     },
     {
       "view": "knowledge",
@@ -206,12 +150,6 @@
       "selector": "aside#knowledge-inspector > section.source-section > form.source-form > div.form-status:nth-of-type(2) > button.quiet-action",
       "label": "Add source",
       "boundOn": "ancestor"
-    },
-    {
-      "view": "knowledge",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(3)",
-      "label": "Library",
-      "boundOn": "self"
     },
     {
       "view": "runs",
@@ -232,9 +170,9 @@
       "boundOn": "self"
     },
     {
-      "view": "chrome",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(1)",
-      "label": "Work",
+      "view": "runs",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item:nth-of-type(5)",
+      "label": "Runs5",
       "boundOn": "self"
     },
     {
@@ -254,6 +192,63 @@
       "selector": "#close-oracle",
       "label": "Close Oracle",
       "boundOn": "self"
+    }
+  ],
+  "alreadyActiveNoEffect": [
+    {
+      "view": "work",
+      "selector": "div#project-list > button.project-item.is-active",
+      "label": "WKO launch narrativeLaunch planning"
+    },
+    {
+      "view": "work",
+      "selector": "div#project-tabs > button.project-tab.is-active",
+      "label": "Launch planning"
+    },
+    {
+      "view": "work",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(1)",
+      "label": "Work1"
+    },
+    {
+      "view": "systems",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(2)",
+      "label": "Loadouts2"
+    },
+    {
+      "view": "playground",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(4)",
+      "label": "Playground4"
+    },
+    {
+      "view": "agents",
+      "selector": "section#agents > div.library-switcher:nth-of-type(2) > button.is-active:nth-of-type(1)",
+      "label": "Agents"
+    },
+    {
+      "view": "knowledge",
+      "selector": "section#knowledge > div.library-switcher:nth-of-type(2) > button.is-active:nth-of-type(2)",
+      "label": "Skills & knowledge"
+    },
+    {
+      "view": "knowledge",
+      "selector": "div#category-list > button.category-button.is-active:nth-of-type(1)",
+      "label": "Everything84"
+    },
+    {
+      "view": "knowledge",
+      "selector": "div#knowledge-skill-list > button.knowledge-skill.is-active:nth-of-type(1)",
+      "label": "Agent Identity and PortfolioAgents · prepareagent-identity-a"
+    },
+    {
+      "view": "knowledge",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(3)",
+      "label": "Library3"
+    },
+    {
+      "view": "chrome",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(1)",
+      "label": "Work1"
     }
   ],
   "decisions": [
@@ -371,10 +366,10 @@
     "regressions": [],
     "improvements": [
       {
-        "id": "B4",
-        "name": "Loadout decisions that do not change the request",
-        "before": 4,
-        "after": 2
+        "id": "B2",
+        "name": "Clicks that change nothing observable",
+        "before": 23,
+        "after": 12
       }
     ]
   }

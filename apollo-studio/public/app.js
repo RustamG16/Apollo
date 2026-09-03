@@ -292,6 +292,7 @@ async function refreshSystems() {
   state.systems = await api('/api/systems');
   renderSystems();
   renderArchitectureAgents();
+  renderTransport();
 }
 
 function renderArchitectureAgents() {
@@ -331,6 +332,121 @@ function renderArchitectureAgents() {
   }));
 }
 
+
+// ---------------------------------------------------------------------------
+// The transport. Band 2 of the shell: the locked route always, and run state only
+// while run state is true.
+//
+// This is REFERENCES.md P5 - "a view of a process must show the process that ran". The data
+// has been on /api/events the whole time and runPhaseTraces() already computed it; nothing
+// drew it, so the pipeline map stayed an illustration of what is possible rather than an
+// instrument showing what happened.
+//
+// The contract, from DESIGN.md:
+//   no run     -> header line only, ~34px, the five names inline
+//   in flight  -> the five-stage track, per-stage status and tokens
+//   completed  -> header line only. A finished run is history, and history lives in Runs.
+// It never shows stale run state: keeping a completed run expanded would spend ~16% of every
+// viewport on every view displaying something that stopped being true.
+// ---------------------------------------------------------------------------
+
+const STAGE_ORDER = ['apollo-director', 'athena-evidence', 'calliope-experience', 'hephaestus-build', 'hermes-delivery'];
+
+function liveRun() {
+  // "In flight" means a run that started and has neither completed nor failed. Anything else
+  // - including a run that finished ten seconds ago - is history.
+  return connectedRunsFromEvents().find(run => run.status === 'in-progress') || null;
+}
+
+function stageStateFor(run, agent) {
+  if (!run) return null;
+  const events = run.events.filter(event => event.data?.agent === agent.name);
+  if (!events.length) return { key: '', label: 'not reached', tokens: 0 };
+  const failed = events.find(event => event.kind === 'run.failed');
+  const paused = events.find(event => event.data?.status === 'approval-required' || event.kind === 'run.paused');
+  const done = events.find(event => event.data?.status === 'completed' || event.data?.status === 'simulated');
+  const tokens = events.reduce((sum, event) => sum + (Number(event.data?.tokens) || 0), 0);
+  if (failed) return { key: 'is-waiting', label: 'failed', tokens };
+  if (paused) return { key: 'is-waiting', label: 'waiting for approval', tokens };
+  if (done) return { key: 'is-done', label: 'completed', tokens };
+  return { key: 'is-live', label: 'running', tokens };
+}
+
+function renderTransport() {
+  const route = $('#transport-route');
+  const meta = $('#transport-meta');
+  const track = $('#transport-track');
+  if (!route || !meta || !track) return;
+
+  const system = activeSystem();
+  const agents = STAGE_ORDER
+    .map(id => (system?.agents || []).find(agent => agent.id === id))
+    .filter(Boolean);
+  if (!agents.length) { route.textContent = ''; meta.textContent = 'Pipeline unavailable'; track.hidden = true; return; }
+
+  route.textContent = agents.map(agent => agent.name).join(' \u2192 ');
+
+  const run = liveRun();
+  meta.classList.toggle('is-live', Boolean(run));
+  meta.classList.remove('is-waiting');
+
+  if (!run) {
+    // No run in flight. The band is the header line and nothing else.
+    track.hidden = true;
+    track.replaceChildren();
+    const history = connectedRunsFromEvents();
+    meta.textContent = history.length
+      ? 'last run ' + history[0].runId.slice(0, 7) + ' \u00b7 ' + relativeTime(history[0].updatedAt)
+      : 'No run yet';
+    return;
+  }
+
+  const loadout = state.loadouts?.loadouts.find(item => item.id === state.loadouts.activeLoadoutId);
+  const slots = state.loadouts?.slots || [];
+  const tokens = run.events.reduce((sum, event) => sum + (Number(event.data?.tokens) || 0), 0);
+  const ceiling = loadout?.budget?.totalTokens || 0;
+  meta.textContent = tokens.toLocaleString() + (ceiling ? ' / ' + ceiling.toLocaleString() : '') + ' tok \u00b7 run ' + run.runId.slice(0, 7);
+
+  track.hidden = false;
+  track.replaceChildren(...agents.map(agent => {
+    const cell = document.createElement('div');
+    const stage = stageStateFor(run, agent);
+    cell.className = 'transport-stage' + (stage.key ? ' ' + stage.key : '');
+    if (stage.key === 'is-waiting') meta.classList.add('is-waiting');
+
+    const phase = document.createElement('span');
+    phase.className = 'stage-phase';
+    phase.textContent = phaseLabels[agent.phase] || agent.phase;
+    const name = document.createElement('strong');
+    name.textContent = agent.name;
+    const carries = document.createElement('span');
+    carries.className = 'stage-carries';
+    const owned = slots.filter(slot => slot.owner === agent.id);
+    carries.textContent = owned.length && loadout
+      ? owned.map(slot => loadout.slots[slot.id] || slot.default).join(', ')
+      : agent.skills.join(', ');
+    const status = document.createElement('span');
+    status.className = 'stage-state';
+    const dot = document.createElement('i');
+    const label = document.createElement('span');
+    label.textContent = stage.tokens
+      ? stage.label + ' \u00b7 ' + stage.tokens.toLocaleString()
+      : stage.label;
+    status.append(dot, label);
+
+    cell.append(phase, name, carries, status);
+    return cell;
+  }));
+}
+
+function relativeTime(iso) {
+  const seconds = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 1000));
+  if (seconds < 60) return 'just now';
+  if (seconds < 3600) return Math.round(seconds / 60) + ' min ago';
+  if (seconds < 86400) return Math.round(seconds / 3600) + ' h ago';
+  return Math.round(seconds / 86400) + ' d ago';
+}
+
 function renderOutputs(system) {
   const host = $('#output-grid');
   $('#output-count').textContent = `${system.outputs.length} output${system.outputs.length === 1 ? '' : 's'}`;
@@ -367,6 +483,7 @@ async function refreshLoadouts(selectId = state.selectedLoadoutId) {
   state.selectedLoadoutId = state.loadouts.loadouts.some(item => item.id === selectId) ? selectId : state.loadouts.activeLoadoutId;
   renderSystems();
   renderArchitectureAgents();
+  renderTransport();
 }
 
 function renderPipelineStrip() {
@@ -1631,6 +1748,7 @@ async function refreshEvents() {
   }
   renderHostEvents();
   renderHistory();
+  renderTransport();
 }
 
 function setRuntime(mode) {
@@ -1931,7 +2049,7 @@ async function init() {
     $('#oracle-model').innerHTML = state.config.models.map(model => `<option value="${model}"${model === 'gpt-5.6-terra' ? ' selected' : ''}>${model}</option>`).join('');
     $('#integration-recommendation').textContent = integrationData.recommendation;
     restoreGraphNodes(); applyGraphPositions();
-    renderSkillRegistry(); renderTools(); renderVariants(); renderAgents(); renderSystems(); renderArchitectureAgents(); renderKnowledge(); renderOracleMessages(); renderIntegrations(); renderHostEvents(); setRuntime(state.config.mode); bindEvents(); refreshIcons(); initMotionPreferences(); setComparisonState('idle');
+    renderSkillRegistry(); renderTools(); renderVariants(); renderAgents(); renderSystems(); renderArchitectureAgents(); renderKnowledge(); renderOracleMessages(); renderIntegrations(); renderHostEvents(); renderTransport(); setRuntime(state.config.mode); bindEvents(); refreshIcons(); initMotionPreferences(); setComparisonState('idle');
     updateRunCount();
     $('#experiment-prompt').dispatchEvent(new Event('input'));
     navigate(viewFromHash());

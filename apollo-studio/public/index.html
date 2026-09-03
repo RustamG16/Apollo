@@ -16,26 +16,42 @@
   colour is state, one accent, and density comes from geometry rather than from type.
   -->
   <div class="app-shell">
+    <!-- Band 1 of four. DESIGN.md "The shell": chrome / transport / work / status. A view
+         supplies band 3 and nothing else. -->
     <header class="topbar">
       <a class="brand" href="#work" aria-label="Apollo Studio Work">
         <span class="brand-mark" aria-hidden="true">A</span>
-        <span><strong>Apollo Studio</strong><small>Local creative workspace</small></span>
+        <strong>Apollo Studio</strong>
       </a>
       <nav class="primary-nav" aria-label="Primary navigation">
-        <button class="nav-item is-active" data-view-target="work">Work</button>
-        <button class="nav-item" data-view-target="systems">Systems</button>
-        <button class="nav-item" data-view-target="knowledge">Library</button>
-        <button class="nav-item" data-view-target="playground">Playground</button>
+        <button class="nav-item is-active" data-view-target="work">Work<kbd>1</kbd></button>
+        <button class="nav-item" data-view-target="systems">Loadouts<kbd>2</kbd></button>
+        <button class="nav-item" data-view-target="knowledge">Library<kbd>3</kbd></button>
+        <button class="nav-item" data-view-target="playground">Playground<kbd>4</kbd></button>
+        <button class="nav-item" data-view-target="runs">Runs<kbd>5</kbd></button>
       </nav>
-      <div class="topbar-actions"><button class="oracle-trigger" id="toggle-oracle" type="button" aria-expanded="false" aria-controls="oracle-dock">Oracle <kbd id="oracle-shortcut">Ctrl K</kbd></button><div class="runtime-state"><span class="state-dot" aria-hidden="true"></span><span id="runtime-label">Connecting…</span><span id="run-count" hidden>0</span></div></div>
+      <div class="topbar-actions"><button class="oracle-trigger" id="toggle-oracle" type="button" aria-expanded="false" aria-controls="oracle-dock">Oracle <kbd id="oracle-shortcut">Ctrl K</kbd></button></div>
     </header>
+
+    <!-- Band 2. The locked route always; run state only when run state is true. It collapses
+         to this header line when no run is in flight, because a finished run is history and
+         history lives in Runs - see the transport contract in DESIGN.md. -->
+    <section class="transport" id="transport" aria-label="Olympus pipeline">
+      <div class="transport-head">
+        <b>Olympus pipeline</b><span class="transport-lock">locked</span>
+        <span class="transport-route" id="transport-route"></span>
+        <span class="transport-rule" aria-hidden="true"></span>
+        <span class="transport-meta" id="transport-meta">No run yet</span>
+      </div>
+      <div class="transport-track" id="transport-track" hidden></div>
+    </section>
 
     <main>
       <section class="view is-active work-view" id="work" aria-labelledby="work-title">
         <div class="workspace-frame">
           <aside class="project-sidebar" aria-label="Projects and chats">
             <div class="sidebar-brandline"><div><span class="eyebrow">Workspace</span><strong class="workspace-name">Local archive</strong></div><button class="icon-action" id="new-project" type="button" aria-label="Create project">+</button></div>
-            <label class="project-search"><span class="sr-only">Search projects</span><input id="project-search" type="search" placeholder="Search projects"><kbd id="search-shortcut">Ctrl /</kbd></label>
+            <label class="project-search"><span class="sr-only">Search projects</span><input id="project-search" type="search" placeholder="Search projects"><kbd>Ctrl /</kbd></label>
             <div class="project-list-label"><span>Active projects</span><button class="text-action" id="new-chat" type="button">+ chat</button></div>
             <div id="project-list" class="project-list" aria-live="polite"></div>
             <div class="sidebar-footer"><span class="local-dot"></span><span>Private by default</span><button class="text-action" data-view-target="runs" type="button">Run log →</button></div>
@@ -348,6 +364,15 @@
         </div>
       </section>
     </main>
+
+    <!-- Band 4. Non-interactive by rule: it is 32px, below the 36px floor, so nothing in it
+         may become a control. If it ever needs one, the band goes to 36px first. -->
+    <footer class="statusbar">
+      <span class="runtime-state"><span class="state-dot" aria-hidden="true"></span><span id="runtime-label">Connecting…</span></span>
+      <span class="status-item"><span id="run-count">0</span> runs</span>
+      <span class="status-item status-push"><kbd>Ctrl K</kbd> Oracle</span>
+      <span class="status-item"><kbd id="search-shortcut">Ctrl /</kbd> Search</span>
+    </footer>
 
     <!-- Undo, not a confirmation. A destructive action happens, and the way back stays on
          screen until the next one. See The Undo Rule in DESIGN.md. -->

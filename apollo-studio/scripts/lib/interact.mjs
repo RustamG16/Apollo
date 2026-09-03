@@ -119,6 +119,11 @@ export const CONTROL_CENSUS = `((viewId) => {
       boundVia: bound ? bound.via : null,
       boundTypes: bound ? bound.types : [],
       isSubmit, formBound, isDialogButton, isLink: Boolean(isLink), isNativeField,
+      // A control already IN its target state - the active tab, the selected row - correctly
+      // does nothing when clicked. B2 asks whether a control CAN act, not whether it happened
+      // to be clicked from a state where acting was meaningful, so these are measured and
+      // reported separately rather than counted as defects.
+      alreadyActive: node.matches('.is-active, [aria-current], [aria-pressed="true"], [aria-selected="true"]'),
       // The verdict B1 counts. A native field with no listener is inert but harmless; a
       // BUTTON with no listener, no form and no href is a control that cannot do anything.
       wired: Boolean(bound) || formBound || isDialogButton || Boolean(isLink)

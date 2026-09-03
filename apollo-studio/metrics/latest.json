@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T15:28:02.592Z",
-  "durationMs": 27845,
+  "generatedAt": "2026-09-03T15:34:56.147Z",
+  "durationMs": 28006,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -176,7 +176,7 @@
   },
   "perViewport": {
     "390x844": {
-      "textNodes": 1324,
+      "textNodes": 1327,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
@@ -185,9 +185,46 @@
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 31,
-      "controls": 474,
+      "controls": 475,
       "targetFloor": 44,
-      "overflow": [],
+      "overflow": [
+        {
+          "view": "work",
+          "px": 216
+        },
+        {
+          "view": "architecture",
+          "px": 216
+        },
+        {
+          "view": "systems",
+          "px": 226
+        },
+        {
+          "view": "playground",
+          "px": 216
+        },
+        {
+          "view": "agents",
+          "px": 216
+        },
+        {
+          "view": "knowledge",
+          "px": 216
+        },
+        {
+          "view": "oracle",
+          "px": 216
+        },
+        {
+          "view": "runs",
+          "px": 216
+        },
+        {
+          "view": "_chrome",
+          "px": 216
+        }
+      ],
       "clipped": [],
       "families": [
         "ui-monospace",
@@ -291,7 +328,7 @@
           ]
         },
         "_chrome": {
-          "textNodes": 11,
+          "textNodes": 14,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -299,13 +336,13 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
-            8
+            7
           ]
         }
       }
     },
     "820x1180": {
-      "textNodes": 1324,
+      "textNodes": 1327,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
@@ -314,7 +351,7 @@
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 18,
-      "controls": 487,
+      "controls": 488,
       "targetFloor": 44,
       "overflow": [],
       "clipped": [],
@@ -420,7 +457,7 @@
           ]
         },
         "_chrome": {
-          "textNodes": 11,
+          "textNodes": 14,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -428,13 +465,13 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
-            8
+            7
           ]
         }
       }
     },
     "1280x800": {
-      "textNodes": 1324,
+      "textNodes": 1327,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
@@ -443,7 +480,7 @@
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
-      "controls": 489,
+      "controls": 490,
       "targetFloor": 36,
       "overflow": [],
       "clipped": [],
@@ -549,7 +586,7 @@
           ]
         },
         "_chrome": {
-          "textNodes": 11,
+          "textNodes": 14,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -557,13 +594,13 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
-            8
+            7
           ]
         }
       }
     },
     "1440x900": {
-      "textNodes": 1324,
+      "textNodes": 1327,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
@@ -572,7 +609,7 @@
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
-      "controls": 489,
+      "controls": 490,
       "targetFloor": 36,
       "overflow": [],
       "clipped": [],
@@ -678,7 +715,7 @@
           ]
         },
         "_chrome": {
-          "textNodes": 11,
+          "textNodes": 14,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -686,13 +723,13 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
-            8
+            7
           ]
         }
       }
     },
     "1920x1080": {
-      "textNodes": 1324,
+      "textNodes": 1327,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
@@ -701,7 +738,7 @@
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
       "unmeasuredControls": 16,
-      "controls": 489,
+      "controls": 490,
       "targetFloor": 36,
       "overflow": [],
       "clipped": [],
@@ -807,7 +844,7 @@
           ]
         },
         "_chrome": {
-          "textNodes": 11,
+          "textNodes": 14,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -815,14 +852,14 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
-            8
+            7
           ]
         }
       }
     }
   },
   "chrome": {
-    "textNodes": 11,
+    "textNodes": 14,
     "belowThirteen": 0,
     "contrastFails": 0,
     "targetsBelow36": 0,
@@ -840,13 +877,13 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 116333,
-        "lines": 1548
+        "bytes": 121481,
+        "lines": 1614
       }
     ],
     "fontSizeUnits": {
-      "total": 247,
-      "rem": 247,
+      "total": 253,
+      "rem": 253,
       "px": 0,
       "em": 0,
       "other": 0
@@ -855,9 +892,9 @@
     "radii": [
       "0"
     ],
-    "customPropertyCount": 71,
+    "customPropertyCount": 77,
     "tokenFamilies": {
-      "color": 32,
+      "color": 38,
       "space": 10,
       "radius": 4,
       "motion": 4,
