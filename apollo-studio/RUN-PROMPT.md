@@ -51,9 +51,10 @@ when a phase completes.
 
    Then commit the checkpoint in **both** repos on the new branch:
    `git add -A && git commit -m "checkpoint before redesign run"`.
-   There is uncommitted work in `apollo-studio` right now; it comes along to the branch, which
-   is what I want. `main` and `unification` must be left untouched at their current commits so
-   I can walk away from the whole program with one `git checkout`.
+   The root repo is clean as of commit `979cbd7`. The `apollo-studio` repo has ~74 uncommitted
+   files; they come along to the branch, which is what I want. `main` and `unification` must be
+   left untouched at their current commits so I can walk away from the whole program with one
+   `git checkout` in each repo.
 
    **Never push.** Commit locally only, in both repos, for the whole run.
 2. Read in the order `CLAUDE.md` prescribes: `ARCHITECTURE-ESSENTIALS.md`, `AGENTS.md`,
