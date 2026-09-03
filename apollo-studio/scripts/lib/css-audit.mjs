@@ -49,6 +49,20 @@ function parseColorToken(raw) {
   return null;
 }
 
+// Script-driven motion is motion. GSAP durations were outside every check, which is how an
+// 800ms tween shipped under a 150ms rule.
+export function auditScriptMotion(path) {
+  let text = '';
+  try { text = readFileSync(path, 'utf8'); } catch { return { durations: [], overBudget: [], staggers: [] }; }
+  const durations = [...text.matchAll(/duration\s*:\s*([\d.]+)/g)].map(m => Number(m[1]) * 1000);
+  const staggers = [...text.matchAll(/stagger\s*:\s*([\d.]+)/g)].map(m => Number(m[1])).filter(v => v > 0);
+  return {
+    durations,
+    overBudget: durations.filter(ms => ms > 150),
+    staggers,
+  };
+}
+
 export function auditCss(paths) {
   const sources = paths.map(p => ({ path: p, text: readFileSync(p, 'utf8') }));
   const css = sources.map(s => s.text).join('\n');

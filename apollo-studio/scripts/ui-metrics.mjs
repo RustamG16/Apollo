@@ -15,7 +15,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { launch, findChrome } from './lib/cdp.mjs';
 import { PROBE_SOURCE } from './lib/probe.mjs';
-import { auditCss } from './lib/css-audit.mjs';
+import { auditCss, auditScriptMotion } from './lib/css-audit.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const METRICS_DIR = join(ROOT, 'metrics');
@@ -267,6 +267,7 @@ async function main() {
   mkdirSync(METRICS_DIR, { recursive: true });
 
   const css = auditCss([join(ROOT, 'public/styles.css')]);
+  const scriptMotion = auditScriptMotion(join(ROOT, 'public/app.js'));
   const { proc: server, base } = await startServer();
   const browser = await launch();
   const runs = [];
@@ -434,6 +435,7 @@ async function main() {
     css,
     consoleErrors,
     reducedMotion,
+    scriptMotion,
     worstContrast: viewRuns.filter(r => r.viewport === PRIMARY_VIEWPORT)
       .flatMap(r => r.probe.text.filter(t => !t.pass).map(t => ({ view: r.view, ...t })))
       .sort((a, b) => a.ratio - b.ratio).slice(0, 15),
@@ -449,9 +451,15 @@ async function main() {
 
   report.standingRules = {
     motionBudget: {
-      name: 'No transition or animation over 150ms (DESIGN.md motion)',
-      value: css.longMotion.length, target: 0, pass: css.longMotion.length === 0,
-      detail: [...new Set(css.longMotion)],
+      name: 'No transition or animation over 150ms, in CSS or in script',
+      value: css.longMotion.length + scriptMotion.overBudget.length + scriptMotion.staggers.length,
+      target: 0,
+      pass: css.longMotion.length === 0 && scriptMotion.overBudget.length === 0 && scriptMotion.staggers.length === 0,
+      detail: {
+        css: [...new Set(css.longMotion)],
+        scriptOverBudget: scriptMotion.overBudget,
+        staggers: scriptMotion.staggers,
+      },
     },
     spacingTokens: {
       name: 'Spacing literals in rules (DESIGN.md Token Rule) - ratchet',

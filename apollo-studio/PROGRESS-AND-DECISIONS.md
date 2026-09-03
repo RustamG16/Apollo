@@ -1375,3 +1375,58 @@ motion honoured; no overflow at 820, 1280, 1440 or 1920; nothing clipped at 200%
   sits at 13-14px** — the floor became the size. Both are real and neither is a threshold.
 
 The critic's score stands as the honest external read of this work at the point it was taken.
+
+## 2026-09-03 — P5: the motion budget, and the floor stops being the size
+
+**Slice:** P5, part 7. Closes two of the four items the previous entry left open.
+
+### Script motion was outside every check
+
+DESIGN.md caps every duration at 150ms, says motion is feedback only, and says it never
+staggers a page in. The stylesheet was gated for that; `app.js` was not, and that is how these
+shipped underneath the rule:
+
+| Where | Was | Now |
+|---|---|---|
+| Comparison progress tween | 800ms to 76% | 150ms |
+| Connector stroke draw-in | 650ms per path | 150ms |
+| Results cards entrance | 420ms, `y:10`, stagger 60ms | 150ms, opacity only, no stagger |
+| View entrance | 240ms, `y:8`, stagger 35ms | 120ms, opacity only, no stagger |
+| Node pulse | 240ms, stagger 25ms | 120ms, no stagger |
+| Portrait hover-zoom | 280ms | **deleted** — motion with no state behind it |
+
+`auditScriptMotion()` now reads GSAP durations and staggers out of `app.js`, and the
+`motionBudget` standing rule gates both halves. A progress indicator that takes 800ms to reach
+76% is not tracking anything; it is theatre, and it was the clearest case.
+
+### The floor had become the size
+
+The critic's most useful measurable observation: **74% of rendered text sat at 13-14px** while
+DESIGN.md names 16px as "the default". Raising a floor and then living on it is not the same
+as fixing a type scale.
+
+35 rules carrying prose — descriptions, empty-state copy, run summaries, slot consequences,
+avoid-list entries, the diff table, the doctrine cards — moved from `--text-meta` to
+`--text-body`. `--text-meta` goes back to what it is for: a secondary value beside a primary
+one inside a dense row.
+
+| | Before | After |
+|---|---:|---:|
+| Rendered nodes at 16px | 309 | **566** |
+| Share at 13-14px | 74% | **53%** |
+| Share at 16px and above | 23% | **47%** |
+
+**Defect repaired inside the slice:** the larger type pushed the agent availability caption 4px
+past the viewport at 1280. It now wraps from 1320px down rather than pushing the card out —
+found by the harness, which would not have seen it a day ago.
+
+### State
+
+All eleven thresholds and all three standing rules pass. No horizontal overflow at 820x1180,
+1280x800, 1440x900 or 1920x1080; nothing clipped at 200% text; console clean; reduced motion
+honoured.
+
+**Still open from the critique:** two of five agent portraits are abstract light-streaks that
+identify nothing and import off-palette hues (an asset decision, not a CSS one), 495 spacing
+literals under a ratchet, and the uppercase-tracked label register remains dominant even after
+the promotion.

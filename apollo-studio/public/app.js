@@ -81,8 +81,8 @@ function setComparisonState(mode) {
   comparisonTween?.kill(); comparisonTween = null;
   if (!window.gsap || reduceMotion()) { indicator.style.transform = `scaleX(${mode === 'idle' ? 0 : 1})`; return; }
   if (mode === 'idle') window.gsap.set(indicator, { scaleX: 0 });
-  else if (mode === 'running') comparisonTween = window.gsap.fromTo(indicator, { scaleX: .05 }, { scaleX: .76, duration: .8, ease: 'power3.out', overwrite: 'auto' });
-  else comparisonTween = window.gsap.to(indicator, { scaleX: 1, duration: .24, ease: 'power3.out', overwrite: 'auto' });
+  else if (mode === 'running') comparisonTween = window.gsap.fromTo(indicator, { scaleX: .05 }, { scaleX: .76, duration: .15, ease: 'power2.out', overwrite: 'auto' });
+  else comparisonTween = window.gsap.to(indicator, { scaleX: 1, duration: .15, ease: 'power2.out', overwrite: 'auto' });
 }
 const viewFromHash = () => {
   const candidate = location.hash.replace(/^#\/?/, '');
@@ -147,7 +147,7 @@ function navigate(view, { updateHash = true, scrollBehavior = 'smooth', animate 
   window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : scrollBehavior });
   if (animate && window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const section = document.getElementById(view);
-    window.gsap.fromTo(section.querySelectorAll(':scope > .section-heading, :scope > .library-switcher, :scope > .playground-steps, :scope > .workspace-frame'), { y: 8, autoAlpha: .65 }, { y: 0, autoAlpha: 1, duration: .24, stagger: .035, ease: 'power3.out', overwrite: 'auto', clearProps: 'transform,opacity,visibility' });
+    window.gsap.fromTo(section.querySelectorAll(':scope > .section-heading, :scope > .library-switcher, :scope > .playground-steps, :scope > .workspace-frame'), { autoAlpha: .8 }, { autoAlpha: 1, duration: .12, ease: 'power2.out', overwrite: 'auto', clearProps: 'opacity,visibility' });
   }
   refreshIcons(document.getElementById(view));
 }
@@ -796,13 +796,13 @@ function animateConnections() {
   const paths = $$('#connector-layer path.connection:not(.is-dimmed)');
   paths.forEach(path => {
     const length = path.getTotalLength();
-    window.gsap.fromTo(path, { strokeDasharray: length, strokeDashoffset: length }, { strokeDashoffset: 0, duration: .65, ease: 'power3.out', clearProps: 'strokeDasharray,strokeDashoffset' });
+    window.gsap.fromTo(path, { strokeDasharray: length, strokeDashoffset: length }, { strokeDashoffset: 0, duration: .15, ease: 'power2.out', clearProps: 'strokeDasharray,strokeDashoffset' });
   });
 }
 
 function animatePulse(target) {
   if (!window.gsap || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  window.gsap.fromTo(target, { scale: .985 }, { scale: 1, duration: .22, ease: 'power3.out', overwrite: 'auto', clearProps: 'transform' });
+  window.gsap.fromTo(target, { scale: .99 }, { scale: 1, duration: .12, ease: 'power2.out', overwrite: 'auto', clearProps: 'transform' });
 }
 
 function selectNode(button, { animate = true } = {}) {
@@ -920,7 +920,7 @@ function autoLayoutGraph(animate = true) {
     graphPositions[node.dataset.node] = { x: 3 + column * 24, y: 14 + row * 42 };
   });
   persistGraph(); applyGraphPositions();
-  if (animate && window.gsap && !reduceMotion()) window.gsap.fromTo(nodes, { scale: .97 }, { scale: 1, duration: .24, stagger: .025, ease: 'power3.out', clearProps: 'transform' });
+  if (animate && window.gsap && !reduceMotion()) window.gsap.fromTo(nodes, { scale: .985 }, { scale: 1, duration: .12, ease: 'power2.out', clearProps: 'transform' });
   $('#node-status').textContent = 'Nodes arranged into a clear reading order.';
 }
 
@@ -1151,7 +1151,7 @@ function renderResults(run) {
     return card;
   });
   grid.replaceChildren(...cards);
-  if (window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) window.gsap.from(cards, { y: 10, autoAlpha: 0, duration: .42, stagger: .06, ease: 'power3.out' });
+  if (window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) window.gsap.from(cards, { autoAlpha: 0, duration: .15, stagger: 0, ease: 'power3.out' });
 }
 
 async function runComparison() {
@@ -1404,9 +1404,7 @@ function renderAgents() {
       } catch (error) { alert(error.message); }
     };
     budget.addEventListener('change', save); approval.addEventListener('change', save); enabled.addEventListener('change', save);
-    article.addEventListener('pointerenter', () => { if (window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) window.gsap.to(portrait, { scale: 1.025, duration: .28, ease: 'power3.out', overwrite: 'auto' }); });
-    article.addEventListener('pointerleave', () => { if (window.gsap) window.gsap.to(portrait, { scale: 1, duration: .22, ease: 'power3.out', overwrite: 'auto' }); });
-    return article;
+        return article;
   }));
 }
 

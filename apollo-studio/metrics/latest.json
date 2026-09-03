@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T06:17:55.952Z",
-  "durationMs": 22961,
+  "generatedAt": "2026-09-03T06:23:22.396Z",
+  "durationMs": 22831,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -198,7 +198,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            16
+            17
           ]
         },
         "architecture": {
@@ -209,8 +209,8 @@
           "targetsBelow32": 0,
           "unmeasuredControls": 1,
           "dominantSize": [
-            "14.0",
-            121
+            "16.0",
+            205
           ]
         },
         "systems": {
@@ -221,8 +221,8 @@
           "targetsBelow32": 0,
           "unmeasuredControls": 1,
           "dominantSize": [
-            "14.0",
-            67
+            "16.0",
+            108
           ]
         },
         "playground": {
@@ -234,7 +234,7 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            221
+            207
           ]
         },
         "agents": {
@@ -257,8 +257,8 @@
           "targetsBelow32": 0,
           "unmeasuredControls": 8,
           "dominantSize": [
-            "14.0",
-            128
+            "16.0",
+            176
           ]
         },
         "oracle": {
@@ -270,7 +270,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            22
+            21
           ]
         },
         "runs": {
@@ -282,7 +282,7 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
-            5
+            6
           ]
         },
         "_chrome": {
@@ -324,7 +324,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            16
+            17
           ]
         },
         "architecture": {
@@ -335,8 +335,8 @@
           "targetsBelow32": 0,
           "unmeasuredControls": 1,
           "dominantSize": [
-            "14.0",
-            121
+            "16.0",
+            205
           ]
         },
         "systems": {
@@ -347,8 +347,8 @@
           "targetsBelow32": 0,
           "unmeasuredControls": 1,
           "dominantSize": [
-            "14.0",
-            67
+            "16.0",
+            108
           ]
         },
         "playground": {
@@ -360,7 +360,7 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            221
+            207
           ]
         },
         "agents": {
@@ -383,8 +383,8 @@
           "targetsBelow32": 0,
           "unmeasuredControls": 8,
           "dominantSize": [
-            "14.0",
-            128
+            "16.0",
+            176
           ]
         },
         "oracle": {
@@ -396,7 +396,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            22
+            21
           ]
         },
         "runs": {
@@ -408,7 +408,7 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
-            5
+            6
           ]
         },
         "_chrome": {
@@ -450,7 +450,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            16
+            17
           ]
         },
         "architecture": {
@@ -461,8 +461,8 @@
           "targetsBelow32": 0,
           "unmeasuredControls": 1,
           "dominantSize": [
-            "14.0",
-            121
+            "16.0",
+            205
           ]
         },
         "systems": {
@@ -473,8 +473,8 @@
           "targetsBelow32": 0,
           "unmeasuredControls": 1,
           "dominantSize": [
-            "14.0",
-            67
+            "16.0",
+            108
           ]
         },
         "playground": {
@@ -486,7 +486,7 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            221
+            207
           ]
         },
         "agents": {
@@ -509,8 +509,8 @@
           "targetsBelow32": 0,
           "unmeasuredControls": 8,
           "dominantSize": [
-            "14.0",
-            128
+            "16.0",
+            176
           ]
         },
         "oracle": {
@@ -522,7 +522,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            22
+            21
           ]
         },
         "runs": {
@@ -534,7 +534,7 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
-            5
+            6
           ]
         },
         "_chrome": {
@@ -576,7 +576,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "16.0",
-            16
+            17
           ]
         },
         "architecture": {
@@ -587,8 +587,8 @@
           "targetsBelow32": 0,
           "unmeasuredControls": 1,
           "dominantSize": [
-            "14.0",
-            121
+            "16.0",
+            205
           ]
         },
         "systems": {
@@ -599,8 +599,8 @@
           "targetsBelow32": 0,
           "unmeasuredControls": 1,
           "dominantSize": [
-            "14.0",
-            67
+            "16.0",
+            108
           ]
         },
         "playground": {
@@ -612,7 +612,7 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            221
+            207
           ]
         },
         "agents": {
@@ -635,8 +635,8 @@
           "targetsBelow32": 0,
           "unmeasuredControls": 8,
           "dominantSize": [
-            "14.0",
-            128
+            "16.0",
+            176
           ]
         },
         "oracle": {
@@ -648,7 +648,7 @@
           "unmeasuredControls": 1,
           "dominantSize": [
             "14.0",
-            22
+            21
           ]
         },
         "runs": {
@@ -660,7 +660,7 @@
           "unmeasuredControls": 0,
           "dominantSize": [
             "16.0",
-            5
+            6
           ]
         },
         "_chrome": {
@@ -687,8 +687,8 @@
   },
   "sizeHistogram": {
     "13.0": 358,
-    "14.0": 591,
-    "16.0": 309,
+    "14.0": 334,
+    "16.0": 566,
     "18.0": 20,
     "22.0": 21,
     "32.0": 8
@@ -697,8 +697,8 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 107847,
-        "lines": 1481
+        "bytes": 108006,
+        "lines": 1486
       }
     ],
     "fontSizeUnits": {
@@ -764,6 +764,19 @@
     "worstDurationMs": 0.01,
     "offender": "HTML.",
     "honoured": true
+  },
+  "scriptMotion": {
+    "durations": [
+      150,
+      150,
+      120,
+      150,
+      120,
+      120,
+      150
+    ],
+    "overBudget": [],
+    "staggers": []
   },
   "worstContrast": [],
   "unmeasuredControls": [
@@ -867,11 +880,15 @@
   "smallestTargets": [],
   "standingRules": {
     "motionBudget": {
-      "name": "No transition or animation over 150ms (DESIGN.md motion)",
+      "name": "No transition or animation over 150ms, in CSS or in script",
       "value": 0,
       "target": 0,
       "pass": true,
-      "detail": []
+      "detail": {
+        "css": [],
+        "scriptOverBudget": [],
+        "staggers": []
+      }
     },
     "spacingTokens": {
       "name": "Spacing literals in rules (DESIGN.md Token Rule) - ratchet",
