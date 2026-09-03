@@ -3,7 +3,7 @@
 // metrics harness drives. The browser pane is not a reliable judge of a 1440px layout; this
 // is, and it costs one command.
 //
-//   node scripts/ui-shots.mjs [--width 1440] [--height 900] [--out evidence/shots]
+//   node scripts/ui-shots.mjs [--width 1440] [--height 900] [--out metrics/shots]
 import { spawn } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -19,7 +19,7 @@ const arg = (name, fallback) => {
 };
 const width = Number(arg('width', 1440));
 const height = Number(arg('height', 900));
-const outDir = resolve(ROOT, arg('out', join('evidence', 'shots')));
+const outDir = resolve(ROOT, arg('out', join('metrics', 'shots')));
 
 async function startServer() {
   const port = 4800 + Math.floor(Math.random() * 190);
