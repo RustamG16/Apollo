@@ -1,7 +1,7 @@
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
+import { dataFile, dataDir } from './paths.mjs';
 
-const workspacePath = fileURLToPath(new URL('./data/workspace.json', import.meta.url));
+const workspacePath = dataFile('workspace.json');
 const now = () => new Date().toISOString();
 const id = prefix => `${prefix}-${crypto.randomUUID()}`;
 
@@ -23,7 +23,7 @@ async function load() {
   catch { const value = seed(); await save(value); return value; }
 }
 async function save(value) {
-  await mkdir(fileURLToPath(new URL('./data/', import.meta.url)), { recursive: true });
+  await mkdir(dataDir, { recursive: true });
   const temporary = `${workspacePath}.tmp`;
   await writeFile(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
   await rename(temporary, workspacePath);

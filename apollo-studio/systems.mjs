@@ -3,8 +3,9 @@ import { dirname, extname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { agentDefinitions } from './agents.mjs';
 import { slots as slotMap, presets } from './skills.mjs';
+import { dataFile } from './paths.mjs';
 
-const dataPath = fileURLToPath(new URL('./data/systems.json', import.meta.url));
+const dataPath = dataFile('systems.json');
 const apolloRoot = fileURLToPath(new URL('../', import.meta.url));
 const phases = new Set(['always', 'diagnose', 'direct', 'prepare', 'build', 'verify']);
 const phaseByAgent = {

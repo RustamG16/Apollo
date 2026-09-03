@@ -1,0 +1,381 @@
+{
+  "generatedAt": "2026-09-03T15:22:10.071Z",
+  "durationMs": 285502,
+  "thresholds": {
+    "B1": {
+      "name": "Controls with no listener and no form owner",
+      "value": 0,
+      "target": 0,
+      "pass": true,
+      "unit": "visible controls",
+      "detail": []
+    },
+    "B2": {
+      "name": "Clicks that change nothing observable",
+      "value": 22,
+      "target": 0,
+      "pass": false,
+      "unit": "of 202 clicked",
+      "detail": [
+        "work div#project-list > button.project-item.is-active \"WKO launch narrativeLaunch planning\"",
+        "work div#project-tabs > button.project-tab.is-active \"Launch planning\"",
+        "work form#work-composer > div.composer-footer > div.composer-submit:nth-of-type(2) > button.primary-action.composer-send \"SendEnter\"",
+        "work #close-context \"Close context\"",
+        "work body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(1) \"Work\"",
+        "systems form#loadout-form > div.loadout-actions:nth-of-type(2) > button.run-action:nth-of-type(3) \"Save changes\"",
+        "systems body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(2) \"Systems\"",
+        "playground body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(4) \"Playground\"",
+        "agents section#agents > div.library-switcher:nth-of-type(2) > button.is-active:nth-of-type(1) \"Agents\"",
+        "knowledge section#knowledge > div.library-switcher:nth-of-type(2) > button.is-active:nth-of-type(2) \"Skills & knowledge\"",
+        "knowledge div#category-list > button.category-button.is-active:nth-of-type(1) \"Everything84\"",
+        "knowledge div#knowledge-skill-list > button.knowledge-skill.is-active:nth-of-type(1) \"Agent Identity and PortfolioAgents · prepareagent-identity-a\"",
+        "knowledge form#skill-editor > div.form-status:nth-of-type(3) > button.run-action \"Save skill\"",
+        "knowledge aside#knowledge-inspector > section.source-section > form.source-form > div.form-status:nth-of-type(2) > button.quiet-action \"Add source\""
+      ]
+    },
+    "B3": {
+      "name": "Label-truth rows failing their postcondition",
+      "value": 0,
+      "target": 0,
+      "pass": false,
+      "unit": "0 of 159 command controls covered",
+      "detail": {
+        "failed": [],
+        "uncovered": [
+          "work #new-project \"Create project\"",
+          "work #new-chat \"+ chat\"",
+          "work div#project-list > button.project-item.is-active \"WKO launch narrativeLaunch planning\"",
+          "work div#project-tabs > button.project-tab.is-active \"Launch planning\"",
+          "work #work-context \"Context0\"",
+          "work form#work-composer > div.composer-footer > div.composer-options:nth-of-type(1) > button.attachment-button.command-action \"Attach\"",
+          "work form#work-composer > div.composer-footer > div.composer-submit:nth-of-type(2) > button.primary-action.composer-send \"SendEnter\"",
+          "work #close-context \"Close context\"",
+          "work #toggle-oracle \"Oracle Ctrl K\"",
+          "architecture #auto-layout \"Tidy layout\"",
+          "architecture #reset-layout \"Reset layout\"",
+          "architecture div#architecture-agent-lanes > section.agent-lane:nth-of-type(1) > div > button.architecture-agent \"Athena3 skills\"",
+          "architecture div#architecture-agent-lanes > section.agent-lane:nth-of-type(2) > div > button.architecture-agent \"Calliope2 skills\"",
+          "architecture div#architecture-agent-lanes > section.agent-lane:nth-of-type(3) > div > button.architecture-agent \"Hephaestus4 skills\"",
+          "architecture div#architecture-agent-lanes > section.agent-lane:nth-of-type(4) > div > button.architecture-agent \"Hermes3 skills\"",
+          "architecture section#workflow-canvas > div.workflow-grid > button.workflow-node.input-node:nth-of-type(1) \"EvidenceIntake & auditPage · source · references · analytics\"",
+          "architecture section#workflow-canvas > div.workflow-grid > button.workflow-node.director-node:nth-of-type(2) \"OrchestratorApollo Design DirectorOwns the brief, routing, g\"",
+          "architecture section#workflow-canvas > div.workflow-grid > button.workflow-node.gate:nth-of-type(3) \"Gate ABrief approvedProblem · audience · constraints\"",
+          "architecture section#workflow-canvas > div.workflow-grid > button.workflow-node.concept-node:nth-of-type(4) \"DirectionConcept studioThree routes · independent critique\"",
+          "architecture section#workflow-canvas > div.workflow-grid > button.workflow-node.gate:nth-of-type(5) \"Gate BDirection selectedOne concept becomes build truth\""
+        ]
+      }
+    },
+    "B4": {
+      "name": "Loadout decisions that do not change the request",
+      "value": 2,
+      "target": 0,
+      "pass": false,
+      "unit": "of 12 decisions",
+      "detail": [
+        "brief",
+        "designDna"
+      ]
+    },
+    "B5": {
+      "name": "Client stores written and read by nothing",
+      "value": 0,
+      "target": 0,
+      "pass": true,
+      "unit": "localStorage keys",
+      "detail": []
+    },
+    "B6": {
+      "name": "Runtime claims not backed by a verified capability",
+      "value": null,
+      "target": 0,
+      "pass": null,
+      "unit": "pending - implemented in slice B6"
+    },
+    "B7": {
+      "name": "Comparison runs that do not survive a reload",
+      "value": 1,
+      "target": 0,
+      "pass": false,
+      "unit": "runs",
+      "detail": {
+        "ran": true,
+        "persisted": false,
+        "note": "no GET /api/runs endpoint (404)"
+      }
+    },
+    "B8": {
+      "name": "Console errors and 4xx/5xx during the sweep",
+      "value": 0,
+      "target": 0,
+      "pass": true,
+      "unit": "events",
+      "detail": {
+        "console": [],
+        "network": []
+      }
+    }
+  },
+  "controls": {
+    "total": 1072,
+    "visible": 543,
+    "clicked": 202,
+    "skipped": 5
+  },
+  "unwired": [],
+  "noEffect": [
+    {
+      "view": "work",
+      "selector": "div#project-list > button.project-item.is-active",
+      "label": "WKO launch narrativeLaunch planning",
+      "boundOn": "self"
+    },
+    {
+      "view": "work",
+      "selector": "div#project-tabs > button.project-tab.is-active",
+      "label": "Launch planning",
+      "boundOn": "self"
+    },
+    {
+      "view": "work",
+      "selector": "form#work-composer > div.composer-footer > div.composer-submit:nth-of-type(2) > button.primary-action.composer-send",
+      "label": "SendEnter",
+      "boundOn": "ancestor"
+    },
+    {
+      "view": "work",
+      "selector": "#close-context",
+      "label": "Close context",
+      "boundOn": "self"
+    },
+    {
+      "view": "work",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(1)",
+      "label": "Work",
+      "boundOn": "self"
+    },
+    {
+      "view": "systems",
+      "selector": "form#loadout-form > div.loadout-actions:nth-of-type(2) > button.run-action:nth-of-type(3)",
+      "label": "Save changes",
+      "boundOn": "ancestor"
+    },
+    {
+      "view": "systems",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(2)",
+      "label": "Systems",
+      "boundOn": "self"
+    },
+    {
+      "view": "playground",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(4)",
+      "label": "Playground",
+      "boundOn": "self"
+    },
+    {
+      "view": "agents",
+      "selector": "section#agents > div.library-switcher:nth-of-type(2) > button.is-active:nth-of-type(1)",
+      "label": "Agents",
+      "boundOn": "self"
+    },
+    {
+      "view": "knowledge",
+      "selector": "section#knowledge > div.library-switcher:nth-of-type(2) > button.is-active:nth-of-type(2)",
+      "label": "Skills & knowledge",
+      "boundOn": "self"
+    },
+    {
+      "view": "knowledge",
+      "selector": "div#category-list > button.category-button.is-active:nth-of-type(1)",
+      "label": "Everything84",
+      "boundOn": "self"
+    },
+    {
+      "view": "knowledge",
+      "selector": "div#knowledge-skill-list > button.knowledge-skill.is-active:nth-of-type(1)",
+      "label": "Agent Identity and PortfolioAgents · prepareagent-identity-a",
+      "boundOn": "self"
+    },
+    {
+      "view": "knowledge",
+      "selector": "form#skill-editor > div.form-status:nth-of-type(3) > button.run-action",
+      "label": "Save skill",
+      "boundOn": "ancestor"
+    },
+    {
+      "view": "knowledge",
+      "selector": "aside#knowledge-inspector > section.source-section > form.source-form > div.form-status:nth-of-type(2) > button.quiet-action",
+      "label": "Add source",
+      "boundOn": "ancestor"
+    },
+    {
+      "view": "knowledge",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(3)",
+      "label": "Library",
+      "boundOn": "self"
+    },
+    {
+      "view": "runs",
+      "selector": "#refresh-runs",
+      "label": "Refresh",
+      "boundOn": "self"
+    },
+    {
+      "view": "runs",
+      "selector": "#export-runs",
+      "label": "Export JSON",
+      "boundOn": "self"
+    },
+    {
+      "view": "runs",
+      "selector": "#clear-runs",
+      "label": "Clear local",
+      "boundOn": "self"
+    },
+    {
+      "view": "chrome",
+      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(1)",
+      "label": "Work",
+      "boundOn": "self"
+    },
+    {
+      "view": "chrome",
+      "selector": "#export-runs",
+      "label": "Export JSON",
+      "boundOn": "self"
+    },
+    {
+      "view": "chrome",
+      "selector": "#clear-runs",
+      "label": "Clear local",
+      "boundOn": "self"
+    },
+    {
+      "view": "chrome",
+      "selector": "#close-oracle",
+      "label": "Close Oracle",
+      "boundOn": "self"
+    }
+  ],
+  "decisions": [
+    {
+      "field": "craft",
+      "kind": "slot",
+      "from": "ui-ux",
+      "to": "apple-design",
+      "differs": true
+    },
+    {
+      "field": "direction",
+      "kind": "slot",
+      "from": "concept-studio",
+      "to": "taste-first-experience-design",
+      "differs": true
+    },
+    {
+      "field": "evidence",
+      "kind": "slot",
+      "from": "ux-evidence-audit",
+      "to": "reference-deconstruction",
+      "differs": true
+    },
+    {
+      "field": "structure",
+      "kind": "slot",
+      "from": "site-architecture",
+      "to": "pick-ui-library",
+      "differs": true
+    },
+    {
+      "field": "motion",
+      "kind": "slot",
+      "from": "gsap-core",
+      "to": "gsap-timeline",
+      "differs": true
+    },
+    {
+      "field": "media",
+      "kind": "slot",
+      "from": "asset-director",
+      "to": "higgsfield-generate",
+      "differs": true
+    },
+    {
+      "field": "copy",
+      "kind": "slot",
+      "from": "copywriting",
+      "to": "copy-editing",
+      "differs": true
+    },
+    {
+      "field": "verify",
+      "kind": "slot",
+      "from": "visual-qa",
+      "to": "award-rubric",
+      "differs": true
+    },
+    {
+      "field": "brief",
+      "kind": "field",
+      "differs": false
+    },
+    {
+      "field": "designDna",
+      "kind": "field",
+      "differs": false
+    },
+    {
+      "field": "budget",
+      "kind": "field",
+      "differs": true
+    },
+    {
+      "field": "approvals",
+      "kind": "field",
+      "differs": true
+    }
+  ],
+  "stores": {
+    "written": [
+      "apollo-active-skills",
+      "apollo-active-skills-version",
+      "apollo-graph-copy",
+      "apollo-graph-edges",
+      "apollo-graph-phases",
+      "apollo-graph-positions",
+      "apollo-oracle-messages",
+      "apollo-oracle-plan",
+      "apollo-runs"
+    ],
+    "read": [
+      "apollo-active-skills",
+      "apollo-active-skills-version",
+      "apollo-graph-copy",
+      "apollo-graph-edges",
+      "apollo-graph-phases",
+      "apollo-graph-positions",
+      "apollo-oracle-messages",
+      "apollo-oracle-plan",
+      "apollo-runs"
+    ],
+    "orphans": []
+  },
+  "persistence": {
+    "ran": true,
+    "persisted": false,
+    "note": "no GET /api/runs endpoint (404)"
+  },
+  "consoleEvents": [],
+  "networkFailures": [],
+  "diff": {
+    "firstRun": false,
+    "regressions": [],
+    "improvements": [
+      {
+        "id": "B4",
+        "name": "Loadout decisions that do not change the request",
+        "before": 4,
+        "after": 2
+      }
+    ]
+  }
+}

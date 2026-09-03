@@ -1,8 +1,8 @@
 import { appendFile, mkdir, readFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { dataFile } from './paths.mjs';
 
-const eventsPath = fileURLToPath(new URL('./data/events.jsonl', import.meta.url));
+const eventsPath = dataFile('events.jsonl');
 const allowedHosts = new Set(['apollo', 'codex', 'cursor', 'claude']);
 const allowedKinds = new Set([
   'host.connected',
