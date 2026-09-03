@@ -1686,3 +1686,139 @@ The measurable program P0–P5 is complete. Do not reopen the loop for momentum.
 needs one of the three items above turned into a stated goal, or a new defect with evidence
 from `scripts/ui-metrics.mjs`. `main` and `unification` are untouched in both repos; the
 whole program is on `redesign/loadout-program`, committed locally, never pushed.
+
+---
+
+## 2026-09-03 — the loop reopens on a stated goal: it looks generic, and the controls lie
+
+**Why it reopened.** The measurable programme P0–P5 was complete and terminated correctly:
+eleven thresholds held for three consecutive clean slices. The report was that the interface
+reads as AI slop while the same system ships high-end work for clients, and a question about
+whether a different tool was needed. That is a stated goal, which is what
+`CONTINUOUS-IMPROVEMENT-PLAN.md` rule 5 requires to reopen — not momentum.
+
+### The diagnosis, and it is not the tool
+
+Four failures, each verified in this repo rather than asserted:
+
+1. **No positive reference, ever.** `reference-deconstruction` exists here only as a slot
+   candidate sold to clients. It was never run on the product. `LOADOUT-PLAN.md:11` declared
+   the old look *"evidence and anti-reference"* — the only reference in the whole programme
+   was a negative one, and `DESIGN.md` was 487 lines of prose authored against nothing
+   external. An agent given no reference converges on its priors, and the median of everything
+   it has seen is what "AI-generated" describes.
+2. **Gate B was deliberately removed.** `LOADOUT-PLAN.md:7-19`: *"no human gates … One
+   direction. No alternatives. Do not run a selection ceremony."* Gate B is precisely the gate
+   that stops an unjudged direction from becoming build truth. It was the one removed.
+3. **The loop had no eyes.** `ui-metrics.mjs` reads computed values and never looks at the
+   page. `ui-shots.mjs` existed and was **not in `npm run check`**; screenshots were consulted
+   four times in ~15 slices, always to chase a named defect, never to judge a composition.
+4. **Beauty was excluded by design** (§06 says so), and the three items carried forward were
+   all taste items — deferred for the whole programme. Three deferred taste decisions is why
+   it reads unresolved.
+
+**The system did not struggle to design itself. It was told to hit a floor, with no reference,
+no gate and no eyes, and it hit the floor exactly.** Switching tools would have reproduced it.
+
+### What the contact sheet showed that no threshold could
+
+Seven independent top-level column systems and eight rail widths — 190, 220, 226, 248, 252,
+300, 330, 340px. **Every one of those layouts passes T1–T11 individually.** Nothing in v2.0
+said what a view *is*, so every surface pass invented one.
+
+### Two first-read claims measured and recorded as WRONG
+
+- "Apollo has no surface ladder." It has one, used in 69 rules, and end to end it is *wider*
+  than Linear's (1.286 vs 1.197). The real defect was the **canvas**: at L=0.00366 it was 11×
+  brighter than Linear's, so the first lift off it was a 2.0× luminance step where theirs is
+  15.5×. Ground that does not recede is not ground. One token, not a repaint.
+- "Panels are the same value as the canvas." They are not; they sit on `--surface`.
+
+### Gate B, restored and binding
+
+Three structurally different comps of the same screen, same real data, scored blind by
+`independent-critic`: **A 69 · B 56 · C 79**. Full record in `metrics/comps/CRITIQUE.md`.
+
+The finding worth more than the ranking: **A won four of the five principles and still lost.**
+P1–P4 are hygiene all three shared; P5 — *show the run that ran* — is the only principle that
+changes what the product is, and only one candidate attempted it. Scored flat, the matrix
+would have selected the most generic comp on the sheet. That is a defect in `REFERENCES.md`'s
+matrix and it is journalled, not patched.
+
+The gate did not clear on the first pass. It held for two blockers — a transplant whose
+critical region was below the fold in the submitted screenshot, and two accent-filled primaries
+on one screen — and required the Pipeline map to be drawn before implementation. The second
+pass cleared at **85/100** against the shipping build's 62.
+
+Defects the gate caught that no threshold can see: a comp clipping skill ids mid-word
+(`text-overflow` does not apply to a flex container); a screen whose subhead made a claim its
+own layout falsified; the locked five-stage route drawn as six cells; and all three comps
+regressing the 36px commitment the production sheet holds.
+
+**And one the critic missed, found by looking at the render:** `.row .tag` set `grid-row` but
+not `grid-column`, so auto-placement put the status tag in column 1 row 1 and pushed the row's
+name down a line — the tag rendered *above* the thing it labelled, in every comp, through two
+scored reviews.
+
+### Pipeline map is not a view
+
+The rail always holds a list of objects; there is exactly one pipeline and it is locked, so
+that rail would be 240px of nothing. And band 2 already *is* the pipeline. **A diagram of a
+fixed route no run has traversed is an illustration; the same diagram carrying a real run's
+trace is an instrument.** It merges into Runs. Eight views become seven, on a principle.
+
+### The three carried-forward items are decided, not deferred again
+
+1. **Portraits: crop, do not desaturate.** A stylesheet apologising for an asset is not a
+   treatment. 40px identity mark in the row, 96px in the detail; `saturate(.45)` deleted.
+2. **314 spacing literals leave with the layouts that needed them** during the V4 rebuild.
+   The ratchet target is **0 at the end of V4**, not "never rises".
+3. **Uppercase + tracking is the eyebrow**, for section and column headers. Field labels,
+   captions, metadata and status go sentence case in the UI face.
+
+### B1–B8: the family that measures whether it is honest
+
+T1–T11 measure what the interface *looks like*. All eleven passed while the Design DNA panel
+rendered an avoid-list headed "Never, in any run" that **no run enforced**. An interface can be
+perfectly legible and still be lying, and nothing measured that — which is how the previous
+loop was able to terminate with it open.
+
+`scripts/ui-behaviour.mjs`, wired into `npm run check`. Baseline at 543 controls: B1 0, B2 22,
+B3 0/159, B4 2, B5 0, B7 1, B8 0.
+
+**B4's two were the brief and the Design DNA** — exactly the two the plan named, measured
+rather than asserted. All eight slots, the budget and the approvals moved the request; the
+brief and the taste profile reached nothing.
+
+### Harness flaws found and fixed BEFORE they produced false accusations
+
+- The B4 fingerprint included `plan.loadout`, which echoes the loadout's own `designDna` back
+  into the response — changing the taste profile "changed the request" by repeating its own
+  input.
+- Of the four inert fields that then appeared, `evidence` and `structure` were a **false
+  positive**: both are Athena's slots, and the probe prompt matched none of Athena's triggers,
+  so she was dormant and her slots had no plan step to change. The prompt now wakes all five.
+- `alreadyActive` and `disabled` were read at census time and used at click time — the chrome
+  census runs while the last view of the sweep is showing, and a control inside a disclosure is
+  only evaluated when the disclosure opens.
+- The chrome census used `scope=document` and re-reported the active view's controls as chrome.
+
+Each definition change is **stricter or more faithful**, and none was the change that caused a
+threshold to pass — per rule 3.
+
+### Where it stands
+
+`npm run check` exits 0. **T1–T11 and B1–B8 all pass.** Console clean, reduced motion honoured,
+no overflow or clipping at 390/820/1280/1440/1920. Every one of 205 clicked controls produces
+an observable response; every one of 45 distinct commands carries a written promise in
+`scripts/labels.json`, and every promise holds.
+
+### Known open, carried forward — with a stated owner this time
+
+- **V4.2+ per-view interiors.** The shell is in and every view sits in it, but band 3's
+  interiors are still the old per-view layouts. `.row` / `.sec` / `.grid.is-wide|is-narrow`
+  exist in the spec and are not yet applied to Work, Loadouts, Library, Playground, Runs and
+  Agents. This is the remaining visual work, and it is where the 314 spacing literals go to
+  zero.
+- **The portrait crops** are an asset-production task, now specified rather than deferred.
+- **`REFERENCES.md`'s matrix weights hygiene and position equally** and should not.

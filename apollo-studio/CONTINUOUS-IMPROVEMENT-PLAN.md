@@ -113,3 +113,43 @@ gap to "good" is taste-level, which section 06 deliberately keeps out of the sto
 ## Stop conditions (pausing, not terminating)
 
 Pause only when a decision changes product direction, cost, privacy, or architecture; a required asset or permission is unavailable; the loop bounds in `AGENTS.md` are reached (QA repair or anti-loop); or the user explicitly pauses the loop. Do not stop because one page or iteration is complete.
+
+## The loop reopened, 2026-09-03 — and the condition is now two families
+
+Rule 5 says a further slice needs a stated defect or a stated goal, not momentum. The stated
+goal was: **the interface reads as AI slop, and the controls do not do what they say.** Both
+halves were verified before any work began.
+
+The eleven thresholds could not see either. They measure what the interface LOOKS like, and
+all eleven passed while seven independent column systems shipped, while the Design DNA panel
+rendered an avoid-list headed "Never, in any run" that no run enforced, while "Do it for me"
+prefilled a textarea, and while "Keep this setup" kept nothing.
+
+**Two families now, and the loop stops only when both hold.**
+
+| | Measures | Instrument |
+|---|---|---|
+| T1–T11 | what it looks like | `scripts/ui-metrics.mjs` |
+| B1–B8 | whether it does what it says | `scripts/ui-behaviour.mjs` |
+| contact sheet | what it looks like *together* | `scripts/ui-shots.mjs` |
+
+B1 every control wired · B2 every click observable · B3 every command's written promise holds
+· B4 every loadout decision reaches the request · B5 no orphan stores · B6 no unbacked runtime
+claim · B7 runs survive a reload · B8 clean console and network.
+
+**The stop condition, amended and not extendable:**
+
+> All eleven T thresholds **and** all eight B thresholds hold across every view for two
+> consecutive slices that each changed something and each measured clean — **and** the
+> direction was resolved at a gate by a critic who did not author it, against a named
+> reference set.
+
+The last clause is new and it is the one that matters. v2.0 met a numeric condition and
+produced a 62/100 interface because it had deleted Gate B. **A measurement can tell you the
+floor is met. Only a gate can tell you the direction is right**, and `metrics/comps/CRITIQUE.md`
+is where that judgement is recorded.
+
+Rules 1–5 above apply unchanged to B1–B8. Four B definitions were changed during this
+programme; each was made stricter or more faithful, each is journalled in
+`PROGRESS-AND-DECISIONS.md` with its reason, and none was the change that caused a threshold
+to pass.
