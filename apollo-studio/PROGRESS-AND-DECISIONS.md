@@ -781,3 +781,84 @@ the three viewports under the stricter element-level check.
 real task end to end, name the single highest-friction moment, remove redundancy before
 adding anything (Work states "Olympus" three times within 900px), write the empty and error
 states, re-measure. T9 and T11 are retired across these passes.
+
+## 2026-09-03 — P4 pass 1: Work
+
+**Slice:** P4, surface 1 of 6. Complete.
+
+### The real task, observed
+
+Open Work, read enough to trust what is loaded, type, send. Between opening and typing, the
+eye crossed **four separate statements of the same operating state**, measured in the live
+DOM: "Olympus" three times (toolbar pill, orientation cell, inspector row), privacy twice in
+the view plus once in the sidebar footer, and runtime three times plus the top bar's own
+"Demo mode". None was actionable. The one fact that actually varies per project — how many
+sources are attached — was the third of four cells in a strip and repeated in the inspector.
+
+**The single highest-friction moment: everything between the project title and the composer
+is a restatement of things that do not change, and the composer is below all of it.**
+
+### Removed before anything was added
+
+- **The whole `work-orientation` strip is gone.** Its four cells said Privacy (already in
+  the sidebar footer), System (already in the toolbar), Runtime (already in the top bar) and
+  Sources (already on the Context button, which carries a live count).
+- **The toolbar pill now names the loadout, not the system.** The pipeline is locked and
+  singular, so naming it on every screen was the redundancy; the loadout is the thing that
+  varies, and the pill is now a control that opens it.
+- **The inspector's duplicated System and Privacy rows are gone.** It carries Attached and
+  Design DNA — the second of which is load-bearing for what a run will do and was stated
+  nowhere in Work at all.
+
+### Then added
+
+- **An empty state for an empty conversation** — what the surface is for, and one primary
+  action that focuses the composer. T9 for Work now passes.
+- **An error state that does not eat what you typed.** A failed send restores the draft into
+  the composer, reports the reason, and offers a one-click retry. The alternative was a
+  person retyping a paragraph they had already written.
+- **Undo on the two remaining clear actions.** "Clear chat" restores the Oracle conversation,
+  its plan and its approvals; "Clear local runs" restores the history and the count. The
+  `confirm()` dialog on the runs clear was **removed**, not kept alongside — DESIGN.md is
+  explicit that a dialog is not an undo, because it asks before you can see the result.
+
+### Measured, before and after
+
+| | Before | After |
+|---|---:|---:|
+| Elements in the Work view | 130 | **101** |
+| Rendered text nodes | 50 | **43** |
+| Statements of "Olympus" | 3 | 0 |
+| Statements of privacy in-view | 2 | 0 (once in the sidebar footer) |
+| Statements of runtime in-view | 3 | 1 |
+| Empty state / error state | none / none | both |
+
+**Element count fell by 29 while two states were added.** That is the P4 exit condition for
+this surface: T9 passes for Work, the primary task takes fewer glances, and the element count
+did not rise.
+
+### Defect found and repaired inside the slice
+
+Turning the system pill from a `<span>` into a `<button>` brought the user-agent button
+background with it and dropped its label to **2.13:1** — a contrast regression the check
+caught immediately and refused to pass. Repaired by giving it the quiet-action treatment it
+now deserves: transparent, `--fg-muted`, a real hover, and the 36px control height.
+
+### Metrics
+
+| # | Threshold | Before | After | State |
+|---|---|---:|---:|---|
+| T4 | Contrast failures (AA) | 0 | 0 | PASS |
+| T9 | Views with empty state + action | 2 | **3** | FAIL |
+| T11 | Destructive actions without undo | 6 | **4** | FAIL |
+
+The other eight are unchanged and passing. `npm.cmd run check` exits 0, console clean,
+reduced motion honoured, no overflow at 1280x800, 1440x900 or 1920x1080.
+
+T11's remaining four are Architecture's "Reset", "Delete node" and "Reset defaults", and
+Playground's prompt "Clear" — owned by the Pipeline map and Playground passes.
+
+**Next slice:** P4 pass 2 — Loadouts. It is the newest surface, so the pass is about the task
+rather than about redundancy: does adding a loadout, changing one decision and making it
+active read as one motion, and what does the surface say when a slot's answer would have no
+effect.

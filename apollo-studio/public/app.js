@@ -146,10 +146,46 @@ function renderWork() {
   const detail = state.work.detail || { messages: [], attachments: [] }; const messages = $('#work-messages'); messages.replaceChildren(...detail.messages.map(message => { const article = document.createElement('article'); article.className = `work-message ${message.role}`; const label = document.createElement('span'); label.textContent = message.role === 'assistant' ? 'Apollo' : 'You'; const text = document.createElement('p'); text.textContent = message.text; article.append(label, text); return article; }));
   const linkedCount = detail.attachments.filter(item => item.status === 'linked').length;
   $('#work-title').textContent = project.name; $('#work-prompt').placeholder = `Ask Apollo to help with ${project.name}…`; $('#context-title').textContent = chat.name; $('#context-attachments').textContent = linkedCount ? `${linkedCount} authorized link${linkedCount === 1 ? '' : 's'}` : 'No sources';
-  $('#work-context-count').textContent = linkedCount; $('#work-source-count').textContent = `${linkedCount} linked`;
+  $('#work-context-count').textContent = linkedCount;
+  const activeLoadout = state.loadouts?.loadouts.find(item => item.id === state.loadouts.activeLoadoutId);
+  if (activeLoadout) {
+    // The loadout is stated once, in the toolbar. The inspector carries what is not stated
+    // anywhere else in Work and is load-bearing for what a run will do.
+    $('#work-loadout-name').textContent = activeLoadout.name;
+    const profile = activeLoadout.designDna
+      ? (state.designDna?.profiles || []).find(item => item.profileId === activeLoadout.designDna)
+      : null;
+    $('#context-dna').textContent = profile ? profile.displayName : 'None attached';
+  }
+  // An empty conversation is a state, not an absence. It says what this surface is for and
+  // offers the one action that leaves it.
+  const empty = $('#work-empty');
+  if (empty) empty.hidden = detail.messages.length > 0;
   const attachmentList = $('#attachment-list'); attachmentList.replaceChildren(...detail.attachments.filter(item => item.status === 'linked').map(item => { const row = document.createElement('div'); row.className = 'attachment-row'; const label = document.createElement('span'); label.textContent = `${item.name} · ${Math.ceil(item.size / 1024) || 0} KB`; const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'text-action'; remove.textContent = 'Unlink'; remove.addEventListener('click', () => stageProposal({ title: 'Unlink attachment', summary: `Remove the local reference “${item.name}” from this chat. The source file will not be deleted.`, affected: [item.name], operation: { type: 'unlink-attachment', chatId: chat.id, attachmentId: item.id } })); row.append(label, remove); return row; }));
   refreshIcons($('#work'));
 }
+// A failed send must not eat what was typed. The draft is put back and the retry is one
+// click, because the alternative is a person retyping a paragraph they already wrote.
+function showWorkError(error, draft) {
+  const host = $('#work-error');
+  host.hidden = false;
+  host.replaceChildren();
+  const message = document.createElement('span');
+  message.textContent = 'Could not send: ' + (error?.message || 'unknown error') + '.';
+  const retry = document.createElement('button');
+  retry.type = 'button';
+  retry.className = 'quiet-action';
+  retry.textContent = 'Retry';
+  retry.addEventListener('click', () => {
+    $('#work-prompt').value = draft;
+    host.hidden = true;
+    $('#work-composer').requestSubmit();
+  });
+  host.append(message, retry);
+  $('#work-prompt').value = draft;
+  $('#work-status').textContent = 'Not sent';
+}
+
 async function sendWorkMessage(role, text) { const chat = workChat(); if (!chat) return; await api(`/api/chats/${chat.id}/messages`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ role, text }) }); state.work.detail = await api(`/api/chats/${chat.id}`); renderWork(); }
 async function stageProposal(input) { const proposal = await api('/api/proposals', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(input) }); const dialog = $('#proposal-dialog'); dialog.dataset.proposalId = proposal.id; dialog.dataset.operation = JSON.stringify(input.operation || null); $('#proposal-title').textContent = proposal.title; $('#proposal-summary').textContent = proposal.summary; $('#proposal-affected').replaceChildren(...proposal.affected.map(item => { const li = document.createElement('li'); li.textContent = item; return li; })); dialog.showModal(); }
 function toggleOracle(force) { const dock = $('#oracle-dock'); const trigger = $('#toggle-oracle'); const open = typeof force === 'boolean' ? force : dock.getAttribute('aria-hidden') === 'true'; dock.setAttribute('aria-hidden', String(!open)); dock.inert = !open; trigger.setAttribute('aria-expanded', String(open)); $('#oracle-context-name').textContent = state.view === 'work' ? 'Work' : state.view[0].toUpperCase() + state.view.slice(1); if (open) $('#oracle-show-how').focus(); else trigger.focus(); }
@@ -1396,7 +1432,6 @@ async function refreshEvents() {
 function setRuntime(mode) {
   const stateEl = $('.runtime-state'); stateEl.classList.remove('is-live', 'is-demo', 'is-error'); stateEl.classList.add(mode === 'live' ? 'is-live' : 'is-demo');
   $('#runtime-label').textContent = mode === 'live' ? 'Live API ready' : 'Demo mode';
-  $('#work-runtime-state').textContent = mode === 'live' ? 'Live API' : 'Demo';
   $('#playground-mode').textContent = mode === 'live' ? 'Live OpenAI Responses mode. Runs may incur API usage.' : 'Demo mode validates routing without sending data or consuming API tokens.';
   $('#oracle-mode').textContent = mode === 'live' ? 'Live OpenAI API execution. Plan-only remains local.' : 'Demo execution. Plan-only is fully functional and consumes zero tokens.';
 }
@@ -1505,7 +1540,27 @@ function bindEvents() {
   $('#oracle-do-it').addEventListener('click', () => { toggleOracle(false); navigate('oracle'); $('#oracle-prompt').value = `Draft a proposal for the current ${state.view} context. Do not apply it without my approval.`; $('#oracle-prompt').focus(); });
   $('#new-project').addEventListener('click', async () => { try { const created = await api('/api/projects', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({}) }); state.work.activeProjectId = created.project.id; state.work.activeChatId = created.chat.id; await refreshWork(); $('#work-prompt').focus(); } catch (error) { $('#work-status').textContent = error.message; } });
   $('#new-chat').addEventListener('click', async () => { const project = workProject(); if (!project) return; try { const chat = await api(`/api/projects/${project.id}/chats`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({}) }); state.work.activeChatId = chat.id; await refreshWork(); } catch (error) { $('#work-status').textContent = error.message; } });
-  $('#work-composer').addEventListener('submit', async event => { event.preventDefault(); const input = $('#work-prompt'); const prompt = input.value.trim(); if (!prompt) return; try { await sendWorkMessage('user', prompt); input.value = ''; $('#work-status').textContent = 'Preparing local demo response…'; window.setTimeout(async () => { await sendWorkMessage('assistant', 'Demo response: I can turn this into a reviewed plan, keep the project context visible, and route any mutation through Oracle for your approval.'); $('#work-status').textContent = 'Demo responses stay local'; }, 180); } catch (error) { $('#work-status').textContent = error.message; } });
+  $('#work-empty-action').addEventListener('click', () => $('#work-prompt').focus());
+  $('#work-composer').addEventListener('submit', async event => {
+    event.preventDefault();
+    const input = $('#work-prompt');
+    const prompt = input.value.trim();
+    if (!prompt) return;
+    const error = $('#work-error');
+    error.hidden = true;
+    const draft = prompt;
+    try {
+      await sendWorkMessage('user', prompt);
+      input.value = '';
+      $('#work-status').textContent = 'Preparing local demo response…';
+      window.setTimeout(async () => {
+        try {
+          await sendWorkMessage('assistant', 'Demo response: I can turn this into a reviewed plan, keep the project context visible, and route any mutation through Oracle for your approval.');
+          $('#work-status').textContent = 'Demo responses stay local';
+        } catch (replyError) { showWorkError(replyError, draft); }
+      }, 180);
+    } catch (sendError) { showWorkError(sendError, draft); }
+  });
   $('#work-prompt').addEventListener('keydown', event => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); $('#work-composer').requestSubmit(); } });
   $('#work-context').addEventListener('click', () => $('#work-inspector').classList.toggle('is-open')); $('#close-context').addEventListener('click', () => $('#work-inspector').classList.remove('is-open'));
   $('.attachment-button').addEventListener('click', () => $('#work-file-picker').click());
@@ -1534,7 +1589,17 @@ function bindEvents() {
   });
   $('#oracle-plan').addEventListener('click', () => askOracle(true));
   $('#oracle-form').addEventListener('submit', event => { event.preventDefault(); askOracle(false); });
-  $('#oracle-clear').addEventListener('click', () => { state.oracleMessages = []; state.oraclePlan = null; state.approvedAgents.clear(); storage.write('apollo-oracle-messages', []); storage.write('apollo-oracle-plan', null); renderOracleMessages(); renderOraclePlan(); });
+  $('#oracle-clear').addEventListener('click', () => {
+    const previous = { messages: state.oracleMessages, plan: state.oraclePlan, approved: new Set(state.approvedAgents) };
+    state.oracleMessages = []; state.oraclePlan = null; state.approvedAgents.clear();
+    storage.write('apollo-oracle-messages', []); storage.write('apollo-oracle-plan', null);
+    renderOracleMessages(); renderOraclePlan();
+    offerUndo('Cleared the Oracle conversation.', () => {
+      state.oracleMessages = previous.messages; state.oraclePlan = previous.plan; state.approvedAgents = previous.approved;
+      storage.write('apollo-oracle-messages', previous.messages); storage.write('apollo-oracle-plan', previous.plan);
+      renderOracleMessages(); renderOraclePlan();
+    });
+  });
   $('#refresh-events').addEventListener('click', refreshEvents);
   $('#refresh-runs').addEventListener('click', refreshEvents);
   $('#reset-skills').addEventListener('click', () => { state.activeSkills = new Set(state.config.skills.filter(skill => skill.defaultOn).map(skill => skill.id)); renderSkillRegistry(); });
@@ -1548,7 +1613,18 @@ function bindEvents() {
   $('#experiment-prompt').addEventListener('input', () => $('#prompt-length').textContent = `${$('#experiment-prompt').value.length.toLocaleString()} / 20,000`);
   $('#clear-prompt').addEventListener('click', () => { $('#experiment-prompt').value = ''; $('#experiment-prompt').dispatchEvent(new Event('input')); $('#experiment-prompt').focus(); });
   $('#export-runs').addEventListener('click', exportRuns);
-  $('#clear-runs').addEventListener('click', () => { if (confirm('Clear browser-only experiment history? Connected MCP runs will remain available.')) { state.runs = []; storage.write('apollo-runs', []); renderHistory(); } });
+  // A confirmation dialog is not an undo: it asks before you can see the result. The clear
+  // happens, and the way back stays on screen.
+  $('#clear-runs').addEventListener('click', () => {
+    const previous = state.runs;
+    if (!previous.length) return;
+    state.runs = []; storage.write('apollo-runs', []); renderHistory();
+    $('#run-count').textContent = 0;
+    offerUndo('Cleared ' + previous.length + ' local run' + (previous.length === 1 ? '' : 's') + '. Connected MCP runs were untouched.', () => {
+      state.runs = previous; storage.write('apollo-runs', previous); renderHistory();
+      $('#run-count').textContent = previous.length;
+    });
+  });
   $('#loadout-form').addEventListener('submit', saveSelectedLoadout);
   $('#new-loadout').addEventListener('click', () => createNewLoadout());
   $('#loadout-empty-action').addEventListener('click', () => createNewLoadout());

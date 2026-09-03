@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T05:23:52.402Z",
-  "durationMs": 15572,
+  "generatedAt": "2026-09-03T05:28:35.380Z",
+  "durationMs": 15524,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -89,13 +89,13 @@
     },
     "T9": {
       "name": "Views with an empty state and one primary action",
-      "value": 2,
+      "value": 3,
       "target": 8,
       "pass": false,
       "unit": "of 8 views",
       "higherIsBetter": true,
       "detail": {
-        "work": false,
+        "work": true,
         "architecture": false,
         "systems": true,
         "playground": true,
@@ -115,7 +115,7 @@
     },
     "T11": {
       "name": "Destructive actions without undo",
-      "value": 6,
+      "value": 4,
       "target": 0,
       "pass": false,
       "unit": "distinct controls",
@@ -123,22 +123,20 @@
         "Reset",
         "Delete node",
         "Reset defaults",
-        "Clear",
-        "Clear chat",
-        "Clear local"
+        "Clear"
       ]
     }
   },
   "perViewport": {
     "1280x800": {
-      "textNodes": 1307,
+      "textNodes": 1300,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 11,
-      "controls": 503,
+      "unmeasuredControls": 12,
+      "controls": 504,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -147,15 +145,15 @@
       ],
       "perView": {
         "work": {
-          "textNodes": 50,
+          "textNodes": 43,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 0,
+          "unmeasuredControls": 1,
           "dominantSize": [
-            "13.0",
-            17
+            "16.0",
+            16
           ]
         },
         "architecture": {
@@ -257,14 +255,14 @@
       }
     },
     "1440x900": {
-      "textNodes": 1307,
+      "textNodes": 1300,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 11,
-      "controls": 503,
+      "unmeasuredControls": 12,
+      "controls": 504,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -273,15 +271,15 @@
       ],
       "perView": {
         "work": {
-          "textNodes": 50,
+          "textNodes": 43,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 0,
+          "unmeasuredControls": 1,
           "dominantSize": [
-            "13.0",
-            17
+            "16.0",
+            16
           ]
         },
         "architecture": {
@@ -383,14 +381,14 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1307,
+      "textNodes": 1300,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 11,
-      "controls": 503,
+      "unmeasuredControls": 12,
+      "controls": 504,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -399,15 +397,15 @@
       ],
       "perView": {
         "work": {
-          "textNodes": 50,
+          "textNodes": 43,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 0,
+          "unmeasuredControls": 1,
           "dominantSize": [
-            "13.0",
-            17
+            "16.0",
+            16
           ]
         },
         "architecture": {
@@ -517,10 +515,10 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 339,
-    "14.0": 606,
-    "16.0": 307,
-    "18.0": 15,
+    "13.0": 335,
+    "14.0": 601,
+    "16.0": 308,
+    "18.0": 16,
     "22.0": 21,
     "32.0": 8
   },
@@ -528,13 +526,13 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 101278,
-        "lines": 1323
+        "bytes": 102308,
+        "lines": 1352
       }
     ],
     "fontSizeUnits": {
-      "total": 230,
-      "rem": 230,
+      "total": 231,
+      "rem": 231,
       "px": 0,
       "em": 0,
       "other": 0
@@ -601,6 +599,12 @@
   },
   "worstContrast": [],
   "unmeasuredControls": [
+    {
+      "view": "work",
+      "tag": "button",
+      "cls": "primary-action",
+      "inDisclosure": false
+    },
     {
       "view": "systems",
       "tag": "button",

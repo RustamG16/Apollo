@@ -1320,3 +1320,32 @@ textarea { min-height: calc(var(--control-h) * 2); }
 .variant-advanced summary { color: var(--fg-muted); font-size: var(--text-meta); }
 .advanced-note { margin: var(--space-3) 0; max-width: var(--measure-prose); color: var(--fg-dim); font-size: var(--text-meta); }
 .variant-skills { display: grid; max-height: 18rem; overflow-y: auto; padding-inline-end: var(--space-4); }
+
+/* The Work surface after the redundancy pass: one statement of the configuration, and the
+   two states that were missing. */
+.system-pill {
+  /* It became a button in the redundancy pass, which brought a UA background with it and
+     dropped the label to 2.13:1. A control that states the configuration and opens it. */
+  min-height: var(--control-h);
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-2);
+  background: transparent;
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+.system-pill:hover { background: var(--surface-3); color: var(--fg); }
+.work-empty { margin: var(--space-7) var(--space-8); }
+.work-error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin: 0 var(--space-8) var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-2);
+  background: var(--danger-quiet);
+  color: var(--fg);
+  font-size: var(--text-meta);
+}
+.work-error .quiet-action { border: 1px solid var(--line-strong); }
