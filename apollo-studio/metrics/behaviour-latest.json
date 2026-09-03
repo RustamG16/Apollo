@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T16:29:31.181Z",
-  "durationMs": 292398,
+  "generatedAt": "2026-09-03T16:41:41.884Z",
+  "durationMs": 293317,
   "thresholds": {
     "B1": {
       "name": "Controls with no listener and no form owner",
@@ -68,10 +68,26 @@
     },
     "B6": {
       "name": "Runtime claims not backed by a verified capability",
-      "value": null,
+      "value": 0,
       "target": 0,
-      "pass": null,
-      "unit": "pending - implemented in slice B6"
+      "pass": true,
+      "unit": "claims (mode demo)",
+      "detail": {
+        "checked": true,
+        "mode": "demo",
+        "modeDetail": "No OPENAI_API_KEY. Planning is local and free; nothing is sent.",
+        "models": [
+          "gpt-5.6-sol",
+          "gpt-5.6-terra",
+          "gpt-5.6-luna"
+        ],
+        "shown": {
+          "badge": "Demo mode",
+          "playground": "Demo mode validates routing without sending data or consuming API tokens.",
+          "oracle": "Demo execution. Plan-only is fully functional and consumes zero tokens."
+        },
+        "unbacked": []
+      }
     },
     "B7": {
       "name": "Comparison runs that do not survive a reload",

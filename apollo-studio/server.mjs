@@ -18,7 +18,55 @@ import { clearRuns, getRun, initializeRunStore, keepVariant, listRuns, recordRun
 const root = fileURLToPath(new URL('./public/', import.meta.url));
 const port = Number(process.env.PORT || 4173);
 const apiKey = process.env.OPENAI_API_KEY || '';
-const allowedModels = new Set(['gpt-5.6-sol', 'gpt-5.6-terra', 'gpt-5.6-luna']);
+// Models are configuration, not a constant. The three below are the values this workspace
+// has always shipped and they stay the default, so nothing changes without APOLLO_MODELS set.
+//
+// What changes is the claim. "Live API ready" was shown whenever an API key existed, with no
+// check that the key worked or that these model ids resolve - so a workspace whose models the
+// account cannot reach still announced it was ready, and the failure only appeared after a
+// person spent a run finding out. B6 measures that: a runtime claim must be backed by a
+// verified capability.
+const configuredModels = (process.env.APOLLO_MODELS || 'gpt-5.6-sol,gpt-5.6-terra,gpt-5.6-luna')
+  .split(',').map(value => value.trim()).filter(Boolean);
+const allowedModels = new Set(configuredModels);
+const defaultModel = configuredModels[0] || 'gpt-5.6-terra';
+
+// 'demo'            no key: nothing is sent anywhere, and the interface says so.
+// 'live-unverified' a key is present but the models endpoint has not confirmed these ids.
+// 'live'            a key is present and at least one configured model was confirmed.
+let runtimeMode = apiKey ? 'live-unverified' : 'demo';
+let runtimeDetail = apiKey
+  ? 'API key present. Models not verified yet.'
+  : 'No OPENAI_API_KEY. Planning is local and free; nothing is sent.';
+
+async function verifyRuntime() {
+  if (!apiKey) return;
+  // One request, at boot, fenced. A probe that hangs must not delay the server.
+  try {
+    const probe = await fetch('https://api.openai.com/v1/models', {
+      headers: { authorization: `Bearer ${apiKey}` },
+      signal: AbortSignal.timeout(4000),
+    });
+    if (!probe.ok) {
+      runtimeMode = 'live-unverified';
+      runtimeDetail = `Models endpoint returned ${probe.status}. Live runs may fail.`;
+      return;
+    }
+    const body = await probe.json();
+    const available = new Set((body.data || []).map(item => item.id));
+    const reachable = configuredModels.filter(model => available.has(model));
+    if (reachable.length) {
+      runtimeMode = 'live';
+      runtimeDetail = `${reachable.length} of ${configuredModels.length} configured models confirmed.`;
+    } else {
+      runtimeMode = 'live-unverified';
+      runtimeDetail = `None of ${configuredModels.join(', ')} is available to this key. Set APOLLO_MODELS.`;
+    }
+  } catch (error) {
+    runtimeMode = 'live-unverified';
+    runtimeDetail = 'Could not reach the models endpoint: ' + (error.message || 'unknown error') + '.';
+  }
+}
 const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml' };
 const execFileAsync = promisify(execFile);
 
@@ -104,7 +152,7 @@ async function handleCompare(request, response) {
     const body = await readJson(request);
     const prompt = String(body.prompt || '').trim();
     const variants = Array.isArray(body.variants) ? body.variants.slice(0, 3) : [];
-    const model = allowedModels.has(body.model) ? body.model : 'gpt-5.6-terra';
+    const model = allowedModels.has(body.model) ? body.model : defaultModel;
     const reasoning = ['none', 'low', 'medium', 'high'].includes(body.reasoning) ? body.reasoning : 'low';
     const maxOutputTokens = Math.min(20_000, Math.max(200, Number(body.maxOutputTokens) || 1000));
     const inventory = await allSkills();
@@ -167,7 +215,7 @@ async function handleOracle(request, response, planOnly = false) {
       await publishEvent({ host: 'apollo', kind: 'run.completed', runId, summary: 'Demo Oracle run completed without model usage.', data: { systemId: plan.system.id, outputId: output.id, phase: 'synthesize', agent: 'Apollo Orchestrator', tokens: 0 } });
       return json(response, 200, { runId, mode: 'demo', plan, waiting, output, trace: executable.map(step => ({ agent: step.name, status: 'simulated', budget: step.budget, skills: step.skills })), answer });
     }
-    const model = allowedModels.has(body.model) ? body.model : 'gpt-5.6-terra';
+    const model = allowedModels.has(body.model) ? body.model : defaultModel;
     const loadoutContext = plan.context || '';
     const specialistResults = [];
     for (let index = 0; index < executable.length; index += plan.concurrency) {
@@ -214,7 +262,7 @@ async function commandStatus(commands) {
 async function integrations() {
   const [codex, cursor, claude] = await Promise.all([commandStatus(['codex']), commandStatus(['cursor-agent', 'agent']), commandStatus(['claude'])]);
   return [
-    { id: 'openai-api', name: 'OpenAI API', detected: Boolean(apiKey), mode: apiKey ? 'ready' : 'configuration-required', detail: apiKey ? 'Server-side API key detected. Requests are not stored by Apollo.' : 'Set OPENAI_API_KEY. API usage is billed separately from ChatGPT subscriptions.' },
+    { id: 'openai-api', name: 'OpenAI API', detected: Boolean(apiKey), mode: runtimeMode === 'live' ? 'ready' : runtimeMode === 'live-unverified' ? 'unverified' : 'configuration-required', detail: runtimeDetail + (apiKey ? ' Requests are not stored by Apollo.' : ' API usage is billed separately from ChatGPT subscriptions.') },
     { id: 'codex-host', host: 'codex', name: 'Codex', detected: Boolean(codex.path), runnable: codex.runnable, mcpConfigured: true, mode: codex.runnable ? 'mcp-configured-cli-ready' : codex.path ? 'mcp-configured-host-only' : 'mcp-ready-host-missing', path: codex.path, version: codex.version, detail: codex.runnable ? 'Project MCP config is present and the CLI is runnable. Restart Codex in this folder, then use /mcp to verify Apollo.' : 'Project MCP config is present. The desktop-bundled executable was detected but is not callable as a standalone CLI from this server process.' },
     { id: 'cursor-cli', host: 'cursor', name: 'Cursor', detected: Boolean(cursor.path), runnable: cursor.runnable, mcpConfigured: true, mode: cursor.runnable ? 'mcp-configured-cli-ready' : 'mcp-ready-cli-missing', path: cursor.path, version: cursor.version, detail: cursor.runnable ? 'Project .cursor/mcp.json is present and Cursor Agent CLI is runnable.' : 'Project .cursor/mcp.json is present. Cursor IDE can use it even when Cursor Agent CLI is not installed.' },
     { id: 'claude-cli', host: 'claude', name: 'Claude Code', detected: Boolean(claude.path), runnable: claude.runnable, mcpConfigured: true, mode: claude.runnable ? 'mcp-configured-cli-ready' : 'mcp-ready-cli-missing', path: claude.path, version: claude.version, detail: claude.runnable ? 'Project .mcp.json is present and Claude Code CLI is runnable.' : 'Project .mcp.json is present. Claude Code will request trust before using a project MCP server.' }
@@ -241,7 +289,7 @@ const server = http.createServer(async (request, response) => {
   const url = new URL(request.url, `http://${request.headers.host}`);
   const path = url.pathname;
   try {
-    if (request.method === 'GET' && path === '/api/config') return json(response, 200, { mode: apiKey ? 'live' : 'demo', models: [...allowedModels], skills: await allSkills(), tools, plugins, presets });
+    if (request.method === 'GET' && path === '/api/config') return json(response, 200, { mode: runtimeMode, modeDetail: runtimeDetail, models: [...allowedModels], skills: await allSkills(), tools, plugins, presets });
     if (request.method === 'GET' && path === '/api/workspace') return json(response, 200, await listWorkspace());
     if (request.method === 'POST' && path === '/api/projects') return json(response, 201, await createProject(await readJson(request)));
     const projectChatMatch = path.match(/^\/api\/projects\/([a-z0-9-]+)\/chats$/);
@@ -348,14 +396,18 @@ const server = http.createServer(async (request, response) => {
     }
     if (request.method === 'GET' && path === '/api/health') {
       const inventory = await allSkills();
-      return json(response, 200, { ok: true, mode: apiKey ? 'live' : 'demo', knowledge: true, skillCount: inventory.length, enabledSkillCount: inventory.filter(skill => skill.enabled).length, oracle: true });
+      return json(response, 200, { ok: true, mode: runtimeMode, modeDetail: runtimeDetail, models: [...allowedModels], knowledge: true, skillCount: inventory.length, enabledSkillCount: inventory.filter(skill => skill.enabled).length, oracle: true });
     }
     if (request.method === 'GET') return serveStatic(request, response);
     json(response, 405, { error: 'Method not allowed.' });
   } catch (error) { json(response, 400, { error: error.message || 'Request failed.' }); }
 });
 
-server.listen(port, '127.0.0.1', () => {
+server.listen(port, '127.0.0.1', async () => {
   console.log(`Apollo Studio running at http://127.0.0.1:${port}`);
-  console.log(apiKey ? 'Live OpenAI mode enabled.' : 'Demo mode enabled. Set OPENAI_API_KEY for live comparisons.');
+  console.log(`${runtimeMode}: ${runtimeDetail}`);
+  // After listen, so a slow or unreachable models endpoint never delays startup. The mode
+  // narrows from live-unverified to live only if the probe actually confirms something.
+  await verifyRuntime();
+  if (apiKey) console.log(`${runtimeMode}: ${runtimeDetail}`);
 });

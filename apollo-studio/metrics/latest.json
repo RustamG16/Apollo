@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T16:24:38.718Z",
-  "durationMs": 27961,
+  "generatedAt": "2026-09-03T16:36:48.498Z",
+  "durationMs": 27948,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",

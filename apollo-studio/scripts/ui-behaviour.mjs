@@ -159,6 +159,44 @@ async function measureDecisions(base) {
   return results;
 }
 
+
+/**
+ * B6 - the interface may not claim a capability the runtime has not verified.
+ *
+ * "Live API ready" was rendered whenever an OPENAI_API_KEY existed, with nothing checking
+ * that the key worked or that the configured model ids resolve. The server now reports
+ * demo / live-unverified / live, and this asserts the visible text agrees with it.
+ */
+async function measureRuntimeClaims(page, base) {
+  const config = await (await fetch(base + '/api/config')).json();
+  const mode = config.mode;
+  await navigate(page, base + '/?b=runtime#/playground');
+  await settle(page, 700);
+  const shown = await evaluate(page, `(() => ({
+    badge: (document.querySelector('#runtime-label')?.textContent || '').trim(),
+    playground: (document.querySelector('#playground-mode')?.textContent || '').trim(),
+    oracle: (document.querySelector('#oracle-mode')?.textContent || '').trim(),
+  }))()`);
+
+  const unbacked = [];
+  const claimsVerifiedLive = text => /live api verified/i.test(text)
+    || (/live/i.test(text) && !/unverified|demo|may fail/i.test(text));
+
+  if (mode !== 'live') {
+    for (const [where, text] of Object.entries(shown)) {
+      if (claimsVerifiedLive(text)) unbacked.push(where + ' claims live while the server reports ' + mode + ': "' + text + '"');
+    }
+  }
+  // The inverse is also a lie: a verified runtime that presents itself as demo would send
+  // real requests while telling the user nothing leaves the machine.
+  if (mode === 'live' && /demo/i.test(shown.badge)) {
+    unbacked.push('badge claims demo while the server reports live: "' + shown.badge + '"');
+  }
+  if (!config.models?.length) unbacked.push('no models are configured, so the model picker offers nothing runnable');
+
+  return { checked: true, mode, modeDetail: config.modeDetail || null, models: config.models || [], shown, unbacked };
+}
+
 /** B7 - a comparison run must survive a reload as a server-side record. */
 async function measureRunPersistence(base) {
   const post = async (path, data) => {
@@ -215,6 +253,7 @@ async function main() {
   const census = [];
   const sweep = [];
   let decisions = [], persistence = { ran: false, persisted: false, note: 'not run' };
+  let runtimeClaims = { checked: false, unbacked: [] };
 
   try {
     const page = await browser.newPage();
@@ -279,6 +318,9 @@ async function main() {
       sweep.push({ ...control, alreadyActive: clicked.alreadyActive, effect: changed(before, after), before, after, labelTruth });
     }
 
+    // ---- B6: does the interface claim more than the runtime can back?
+    runtimeClaims = await measureRuntimeClaims(page, base);
+
     // ---- B4 / B7: server-side, no browser needed
     decisions = await measureDecisions(base);
     persistence = await measureRunPersistence(base);
@@ -342,8 +384,10 @@ async function main() {
     },
     B6: {
       name: 'Runtime claims not backed by a verified capability',
-      value: null, target: 0, pass: null,
-      unit: 'pending - implemented in slice B6',
+      value: runtimeClaims.unbacked.length, target: 0,
+      pass: runtimeClaims.checked && runtimeClaims.unbacked.length === 0,
+      unit: 'claims (mode ' + (runtimeClaims.mode || '?') + ')',
+      detail: runtimeClaims,
     },
     B7: {
       name: 'Comparison runs that do not survive a reload',

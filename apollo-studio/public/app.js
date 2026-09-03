@@ -170,7 +170,7 @@ function renderWork() {
   const tabs = $('#project-tabs'); tabs.replaceChildren(...project.chats.map(item => { const button = document.createElement('button'); button.type = 'button'; button.setAttribute('role', 'tab'); button.setAttribute('aria-selected', String(item.id === chat.id)); button.className = `project-tab${item.id === chat.id ? ' is-active' : ''}`; button.textContent = item.name; button.addEventListener('click', () => selectWorkChat(project.id, item.id)); return button; }));
   const detail = state.work.detail || { messages: [], attachments: [] }; const messages = $('#work-messages'); messages.replaceChildren(...detail.messages.map(message => { const article = document.createElement('article'); article.className = `work-message ${message.role}`; const label = document.createElement('span'); label.textContent = message.role === 'assistant' ? 'Apollo' : 'You'; const text = document.createElement('p'); text.textContent = message.text; article.append(label, text); return article; }));
   const linkedCount = detail.attachments.filter(item => item.status === 'linked').length;
-  $('#work-title').textContent = project.name; $('#work-prompt').placeholder = `Ask Apollo to help with ${project.name}…`; $('#context-title').textContent = chat.name; $('#context-attachments').textContent = linkedCount ? `${linkedCount} authorized link${linkedCount === 1 ? '' : 's'}` : 'No sources';
+  $('#work-title').textContent = project.name; $('#work-prompt').placeholder = `Ask Apollo to help with ${project.name}…`; $('#context-title').textContent = chat.name; $('#context-attachments').textContent = linkedCount ? `${linkedCount} linked path${linkedCount === 1 ? '' : 's'}` : 'No sources';
   const contextCount = $('#work-context-count');
   contextCount.textContent = linkedCount;
   contextCount.classList.toggle('is-zero', linkedCount === 0);
@@ -1215,6 +1215,7 @@ function renderVariants() {
     const webSearch = card.querySelector('.variant-web-search');
     webSearch.checked = variant.tools.has('web_search');
     webSearch.disabled = state.config.mode !== 'live';
+      webSearch.title = state.config.mode === 'live' ? '' : 'Available once the runtime is verified live.';
     webSearch.addEventListener('change', () => { if (webSearch.checked) variant.tools.add('web_search'); else variant.tools.delete('web_search'); });
 
     updateVariantSummary(card, variant);
@@ -1553,9 +1554,11 @@ function renderAgents() {
     const haystack = `${agent.name} ${agent.description} ${agent.activation} ${agent.skills.join(' ')} ${category}`.toLowerCase();
     return (categoryFilter === 'all' || category === categoryFilter) && haystack.includes(query);
   });
-  if (!filtered.length) { host.innerHTML = '<div class="empty-state"><strong>No agent profiles match.</strong><p>Change the category or search term.</p></div>'; return; }
+  // The view's real empty state is #agents-empty. This used to write an inline duplicate and
+  // return before ever unhiding it, so the state T9 checks for could not appear.
   const agentsEmpty = $('#agents-empty');
   if (agentsEmpty) agentsEmpty.hidden = filtered.length > 0;
+  if (!filtered.length) { host.replaceChildren(); return; }
   host.replaceChildren(...filtered.map(agent => {
     const article = document.createElement('article');
     const category = categoryById[agent.id] || 'Direction';
@@ -1849,11 +1852,28 @@ async function refreshEvents() {
   renderTransport();
 }
 
+// Three modes, and the badge says which one is true rather than which one is hoped for.
+// "Live API ready" used to appear whenever a key existed, with nothing checking that the key
+// worked or that the configured model ids resolve.
 function setRuntime(mode) {
-  const stateEl = $('.runtime-state'); stateEl.classList.remove('is-live', 'is-demo', 'is-error'); stateEl.classList.add(mode === 'live' ? 'is-live' : 'is-demo');
-  $('#runtime-label').textContent = mode === 'live' ? 'Live API ready' : 'Demo mode';
-  $('#playground-mode').textContent = mode === 'live' ? 'Live OpenAI Responses mode. Runs may incur API usage.' : 'Demo mode validates routing without sending data or consuming API tokens.';
-  $('#oracle-mode').textContent = mode === 'live' ? 'Live OpenAI API execution. Plan-only remains local.' : 'Demo execution. Plan-only is fully functional and consumes zero tokens.';
+  const detail = state.config?.modeDetail || '';
+  const stateEl = $('.runtime-state');
+  stateEl.classList.remove('is-live', 'is-demo', 'is-error');
+  stateEl.classList.add(mode === 'live' ? 'is-live' : mode === 'live-unverified' ? 'is-error' : 'is-demo');
+  const label = mode === 'live' ? 'Live API verified' : mode === 'live-unverified' ? 'Live, unverified' : 'Demo mode';
+  $('#runtime-label').textContent = label;
+  $('#runtime-label').title = detail;
+  const playground = mode === 'live'
+    ? 'Live OpenAI Responses mode. Runs may incur API usage.'
+    : mode === 'live-unverified'
+      ? 'A key is present but the configured models are not confirmed. ' + detail + ' A live run may fail.'
+      : 'Demo mode validates routing without sending data or consuming API tokens.';
+  $('#playground-mode').textContent = playground;
+  $('#oracle-mode').textContent = mode === 'live'
+    ? 'Live OpenAI API execution. Plan-only remains local.'
+    : mode === 'live-unverified'
+      ? 'A key is present but unverified. Plan-only is local and always works.'
+      : 'Demo execution. Plan-only is fully functional and consumes zero tokens.';
 }
 
 function bindRovingToolbar(toolbar) {
