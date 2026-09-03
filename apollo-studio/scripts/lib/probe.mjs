@@ -1,0 +1,186 @@
+// The in-page measurement. Serialised into the page by ui-metrics.mjs, so it must be
+// self-contained: no imports, no closures over module scope.
+export const PROBE_SOURCE = String(function apolloProbe(scope) {
+  const CHROME_SELECTOR = '.app-shell > header, .topbar, #topbar, body > header';
+
+  const parseRgb = value => {
+    if (!value) return null;
+    const m = value.match(/rgba?\(([^)]+)\)/);
+    if (!m) return null;
+    const parts = m[1].split(/[,\s/]+/).filter(Boolean).map(Number);
+    if (parts.length < 3 || parts.some(Number.isNaN)) return null;
+    return { r: parts[0], g: parts[1], b: parts[2], a: parts.length > 3 ? parts[3] : 1 };
+  };
+
+  const over = (fg, bg) => ({
+    r: fg.r * fg.a + bg.r * (1 - fg.a),
+    g: fg.g * fg.a + bg.g * (1 - fg.a),
+    b: fg.b * fg.a + bg.b * (1 - fg.a),
+    a: 1,
+  });
+
+  const luminance = c => {
+    const ch = v => { const s = v / 255; return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4); };
+    return 0.2126 * ch(c.r) + 0.7152 * ch(c.g) + 0.0722 * ch(c.b);
+  };
+
+  const contrast = (a, b) => {
+    const la = luminance(a), lb = luminance(b);
+    return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+  };
+
+  const visible = el => {
+    const cs = getComputedStyle(el);
+    if (cs.display === 'none' || cs.visibility === 'hidden' || Number(cs.opacity) === 0) return false;
+    const rect = el.getBoundingClientRect();
+    if (rect.width === 0 && rect.height === 0) return false;
+    let node = el;
+    while (node && node !== document.documentElement) {
+      const s = getComputedStyle(node);
+      if (s.display === 'none' || s.visibility === 'hidden' || Number(s.opacity) === 0) return false;
+      if (s.clipPath === 'inset(50%)' || (s.position === 'absolute' && s.clip === 'rect(0px, 0px, 0px, 0px)')) return false;
+      node = node.parentElement;
+    }
+    return true;
+  };
+
+  // Effective background behind an element: composite every translucent layer up the tree.
+  const backdrop = el => {
+    let stack = [];
+    let node = el;
+    let imageBacked = false;
+    while (node) {
+      const cs = getComputedStyle(node);
+      if (cs.backgroundImage && cs.backgroundImage !== 'none') imageBacked = true;
+      const c = parseRgb(cs.backgroundColor);
+      if (c && c.a > 0) { stack.push(c); if (c.a >= 0.999) break; }
+      node = node.parentElement;
+    }
+    let base = { r: 255, g: 255, b: 255, a: 1 };
+    for (let i = stack.length - 1; i >= 0; i--) base = over(stack[i], base);
+    return { color: base, imageBacked };
+  };
+
+  // Scope rule: a view is the active view only, and the persistent chrome is measured once
+  // as its own scope. Counting the chrome inside every view would multiply one defect by
+  // eight; section 02 of LOADOUT-PLAN.md counted the same way, and this reproduces its
+  // 165 contrast failures exactly. The chrome's own numbers are added to the totals once.
+  const chromeRoots = Array.from(document.querySelectorAll(CHROME_SELECTOR));
+  const roots = scope === 'chrome'
+    ? chromeRoots
+    : [document.querySelector('.view.is-active') || document.body];
+  const inChrome = el => chromeRoots.some(r => r.contains(el));
+
+  const text = [];
+  const sizeTally = {};
+  for (const root of roots) {
+    if (!root) continue;
+    for (const el of [root, ...root.querySelectorAll('*')]) {
+      if (scope !== 'chrome' && inChrome(el)) continue;
+      const own = Array.from(el.childNodes)
+        .filter(n => n.nodeType === 3 && n.textContent.trim().length)
+        .map(n => n.textContent.trim()).join(' ');
+      if (!own) continue;
+      // Text inside a collapsed disclosure is still text: a 9px label does not stop being
+      // 9px because a <details> is shut. It counts for the size floor (T1) but not for
+      // contrast (T4), which only means something for pixels actually on screen. This is
+      // the rule section 02 of LOADOUT-PLAN.md used, and it reproduces its counts exactly.
+      const rendered = visible(el);
+      const cs = getComputedStyle(el);
+      const size = parseFloat(cs.fontSize);
+      const weight = Number(cs.fontWeight) || 400;
+      const fg = parseRgb(cs.color) || { r: 0, g: 0, b: 0, a: 1 };
+      const bd = backdrop(el);
+      const composited = fg.a < 1 ? over(fg, bd.color) : fg;
+      const ratio = contrast(composited, bd.color);
+      const large = size >= 24 || (size >= 18.66 && weight >= 700);
+      const need = large ? 3 : 4.5;
+      sizeTally[size.toFixed(1)] = (sizeTally[size.toFixed(1)] || 0) + 1;
+      text.push({
+        tag: el.tagName.toLowerCase(),
+        cls: el.className && typeof el.className === 'string' ? el.className.slice(0, 60) : '',
+        sample: own.slice(0, 40),
+        size, weight,
+        family: cs.fontFamily.split(',')[0].replace(/["']/g, '').trim(),
+        ratio: Math.round(ratio * 100) / 100,
+        need,
+        rendered,
+        pass: rendered ? ratio >= need : true,
+        imageBacked: bd.imageBacked,
+      });
+    }
+  }
+
+  const CONTROL_SELECTOR = [
+    'a[href]', 'button', 'input:not([type=hidden])', 'select', 'textarea',
+    'summary', '[role=button]', '[role=tab]', '[role=switch]', '[role=checkbox]',
+    '[tabindex]:not([tabindex="-1"])',
+  ].join(',');
+
+  const controls = [];
+  const collapsed = [];
+  for (const root of roots) {
+    if (!root) continue;
+    for (const el of root.querySelectorAll(CONTROL_SELECTOR)) {
+      if (scope !== 'chrome' && inChrome(el)) continue;
+      const rect = el.getBoundingClientRect();
+      const w = Math.round(rect.width * 100) / 100;
+      const h = Math.round(rect.height * 100) / 100;
+      // A control with no box is either inside a collapsed disclosure or visually hidden
+      // behind a proxy. Both are recorded: the first is a real target once revealed.
+      if (!visible(el) || w === 0 || h === 0) {
+        collapsed.push({
+          tag: el.tagName.toLowerCase(),
+          cls: el.className && typeof el.className === 'string' ? el.className.slice(0, 60) : '',
+          inDisclosure: el.closest('details:not([open])') != null,
+        });
+        continue;
+      }
+      controls.push({
+        tag: el.tagName.toLowerCase(),
+        cls: el.className && typeof el.className === 'string' ? el.className.slice(0, 60) : '',
+        label: (el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 32),
+        w, h, min: Math.min(w, h),
+      });
+    }
+  }
+
+  // T9: does the view carry an empty state and a primary action?
+  const view = scope === 'chrome' ? roots[0] : (document.querySelector('.view.is-active') || document.body);
+  const emptyStates = view ? view.querySelectorAll('.empty-state,[data-empty-state]').length : 0;
+  const primaryActions = view ? view.querySelectorAll('.primary-action,[data-primary-action]').length : 0;
+  const emptyStateHasAction = view
+    ? Array.from(view.querySelectorAll('.empty-state,[data-empty-state]'))
+        .some(n => n.querySelector('button,a[href],[role=button]')) : false;
+
+  // T11: destructive controls without a declared undo path.
+  const DESTRUCTIVE = /\b(delete|remove|clear|reset|discard|erase|revoke)\b/i;
+  const destructive = [];
+  for (const root of roots) {
+    if (!root) continue;
+    for (const el of root.querySelectorAll('button,[role=button],a[href]')) {
+      if (scope !== 'chrome' && inChrome(el)) continue;
+      if (!visible(el)) continue;
+      const label = ((el.getAttribute('aria-label') || '') + ' ' + el.textContent).trim();
+      const cls = typeof el.className === 'string' ? el.className : '';
+      if (!DESTRUCTIVE.test(label) && !/danger/.test(cls)) continue;
+      destructive.push({
+        label: label.slice(0, 40),
+        cls: cls.slice(0, 50),
+        hasUndo: el.hasAttribute('data-undo') || el.closest('[data-undo]') != null,
+      });
+    }
+  }
+
+  const overflow = {
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+  };
+  overflow.horizontal = overflow.scrollWidth - overflow.clientWidth;
+
+  const bodySize = parseFloat(getComputedStyle(document.body).fontSize);
+  const rootSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  const families = Array.from(new Set(text.map(t => t.family))).sort();
+
+  return { text, controls, collapsed, sizeTally, emptyStates, primaryActions, emptyStateHasAction, destructive, overflow, bodySize, rootSize, families };
+});

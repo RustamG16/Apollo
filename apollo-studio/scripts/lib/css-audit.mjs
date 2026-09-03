@@ -1,0 +1,142 @@
+// Static analysis of the stylesheet: the half of the design system that never renders.
+import { readFileSync } from 'node:fs';
+
+const STATUS_HUES = [
+  { name: 'red', min: 345, max: 15 },
+  { name: 'amber', min: 25, max: 60 },
+  { name: 'green', min: 90, max: 165 },
+];
+
+const hueName = h => {
+  if (h < 15 || h >= 345) return 'red';
+  if (h < 45) return 'orange';
+  if (h < 70) return 'yellow';
+  if (h < 90) return 'lime';
+  if (h < 165) return 'green';
+  if (h < 195) return 'cyan';
+  if (h < 250) return 'blue';
+  if (h < 290) return 'violet';
+  if (h < 345) return 'magenta';
+  return 'red';
+};
+
+function toHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  const d = max - min;
+  if (d === 0) return { h: 0, s: 0, l };
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h;
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0));
+  else if (max === g) h = (b - r) / d + 2;
+  else h = (r - g) / d + 4;
+  return { h: h * 60, s, l };
+}
+
+function parseColorToken(raw) {
+  const hex = raw.match(/^#([0-9a-f]{3,8})$/i);
+  if (hex) {
+    let v = hex[1];
+    if (v.length === 3 || v.length === 4) v = v.split('').map(c => c + c).join('');
+    return { r: parseInt(v.slice(0, 2), 16), g: parseInt(v.slice(2, 4), 16), b: parseInt(v.slice(4, 6), 16) };
+  }
+  const rgb = raw.match(/rgba?\(([^)]+)\)/i);
+  if (rgb) {
+    const p = rgb[1].split(/[,\s/]+/).filter(Boolean).map(Number);
+    if (p.length >= 3 && !p.slice(0, 3).some(Number.isNaN)) return { r: p[0], g: p[1], b: p[2] };
+  }
+  return null;
+}
+
+export function auditCss(paths) {
+  const sources = paths.map(p => ({ path: p, text: readFileSync(p, 'utf8') }));
+  const css = sources.map(s => s.text).join('\n');
+
+  const strip = css.replace(/\/\*[\s\S]*?\*\//g, '');
+
+  const fontSizes = [...strip.matchAll(/font-size\s*:\s*([^;}]+)/gi)].map(m => m[1].trim());
+  const fontSizeUnits = { total: fontSizes.length, rem: 0, px: 0, em: 0, other: 0 };
+  const pxSizes = new Set();
+  for (const decl of fontSizes) {
+    if (/[\d.]rem\b/.test(decl)) fontSizeUnits.rem++;
+    else if (/[\d.]px\b/.test(decl)) { fontSizeUnits.px++; for (const m of decl.matchAll(/([\d.]+)px/g)) pxSizes.add(Number(m[1])); }
+    else if (/[\d.]em\b/.test(decl)) fontSizeUnits.em++;
+    else fontSizeUnits.other++;
+  }
+
+  const radii = new Set();
+  for (const m of strip.matchAll(/border-radius\s*:\s*([^;}]+)/gi)) {
+    m[1].trim().split(/\s+/).forEach(v => { if (v && !v.startsWith('var(')) radii.add(v.replace(/;$/, '')); });
+  }
+
+  const customProps = [...strip.matchAll(/(--[a-z0-9-]+)\s*:\s*([^;}]+)/gi)]
+    .map(m => ({ name: m[1], value: m[2].trim() }));
+  const uniqueProps = new Map();
+  for (const p of customProps) if (!uniqueProps.has(p.name)) uniqueProps.set(p.name, p.value);
+
+  const classifyProp = name => {
+    if (/^--(space|spacing|gap)/.test(name)) return 'space';
+    if (/^--(radius|round)/.test(name)) return 'radius';
+    if (/^--(dur|ease|motion|transition)/.test(name)) return 'motion';
+    if (/^--(z|layer)/.test(name)) return 'elevation';
+    if (/^--(text|size|font|leading|track)/.test(name)) return 'type';
+    if (/^--(shadow|elev)/.test(name)) return 'elevation';
+    return 'color';
+  };
+  const tokenFamilies = { color: 0, space: 0, radius: 0, motion: 0, elevation: 0, type: 0 };
+  for (const name of uniqueProps.keys()) tokenFamilies[classifyProp(name)]++;
+
+  // Literal colours outside custom-property definitions are the debt this measures.
+  const propValueRanges = [];
+  for (const m of strip.matchAll(/--[a-z0-9-]+\s*:\s*[^;}]+/gi)) propValueRanges.push([m.index, m.index + m[0].length]);
+  const insideToken = i => propValueRanges.some(([a, b]) => i >= a && i < b);
+
+  const hexLiterals = [];
+  for (const m of strip.matchAll(/#[0-9a-f]{3,8}\b/gi)) if (!insideToken(m.index)) hexLiterals.push(m[0].toLowerCase());
+  const rgbaLiterals = [];
+  for (const m of strip.matchAll(/rgba?\([^)]*\)/gi)) if (!insideToken(m.index)) rgbaLiterals.push(m[0].toLowerCase());
+
+  // Accent hue census: every saturated colour anywhere in the sheet.
+  const allColors = [...strip.matchAll(/#[0-9a-f]{3,8}\b|rgba?\([^)]*\)/gi)].map(m => m[0]);
+  const hueBuckets = new Map();
+  for (const raw of allColors) {
+    const rgb = parseColorToken(raw);
+    if (!rgb) continue;
+    const { h, s, l } = toHsl(rgb.r, rgb.g, rgb.b);
+    if (s < 0.18 || l < 0.08 || l > 0.95) continue; // neutral or near-black/white
+    const name = hueName(h);
+    hueBuckets.set(name, (hueBuckets.get(name) || 0) + 1);
+  }
+  const semantic = new Set(['red', 'amber', 'orange', 'yellow', 'green']);
+  const nonSemanticHues = [...hueBuckets.keys()].filter(h => !semantic.has(h));
+
+  const transitions = [...strip.matchAll(/transition[a-z-]*\s*:\s*([^;}]+)/gi)].map(m => m[1].trim());
+  const durations = new Set();
+  for (const t of transitions) {
+    for (const m of t.matchAll(/([\d.]+)m?s\b/g)) durations.add(m[0]);
+  }
+
+  const zIndex = new Set();
+  for (const m of strip.matchAll(/z-index\s*:\s*([^;}]+)/gi)) zIndex.add(m[1].trim());
+
+  const mediaRefs = [...new Set([...strip.matchAll(/url\(['"]?(\/media\/[^'")]+)/gi)].map(m => m[1]))];
+
+  return {
+    files: sources.map(s => ({ path: s.path, bytes: s.text.length, lines: s.text.split('\n').length })),
+    fontSizeUnits,
+    uniquePxFontSizes: [...pxSizes].sort((a, b) => a - b),
+    radii: [...radii].sort(),
+    customPropertyCount: uniqueProps.size,
+    tokenFamilies,
+    hexLiterals: hexLiterals.length,
+    rgbaLiterals: rgbaLiterals.length,
+    hueBuckets: Object.fromEntries([...hueBuckets].sort((a, b) => b[1] - a[1])),
+    nonSemanticHues,
+    important: (strip.match(/!important/g) || []).length,
+    transitionDeclarations: transitions.length,
+    transitionDurations: [...durations].sort(),
+    zIndexSpellings: [...zIndex].sort(),
+    decorativeMediaRefs: mediaRefs,
+  };
+}
