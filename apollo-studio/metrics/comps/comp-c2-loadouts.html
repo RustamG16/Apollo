@@ -123,6 +123,9 @@ body{margin:0;width:1440px;height:900px;overflow:hidden;background:var(--bg);col
 .f{display:contents}
 .f > .lab{padding:8px 12px 8px 0;border-bottom:1px solid var(--line);min-width:0;align-self:center}
 .f > .ctl{padding:6px 12px 6px 0;border-bottom:1px solid var(--line);align-self:center}
+/* the control measure is the column, minus its own gutter - so a field is the same width
+   in the wide grid and inside .two. Capping the element gave 320 here and 308 there. */
+.grid{--ctl-inner:calc(var(--ctl-col) - 12px)}
 .f > .con{padding:8px 0;border-bottom:1px solid var(--line);color:var(--fg-dim);
   font-size:var(--t-label);line-height:1.4;align-self:center;max-width:60ch}
 .f:last-child > *{border-bottom:0}
@@ -139,13 +142,15 @@ body{margin:0;width:1440px;height:900px;overflow:hidden;background:var(--bg);col
 select,input,textarea{width:100%;min-height:var(--control-h);padding:6px 9px;
   border:1px solid var(--line-strong);border-radius:var(--r);background:var(--surface-2);
   color:var(--fg);font:400 var(--t-meta)/1.3 var(--font)}
-textarea{min-height:60px;resize:none;line-height:1.45}
+/* the Brief is sent verbatim to every agent; it clipped its third line at 60px and could
+   not be resized. 72px matches the Work composer, and vertical resize is allowed. */
+textarea{min-height:72px;resize:vertical;line-height:1.45}
 /* a field that grows to 700px reads as a banner, not a control. The grid keeps the
    alignment; the field keeps a sane measure. */
 /* one control measure everywhere, including inside .two - a halved section must not
    invent a wider field than the full-width one above it. */
-.ctl select,.ctl input{max-width:var(--ctl-col)}
-.two .ctl textarea{max-width:var(--ctl-col)}
+.ctl select,.ctl input{max-width:var(--ctl-inner)}
+.two .ctl textarea{max-width:var(--ctl-inner)}
 .chk{display:flex;align-items:center;gap:9px;min-height:var(--control-h);font-size:var(--t-meta);color:var(--fg-muted)}
 .chk input{width:16px;height:16px;min-height:0;accent-color:var(--accent)}
 .avoid{margin:0;padding:0;list-style:none;display:grid;gap:3px}
