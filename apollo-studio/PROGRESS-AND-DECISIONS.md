@@ -46,3 +46,23 @@ Append concise dated entries. Preserve history; correct entries by adding a late
 - Added two locally served, optimized WebP atmospheres: a systems concordance used in Systems/Architecture and a knowledge reliquary used in Library. The assets are decorative, have CSS fallbacks, and are disabled as secondary visual layers for reduced-transparency/high-contrast preferences.
 - Design improvements also introduced measured hero framing for Systems and Library plus quieter craft detail on agent profile surfaces; no product behavior, API, records, or external runtime dependency changed.
 - `npm.cmd run check`, project-context validation, and a 1440×900 in-app-browser verification passed with no horizontal overflow or browser console warnings/errors. Gate C remains pending.
+
+## 2026-09-03 — Redesign program amended for unattended execution
+
+- Measured UI audit recorded in `LOADOUT-PLAN.md`: 92% of rendered text below 13px, 165 AA
+  contrast failures, 289 controls under the 36px PRODUCT.md commitment, 0 rem font-sizes,
+  18 CSS custom properties and no spacing/type/radius/motion/elevation tokens.
+- Root cause identified: `DESIGN.md` ratifies label=9px, mono=10px, body=12px. The defect is
+  the specification, not drift. No CSS work may begin before DESIGN.md is replaced.
+- Second root cause: `detect.mjs` returns clean because every defect lives in computed styles,
+  not markup patterns. The improvement loop has been running without instrumentation.
+- The user removed the direction-selection rule. There is no candidate list, no
+  concept-triptych and no selection ceremony. A full redesign is mandated; one direction is
+  resolved at intake and held. The Phase-2 candidate line in `CONTINUOUS-IMPROVEMENT-PLAN.md`
+  is void and that file is superseded for phase ordering, the direction rule, and gates.
+- All human approval gates are removed for work on Apollo Studio itself. Gates A/B/C continue
+  to govern client website projects. Exit gates are now self-verified measurements (T1-T11).
+- Architecture decision: the Olympus pipeline is locked and made read-only in the UI; all
+  configuration moves into a named, saveable, comparable "loadout" — 8 skill slots, Design DNA,
+  brief, tools/MCP, budget. No new agents and no new systems.
+- `RUN-PROMPT.md` added as the kickoff prompt for unattended sessions.

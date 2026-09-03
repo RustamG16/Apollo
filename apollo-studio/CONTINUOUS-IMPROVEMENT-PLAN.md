@@ -1,6 +1,6 @@
 # Apollo Studio Continuous Improvement Plan
 
-Status: Draft for discussion. Implementation is locked until this plan is approved.
+Status: Superseded by `LOADOUT-PLAN.md` for phase ordering, the direction rule, and gates. Retained for the anti-AI rules and the standing loop shape.
 
 ## Target outcome
 
@@ -20,13 +20,13 @@ Completing one implementation slice does not complete the program. Every verifie
 - Identify patterns that make the product appear generic or AI-generated.
 - Select professional product references and score the current baseline.
 
-Gate A: approve the diagnosis and scoring criteria.
+No gate. The diagnosis and the T1-T11 thresholds are fixed in `LOADOUT-PLAN.md`.
 
 ## Phase 2: the visual system
 
-Resolve one direction at intake per the direction rule in `AGENTS.md` (candidates on the table: Editorial Utility, Technical Instrument, Native Studio — pick via the questionnaire, not by building all three). Define shell, navigation, typography, color, density, components, workflow visualization, motion, media policy, risks, and representative screens for the chosen direction. No decorative generated media is allowed during selection.
+VOID as of 2026-09-03 — superseded by `LOADOUT-PLAN.md`. There is no candidate list and no selection ceremony. The director resolves ONE direction at intake and commits to it; a full redesign is mandated. Define shell, navigation, typography, color, density, components, workflow visualization, motion, media policy, risks, and representative screens for the chosen direction. No decorative generated media is allowed during selection.
 
-Gate B: select and lock one direction.
+No gate. The resolved direction is recorded in `PROGRESS-AND-DECISIONS.md` and implementation proceeds.
 
 ## Phase 3: foundation
 

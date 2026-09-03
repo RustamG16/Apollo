@@ -178,14 +178,48 @@ def codex_agent(name):
     return "\n".join(lines) + "\n\n"
 
 
+# ------------------------------------------------- Claude projection policy
+# Claude Code loads EVERY .claude/skills/*/SKILL.md frontmatter into the system
+# prompt on EVERY turn. Projecting the whole library cost ~7,310 tok/turn, of
+# which ~5,208 was unrouted capability skills no pipeline phase ever routes to.
+#
+# Policy: project the pipeline-routed skills, plus the short allowlist below of
+# capabilities that are genuinely invoked by hand. Everything else stays in
+# library/skills/ and is reached the way AGENTS.md already prescribes — route
+# from registry/ROUTING-DIGEST.md or registry/UNROUTED.md, then load one body.
+# Nothing is deleted from the library; only the host projection is narrowed.
+#
+# To re-project a dropped skill, add its id here and rerun:
+#   python library/tools/project.py claude
+MANUAL_CLAUDE_SKILLS = {
+    "image",                        # generic image generation
+    "animate",                      # build motion from scratch
+    "prototype",                    # multiple UI variants behind a picker
+    "pick-ui-library",              # choose the right frontend library
+    "garden-web-design-engineer",   # polished HTML/CSS/JS artifacts
+    "apollo-bootstrap",             # install / re-audit Apollo in a project
+    "apollo-loadout-sync",          # THE write path for per-agent loadouts
+    "apollo-dashboard-sync",        # THE write path for dashboard state.json
+}
+
+
+def project_to_claude(r):
+    """True when this registry record belongs in .claude/skills."""
+    if "claude" not in r["hosts"] or r["status"] == "stub":
+        return False
+    if r.get("phase") != "unrouted":
+        return True                      # pipeline-routed: always projected
+    return r["id"] in MANUAL_CLAUDE_SKILLS
+
+
 # ---------------------------------------------------------------- targets
 def build_claude(dry):
     ok = True
     ps = Plan(os.path.join(ROOT, ".claude", "skills"),
-              "library/skills (hosts includes 'claude')",
+              "library/skills (routed + MANUAL_CLAUDE_SKILLS; see project_to_claude)",
               "python library/tools/project.py claude")
     for r in REG:
-        if "claude" not in r["hosts"] or r["status"] == "stub":
+        if not project_to_claude(r):
             continue
         for rel, c in copy_skill_body(r["id"]).items():
             ps.add(f"{r['id']}/{rel}", c)
