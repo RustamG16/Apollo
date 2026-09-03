@@ -55,7 +55,21 @@ export function auditCss(paths) {
 
   const strip = css.replace(/\/\*[\s\S]*?\*\//g, '');
 
-  const fontSizes = [...strip.matchAll(/font-size\s*:\s*([^;}]+)/gi)].map(m => m[1].trim());
+  // A declaration written as var(--text-body) is only in rem if the token behind it is.
+  // Resolve one token chain before classifying, or the sweep to tokens would read as a
+  // regression to "no units at all".
+  const declaredTokens = new Map();
+  for (const m of strip.matchAll(/(--[a-z0-9-]+)\s*:\s*([^;}]+)/gi)) {
+    if (!declaredTokens.has(m[1])) declaredTokens.set(m[1], m[2].trim());
+  }
+  const resolveVars = (value, depth = 0) => {
+    if (depth > 6 || !value.includes('var(')) return value;
+    return resolveVars(value.replace(/var\(\s*(--[a-z0-9-]+)\s*(?:,[^)]*)?\)/gi,
+      (whole, name) => declaredTokens.get(name) ?? whole), depth + 1);
+  };
+
+  const fontSizes = [...strip.matchAll(/font-size\s*:\s*([^;}]+)/gi)]
+    .map(m => resolveVars(m[1].trim()));
   const fontSizeUnits = { total: fontSizes.length, rem: 0, px: 0, em: 0, other: 0 };
   const pxSizes = new Set();
   for (const decl of fontSizes) {
@@ -68,6 +82,12 @@ export function auditCss(paths) {
   const radii = new Set();
   for (const m of strip.matchAll(/border-radius\s*:\s*([^;}]+)/gi)) {
     m[1].trim().split(/\s+/).forEach(v => { if (v && !v.startsWith('var(')) radii.add(v.replace(/;$/, '')); });
+  }
+
+  const zIndexLiterals = new Set();
+  for (const m of strip.matchAll(/z-index\s*:\s*([^;}]+)/gi)) {
+    const v = m[1].trim();
+    if (!v.startsWith('var(')) zIndexLiterals.add(v);
   }
 
   const customProps = [...strip.matchAll(/(--[a-z0-9-]+)\s*:\s*([^;}]+)/gi)]
@@ -137,6 +157,7 @@ export function auditCss(paths) {
     transitionDeclarations: transitions.length,
     transitionDurations: [...durations].sort(),
     zIndexSpellings: [...zIndex].sort(),
+    zIndexLiterals: [...zIndexLiterals].sort(),
     decorativeMediaRefs: mediaRefs,
   };
 }

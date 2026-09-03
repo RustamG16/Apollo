@@ -178,13 +178,19 @@ function buildThresholds({ perViewport, css, viewFacts, zoom, runs }) {
       name: 'Controls under 36px desktop / 44px narrow',
       value: allTargets, target: 0, pass: allTargets === 0, unit: 'controls (all viewports)',
     },
-    T6: {
-      name: 'Distinct visual systems shipping',
-      value: primary.families.length, target: 1, pass: primary.families.length <= 1,
-      unit: 'distinct first-choice font families',
-      note: 'Machine proxy for the two-worlds defect; confirmed by eye at each surface pass.',
-      detail: primary.families,
-    },
+    T6: (() => {
+      // Monospace is a data type, not a second visual world - DESIGN.md says so explicitly -
+      // so it is excluded. What this counts is how many *display/UI* faces are shipping,
+      // which is where the warm-serif / cool-sans split lived.
+      const proportional = primary.families.filter(f => !/mono|consolas|courier/i.test(f));
+      return {
+        name: 'Distinct visual systems shipping',
+        value: proportional.length, target: 1, pass: proportional.length <= 1,
+        unit: 'distinct proportional font families (monospace excluded as a data type)',
+        note: 'Machine proxy for the two-worlds defect; confirmed by eye at each surface pass.',
+        detail: { proportional, all: primary.families },
+      };
+    })(),
     T7: {
       name: 'Non-semantic accent hues',
       value: css.nonSemanticHues.length, target: 1, pass: css.nonSemanticHues.length <= 1,

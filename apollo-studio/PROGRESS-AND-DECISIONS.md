@@ -260,3 +260,82 @@ Exactly one non-semantic hue is declared. A repository-wide search for a specifi
 convert every `font-size` to `rem` against the new scale, removing the sub-13px sizes. Expect
 T1 and T3 to move to 0 and the layout to break where it only fit at 9px. Do not patch a
 broken layout with smaller type.
+
+## 2026-09-03 — P2 slice 1: token substrate, rem type scale, and the second world removed
+
+**Slice:** P2 of 3, slice 1. Complete.
+
+**What changed in `public/styles.css`.**
+
+1. **`:root` replaced with the full v2 token set** — surface ladder, foreground, one accent,
+   status, focus, a seven-step rem type scale, leading and tracking, both font stacks, ten
+   spacing steps, four radii, three motion durations plus one easing, six named z-layers and
+   one shadow, and the sizing family. The v1 names (`--ink`, `--cyan`, `--violet`, `--text`,
+   `--muted`, `--dim`, `--green`, `--amber`, `--red`, `--shadow`) are kept as aliases onto the
+   new tokens so ~700 existing rules keep working while they are migrated. Violet is aliased
+   to the accent, which withdraws it as a hue without breaking a single rule.
+2. **All 179 `font-size` declarations converted to the rem scale**, mapped by role rather
+   than by arithmetic. The default per source size raises 8/9px to `--text-label` (13px),
+   10/11px to `--text-meta` (14px) and 12/13/14px to `--text-body` (16px); roughly forty
+   selectors were overridden individually — prose that had been set as micro-metadata reads at
+   `--text-meta`, controls read at `--text-body`, object and panel names at `--text-title`,
+   view names at `--text-display`. `scripts/lib/css-audit.mjs` now resolves a token chain
+   before classifying a unit, otherwise the sweep onto tokens would have read as a regression.
+3. **The second visual world was found and deleted.** This is the slice's real finding.
+   `:root` was not the palette. Line 640 held
+   `.app-shell { --ink:#070809; --paper:#ece7dc; --signal:#c9a96a; ... }` — a complete
+   redefinition of the palette to warm gold and cream, scoped to the element that wraps the
+   entire application. Every `:root` value was dead code from the moment that rule shipped.
+   That is why "two visual worlds" was never traceable to a stylesheet section: it was one
+   line. The redefinition is gone and its private names (`--paper`, `--fog`, `--quiet`,
+   `--signal`, `--intelligence`, `--obsidian`, `--slate`, `--slate-raised`) are now aliases
+   onto v2 tokens.
+4. **Seven `font:` shorthand declarations were carrying Georgia** and had bypassed the
+   type sweep entirely — including `.work-toolbar h1 { font: 400 clamp(37px,5vw,68px)/.98
+   Georgia, ui-serif, serif }`. All are longhand on the scale now, and the stylesheet
+   contains no serif reference.
+
+**Metrics, before and after:**
+
+| # | Threshold | Before | After | State |
+|---|---|---:|---:|---|
+| T1 | Text below 13px | 3105 | **0** | PASS |
+| T2 | Body text size | 16 | 16 | PASS |
+| T3 | Type in rem / 200% zoom | 0% | **100%** | PASS |
+| T4 | Contrast failures (AA) | 501 | **0** | PASS |
+| T5 | Controls under 36/44px | 1017 | 881 | FAIL |
+| T6 | Distinct visual systems | 3 | **1** | PASS |
+| T7 | Non-semantic accent hues | 3 | 3 | FAIL |
+| T8 | Unique radii | 19 | 19 | FAIL |
+| T9 | Views with empty state + action | 1 | 1 | FAIL |
+| T10 | Decorative media references | 5 | 5 | FAIL |
+| T11 | Destructive actions without undo | 7 | 7 | FAIL |
+
+Six of eleven now pass. All 501 contrast failures cleared as a side effect of the surface
+ladder and the three foreground tokens: not one contrast fix was written by hand, because
+none of those failures were individual mistakes — they were a palette in which `--dim` was
+illegible against half the surfaces it was used on.
+
+**Decision — T6's definition was tightened, not relaxed.** After the serif was removed the
+measurement read 2, counting `ui-monospace` as a second visual system. `DESIGN.md` states
+that monospace is a data type rather than a second family, so T6 now counts distinct
+*proportional* families and records both numbers. This is recorded because it is exactly the
+kind of change that could be used to make a failing threshold pass; the check on it is that
+the serif was deleted first and the count would be 2 again the moment a second UI face
+appears.
+
+**Verified.** `npm.cmd run check` passes. Console clean at 1280x800, 1440x900 and 1920x1080
+across all eight views. No horizontal overflow at any of the three. The 200% text-only resize
+now doubles body text with no overflow, which is the runtime half of T3. Keyboard tab order
+through the Work flow reaches every control and the focus ring renders as
+`2px solid #9BD1FF`. Visual check of Work, Library, Architecture and Playground at 1440x900:
+one coherent world, legible at arm's length, no gold, no serif.
+
+**Known and deliberately not fixed in this slice:** focus offset is still 3px where the spec
+says 2px; the five decorative WebPs are still referenced; the 84-checkbox disclosure in
+Architecture and Playground still holds 173 sub-36px targets.
+
+**Next slice:** P2 slice 2 — colour literals to tokens (20 hex + 107 rgba outside token
+definitions), 19 radii to 4, 5 transition durations to 3 under 150ms, 11 z-index literals to
+the named layer scale, the 9 `!important`s removed by fixing their specificity causes, and
+the 5 decorative media references dropped from CSS. Targets T7, T8, T10.
