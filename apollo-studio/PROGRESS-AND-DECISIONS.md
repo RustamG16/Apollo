@@ -910,3 +910,56 @@ console clean, reduced motion honoured, no overflow at any viewport.
 "0 sources" on all 84, nothing marked in-use, an absolute filesystem path in the chrome, and
 two competing taxonomies (`group` vs `category`) with neither explained. The slot map now
 makes "in use / available / unrouted" answerable for the first time.
+
+## 2026-09-03 — P4 pass 3: Library
+
+**Slice:** P4, surface 3 of 6. Complete.
+
+### The real task, observed
+
+Open the Library to find out whether a capability exists and whether this run is using it.
+Neither question could be answered. The list was 84 alphabetical machine ids — 60 of the 84
+registry records set `name` to the raw slug, which is why "animation-vocabulary" and
+"apollo-bootstrap" read as filenames. Every row claimed "0 sources". Nothing was marked as
+in use. The chrome carried an absolute filesystem path. And the rail grouped by `group`
+while the inspector edited `category` — two taxonomies, neither explained, and they are not
+the same field: `group` is "Motion", `category` is "03-motion-3d".
+
+**The single highest-friction moment: the page could not tell you whether a capability was
+one the run would actually use.**
+
+### Changed
+
+- **Grouped by slot.** The rail is now Everything (84) · In use by the active loadout (8) ·
+  the eight slots with their real counts (Craft 5, Direction 3, Evidence 4, Structure 2,
+  Motion 5, Media 4, Copy 2, Verify 2) · Capability library (57). The slot map from P3 is
+  what makes this answerable at all.
+- **Every row carries its status**: In use, Available, or Capability library. "In use"
+  resolves against the active loadout's eight answers plus its advanced list, so it is the
+  truth about the next run rather than a static flag.
+- **Readable names, with the id kept.** `skillDisplayName()` derives a label from the id when
+  the registry name is the slug, expanding known acronyms. The id still renders in mono on
+  every row, so nothing is hidden and the data is untouched — this is presentation, not a
+  migration.
+- **"0 sources" removed from 81 rows.** A count is stated only where there is one; three
+  skills actually have sources.
+- **The absolute filesystem path is out of the chrome.** It moved into the inspector, where
+  it is labelled for what it is, alongside the status and the slot the capability answers:
+  *"Capability library · no slot — browsable only · folder: knowledge/skills/agents/…"*.
+  That one line explains both taxonomies at the only point either matters.
+- **Empty states, static and toggled** rather than rebuilt from strings: one for a filter
+  that matches nothing, offering to clear the search or show everything, and one for the
+  inspector with nothing selected. T9 for Library now passes.
+
+### Metrics
+
+| # | Threshold | Before | After | State |
+|---|---|---:|---:|---|
+| T9 | Views with empty state + action | 3 | **4** | FAIL |
+
+The other ten are unchanged; nine pass. `npm.cmd run check` exits 0, console clean, reduced
+motion honoured, no overflow at any viewport.
+
+**Next slice:** P4 pass 4 — Playground. The comparison itself was rebuilt in P3 slice 4, so
+this pass is the surrounding task: the four-step strip, the prompt composer, the run bar, and
+the prompt "Clear" that still has no undo.

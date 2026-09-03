@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T05:31:17.621Z",
-  "durationMs": 15589,
+  "generatedAt": "2026-09-03T05:34:57.903Z",
+  "durationMs": 15586,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -89,7 +89,7 @@
     },
     "T9": {
       "name": "Views with an empty state and one primary action",
-      "value": 3,
+      "value": 4,
       "target": 8,
       "pass": false,
       "unit": "of 8 views",
@@ -100,7 +100,7 @@
         "systems": true,
         "playground": true,
         "agents": false,
-        "knowledge": false,
+        "knowledge": true,
         "oracle": false,
         "runs": false
       }
@@ -129,14 +129,14 @@
   },
   "perViewport": {
     "1280x800": {
-      "textNodes": 1301,
+      "textNodes": 1369,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 12,
-      "controls": 504,
+      "unmeasuredControls": 13,
+      "controls": 494,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -205,15 +205,15 @@
           ]
         },
         "knowledge": {
-          "textNodes": 338,
+          "textNodes": 406,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 7,
+          "unmeasuredControls": 8,
           "dominantSize": [
-            "14.0",
-            139
+            "13.0",
+            182
           ]
         },
         "oracle": {
@@ -255,14 +255,14 @@
       }
     },
     "1440x900": {
-      "textNodes": 1301,
+      "textNodes": 1369,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 12,
-      "controls": 504,
+      "unmeasuredControls": 13,
+      "controls": 494,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -331,15 +331,15 @@
           ]
         },
         "knowledge": {
-          "textNodes": 338,
+          "textNodes": 406,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 7,
+          "unmeasuredControls": 8,
           "dominantSize": [
-            "14.0",
-            139
+            "13.0",
+            182
           ]
         },
         "oracle": {
@@ -381,14 +381,14 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1301,
+      "textNodes": 1369,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsOnImage": 0,
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 12,
-      "controls": 504,
+      "unmeasuredControls": 13,
+      "controls": 494,
       "targetFloor": 36,
       "overflow": [],
       "families": [
@@ -457,15 +457,15 @@
           ]
         },
         "knowledge": {
-          "textNodes": 338,
+          "textNodes": 406,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 7,
+          "unmeasuredControls": 8,
           "dominantSize": [
-            "14.0",
-            139
+            "13.0",
+            182
           ]
         },
         "oracle": {
@@ -515,10 +515,10 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 335,
-    "14.0": 602,
-    "16.0": 308,
-    "18.0": 16,
+    "13.0": 412,
+    "14.0": 591,
+    "16.0": 309,
+    "18.0": 17,
     "22.0": 21,
     "32.0": 8
   },
@@ -526,13 +526,13 @@
     "files": [
       {
         "path": "D:\\Analyst_Designer\\Apollo\\apollo-studio\\public\\styles.css",
-        "bytes": 102672,
-        "lines": 1357
+        "bytes": 103607,
+        "lines": 1376
       }
     ],
     "fontSizeUnits": {
-      "total": 232,
-      "rem": 232,
+      "total": 234,
+      "rem": 234,
       "px": 0,
       "em": 0,
       "other": 0
@@ -670,12 +670,25 @@
       "tag": "button",
       "cls": "run-action",
       "inDisclosure": false
+    },
+    {
+      "view": "knowledge",
+      "tag": "button",
+      "cls": "primary-action",
+      "inDisclosure": false
     }
   ],
   "smallestTargets": [],
   "diff": {
     "firstRun": false,
     "regressions": [],
-    "improvements": []
+    "improvements": [
+      {
+        "id": "T9",
+        "name": "Views with an empty state and one primary action",
+        "before": 3,
+        "after": 4
+      }
+    ]
   }
 }

@@ -1357,37 +1357,124 @@ async function refreshKnowledge(selectId = state.selectedSkillId) {
   renderSkillRegistry(); renderKnowledge(); renderVariants();
 }
 
+// Acronyms the registry writes in lower case inside an id. Expanding them is presentation
+// only: the id itself is still shown, in mono, on every row.
+const SKILL_ACRONYMS = new Set(['gsap', 'ui', 'ux', 'seo', 'qa', 'ai', 'api', 'mcp', 'dna', 'css', 'html', 'js', 'kb', 'pdf', 'gpt', 'webgl', 'aso', 'sms', 'crm', 'ab']);
+
+// 60 of the 84 registry records have `name` set to the raw slug, which is why the Library
+// read as a list of machine ids. This derives a readable label without touching the data.
+function skillDisplayName(skill) {
+  if (skill.name && skill.name !== skill.id) return skill.name;
+  const words = String(skill.id).split('-');
+  return words.map((word, index) => {
+    if (SKILL_ACRONYMS.has(word)) return word.toUpperCase();
+    if (index === 0) return word.charAt(0).toUpperCase() + word.slice(1);
+    return word;
+  }).join(' ');
+}
+
+// Three states, and the difference between them is what the page is opened to find out.
+function skillStatus(skill) {
+  const loadout = state.loadouts?.loadouts.find(item => item.id === state.loadouts.activeLoadoutId);
+  const inUse = loadout
+    ? Object.values(loadout.slots).includes(skill.id) || (loadout.advancedSkills || []).includes(skill.id)
+    : false;
+  if (inUse) return { key: 'in-use', label: 'In use' };
+  if (skill.slot) return { key: 'available', label: 'Available' };
+  return { key: 'unrouted', label: 'Capability library' };
+}
+
+function knowledgeGroups() {
+  const slots = state.loadouts?.slots || [];
+  return [
+    { id: 'all', label: 'Everything', match: () => true },
+    { id: 'in-use', label: 'In use by the active loadout', match: skill => skillStatus(skill).key === 'in-use' },
+    ...slots.map(slot => ({ id: 'slot:' + slot.id, label: slot.name, match: skill => skill.slot === slot.id })),
+    { id: 'unrouted', label: 'Capability library', match: skill => !skill.slot }
+  ];
+}
+
 function renderKnowledge() {
   if (!state.knowledge || !$('#knowledge-skill-list')) return;
-  $('#knowledge-root').textContent = state.knowledge.root;
-  $('#category-options').innerHTML = state.knowledge.categories.map(category => `<option value="${category.replaceAll('&', '&amp;').replaceAll('"', '&quot;')}"></option>`).join('');
+  $('#category-options').innerHTML = state.knowledge.categories
+    .map(category => `<option value="${category.replaceAll('&', '&amp;').replaceAll('"', '&quot;')}"></option>`).join('');
+
+  const groups = knowledgeGroups();
+  if (!groups.some(group => group.id === state.knowledgeCategory)) state.knowledgeCategory = 'all';
   const categoryHost = $('#category-list');
-  const categoryButtons = ['all', ...state.knowledge.categories].map(category => {
-    const button = document.createElement('button'); button.type = 'button'; button.className = `category-button${state.knowledgeCategory === category ? ' is-active' : ''}`;
-    const count = category === 'all' ? state.knowledge.skills.length : state.knowledge.skills.filter(skill => skill.group === category).length;
-    button.innerHTML = '<span></span><strong></strong>'; button.querySelector('span').textContent = category === 'all' ? 'All categories' : category; button.querySelector('strong').textContent = count;
-    button.addEventListener('click', () => { state.knowledgeCategory = category; renderKnowledge(); }); return button;
-  });
-  categoryHost.replaceChildren(...categoryButtons);
-  const query = $('#knowledge-search').value.trim().toLowerCase();
-  const filtered = state.knowledge.skills.filter(skill => (state.knowledgeCategory === 'all' || skill.group === state.knowledgeCategory) && `${skill.name} ${skill.group} ${skill.description} ${skill.sources.map(source => source.title).join(' ')}`.toLowerCase().includes(query));
-  const skillHost = $('#knowledge-skill-list');
-  if (!filtered.length) skillHost.innerHTML = '<div class="empty-state">No skills match this category and search.</div>';
-  else skillHost.replaceChildren(...filtered.map(skill => {
-    const button = document.createElement('button'); button.type = 'button'; button.className = `knowledge-skill${skill.id === state.selectedSkillId ? ' is-active' : ''}${skill.enabled ? '' : ' is-disabled'}`;
-    button.innerHTML = '<div><strong></strong><p></p></div><span class="knowledge-count"></span>';
-    button.querySelector('strong').textContent = skill.name; button.querySelector('p').textContent = `${skill.group} · ${skill.phase} · ${skill.builtin ? 'built-in' : 'custom'}`; button.querySelector('.knowledge-count').textContent = `${skill.sourceCount} source${skill.sourceCount === 1 ? '' : 's'}`;
-    button.addEventListener('click', () => { state.selectedSkillId = skill.id; renderKnowledge(); }); return button;
+  categoryHost.replaceChildren(...groups.map(group => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `category-button${state.knowledgeCategory === group.id ? ' is-active' : ''}`;
+    button.innerHTML = '<span></span><strong></strong>';
+    button.querySelector('span').textContent = group.label;
+    button.querySelector('strong').textContent = state.knowledge.skills.filter(group.match).length;
+    button.addEventListener('click', () => { state.knowledgeCategory = group.id; renderKnowledge(); });
+    return button;
   }));
+
+  const group = groups.find(item => item.id === state.knowledgeCategory) || groups[0];
+  const query = $('#knowledge-search').value.trim().toLowerCase();
+  const filtered = state.knowledge.skills.filter(skill => group.match(skill)
+    && `${skillDisplayName(skill)} ${skill.id} ${skill.group} ${skill.description}`.toLowerCase().includes(query));
+
+  const skillHost = $('#knowledge-skill-list');
+  const emptyHost = $('#knowledge-empty');
+  emptyHost.hidden = filtered.length > 0;
+  if (!filtered.length) {
+    skillHost.replaceChildren();
+    $('#knowledge-empty-copy').textContent = query
+      ? 'No capability in "' + group.label + '" matches "' + query + '".'
+      : '"' + group.label + '" holds no capabilities.';
+    $('#knowledge-empty-action').textContent = query ? 'Clear the search' : 'Show everything';
+  } else {
+    skillHost.replaceChildren(...filtered.map(skill => {
+      const status = skillStatus(skill);
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `knowledge-skill${skill.id === state.selectedSkillId ? ' is-active' : ''}${skill.enabled ? '' : ' is-disabled'}`;
+      const copy = document.createElement('div');
+      const title = document.createElement('strong');
+      title.textContent = skillDisplayName(skill);
+      const meta = document.createElement('p');
+      meta.textContent = [skill.group, skill.phase === 'unrouted' ? null : skill.phase].filter(Boolean).join(' · ');
+      const id = document.createElement('code');
+      id.className = 'skill-id';
+      id.textContent = skill.id;
+      copy.append(title, meta, id);
+      const badge = document.createElement('span');
+      badge.className = `skill-status is-${status.key}`;
+      badge.textContent = status.label;
+      button.append(copy, badge);
+      // A source count of zero on all 84 rows was noise; it is stated only when there is one.
+      if (skill.sourceCount) {
+        const count = document.createElement('span');
+        count.className = 'knowledge-count';
+        count.textContent = `${skill.sourceCount} source${skill.sourceCount === 1 ? '' : 's'}`;
+        button.append(count);
+      }
+      button.addEventListener('click', () => { state.selectedSkillId = skill.id; renderKnowledge(); });
+      return button;
+    }));
+  }
   renderKnowledgeInspector();
 }
 
 function renderKnowledgeInspector() {
   const host = $('#knowledge-inspector');
   const skill = state.knowledge.skills.find(item => item.id === state.selectedSkillId);
-  if (!skill) { host.innerHTML = '<div class="empty-state">Select a skill to inspect it.</div>'; return; }
+  if (!skill) { host.innerHTML = '<div class="empty-state" data-empty-state><strong>Nothing selected.</strong><p>Pick a capability on the left to read what it does, see which slot it answers, and attach a source.</p></div>'; return; }
   host.innerHTML = `<form id="skill-editor"><div class="inspector-title"><div><h2></h2><p class="skill-folder"></p></div><label class="switch"><input name="enabled" type="checkbox"><span class="switch-track" aria-hidden="true"></span></label></div><div class="editor-grid compact"><label>Category<input name="category" list="category-options" maxlength="50"></label><label>Phase<select name="phase"><option value="always">Always</option><option value="diagnose">Diagnose</option><option value="direct">Direct</option><option value="prepare">Prepare</option><option value="build">Build</option><option value="verify">Verify</option></select></label></div><label>Description<textarea name="description" rows="3" maxlength="500"></textarea></label><label>Runtime instructions<textarea name="runtimePrompt" rows="6" maxlength="4000"></textarea></label><div class="form-status"><span class="editor-status" role="status"></span><button class="run-action" type="submit">Save skill</button></div></form><section class="source-section"><div class="panel-heading"><div><h2>Source notes</h2><p>Local Markdown evidence attached to this skill.</p></div></div><div class="source-list"></div><form class="source-form"><div class="editor-grid compact"><label>Title<input name="title" required maxlength="100" placeholder="Reference or operating note"></label><label>Type<select name="type"><option value="note">Note</option><option value="url">URL</option></select></label></div><label>Content or URL<textarea name="content" required rows="3" maxlength="20000"></textarea></label><div class="form-status"><span class="source-status" role="status"></span><button class="quiet-action" type="submit">Add source</button></div></form></section>`;
-  host.querySelector('h2').textContent = skill.name; host.querySelector('.skill-folder').textContent = skill.folder;
+  host.querySelector('h2').textContent = skillDisplayName(skill);
+  // The two taxonomies are now named for what they are: `group` is how the Library browses,
+  // `folder` is where the file physically lives. Neither was explained before.
+  const status = skillStatus(skill);
+  const slot = (state.loadouts?.slots || []).find(item => item.id === skill.slot);
+  host.querySelector('.skill-folder').textContent = [
+    status.label,
+    slot ? 'answers the ' + slot.name + ' slot' : 'no slot — browsable only',
+    'folder: ' + skill.folder
+  ].join(' · ');
   const form = host.querySelector('#skill-editor'); form.elements.enabled.checked = skill.enabled; form.elements.category.value = skill.group; form.elements.phase.value = skill.phase; form.elements.description.value = skill.description; form.elements.runtimePrompt.value = skill.runtimePrompt;
   form.addEventListener('submit', async event => {
     event.preventDefault(); const status = form.querySelector('.editor-status'); status.textContent = 'Saving…';
@@ -1705,6 +1792,11 @@ function bindEvents() {
   $('#loadout-budget').addEventListener('input', event => {
     $('#budget-translation').textContent = describeBudget(Number(event.target.value) || 0);
     markLoadoutDirty();
+  });
+  $('#knowledge-empty-action').addEventListener('click', () => {
+    $('#knowledge-search').value = '';
+    state.knowledgeCategory = 'all';
+    renderKnowledge();
   });
   $('#undo-dismiss').addEventListener('click', dismissUndo);
   const observer = new ResizeObserver(() => requestAnimationFrame(drawConnections)); observer.observe($('#workflow-canvas'));

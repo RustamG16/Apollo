@@ -252,11 +252,10 @@
 
       <section class="view" id="knowledge" aria-labelledby="knowledge-title">
         <div class="section-heading">
-          <div><h1 id="knowledge-title">Skills & knowledge</h1><p>Browse reusable capabilities by category, tune their instructions, and attach trusted sources.</p></div>
+          <div><h1 id="knowledge-title">Capabilities</h1><p>Grouped by the loadout slot each one answers. A capability with no slot is browsable but cannot be chosen — it is the library, not a decision.</p></div>
           <button class="primary-action" id="show-add-skill">Add skill</button>
         </div>
         <div class="library-switcher" role="navigation" aria-label="Library categories"><button data-view-target="agents" type="button">Agents</button><button class="is-active" data-view-target="knowledge" type="button">Skills & knowledge</button></div>
-        <div class="knowledge-path"><span>Local root</span><code id="knowledge-root">Loading…</code></div>
         <form class="inline-editor is-hidden" id="add-skill-form">
           <div class="editor-heading"><div><h2>Create a skill</h2><p>The category becomes its physical folder. The ID is generated from the name.</p></div><button type="button" class="quiet-action" id="cancel-add-skill">Cancel</button></div>
           <div class="editor-grid">
@@ -271,11 +270,18 @@
         <datalist id="category-options"></datalist>
         <div class="knowledge-layout">
           <aside class="category-rail">
-            <label class="search-field">Search knowledge<input id="knowledge-search" type="search" placeholder="Skill, category, source…"></label>
+            <label class="search-field">Search capabilities<input id="knowledge-search" type="search" placeholder="Name or id…"></label>
             <div id="category-list" class="category-list"></div>
           </aside>
           <section class="knowledge-browser">
-            <div id="knowledge-skill-list" class="knowledge-skill-list"></div>
+            <div class="knowledge-list-wrap">
+              <div id="knowledge-skill-list" class="knowledge-skill-list"></div>
+              <div class="empty-state" data-empty-state id="knowledge-empty" hidden>
+                <strong>Nothing here yet.</strong>
+                <p id="knowledge-empty-copy">No capability matches this group and search.</p>
+                <button class="primary-action" data-primary-action type="button" id="knowledge-empty-action">Show everything</button>
+              </div>
+            </div>
             <aside id="knowledge-inspector" class="knowledge-inspector"><div class="empty-state">Select a skill to edit its category, instructions, or sources.</div></aside>
           </section>
         </div>
