@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "The loadout slot map. Eight questions with real answers, replacing a flat list of 84 checkboxes. Authored here and joined onto the registry by apollo-studio/skills.mjs; deliberately NOT a field inside skills.registry.json, which library/tools/project.py regenerates. Every slot has a default, so a loadout is valid untouched. A skill with no slot is not a choice - it is the browsable capability library.",
+  "note": "The loadout slot map. Eight questions with real answers, replacing a flat list of 84 checkboxes. Authored here and joined onto the registry by apollo-studio/skills.mjs; deliberately NOT a field inside skills.registry.json, which library/tools/project.py regenerates. Every slot has a default, so a loadout is valid untouched. A skill with no slot is not a choice - it is the browsable capability library. `owner` is the console's five-agent display model (Apollo/Athena/Calliope/Hephaestus/Hermes), which no runtime reads. `runtimeOwner` is the agent in library/agents/ that actually holds the slot in both hosts. Verified 2026-09-04 against .codex/agents/ and .claude/agents/: the six library agents are the roster every real run has used, including the Savra_v2 run.",
   "slots": [
     {
       "id": "craft",
@@ -30,7 +30,8 @@
           "skill": "ui-ux",
           "changes": "Conventional, familiar patterns; the safest and the least distinctive."
         }
-      ]
+      ],
+      "runtimeOwner": "design-engineer"
     },
     {
       "id": "direction",
@@ -52,7 +53,8 @@
           "skill": "award-rubric",
           "changes": "The direction is scored against an explicit rubric before it is committed to."
         }
-      ]
+      ],
+      "runtimeOwner": "design-director"
     },
     {
       "id": "evidence",
@@ -78,7 +80,8 @@
           "skill": "design-analytics",
           "changes": "Measurement is the evidence, and every claim carries an event contract."
         }
-      ]
+      ],
+      "runtimeOwner": "visual-analyst"
     },
     {
       "id": "structure",
@@ -96,7 +99,8 @@
           "skill": "pick-ui-library",
           "changes": "Component inventory first: the library's primitives set what the screens can be."
         }
-      ]
+      ],
+      "runtimeOwner": "visual-analyst"
     },
     {
       "id": "motion",
@@ -126,7 +130,8 @@
           "skill": "webgl-experience",
           "changes": "A WebGL surface with a non-WebGL fallback. Opt-in, and it must earn its cost."
         }
-      ]
+      ],
+      "runtimeOwner": "design-engineer"
     },
     {
       "id": "media",
@@ -152,7 +157,8 @@
           "skill": "image",
           "changes": "Transform and prepare media that already exists. Generates nothing."
         }
-      ]
+      ],
+      "runtimeOwner": "asset-producer"
     },
     {
       "id": "copy",
@@ -170,7 +176,8 @@
           "skill": "copy-editing",
           "changes": "The existing copy is kept and sharpened. Preserves the client's voice."
         }
-      ]
+      ],
+      "runtimeOwner": "design-director"
     },
     {
       "id": "verify",
@@ -192,7 +199,8 @@
           "skill": "gsap-performance",
           "changes": "Frame cost and jank. Only meaningful when the Motion slot bought something expensive."
         }
-      ]
+      ],
+      "runtimeOwner": "independent-critic"
     }
   ]
 }

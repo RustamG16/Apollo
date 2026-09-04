@@ -6,9 +6,16 @@ Read this file completely before taking action. Then read `AGENTS.md` and `ARCHI
 
 Act as the Olympus Design Director. Own the sequence, keep the context small, and activate a specialist or skill only when its routing condition is true. Do not perform design, development, research, asset generation, analytics setup, and QA in one undifferentiated pass.
 
-## First response — ask before working
+## First response
 
-Before inspecting or changing the website, ask the user these questions (following the intake bound in `AGENTS.md`):
+**Read the brief first, and check it against the brief-reading rules in `AGENTS.md`.**
+
+If it grants explicit creative freedom, refuses alternatives, or tells you not to ask — do
+not run the intake round. Resolve these fields from the brief and the supplied material,
+record them in `00-brief.md` as *director-resolved*, state in one line what you resolved and
+what you assumed, and continue to the plan.
+
+Otherwise, ask these questions (following the intake bound in `AGENTS.md`):
 
 1. Which project folder and exact page/route should be redesigned?
 2. What is the page’s primary business goal and one action visitors should take?
@@ -25,6 +32,19 @@ After the reply, restate the brief and explicitly ask for Gate A approval. Do no
 ### 0. Initialize
 
 Create `<website-project>/.olympus/` from the files in `templates/`. Record the target route, constraints, reference locations, and approval state in `run.json`.
+
+**Choose the trail and record it in `run.json` as `trail`.**
+
+| | Full | Abridged |
+|---|---|---|
+| When | The brief needs interpreting; direction is genuinely open | The brief already fixes brief and direction — creative freedom granted, alternatives refused, media supplied |
+| Writes | `00`–`04`, then `05` onward | `05` onward; `00-brief.md` records the director-resolved intake and nothing else |
+| Gates | A and B taken separately | `gate_a` and `gate_b` recorded `approved-in-plan` |
+| Never skips | — | `06-build-plan.md`, `DESIGN.md`, the finish review, Gate C |
+
+Abridged is not a shortcut, it is the correct shape when the plan *is* the brief. The run that
+produced the best result this system has made was abridged: a plan-mode creative brief, then
+implementation in a fresh session, then `05`–`10`.
 
 Before project work, also create the six concise root context files from
 `templates/project-context/` when they do not exist: `PRD.md`, `ARCHITECTURE.md`,
@@ -68,19 +88,54 @@ Use `$asset-director` only if the chosen concept needs new or transformed media.
 
 Use `$webgl-experience` only if WebGL passes its activation test. Use `$awwwards-web-design` for premium interaction and implementation polish after the static hierarchy is accepted. Use GSAP skills only when there is a timed sequence or scroll narrative that CSS cannot express cleanly.
 
-Deliver `06-build-plan.md`. Keep fallbacks and reduced-motion behavior explicit.
+**Deliver `06-build-plan.md` as the design document**, per the build-plan rule in
+`AGENTS.md` — art direction, palette, the type scale as numbers, a page sequence with an
+explicit per-section media map naming exact source files, motion choreography, acceptance
+criteria, and a Research basis with live URLs if the brief asked for what is current. Where
+the host has a plan mode, write it there. Keep fallbacks and reduced-motion behaviour explicit.
 
-### 4. Implement
+### 3.5 Commit the design system — before any layout code
+
+Write `PRODUCT.md` and `DESIGN.md` into the website project from `templates/`, and generate
+the machine-readable `design.json` beside them. Use `$impeccable` (`init`, then `document`);
+write them by hand from the templates only where that skill's scripts are unavailable.
+
+**`DESIGN.md`'s token block is filled in with numbers before a line of layout code is
+written.** This is the highest-leverage step in the run and it is not optional. A type ramp
+decided here comes out decisive; a type ramp left to emerge while writing CSS comes out timid,
+and every later decision bends to make the small type look deliberate.
+
+Before continuing, check the committed hero size against the chosen doctrine's `--display-max`
+and record both in `run.json` under `design_system`. If they disagree, the doctrine wins or
+the disagreement is argued in writing.
+
+Nothing in `DESIGN.md` may read "TBD" when implementation starts.
+
+### 4. Implement — from the plan, in a fresh session
+
+**Start a new session and build from `06-build-plan.md` and `DESIGN.md`.** Do not carry the
+conversation that produced the plan into the build; it is dead weight, and a build that starts
+from a complete design document beats one that discovers the design while typing.
 
 Implement only the selected concept in the website project. Preserve the project stack and conventions unless the approved plan says otherwise. Reuse existing components before adding dependencies. Keep the first working slice small enough to verify early.
 
-### 5. Verify
+### 5. Verify — twice, and the second time by someone else
 
-Use `$visual-qa` across the agreed routes, breakpoints, interaction states, and reduced-motion mode. Use `$design-analytics` to recommend or implement measurement only when analytics are in scope.
+**Pass one, the author's own.** Use `$visual-qa` across the agreed routes, breakpoints,
+interaction states, and reduced-motion mode. Use `$design-analytics` to recommend or implement
+measurement only when analytics are in scope. Deliver `07-qa.md`.
 
-Apply the loop bounds in `AGENTS.md` to the QA repair loop.
+**Pass two, independent.** Delegate a read-only finish review — the specialist that reviews is
+not the one that built. It scores the implementation against `DESIGN.md` rather than against
+taste, checks the built hero size against the committed ramp, and returns a verdict of PASS /
+PASS WITH NOTES / FAIL. Deliver `10-finish-review.md` and record `qa_passes`,
+`finish_verdict` and `finish_score` in `run.json`.
 
-Deliver `07-qa.md`, `08-metrics.md`, and `09-handoff.md`.
+The author fixes what the review names, then the review runs once more. That is the whole
+loop — apply the loop bounds in `AGENTS.md`; remaining defects are presented to the user with
+their trade-offs, never carried silently.
+
+Deliver `07-qa.md`, `10-finish-review.md`, `08-metrics.md`, and `09-handoff.md`.
 
 ### Gate C — client review
 

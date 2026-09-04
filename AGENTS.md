@@ -24,6 +24,62 @@ These instructions apply whenever this folder is attached as context for a websi
 - Use progressive disclosure: read Architecture Essentials first, then only the product,
   architecture, agent, or history file needed for the current decision.
 
+## Reading the brief
+
+The brief is read as written. These rules exist because each was violated at least once by a
+run that meant well.
+
+1. **Explicit creative freedom cancels the intake round.** "Full freedom", "no need to ask",
+   "just make the best you can from what you have" — resolve the intake fields from the brief
+   and the supplied material, record them in `00-brief.md` as *director-resolved*, and get on
+   with it. Asking anyway is not diligence; it is ignoring the instruction.
+
+2. **A refusal is not a request.** "No need for three directions" means produce one. So does
+   "don't give me options". Read the sentence for what it rejects and encode that rejection
+   as an acceptance criterion in `06-build-plan.md`, so the build cannot quietly reintroduce
+   what the brief threw out.
+
+3. **"Current", "trending", or a named year opens a research lane.** The run may not assert
+   what is current from memory. Fetch it, and cite it under *Research basis* in
+   `06-build-plan.md` with live URLs.
+
+4. **An ambition word is a floor, not a flourish.** "Awwwards-level", "high-end", "premium"
+   binds the craft slot and the type scale. It never excuses unclear hierarchy, inaccessible
+   interaction, or invented facts — but a timid result against that brief is a failure to
+   deliver, not a safe choice.
+
+5. **Supplied media is the direction's evidence.** When a brief says "from the imagery it
+   got", the media set is the reference; `reference-deconstruction` carries the evidence
+   phase and no external references are introduced.
+
+## The build plan is the design
+
+`06-build-plan.md` is a creative document — art direction, palette, type scale as numbers,
+a page sequence with an explicit per-section media map, and motion choreography — not a task
+list. Write it before implementation, and where the host has a plan mode, write it there.
+
+**Implement from it in a fresh session.** The conversation that produced a plan is dead
+weight during the build, and a build that starts from a complete design document beats one
+that discovers the design while typing. This is the single largest observed difference
+between a run that produced award-level work and one that did not.
+
+## The design-system rule
+
+The design system is committed as numbers before any layout code exists. `PRODUCT.md` and
+`DESIGN.md` are written into the website project after Gate B and before implementation, and
+`DESIGN.md`'s token block carries real values — type ramp, colour, spacing, motion — not
+placeholders. Nothing in it may read "TBD" when the build starts.
+
+This exists because the failure it prevents is systematic rather than occasional: a type scale
+left to emerge while writing CSS comes out timid, and once the hero is set two to three times
+smaller than the chosen doctrine calls for, every later decision bends to make the small type
+look deliberate — media gets boxed to match, ground gets darkened to compensate, and the page
+reads as cautious. Deciding the number in writing, first, is what prevents it.
+
+The committed hero size is checked against the chosen doctrine's `--display-max` and both are
+recorded in `run.json` under `design_system`. The doctrine wins unless the disagreement is
+argued in writing.
+
 ## The direction rule
 
 Direction is decided at intake, not by generating alternatives. The questionnaire and taste
@@ -64,7 +120,10 @@ These bounds are stated here and nowhere else; every other file refers to "the l
 in `AGENTS.md`" rather than restating a number.
 
 1. **QA repair** stops after two author-fix / critic-review cycles; after the second cycle the
-   director presents remaining defects and tradeoffs to the user instead of looping.
+   director presents remaining defects and tradeoffs to the user instead of looping. Verification
+   is two passes, not one: the author's own (`07-qa.md`) and an independent scored finish review
+   (`10-finish-review.md`) written by a specialist that did not build the thing. The reviewer
+   scores against `DESIGN.md`, not against taste, and does not fix what it finds.
 2. **Intake** is asked once, in one concise message; a question already answered by attached
    material or an earlier reply is never asked again.
 3. **An audit is never re-run against unchanged evidence** — the `.olympus/` artifact from the

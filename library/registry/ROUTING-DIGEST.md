@@ -31,7 +31,7 @@ Unrouted skills (53) are in `UNROUTED.md` — capabilities, invoked explicitly, 
 | `emil-design-eng` | build | Polishes component feel, interaction feedback, animation decisions, easing, performance, and invisible inte… |
 | `gsap-frameworks` | build | Scopes Vue, Nuxt, Svelte, and SvelteKit animation lifecycle. |
 | `gsap-react` | build | Scopes React animation lifecycle and cleanup. |
-| `impeccable` | build | Optional production UI craft and bounded finishing pass. |
+| `impeccable` | build | Own the finish: commit the design system as numbers before layout (PRODUCT.md, DESIGN.md, design.json), the… |
 | `copy-editing` | verify | Edit implemented interface copy in focused passes (clarity, concision, consistency, voice) without changing… |
 | `design-analytics` | verify | Connects design hypotheses to a minimal event contract. |
 | `gsap-performance` | verify | Finds animation jank and layout-thrashing risk. |

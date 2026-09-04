@@ -23,15 +23,31 @@ routing decision, one per phase.
   means "use the `reference-deconstruction` skill".
 - **Agents** are in `.claude/agents/<name>.md` (6: `design-director` + 5 specialists). A
   read-only specialist has no Write/Edit in its `tools:` list — respect that boundary.
-- **Some skills are plugin-owned and not projected here** (`gsap-*`, `impeccable`,
-  `apple-design`, `emil-design-eng`, `seo-audit`). Use the installed plugin skill of that
-  name; do not look for a `.claude/skills/` copy.
+- **`impeccable` is projected here as a full body**, including its `scripts/` and
+  `reference/` playbooks — run `node .claude/skills/impeccable/scripts/context.mjs` at the
+  start of a finish pass. It carries `init` (PRODUCT.md), `document` (DESIGN.md) and the
+  design detector, so it owns the design-system stage. Until 2026-09-04 it was projected only
+  to `.agents/` (Codex) and this host fell back to a plugin copy that ships no scripts, which
+  meant Claude ran a materially weaker loadout than Codex on the same repository.
+- **Some skills remain plugin-owned and are not projected here** (`gsap-*`, `apple-design`,
+  `emil-design-eng`, `seo-audit`). Use the installed plugin skill of that name; do not look
+  for a `.claude/skills/` copy. `apple-design` and `emil-design-eng` are `defaultOn` in the
+  registry, so treat the plugin skill as active, not optional.
 - **Three skills are studio-only stubs** (`taste-first-experience-design`,
   `ethical-gamification-systems`, `agent-identity-and-portfolio`) — no body to load here.
 - **PowerShell** scripts run via `powershell -File scripts\<name>.ps1` (e.g.
   `validate-system.ps1`, `validate-project-context.ps1`).
 - **Rebuild the generated trees** after any `library/` change:
   `python library/tools/project.py all` then `python library/tools/verify.py`.
+- **Before implementing anything visual**, write `PRODUCT.md` and `DESIGN.md` into the website
+  project from `templates/` and fill `DESIGN.md`'s token block with real numbers. See the
+  design-system rule in `AGENTS.md`; it is the step whose absence most reliably produces a
+  timid result.
+- **Write `06-build-plan.md` in plan mode, then implement from it in a fresh session.** It is
+  the design document — art direction, palette, type scale as numbers, a page sequence with a
+  per-section media map. This is the locked workflow; see the build-plan rule in `AGENTS.md`.
+- **Read the brief as written.** Explicit creative freedom cancels the intake round. Do not
+  ask questions a brief has already told you not to ask.
 
 ## Do not
 
