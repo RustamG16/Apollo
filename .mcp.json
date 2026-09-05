@@ -3,7 +3,7 @@
     "apollo": {
       "type": "stdio",
       "command": "node",
-      "args": ["D:/Analyst_Designer/Apollo/apollo-studio/mcp-server.mjs"],
+      "args": ["${CLAUDE_PROJECT_DIR}/apollo-studio/mcp-server.mjs"],
       "env": {}
     }
   }

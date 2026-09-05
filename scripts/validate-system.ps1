@@ -116,10 +116,10 @@ if (Test-Path -LiteralPath $registryPath) {
     $regIds = @{}
     foreach ($rec in $registry) {
         $regIds[$rec.id] = $true
-        if (($rec.hosts -contains 'claude') -and ($rec.status -ne 'stub') -and -not $claudeHave[$rec.id]) {
+        if (($rec.hosts -contains 'claude') -and ($rec.status -ne 'stub') -and ($rec.enabled -ne $false) -and -not $claudeHave[$rec.id]) {
             $failures.Add("Registry id '$($rec.id)' (claude host) has no .claude/skills folder.")
         }
-        if (($rec.hosts -contains 'codex') -and ($rec.status -ne 'stub') -and -not $codexHave[$rec.id]) {
+        if (($rec.hosts -contains 'codex') -and ($rec.status -ne 'stub') -and ($rec.enabled -ne $false) -and -not $codexHave[$rec.id]) {
             $failures.Add("Registry id '$($rec.id)' (codex host) has no .agents/skills folder.")
         }
     }
