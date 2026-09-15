@@ -1,5 +1,15 @@
 # Spec 02 — the agency model
 
+> **2026-09-07 amendment — planning only.** [MASTERPLAN.md](MASTERPLAN.md) supersedes the sequence and acceptance details below.
+>
+> - A hostNote is explanation, never proof of a working capability. Verify delivery/version/support files and plugin availability; fail required unresolved capabilities. Distinguish Studio display stubs from executable hosts.
+> - Regression tests use isolated fixtures, not intentional damage to the working registry. Derive expected failures from fixtures rather than hard-coded historical counts.
+> - No nested specialist delegation. The director may do small local reads; delegation must earn its overhead. Usage/budget enforcement must declare what the host actually exposes.
+> - Validate one run schema; migrate camelCase records explicitly; bind approvals to artifact hashes. Phase counts are not token measurements. Missing critical fields must not silently default to success.
+> - Quality fixtures and the design contract precede KB expansion. The drawer uses available metadata; SOP prose is not a console blocker.
+> - Native execution remains default. CrewAI is an optional Flow-first pilot after an operational need is demonstrated. No assumption that subscriptions provide API credentials.
+> - Agency #2 is deferred until repeatable design quality and a defined use case exist. Adding an agency also needs namespaces, routing/permission tests and capability validation, not merely a JSON file.
+
 **Status:** draft, unapproved. Depends on Spec 01.
 **Goal:** one system, many agencies, one shared KB. Design finished first; Marketing and the
 rest attach without restructuring anything.

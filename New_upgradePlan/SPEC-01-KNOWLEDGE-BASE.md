@@ -1,5 +1,15 @@
 # Spec 01 — the shared knowledge base
 
+> **2026-09-07 amendment — planning only.** The design below is historical and must be read with [MASTERPLAN.md](MASTERPLAN.md) §4. Its corrections supersede conflicting requirements below. No implementation is authorized.
+>
+> - Keep an independent CLI/digest fallback; do not make the Studio MCP server a runtime dependency. Share query logic outside the UI layer.
+> - Add host/status/agency filtering, namespaced IDs, schema/index versions, stable section IDs, atomic rebuild, deletion cleanup and stale-index detection. Agency is not a client security boundary.
+> - Bound the full response including metadata, not just excerpts. Define pagination/truncation for long sections and safe path resolution for get().
+> - FTS is lexical search, not an evaluator of prose activation conditions. Mandatory rules bypass relevance ranking. Parameterize queries and handle invalid MATCH input.
+> - Re-measure payload/token baseline; 21,992 bytes is historical. Test at least 30 labeled routing cases including unsupported hosts, mandatory rules and no-match. Ten sampled matches alone are insufficient.
+> - The three verbs are a small starting API, not a ban on needed health/version operations. The agency column can be added through migration; it is not uniquely impossible to retrofit.
+> - A document read is not inherently a defect. Adopt retrieval only when bounded responses preserve required routing behavior and reduce measured overhead.
+
 **Status:** approved in principle 2026-09-03. Sub-project 1 of 4.
 **Goal:** agents retrieve what they need without loading it. One KB, all agencies, Design first.
 

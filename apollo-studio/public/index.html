@@ -7,6 +7,7 @@
   <title>Apollo Studio</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/shell.css">
 </head>
 <body>
   <!--
@@ -18,20 +19,37 @@
   <div class="app-shell">
     <!-- Band 1 of four. DESIGN.md "The shell": chrome / transport / work / status. A view
          supplies band 3 and nothing else. -->
-    <header class="topbar">
-      <a class="brand" href="#work" aria-label="Apollo Studio Work">
+    <a class="shell-skip" href="#main-content">Skip to workspace</a>
+    <header class="topbar" id="global-rail">
+      <a class="brand" href="#/home" aria-label="Apollo Studio Home">
         <span class="brand-mark" aria-hidden="true">A</span>
         <strong>Apollo Studio</strong>
       </a>
-      <nav class="primary-nav" aria-label="Primary navigation">
-        <button class="nav-item is-active" data-view-target="work">Work<kbd>1</kbd></button>
-        <button class="nav-item" data-view-target="systems">Loadouts<kbd>2</kbd></button>
-        <button class="nav-item" data-view-target="knowledge">Library<kbd>3</kbd></button>
-        <button class="nav-item" data-view-target="playground">Playground<kbd>4</kbd></button>
-        <button class="nav-item" data-view-target="runs">Runs<kbd>5</kbd></button>
+      <nav class="primary-nav" aria-label="Primary navigation" id="global-navigation">
+        <a class="nav-item" data-global-route="home" href="#/home">Home<kbd>Alt 1</kbd></a>
+        <a class="nav-item" data-global-route="projects" href="#/projects">Projects<kbd>Alt 2</kbd></a>
+        <a class="nav-item" data-global-route="plan" href="#/plan">Plan<kbd>Alt 3</kbd></a>
+        <a class="nav-item" data-global-route="playground" href="#/playground">Playground<kbd>Alt 4</kbd></a>
+        <a class="nav-item" data-global-route="results" href="#/results">Results<kbd>Alt 5</kbd></a>
+        <a class="nav-item" data-global-route="knowledge" href="#/knowledge">Knowledge<kbd>Alt 6</kbd></a>
+        <a class="nav-item" data-global-route="system" href="#/system">System<kbd>Alt 7</kbd></a>
+        <a class="nav-item" data-global-route="agents" href="#/agents">Agents<kbd>Alt 8</kbd></a>
+        <a class="nav-item" data-global-route="settings" href="#/settings">Settings<kbd>Alt 9</kbd></a>
       </nav>
-      <div class="topbar-actions"><button class="oracle-trigger" id="toggle-oracle" type="button" aria-expanded="false" aria-controls="oracle-dock">Oracle <kbd id="oracle-shortcut">Ctrl K</kbd></button></div>
+      <p class="rail-caption">Local creative workspace</p>
     </header>
+    <button class="shell-scrim" id="close-navigation" type="button" aria-label="Close navigation" hidden></button>
+    <section class="shell-context" aria-label="Current project and next action">
+      <div class="shell-route-strip">
+        <button class="quiet-action" id="toggle-navigation" type="button" aria-expanded="false" aria-controls="global-rail">Menu</button>
+        <a class="shell-mobile-brand" href="#/home">Apollo</a>
+        <nav id="route-trail" aria-label="Route trail">Projects / No project / Home</nav>
+        <span class="shell-environment" id="shell-environment">unknown</span>
+        <span id="shell-oracle-status">Oracle · unavailable</span>
+      </div>
+      <div class="shell-action-strip"><span>Stage <strong id="shell-stage">Unknown</strong></span><span>Next <strong id="shell-next-action">Wait for local records</strong></span></div>
+      <div class="shell-status" id="shell-status" role="status"><span id="shell-status-message">Loading local workspace…</span><button class="quiet-action" id="shell-retry" type="button" hidden>Retry connection</button></div>
+    </section>
 
     <!-- Band 2. The locked route always; run state only when run state is true. It collapses
          to this header line when no run is in flight, because a finished run is history and
@@ -46,7 +64,14 @@
       <div class="transport-track" id="transport-track" hidden></div>
     </section>
 
-    <main>
+    <main id="main-content" tabindex="-1">
+      <section class="view shell-view" id="home" aria-labelledby="home-title" hidden><p class="eyebrow">Your workspace</p><h1 id="home-title">What needs your attention?</h1><div id="home-summary" class="shell-summary"></div></section>
+      <section class="view shell-view" id="projects" aria-labelledby="projects-title" hidden><p class="eyebrow">Project workspace</p><h1 id="projects-title">Projects</h1><p>Choose the work you want to continue.</p><div id="shell-project-list"></div></section>
+      <section class="view shell-view" id="plan" aria-labelledby="plan-title" hidden><p class="eyebrow">Plan</p><h1 id="plan-title">Review the path ahead.</h1><div class="empty-state" data-empty-state><strong>No approved master plan is available here yet.</strong><p>Confirm the goal with Oracle. Your existing workflow configuration is available for inspection.</p><a class="primary-action" data-primary-action href="#/intake">Describe the goal</a><a class="quiet-action" href="#/plan/configure">Inspect workflow configuration</a></div></section>
+      <section class="view shell-view" id="results" aria-labelledby="results-title" hidden><p class="eyebrow">Results</p><h1 id="results-title">Outputs and evidence</h1><div class="empty-state" data-empty-state><strong>No reviewed artifact is available here yet.</strong><p id="shell-results-summary">Recorded runs remain available in history. A completed run alone does not establish QA or approval.</p><a class="primary-action" data-primary-action href="#/results/history">Open run history</a></div></section>
+      <section class="view shell-view" id="settings" aria-labelledby="settings-title" hidden><p class="eyebrow">Settings</p><h1 id="settings-title">Local environment</h1><dl id="shell-settings" class="shell-facts"></dl><div class="empty-state" data-empty-state><strong>Settings editing is unavailable in this view.</strong><p>Existing model and run controls remain available in Playground.</p><a class="primary-action" data-primary-action href="#/playground">Inspect run controls</a></div></section>
+      <section class="view shell-view" id="project-detail" aria-labelledby="project-detail-title" hidden><p class="eyebrow">Project workspace</p><h1 id="project-detail-title">Project overview</h1><nav id="project-view-links" aria-label="Project views"></nav><div class="empty-state" data-empty-state><strong id="project-detail-status">This project view is not available yet.</strong><p>Your existing project conversation and attached references remain available in Work.</p><a class="primary-action" data-primary-action id="project-detail-work" href="#/work">Open project work</a></div></section>
+      <section class="view shell-view" id="route-unavailable" aria-labelledby="route-unavailable-title" hidden><h1 id="route-unavailable-title">This view is unavailable.</h1><div class="empty-state" data-empty-state><p>The saved link does not identify an available view. Choose a project to continue.</p><a class="primary-action" data-primary-action href="#/projects">Choose a project</a></div></section>
       <section class="view is-active work-view" id="work" aria-labelledby="work-title">
         <div class="workspace-frame">
           <aside class="project-sidebar" aria-label="Projects and chats">
@@ -381,9 +406,10 @@
       <button type="button" class="undo-action">Undo</button>
       <button type="button" class="icon-action" id="undo-dismiss" aria-label="Dismiss">&#215;</button>
     </div>
-    <aside class="oracle-dock" id="oracle-dock" aria-label="Oracle contextual guidance" aria-hidden="true" inert><div class="oracle-dock-head"><div><p class="eyebrow">Oracle</p><h2>Contextual guidance</h2></div><button class="icon-action" id="close-oracle" type="button" aria-label="Close Oracle">×</button></div><p class="oracle-context-copy">You are in <strong id="oracle-context-name">Work</strong>. Oracle can explain the next step or prepare a proposal for your review.</p><div class="oracle-dock-actions"><button class="quiet-action" id="oracle-show-how" type="button">Show me how</button><button class="primary-action" id="oracle-do-it" type="button">Do it for me</button></div><div class="oracle-dock-answer" id="oracle-dock-answer" aria-live="polite"></div><div class="oracle-safety"><span>Approval required</span><p>Oracle will never save, change, or connect anything without a visible proposal and your confirmation.</p></div></aside>
+    <aside class="oracle-dock" id="oracle-dock" aria-label="Oracle contextual guidance" aria-hidden="true" inert><div class="oracle-dock-head"><div><p class="eyebrow">Oracle</p><h2>Contextual guidance</h2></div><button class="icon-action" id="close-oracle" type="button" aria-label="Close Oracle">×</button></div><p class="oracle-context-copy">You are in <strong id="oracle-context-name">Work</strong>. Oracle can explain the next step or prepare a proposal for your review.</p><div class="oracle-context-tokens" id="oracle-context-tokens" aria-label="Active Oracle context"></div><div class="oracle-input-modes" aria-label="Oracle input mode"><button class="quiet-action" id="oracle-text-mode" type="button" aria-pressed="true">Text</button><button class="quiet-action" id="oracle-voice-mode" type="button" aria-pressed="false" disabled>Voice unavailable</button></div><label class="oracle-context-label" for="oracle-context-input">Message Oracle</label><textarea id="oracle-context-input" rows="3" maxlength="30000" placeholder="Describe the outcome or ask about this page"></textarea><p class="oracle-mode-notice" id="oracle-mode-notice">Voice input is unavailable. Continue with text.</p><div class="oracle-dock-actions"><button class="quiet-action" id="oracle-show-how" type="button">Show me how</button><button class="primary-action" id="oracle-do-it" type="button">Do it for me</button></div><div class="oracle-dock-answer" id="oracle-dock-answer" aria-live="polite"></div><div class="oracle-safety"><span>Approval required</span><p>Oracle will never save, change, or connect anything without a visible proposal and your confirmation.</p></div></aside>
   </div>
 
+  <div class="shell-oracle-launcher" aria-label="Oracle access"><span id="shell-oracle-context">No project selected</span><button class="oracle-trigger" id="toggle-oracle" type="button" aria-expanded="false" aria-controls="oracle-dock">Ask Oracle <kbd id="oracle-shortcut">Ctrl K</kbd></button></div>
   <input id="work-file-picker" type="file" hidden multiple aria-hidden="true">
   <dialog class="proposal-dialog" id="proposal-dialog" aria-labelledby="proposal-title"><form method="dialog"><p class="eyebrow">Review required</p><h2 id="proposal-title">Proposed change</h2><p id="proposal-summary"></p><ul id="proposal-affected"></ul><div class="proposal-actions"><button class="quiet-action" value="cancel">Cancel</button><button class="run-action" id="approve-proposal" value="approve">Approve change</button></div></form></dialog>
   <template id="variant-template">

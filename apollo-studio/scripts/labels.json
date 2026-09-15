@@ -101,7 +101,7 @@
       "view": "architecture",
       "label": "Agent in a phase lane",
       "postcondition": "Navigates to the loadout slot that agent owns.",
-      "assert": "return location.hash === '#/systems';"
+      "assert": "return location.hash === '#/plan/configure' && document.querySelector('#systems').classList.contains('is-active') && document.querySelector('[data-global-route=plan]').getAttribute('aria-current') === 'page';"
     },
     {
       "selector": "architecture|button.workflow-node.input-node",
@@ -385,7 +385,7 @@
       "view": "architecture",
       "label": "Change what it carries",
       "postcondition": "Navigates to the loadout editor.",
-      "assert": "return location.hash === '#/systems';"
+      "assert": "return location.hash === '#/plan/configure' && document.querySelector('#systems').classList.contains('is-active') && document.querySelector('[data-global-route=plan]').getAttribute('aria-current') === 'page';"
     }
   ]
 }

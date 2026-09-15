@@ -1,127 +1,90 @@
-# Spec 03 — the console
+# Spec 03 — Apollo Atlas
 
-**Status:** draft. Depends on Spec 01 (the KB is what it queries).
-**Goal:** the reference's UI, simplified and made honest, rendered in Apollo's own doctrine.
+> **2026-09-15 scope correction:** [PRODUCT-ARCHITECTURE.md](PRODUCT-ARCHITECTURE.md) supersedes this document as the product-level UI specification. Atlas survives as the evidence/lineage mode inside **System Node Control** and as an optional Connections mode in Knowledge. It is not the home page, the only product surface, or the primary navigation model. Preserve the evidence graph, inspector, provenance, responsive list equivalent and truthful states below; implement them only after the Oracle, Projects/Plan, Playground and Results journeys are understandable.
 
-Reference: `D:\KnowledgeFactory\library\knowledge\04-ui-references\operator-console-ui.md`
-(observed from the reel). Screenshots in `media/`.
+Revised 2026-09-07. Proposal only; no implementation authorized. Supersedes the concentric-ring/five-destination proposal. See [MASTERPLAN.md](MASTERPLAN.md).
 
----
+## One surface
 
-## 1. The hard constraint
+One editorial connection view answers: What are we making? What informed it? What changed? What needs my decision? Selecting an output exposes its reference → decision → artifact → review lineage.
 
-> **The console is a window, never a dependency.**
+Use a project selector, central map and contextual inspector. Search, skills and run history are overlays or inspector modes, not five equally weighted destinations. A small System/Project scope control reveals agent/skill relationships within the same surface. Preserve selection and camera between scopes. The active project is the default, not the capability inventory.
 
-Apollo is used by opening Claude Code in a project folder. That does not change. If the
-console is broken, not running, or never built, **every Apollo run still works exactly as it
-does today.** Nothing in the pipeline may import from it, wait on it, or fail without it.
+The console remains optional. Files and host workflows work without it. Neither CrewAI nor the KB is a prerequisite for evaluating the first static composition.
 
-This is the difference between the reference and Apollo. His console *is* the product. Ours
-is a view onto a system that runs headless.
+## Editorial direction
 
-## 2. What gets cut
+**Apollo Atlas — the annotated studio table.** Retain the screenshot's connected-system idea and selective focus. Replace its unlabelled particle core and repeated orbital badges with real project thumbnails, reference frames, decisions and review annotations. Compose deliberately unequal elements around a dominant project identity, with sharp image corners, restrained lines and generous empty space.
 
-His rail has **18 destinations**: Home · Comms · Funnel · Workflows · Social · Content ·
-Finances · Agents · Tasks · Skills · Org Chart · Optimal Engine · Doctor · Connections ·
-Roadmap · Analytics · Reference Vault · Personas.
+Proposed values for discussion; reconcile with existing apollo-studio/DESIGN.md before a future build:
 
-Most of those are a business OS, not a design agency. Apollo gets **five**:
+| Role | Proposal |
+|---|---|
+| Ground | Warm ink #151614 |
+| Reading surface / text on ink | Paper #EEE9DD |
+| Text on paper | #20231F |
+| Secondary text on ink | #B9B9AC |
+| Selected path | Citron #D5DD88; verify actual contrast |
+| Project display | Editorial serif, clamp(40px, 5vw, 72px), line-height 0.98 |
+| Controls/body | Neutral sans, 15–16px, line-height 1.4–1.55 |
+| Node labels | 14px default; meaningful text never below 13px |
+| Metadata | Mono 13px, reserved for provenance and timestamps |
+| Spacing | 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64px |
+| Desktop inspector | 340px; collapse if map becomes too narrow |
+| Transitions | 160–220ms selection; immediate under reduced motion |
 
-| View | Shows | Source |
+Use existing licensed fonts initially. Serif belongs to project identity; controls remain practical. Do not copy Savra's palette, portals or enormous title into every output.
+
+No initial WebGL, orbit animation, cursor halo or perpetual graph simulation. Stable layout; selected connections explain focus. Semantic failures still have text/icon cues. Never imply that animation means work is running.
+
+## Graph and evidence
+
+Typed nodes: project, reference, decision, artifact, review, agent, skill, tool. Edges: informed-by, produced-by, reviewed-by, depends-on, uses. Every edge has provenance. Capability declarations and actual run events remain distinguishable.
+
+Store stable IDs, source paths/hashes, type, title, timestamp and scope. Read a projection of canonical registry/artifact/event data. Layout positions are preferences, not execution authority. Start with 12–20 visible items, expand neighbors deliberately and show hidden counts. Provide a list equivalent.
+
+No manufactured connections for symmetry. No unavailable usage shown as zero. Declared, verified-at, failed and unknown are distinct; a timestamped verification is not a live connection.
+
+Dragging, if included, changes layout only. Connecting nodes must not edit execution dependencies or start jobs in version one. Workflow authoring requires a separate contract.
+
+## Inspector and interaction
+
+Selecting an artifact opens its preview, purpose, inputs, producing role, review status and source file. A skill shows activation, host availability, tools and source instructions. Existing registry content is sufficient; 31 new SOP essays do not gate the drawer.
+
+A review finding focuses the affected artifact and evidence. A future approval action must bind to the artifact hash through the canonical state writer. No approval functionality is implemented by this plan.
+
+Keyboard: searchable list equivalent, Enter selects, Escape closes detail and returns focus. Keep camera stable on selection; provide Fit selection and Reset. Touch needs no hover or precision port dragging.
+
+At narrow widths the same lineage becomes a vertical sequence with inline detail or an inspector sheet. Keep current task and next decision visible. Do not shrink the desktop graph to fit.
+
+## UI references to adapt
+
+| Reference | Adapt | Avoid |
 |---|---|---|
-| **Map** | The radial system map — agency → agents → skills → tools | `kb.db` |
-| **Run** | The active run: phase rail, gates, token spend | `<project>/.olympus/run.json` |
-| **Skills** | Catalog + the detail drawer | `kb.db` |
-| **Knowledge** | Search across the KB | `kb.db` via `search()` |
-| **Projects** | Projects found under `test_projects/` and elsewhere; pick one | filesystem scan |
+| [Krea Nodes](https://www.krea.ai/features/nodes) | Preview-led nodes, clear input/output relationships, unequal node sizes | Generic model-pipeline chrome |
+| [FLORA](https://flora.ai/) | Expressive media composition, reusable creative workflows | Its brand/media and unlimited-generation scope |
+| [Are.na](https://www.are.na/) | Connected source material and collections | Mistaking collections for execution state |
+| [Cosmos](https://www.cosmos.so/) | Curated imagery with restrained framing | A feed without decision provenance |
+| [Rivet](https://rivet.ironcladapp.com/) | Inspectable AI graphs and debugging | Engineering controls dominating the creative view |
 
-Cut entirely: Funnel, Personas, Finances, Comms, Social, Content, Analytics, Roadmap.
-They have no referent in Apollo and adding them would invent scope.
+Krea's public Nodes hero and FLORA's homepage were visually inspected. Krea showed connected image/prompt/video objects with an output larger than its sources. FLORA showed asymmetrical media around a typographic focal point; some video embeds did not play. Other references were read from first-party pages. Full signed-in applications were not tested. These are reference transformations, not endorsements of complete product usability.
 
-## 3. Map — the hero view
+The supplied Instagram screenshot supports interest in a connection map. It does not establish the source system's backend, costs or reliability.
 
-Concentric, as in the reference, but with Apollo's actual entities:
+## Future technical choice
 
-```
-core         unlabelled particle cloud   = library/ , the shared knowledge
-ring 1       agency hub                  = Design (one node today; Marketing joins later)
-ring 2       agents                      = design-director + 5 specialists
-ring 3       skills                      = 31 routed, accent by phase
-ring 4       tools                       = external deps declared by skills
-```
+Studio is currently vanilla JavaScript/Node. Start with semantic DOM and SVG connectors. Evaluate [Cytoscape.js](https://js.cytoscape.org/) only if graph complexity warrants it. [React Flow](https://reactflow.dev/) is relevant only if React is independently justified; a node view does not require migration.
 
-Rules carried over from the reference because they are correct:
-- **Centre stays unlabelled.** A labelled "KNOWLEDGE BASE" circle turns an elegant map into
-  an org chart.
-- **Colour only on focus.** Everything grey until you select a cluster.
-- **Accent traces the path, not the nodes** — connectors and junction dots take the colour;
-  node bodies stay pale.
-- **Click isolates, it does not zoom.** The selected cluster re-lays out as a top-down fan
-  (tools → agents → skills → hub) with a `‹ name ›` pager.
+A future build plan must name any minimal server adapter changes. The old blanket protection of server files conflicts with requiring new APIs. Preserve unrelated data and media. Use explicitly registered project roots, not an unrestricted disk scan. The registry and an artifact manifest can feed the first slice while the optional KB is absent.
 
-## 4. The five fixes — the "improved" half
+## Acceptance
 
-These are defects in the reference, not preferences.
+1. Every visible relationship in a real run resolves to evidence.
+2. Locate current output, source reference and blocking review without changing pages. Proposed usability test: three representative users; at least two complete each task unaided.
+3. Same tasks at desktop and 390px, with keyboard/touch equivalents and readable labels.
+4. Explicit empty, stale, failed, missing-index and unknown-usage states.
+5. No fake live states, unwanted reduced-motion animation, console errors or critical accessibility findings.
+6. Test 20-node and expanded 100-node fixtures; target selection response within 200ms on a recorded device. This is a target, not a measurement.
+7. Independent review against the approved design and screenshot evidence, within the existing repair bound.
 
-| # | His | Ours |
-|---|---|---|
-| 1 | Outer tool ring is red "not connected" glyphs, implying live connection state a static page cannot know | Two honest states only: **declared** (a skill names it) and **resolved** (last `verify.py` run found it), with that run's timestamp on screen. Never a live green dot. |
-| 2 | Small type unreadable even on a 4K monitor recording | Minimum 12px for any label that carries meaning. Pixel display face for headings only; a real mono for everything else. |
-| 3 | Six accents competing simultaneously | One accent at a time, on focus. Apollo has one agency today — a second accent only exists when a second agency does. |
-| 4 | Omni-input says "dump into the brain", implying an LLM behind the box | It is KB search and it is labelled **Search**. It calls `search()`. It never implies more than it does. |
-| 5 | 18 nav destinations for 6 crews | 5 for 1 agency. |
-
-## 5. The detail drawer — the thing most worth taking
-
-His best idea. Trimmed to what Apollo can honestly fill:
-
-```
-title                      the skill's title
-breadcrumb                 agency · category
-ROUTING CONDITION          when this fires   <- Apollo-specific; better than his
-PHASE / GATE               where in the run
-WHAT IT REPLACES           one sentence
-THE LADDER                 human-led / human-assisted / fully autonomous, current rung marked
-THE HUMAN                  what a person still owns
-THE SOP                    numbered steps
-BUILDS ON / BREAKS INTO    dashed chip / solid chip  <- border style is the whole legend
-TOOLS AT END OF CHAIN      declared deps
-OPEN SKILL.md              the file, on disk
-```
-
-Sections with no data render an explicit **"not yet specified"** row. An empty drawer that
-pretends to be full is worse than no drawer.
-
-**This is content work, not UI work** — ~175 words × 31 routed skills. It is the slowest
-item in the whole plan and it gates this view being worth opening.
-
-## 6. Run view
-
-The reference's Funnel, reframed to something Apollo actually has: the pipeline rail.
-
-```
-intake → 01 audit → [Gate A] → 02 direction → 03 critique → [Gate B]
-       → 05/06 plan → implement → 07 QA → 08 metrics → [Gate C] → 09 handoff
-```
-
-Each node: name, state (pending / active / passed / blocked), and **tokens spent**. Gates
-render as a distinct mark, not another node — a gate is a decision, not a step. Reads from
-`run.json`, which already records phase counts.
-
-## 7. Build
-
-- **Extend `apollo-studio/`.** It is already Node + npm with a green `npm run check` and an
-  MCP server. No new framework, no React, no build pipeline that isn't already there.
-- Data: `kb.db` (via the same three verbs as the agents use) plus `run.json` per project.
-- Launch: `npm run studio` from the Apollo root. Opens localhost, scans for projects.
-- **Protected files stay protected**: `server.mjs`, `knowledge.mjs`, `mcp-server.mjs`,
-  `data/`, `evidence/`, `handoffs/`, `public/media/` — per the existing out-of-scope rule.
-
-## 8. Order
-
-Build the Map and Skills views first — they read only `kb.db`, so they land as soon as
-Spec 01 does. Run view needs a real run to look at. Knowledge is a thin wrapper over
-`search()`. Projects is a directory listing.
-
-**Do not start the drawer until §5's content exists for at least ten skills.** Building a
-renderer for data nobody has written is how this stalls.
+Next planning deliverable: one representative desktop composition, its mobile transformation and selected-artifact state. These are states of one direction, not alternatives.

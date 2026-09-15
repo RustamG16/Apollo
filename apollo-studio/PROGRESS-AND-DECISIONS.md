@@ -1822,3 +1822,15 @@ an observable response; every one of 45 distinct commands carries a written prom
   zero.
 - **The portrait crops** are an asset-production task, now specified rather than deferred.
 - **`REFERENCES.md`'s matrix weights hygiene and position equally** and should not.
+
+## 2026-09-15 — Task 3 shared Oracle Continuum shell
+
+The exact Home / Projects / Plan / Playground / Results / Knowledge / System / Agents / Settings navigation now wraps the retained feature roots. Nested project routes and legacy hash links preserve ownership and working functionality. The 210px rail becomes a drawer below 820px; project, stage, next action, environment and Oracle access remain visible. Unknown project stages are not inferred from legacy chat records. Full feature interiors remain later tasks.
+
+Measured before at 2026-09-15T17:07:01Z and after at 2026-09-15T17:19:48Z: T1=0→0, T2=16→16, T3=100→100, T4=0→0, T5=0→0, T6=1→1, T7=1→1, T8=1→1, T9=8→8, T10=0→0, T11=0→0. The inherited 390px document overflow (216–226px on supporting routes) is now zero; all five viewport sizes show zero clipping, AA text/boundary failures and undersized controls. Reduced motion and 200% text checks pass; console clean. Five route/projection tests and 109 additive browser shell assertions pass. The full behavior sweep found two stale route-expectation rows (corrected and their five command paths retested) and repeated HTTP 400s for a seeded Savra preview whose source file is absent outside this project. The full check is therefore not claimed green. Scope, files, compatibility, and remaining limits are recorded in `.superpowers/sdd/IMPLEMENTATION-PLAN/task-3-report.md`.
+
+## 2026-09-15 — Task 4 persistent Oracle, increment 1
+
+Added the deterministic Oracle intake/context contract and the shared dock's live context-token and text-input surface. Project classification, sequential questions, repeated-answer prevention, consequential-question explanations, reviewable brief/Design DNA output, removable optional context, and honest unavailable voice state are covered by five pure tests. Seven browser assertions verify the composer, mode state, route-following page token, persistence while navigating, and a clean runtime console.
+
+T1–T11 before/after remain unchanged at 0 / 16 / 100 / 0 / 0 / 1 / 1 / 1 / 8 / 0 / 0. All five widths retain zero overflow, clipping, contrast failures, and undersized controls; reduced motion and 200% text checks pass. `check:shell` passes 10 pure tests, the original 109 shell assertions, 11 repair assertions, and 7 Oracle assertions. This is not Task 4 completion: canonical proposal persistence and the full rendered questionnaire/choice-card flow remain next.

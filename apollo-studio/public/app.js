@@ -1,3 +1,6 @@
+import { createShell } from './modules/shell.js';
+import { buildOracleContext, removeOracleToken } from './modules/oracle.js';
+
 const state = {
   config: null,
   activeSkills: new Set(),
@@ -31,6 +34,7 @@ const $$ = selector => [...document.querySelectorAll(selector)];
 const views = new Set(['work', 'architecture', 'systems', 'agents', 'knowledge', 'oracle', 'playground', 'runs']);
 let comparisonTween = null;
 let motionContext = null;
+let oracleContext = { tokens: [], dismissed: [] };
 const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 function initMotionPreferences() {
   if (!window.gsap?.matchMedia) return;
@@ -84,10 +88,6 @@ function setComparisonState(mode) {
   else if (mode === 'running') comparisonTween = window.gsap.fromTo(indicator, { scaleX: .05 }, { scaleX: .76, duration: .15, ease: 'power2.out', overwrite: 'auto' });
   else comparisonTween = window.gsap.to(indicator, { scaleX: 1, duration: .15, ease: 'power2.out', overwrite: 'auto' });
 }
-const viewFromHash = () => {
-  const candidate = location.hash.replace(/^#\/?/, '');
-  return views.has(candidate) ? candidate : 'work';
-};
 
 async function api(path, options = {}) {
   const response = await fetch(path, options);
@@ -125,20 +125,13 @@ let graphPositions = storage.read('apollo-graph-positions', structuredClone(defa
 let graphPhases = storage.read('apollo-graph-phases', {});
 let selectedNodeId = 'director';
 
-function navigate(view, { updateHash = true, scrollBehavior = 'smooth', animate = false } = {}) {
-  view = views.has(view) ? view : 'architecture';
+function navigate(view, { updateHash = true } = {}) {
+  return shell.navigate(view, { replace: !updateHash });
+}
+
+function renderLegacyView(view) {
   state.view = view;
-  $$('.view').forEach(section => section.classList.toggle('is-active', section.id === view));
-  // Views without a tab of their own borrow one. Runs HAS a tab now, so it is not in here;
-  // leaving it mapped to Work meant the Runs tab never highlighted and clicking it while
-  // already on Runs did nothing at all.
-  const NAV_OWNER = { architecture: 'systems', agents: 'knowledge', oracle: 'work' };
-  const navView = NAV_OWNER[view] || view;
-  $$('.nav-item').forEach(button => {
-    const active = button.dataset.viewTarget === navView;
-    button.classList.toggle('is-active', active);
-    if (active) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current');
-  });
+  if (!views.has(view)) return;
   if (view === 'architecture') requestAnimationFrame(drawConnections);
   if (view === 'runs') renderHistory();
   if (view === 'systems') renderSystems();
@@ -146,12 +139,6 @@ function navigate(view, { updateHash = true, scrollBehavior = 'smooth', animate 
   if (view === 'knowledge') renderKnowledge();
   if (view === 'oracle') { renderOracleMessages(); renderOraclePlan(); }
   if (view === 'work') renderWork();
-  if (updateHash && location.hash !== `#/${view}`) location.hash = `/${view}`;
-  window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : scrollBehavior });
-  if (animate && window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const section = document.getElementById(view);
-    window.gsap.fromTo(section.querySelectorAll(':scope > .section-heading, :scope > .library-switcher, :scope > .playground-steps, :scope > .workspace-frame'), { autoAlpha: .8 }, { autoAlpha: 1, duration: .12, ease: 'power2.out', overwrite: 'auto', clearProps: 'opacity,visibility' });
-  }
   refreshIcons(document.getElementById(view));
 }
 
@@ -163,8 +150,16 @@ async function refreshWork({ preserve = true } = {}) {
   const project = workProject(); state.work.activeProjectId = project?.id || null; const chat = workChat(project); state.work.activeChatId = chat?.id || null;
   if (chat) state.work.detail = await api(`/api/chats/${chat.id}`); renderWork();
 }
-async function selectWorkChat(projectId, chatId) { state.work.activeProjectId = projectId; state.work.activeChatId = chatId; state.work.detail = await api(`/api/chats/${chatId}`); renderWork(); }
+async function selectWorkChat(projectId, chatId) {
+  state.work.activeProjectId = projectId; state.work.activeChatId = chatId; state.work.detail = null;
+  const detail = chatId ? await api(`/api/chats/${chatId}`) : { messages: [], attachments: [] };
+  if (state.work.activeProjectId !== projectId || state.work.activeChatId !== chatId) return;
+  state.work.detail = detail;
+  if (shell.current()?.projectId && shell.current().projectId !== projectId) shell.navigate(`projects/${encodeURIComponent(projectId)}/work`);
+  else renderWork();
+}
 function renderWork() {
+  shell.refresh();
   const project = workProject(); const chat = workChat(); if (!project || !chat) return;
   const list = $('#project-list'); list.replaceChildren(...state.work.projects.map(item => { const button = document.createElement('button'); button.type = 'button'; button.className = `project-item${item.id === project.id ? ' is-active' : ''}`; button.innerHTML = '<span class="project-symbol"></span><span><strong></strong><small></small></span>'; button.querySelector('strong').textContent = item.name; button.querySelector('small').textContent = item.chats.map(chat => chat.name).join(' · ') || 'No chat'; button.addEventListener('click', () => selectWorkChat(item.id, item.chats[0]?.id)); return button; }));
   const tabs = $('#project-tabs'); tabs.replaceChildren(...project.chats.map(item => { const button = document.createElement('button'); button.type = 'button'; button.setAttribute('role', 'tab'); button.setAttribute('aria-selected', String(item.id === chat.id)); button.className = `project-tab${item.id === chat.id ? ' is-active' : ''}`; button.textContent = item.name; button.addEventListener('click', () => selectWorkChat(project.id, item.id)); return button; }));
@@ -215,6 +210,21 @@ function showWorkError(error, draft) {
 
 async function sendWorkMessage(role, text) { const chat = workChat(); if (!chat) return; await api(`/api/chats/${chat.id}/messages`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ role, text }) }); state.work.detail = await api(`/api/chats/${chat.id}`); renderWork(); }
 async function stageProposal(input) { const proposal = await api('/api/proposals', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(input) }); const dialog = $('#proposal-dialog'); dialog.dataset.proposalId = proposal.id; dialog.dataset.operation = JSON.stringify(input.operation || null); $('#proposal-title').textContent = proposal.title; $('#proposal-summary').textContent = proposal.summary; $('#proposal-affected').replaceChildren(...proposal.affected.map(item => { const li = document.createElement('li'); li.textContent = item; return li; })); dialog.showModal(); }
+function updateOracleContext({ project, route, selection } = {}) {
+  oracleContext = buildOracleContext({ project, route, selection, dismissed: oracleContext.dismissed });
+  const host = $('#oracle-context-tokens');
+  if (!host) return;
+  host.replaceChildren(...oracleContext.tokens.map(token => {
+    const item = document.createElement(token.removable ? 'button' : 'span');
+    item.className = 'oracle-context-token'; item.dataset.tokenKind = token.kind;
+    item.textContent = token.label;
+    if (token.removable) {
+      item.type = 'button'; item.setAttribute('aria-label', `Remove ${token.label} from Oracle context`);
+      item.addEventListener('click', () => { oracleContext = removeOracleToken(oracleContext, token.id); updateOracleContext({ project, route, selection }); });
+    }
+    return item;
+  }));
+}
 function toggleOracle(force) {
   const dock = $('#oracle-dock'); const trigger = $('#toggle-oracle');
   const open = typeof force === 'boolean' ? force : dock.getAttribute('aria-hidden') === 'true';
@@ -2112,7 +2122,8 @@ function bindEvents() {
   });
   $('#oracle-show-how').addEventListener('click', showMeHow);
   $('#oracle-do-it').addEventListener('click', doItForMe);
-  $('#new-project').addEventListener('click', async () => { try { const created = await api('/api/projects', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({}) }); state.work.activeProjectId = created.project.id; state.work.activeChatId = created.chat.id; await refreshWork(); $('#work-prompt').focus(); } catch (error) { $('#work-status').textContent = error.message; } });
+  $('#oracle-text-mode').addEventListener('click', () => { $('#oracle-text-mode').setAttribute('aria-pressed', 'true'); $('#oracle-context-input').focus(); });
+  $('#new-project').addEventListener('click', async () => { try { const created = await api('/api/projects', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({}) }); state.work.activeProjectId = created.project.id; state.work.activeChatId = created.chat.id; await refreshWork(); shell.navigate(`projects/${encodeURIComponent(created.project.id)}/work`); $('#work-prompt').focus(); } catch (error) { $('#work-status').textContent = error.message; } });
   $('#new-chat').addEventListener('click', async () => { const project = workProject(); if (!project) return; try { const chat = await api(`/api/projects/${project.id}/chats`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({}) }); state.work.activeChatId = chat.id; await refreshWork(); } catch (error) { $('#work-status').textContent = error.message; } });
   $('#work-empty-action').addEventListener('click', () => $('#work-prompt').focus());
   $('#work-composer').addEventListener('submit', async event => {
@@ -2324,7 +2335,6 @@ function bindEvents() {
   $('#undo-dismiss').addEventListener('click', dismissUndo);
   const observer = new ResizeObserver(() => requestAnimationFrame(drawConnections)); observer.observe($('#workflow-canvas'));
   window.addEventListener('resize', drawConnections, { passive: true });
-  window.addEventListener('hashchange', () => navigate(viewFromHash(), { updateHash: false, scrollBehavior: 'auto' }));
 }
 
 async function init() {
@@ -2360,13 +2370,25 @@ async function init() {
     renderSkillRegistry(); renderTools(); renderVariants(); renderAgents(); renderSystems(); renderArchitectureAgents(); renderKnowledge(); renderOracleMessages(); renderIntegrations(); renderHostEvents(); renderTransport(); setRuntime(state.config.mode); bindEvents(); refreshIcons(); initMotionPreferences(); setComparisonState('idle');
     updateRunCount();
     $('#experiment-prompt').dispatchEvent(new Event('input'));
-    navigate(viewFromHash());
+    shell.ready();
     requestAnimationFrame(drawConnections);
     window.setInterval(() => { if (state.view === 'oracle' || state.view === 'runs') refreshEvents(); }, 5000);
   } catch (error) {
     $('.runtime-state').classList.add('is-error'); $('#runtime-label').textContent = 'Runtime unavailable';
-    document.querySelector('main').innerHTML = `<div class="empty-state"><h1>Apollo Studio could not start.</h1><p>${error.message}</p><p>Run the local server, then reload this page.</p></div>`;
+    shell.fail(error);
   }
 }
 
+const shell = createShell({
+  snapshot: () => ({ projects: state.work.projects, activeProjectId: state.work.activeProjectId, config: state.config, runs: state.runs }),
+  renderLegacy: renderLegacyView,
+  selectProject: async projectId => {
+    const project = state.work.projects.find(item => item.id === projectId);
+    if (project?.chats?.length) await selectWorkChat(project.id, project.chats[0].id);
+    else { state.work.activeProjectId = projectId; state.work.activeChatId = null; state.work.detail = null; shell.refresh(); }
+  },
+  openOracle: toggleOracle,
+  createProject: () => $('#new-project').click(),
+  updateOracleContext,
+});
 init();

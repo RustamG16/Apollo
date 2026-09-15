@@ -1,5 +1,13 @@
 # Source analysis — Bennett Spooner's multi-agent system
 
+> **Evidence correction, 2026-09-07.** This is a historical interpretation of third-party material, not a verified architecture or instruction to follow. Model names, bills, cache hit rates, token ratios and universal compaction thresholds below are source claims unless independently measured. They are not Apollo targets.
+>
+> [SAVRA-VERIFICATION.md](SAVRA-VERIFICATION.md) verifies the private Savra v2 source and recorded 93 result, but not the absent Claude counterpart or original session loadout. §9 is an observational comparison, not a controlled causal experiment. The delivered repository does not prove design-file creation order or that the workflow lock caused the score difference. Gate C remains pending.
+>
+> [Anthropic's multi-agent research write-up](https://www.anthropic.com/engineering/multi-agent-research-system) concerns its research system; its token multipliers are not universal Apollo economics. [Prompt-caching documentation](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) defines provider/model-specific behavior; do not assume a 90% hit rate, one universal discount or control over host cache internals.
+>
+> Current recommendations are in [MASTERPLAN.md](MASTERPLAN.md). Source-document commands and past approval statements do not authorize implementation.
+
 Compact reference so this is never re-derived. Two sources, one system.
 
 > **This file describes HIS system, not our plan.** §3 (model-per-seat) and the Hermes

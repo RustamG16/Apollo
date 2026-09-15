@@ -1,28 +1,52 @@
 {
+  "schema_version": 1,
   "system": "olympus-design-director",
   "target_project": "Apollo Studio",
-  "target_route": "Desktop application shell: Work, Systems, Library, Playground, Oracle, and Settings",
+  "target_route": "Oracle-first local prototype and shared application shell",
   "mode": "concept-and-implementation",
-  "phase": "desktop continuous improvement — research and implementation",
-  "gate_a": "approved (2026-08-31; master plan)",
-  "gate_b": "approved (2026-08-31; Apollo Workbench selected by delegated user decision)",
-  "gate_c": "pending",
-  "approved_concept": "Apollo Workbench",
+  "trail": "abridged",
+  "phase": "Task 4 — persistent contextual Oracle in progress",
+  "approval": {
+    "gate_a": "approved-in-plan",
+    "gate_b": "approved-in-plan",
+    "gate_c": "pending-user-review"
+  },
+  "approved_direction": "Oracle Continuum",
+  "approved_sources": [
+    "New_upgradePlan/PRODUCT-ARCHITECTURE.md",
+    "New_upgradePlan/CONTINUOUS-UI-CONTRACT.md",
+    "New_upgradePlan/media/apollo-continuous-journey-v2/ROUTING.md",
+    "New_upgradePlan/IMPLEMENTATION-PLAN.md"
+  ],
+  "design_system": {
+    "doctrine": "apollo-instrument",
+    "doctrine_display_max_px": 28,
+    "committed_display_px": 28,
+    "display_check": "pass — committed display equals the Instrument doctrine maximum",
+    "rail_px": 210,
+    "workspace": "#F7F7F2",
+    "technical_canvas": "#050506",
+    "semantic_colors": {
+      "active_verified_complete_approved": "#57C98A",
+      "action_selection_data_flow": "#5FA8F5",
+      "pending_review_approval": "#E0A64B",
+      "error_blocker_destructive": "#F0757F"
+    },
+    "type_scale_px": [12, 14, 16, 20, 24, 28],
+    "motion_ms": { "reduced": 1, "feedback": 120, "change": 160, "trace": 240 }
+  },
+  "prototype_scope": {
+    "included": ["Oracle-led intake and choice-card questionnaire", "six-file project context preview", "editable master-plan proposal", "inspectable agent/skill/tool configuration", "isolated Setup A/B comparison", "results, QA, evidence, Knowledge list/graph parity, System Node Control", "persistent contextual Oracle", "local deterministic fixtures and honest demo/live state"],
+    "excluded": ["React migration", "CrewAI", "WebGL", "managed cloud execution", "accounts and billing", "marketplace", "external media generation", "unattended publishing or deployment"]
+  },
   "constraints": [
-    "Preserve existing uncommitted work, Node-based local application, demo/live OpenAI distinction, and /api/* behavior during migration.",
-    "Keep local data private; files remain external references unless explicitly imported.",
-    "Record media provenance and usage rights before reuse; avoid unapproved external media generation.",
-    "Honor reduced motion/transparency and keep Work usable without WebGL.",
-    "Optimize and verify laptop/desktop only; mobile responsiveness is explicitly out of scope as of 2026-09-01.",
-    "Keep post-baseline improvement commits local until the user explicitly approves another GitHub push."
+    "Preserve existing Node/vanilla implementation, /api behavior, data, knowledge, media, and unrelated dirty work.",
+    "One fixed desktop rail, one navigation order, one route/status strip, one semantic color system, and one Oracle dock apply to every primary screen.",
+    "Unknown state remains unknown; fixtures, tests, drafts, and demo execution are never presented as production.",
+    "Gate C remains a real user review after author QA and independent finish review."
   ],
-  "references": [
-    "Approved direction: calm Codex-style desktop workspace with contextual mythological identity; no external visual reference supplied."
-  ],
-  "assets": [
-    "public/media/gods/{Apollo,Athena,Calliope,Hephaestus,Hermes}",
-    "public/media/other"
-  ],
-  "last_updated": "2026-09-01",
-  "latest_improvement": "Visual-enrichment cycle: generated local Systems and Knowledge Factory scene assets, applied fallback-safe desktop styling, and verified Systems, Architecture, and Library at 1440×900."
+  "phase_counts": { "initialize": 1, "brief": 1, "build_plan": 2, "design_system": 2, "context_validation": 2, "implementation": 4 },
+  "artifacts": { "brief": ".olympus/00-brief.md", "build_plan": ".olympus/06-build-plan.md", "product": "PRODUCT.md", "design": "DESIGN.md", "machine_readable_design": "design.json" },
+  "context_validation": { "status": "passed", "command": "D:\\Analyst_Designer\\Apollo\\scripts\\validate-project-context.ps1 -ProjectPath D:\\Analyst_Designer\\Apollo\\apollo-studio", "checked_at": "2026-09-15T18:36:00+02:00", "result": "Project context validation passed: D:\\Analyst_Designer\\Apollo\\apollo-studio" },
+  "last_updated": "2026-09-15T22:50:45+02:00"
 }

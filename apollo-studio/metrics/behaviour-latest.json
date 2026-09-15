@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T17:31:16.107Z",
-  "durationMs": 293919,
+  "generatedAt": "2026-09-15T17:24:37.283Z",
+  "durationMs": 225698,
   "thresholds": {
     "B1": {
       "name": "Controls with no listener and no form owner",
@@ -15,17 +15,23 @@
       "value": 0,
       "target": 0,
       "pass": true,
-      "unit": "of 205 clicked (12 already in their target state, excluded)",
+      "unit": "of 152 clicked (4 already in their target state, excluded)",
       "detail": []
     },
     "B3": {
       "name": "Label-truth rows failing their postcondition",
-      "value": 0,
+      "value": 5,
       "target": 0,
-      "pass": true,
-      "unit": "45 of 45 command controls covered",
+      "pass": false,
+      "unit": "44 of 44 command controls covered",
       "detail": {
-        "failed": [],
+        "failed": [
+          "div#architecture-agent-lanes > section.agent-lane:nth-of-type(1) > div > button.architecture-agent: Navigates to the loadout slot that agent owns.",
+          "div#architecture-agent-lanes > section.agent-lane:nth-of-type(2) > div > button.architecture-agent: Navigates to the loadout slot that agent owns.",
+          "div#architecture-agent-lanes > section.agent-lane:nth-of-type(3) > div > button.architecture-agent: Navigates to the loadout slot that agent owns.",
+          "div#architecture-agent-lanes > section.agent-lane:nth-of-type(4) > div > button.architecture-agent: Navigates to the loadout slot that agent owns.",
+          "#inspector-open-slots: Navigates to the loadout editor."
+        ],
         "uncovered": []
       }
     },
@@ -82,20 +88,53 @@
     },
     "B8": {
       "name": "Console errors and 4xx/5xx during the sweep",
-      "value": 0,
+      "value": 102,
       "target": 0,
-      "pass": true,
+      "pass": false,
       "unit": "events",
       "detail": {
         "console": [],
-        "network": []
+        "network": [
+          {
+            "status": 400,
+            "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+          },
+          {
+            "status": 400,
+            "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+          },
+          {
+            "status": 400,
+            "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+          },
+          {
+            "status": 400,
+            "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+          },
+          {
+            "status": 400,
+            "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+          },
+          {
+            "status": 400,
+            "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+          },
+          {
+            "status": 400,
+            "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+          },
+          {
+            "status": 400,
+            "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+          }
+        ]
       }
     }
   },
   "controls": {
-    "total": 567,
-    "visible": 548,
-    "clicked": 205,
+    "total": 594,
+    "visible": 575,
+    "clicked": 152,
     "skipped": 6
   },
   "unwired": [],
@@ -112,31 +151,6 @@
       "label": "Launch planning"
     },
     {
-      "view": "work",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(1)",
-      "label": "Work1"
-    },
-    {
-      "view": "systems",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(2)",
-      "label": "Loadouts2"
-    },
-    {
-      "view": "playground",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(4)",
-      "label": "Playground4"
-    },
-    {
-      "view": "agents",
-      "selector": "section#agents > div.library-switcher:nth-of-type(2) > button.is-active:nth-of-type(1)",
-      "label": "Agents"
-    },
-    {
-      "view": "knowledge",
-      "selector": "section#knowledge > div.library-switcher:nth-of-type(2) > button.is-active:nth-of-type(2)",
-      "label": "Skills & knowledge"
-    },
-    {
       "view": "knowledge",
       "selector": "div#category-list > button.category-button.is-active:nth-of-type(1)",
       "label": "Everything84"
@@ -145,21 +159,6 @@
       "view": "knowledge",
       "selector": "div#knowledge-skill-list > button.knowledge-skill.is-active:nth-of-type(1)",
       "label": "Agent Identity and PortfolioAgents · prepareagent-identity-a"
-    },
-    {
-      "view": "knowledge",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(3)",
-      "label": "Library3"
-    },
-    {
-      "view": "runs",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item.is-active:nth-of-type(5)",
-      "label": "Runs5"
-    },
-    {
-      "view": "chrome",
-      "selector": "body > div.app-shell > header.topbar > nav.primary-nav > button.nav-item:nth-of-type(1)",
-      "label": "Work1"
     }
   ],
   "decisions": [
@@ -269,10 +268,432 @@
     "count": 1
   },
   "consoleEvents": [],
-  "networkFailures": [],
+  "networkFailures": [
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    },
+    {
+      "status": 400,
+      "url": "/api/systems/olympus-web-system/outputs/savra-threshold-ritual/preview"
+    }
+  ],
   "diff": {
     "firstRun": false,
-    "regressions": [],
+    "regressions": [
+      {
+        "id": "B3",
+        "name": "Label-truth rows failing their postcondition",
+        "before": 0,
+        "after": 5
+      },
+      {
+        "id": "B8",
+        "name": "Console errors and 4xx/5xx during the sweep",
+        "before": 0,
+        "after": 102
+      }
+    ],
     "improvements": []
   }
 }
