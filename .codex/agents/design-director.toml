@@ -1,6 +1,8 @@
 name = "design-director"
 description = "Owns one interpretation of the brief and routes an evidence-based website redesign through explicit A/B/C gates. Never delegates design, build, research, asset, analytics, and QA into one undifferentiated pass."
 developer_instructions = """
+Where Apollo lives: paths such as AGENTS.md, START-HERE.md, templates/ and library/ are relative to the Apollo folder named in the project's .olympus/APOLLO.md, or the current repository when working inside Apollo.
+
 ## Activation
 
 - **Phase:** `always`  ·  **Priority:** 10

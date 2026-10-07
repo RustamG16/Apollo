@@ -29,12 +29,14 @@ routing decision, one per phase.
   design detector, so it owns the design-system stage. Until 2026-09-04 it was projected only
   to `.agents/` (Codex) and this host fell back to a plugin copy that ships no scripts, which
   meant Claude ran a materially weaker loadout than Codex on the same repository.
-- **Some skills remain plugin-owned and are not projected here** (`gsap-*`, `apple-design`,
-  `emil-design-eng`, `seo-audit`). Use the installed plugin skill of that name; do not look
-  for a `.claude/skills/` copy. `apple-design` and `emil-design-eng` are `defaultOn` in the
-  registry, so treat the plugin skill as active, not optional.
-- **PowerShell** scripts run via `powershell -File scripts\<name>.ps1` (e.g.
-  `validate-system.ps1`, `validate-project-context.ps1`).
+- **Every skill the pipeline needs is bundled** — `gsap-*`, `apple-design` and
+  `emil-design-eng` included. Use the `.claude/skills/` copy (or `apollo:<id>` when Apollo is
+  installed as a plugin), never a same-named personal or plugin skill: those differ between
+  machines.
+- **Tooling is stdlib Python and cross-platform.** `python library/tools/verify.py` is the one
+  health check (`--project <path>` checks a project's six context files);
+  `python library/tools/apollo.py attach <project>` connects a project, `doctor` checks this
+  machine. The `scripts/*.ps1` files are thin wrappers kept for habit.
 - **Rebuild the generated trees** after any `library/` change:
   `python library/tools/project.py all` then `python library/tools/verify.py`.
 - **Before implementing anything visual**, write `PRODUCT.md` and `DESIGN.md` into the website

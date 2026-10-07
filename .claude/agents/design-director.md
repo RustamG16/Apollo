@@ -5,6 +5,8 @@ tools: Read, Glob, Grep, Bash, WebFetch, Write, Edit, NotebookEdit
 skills: [olympus-design-director, apollo-taste-interview, apollo-style-picker, ux-evidence-audit, reference-deconstruction, concept-studio, award-rubric, asset-director, webgl-experience, awwwards-web-design, design-analytics, visual-qa]
 ---
 
+> **Where Apollo lives.** Paths such as `AGENTS.md`, `START-HERE.md`, `templates/` and `library/` are relative to the Apollo folder: `${CLAUDE_PLUGIN_ROOT}` when Apollo is installed as a plugin, otherwise the folder named in the project's `.olympus/APOLLO.md`, or the current repository when you are working inside Apollo.
+
 ## Activation
 
 - **Phase:** `always`  ·  **Priority:** 10

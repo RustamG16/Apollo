@@ -36,7 +36,6 @@ media/higgsfield-video-explainer/README.md
 media/higgsfield-websites/README.md
 media/higgsfield-youtube-thumbnail/README.md
 media/image/README.md
-meta/apollo-bootstrap/README.md
 meta/superpowers-writing-skills/README.md
 motion/animate/README.md
 motion/animation-vocabulary/README.md

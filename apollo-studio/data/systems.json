@@ -238,7 +238,7 @@
       "advancedSkills": [],
       "seeded": true,
       "createdAt": "2026-09-03T05:01:55.772Z",
-      "updatedAt": "2026-10-03T15:04:57.510Z"
+      "updatedAt": "2026-10-07T22:58:04.150Z"
     },
     {
       "id": "concept-lab",
@@ -274,7 +274,7 @@
       "advancedSkills": [],
       "seeded": true,
       "createdAt": "2026-09-03T05:01:55.773Z",
-      "updatedAt": "2026-10-03T15:04:57.510Z"
+      "updatedAt": "2026-10-07T22:58:04.150Z"
     },
     {
       "id": "premium-build",
@@ -310,7 +310,7 @@
       "advancedSkills": [],
       "seeded": true,
       "createdAt": "2026-09-03T05:01:55.773Z",
-      "updatedAt": "2026-10-03T15:04:57.510Z"
+      "updatedAt": "2026-10-07T22:58:04.150Z"
     },
     {
       "id": "delivery-qa",
@@ -346,7 +346,7 @@
       "advancedSkills": [],
       "seeded": true,
       "createdAt": "2026-09-03T05:01:55.773Z",
-      "updatedAt": "2026-10-03T15:04:57.510Z"
+      "updatedAt": "2026-10-07T22:58:04.150Z"
     },
     {
       "id": "lean-audit-copy",
@@ -382,7 +382,7 @@
       "advancedSkills": [],
       "seeded": false,
       "createdAt": "2026-09-03T06:25:08.233Z",
-      "updatedAt": "2026-10-03T15:04:57.510Z"
+      "updatedAt": "2026-10-07T22:58:04.150Z"
     }
   ],
   "migrations": [

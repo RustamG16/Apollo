@@ -57,13 +57,12 @@ the handoff if a new task becomes necessary.
 `library/` is the only place to edit skills, agents, and the registry. After any change:
 
 ```
-python library/tools/project.py all      # regenerate .claude/ .agents/ .codex/ apollo-studio/knowledge/
-python library/tools/verify.py            # health check — exit 0 = clean
+python library/tools/project.py all      # regenerate .claude/ .agents/ .codex/ .claude-plugin/ apollo-studio/knowledge/
+python library/tools/verify.py            # the single health check — exit 0 = clean
 python library/tools/build_index.py       # refresh library/INDEX.md
-powershell -File scripts/validate-system.ps1
 ```
 
-`project.py <claude|codex|studio|digest>` runs one projector; add `--dry-run` to preview.
+`project.py <claude|codex|studio|digest|plugin>` runs one projector; add `--dry-run` to preview.
 
 ## The Studio
 

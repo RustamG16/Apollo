@@ -35,23 +35,6 @@
       "enabled": false
     },
     {
-      "id": "apollo-bootstrap",
-      "name": "apollo-bootstrap",
-      "phase": "unrouted",
-      "group": "Meta",
-      "defaultOn": false,
-      "description": "First-use analysis, audit, and install flow for Apollo_claude in a target project. Detects whether this is a first install or a re-audit, inventories the project's stack and existing six-files coverage, writes an audit doc, then offers to improve the existing project or scaffold a new one with the design roster ready. Trigger phrases - \"set up Apollo here\", \"install Apollo_claude in this project\", \"audit this project\", \"bootstrap Apollo\". Idempotent - safe to re-run.",
-      "runtimePrompt": "",
-      "category": "11-meta-system",
-      "hosts": [
-        "claude",
-        "codex",
-        "studio"
-      ],
-      "status": "active",
-      "enabled": false
-    },
-    {
       "id": "apollo-style-picker",
       "name": "apollo-style-picker",
       "phase": "direct",
@@ -95,6 +78,7 @@
       "runtimePrompt": "Treat Apollo as Apple-inspired rather than HIG-compliant. Prioritize purpose, agency, familiarity, simplicity, legible hierarchy, system typography, restrained materials, immediate feedback, spatial consistency, interruptible motion, reduced-motion and reduced-transparency alternatives, and platform-appropriate desktop behavior. Do not imitate proprietary Apple screens or assets.",
       "category": "01-design-direction",
       "hosts": [
+        "claude",
         "codex",
         "studio"
       ],
@@ -247,6 +231,7 @@
       "runtimePrompt": "Apply Emil Kowalski's design-engineering discipline after hierarchy and flows are stable. Decide whether motion is warranted by frequency and purpose; keep frequent and keyboard actions instant, use precise properties and strong easing, preserve interruptibility and reduced motion, constrain motion to transform and opacity where practical, and verify interaction details in slow motion when implemented.",
       "category": "01-design-direction",
       "hosts": [
+        "claude",
         "codex",
         "studio"
       ],
@@ -348,6 +333,7 @@
       "runtimePrompt": "Use GSAP transforms and built-in eases for purposeful runtime-controlled motion. Honor prefers-reduced-motion and keep content visible without animation.",
       "category": "03-motion-3d",
       "hosts": [
+        "claude",
         "codex",
         "studio"
       ],
@@ -364,6 +350,7 @@
       "runtimePrompt": "Align GSAP setup and cleanup with the selected non-React framework lifecycle. Scope selectors and remove effects on unmount.",
       "category": "03-motion-3d",
       "hosts": [
+        "claude",
         "codex",
         "studio"
       ],
@@ -380,6 +367,7 @@
       "runtimePrompt": "Audit animation performance. Prefer transforms, batch DOM reads and writes, bound will-change, and flag layout thrashing or excessive concurrent effects.",
       "category": "03-motion-3d",
       "hosts": [
+        "claude",
         "codex",
         "studio"
       ],
@@ -396,6 +384,7 @@
       "runtimePrompt": "Select a GSAP plugin only for a concrete interaction need. Include registration, lifecycle, accessibility, licensing, and a no-plugin fallback.",
       "category": "03-motion-3d",
       "hosts": [
+        "claude",
         "codex",
         "studio"
       ],
@@ -412,6 +401,7 @@
       "runtimePrompt": "For React animation, use scoped refs and lifecycle-safe cleanup. Prevent duplicate effects across mounts and strict mode.",
       "category": "03-motion-3d",
       "hosts": [
+        "claude",
         "codex",
         "studio"
       ],
@@ -428,6 +418,7 @@
       "runtimePrompt": "Use scroll-driven motion only when the narrative requires it. Avoid decorative pinning; specify responsive and reduced-motion alternatives.",
       "category": "03-motion-3d",
       "hosts": [
+        "claude",
         "codex",
         "studio"
       ],
@@ -444,6 +435,7 @@
       "runtimePrompt": "Use a GSAP timeline only when animation order carries meaning. Keep timing interruptible, readable, and reduced-motion safe.",
       "category": "03-motion-3d",
       "hosts": [
+        "claude",
         "codex",
         "studio"
       ],
@@ -460,6 +452,7 @@
       "runtimePrompt": "Reach for `gsap.utils` helpers - clamp, mapRange, interpolate, snap, wrap, random, toArray - when motion math would otherwise be hand-rolled. Utilities only; they do not by themselves justify adding animation.",
       "category": "03-motion-3d",
       "hosts": [
+        "claude",
         "codex",
         "studio"
       ],
@@ -472,7 +465,7 @@
       "phase": "unrouted",
       "group": "Media",
       "defaultOn": false,
-      "description": "|",
+      "description": "Create and extend complete visual brand systems through the Higgsfield CLI and bundled deterministic local tooling: palettes, SVG logo marks, typography, mockups, social graphics, packaging, signage, merchandise, posters, presentation decks, and editable PPTX/PDF brandbooks. Preserves official supplied assets, persists approvals locally, and regenerates only dependent outputs. Use when: \"create a brand kit\", \"make a visual identity\", \"design a logo and brandbook\", \"apply this logo to branded assets\", \"make packaging or signage\", or \"extend our existing branding\". Chain with higgsfield-generate for general image production and Marketing Studio brand-kits when importing website metadata for ads. NOT for unbranded image generation (use higgsfield-generate), product catalog photography (use higgsfield-product-photoshoot), website implementation (use higgsfield-websites), or native Figma/Canva/PSD/AI delivery.",
       "runtimePrompt": "",
       "category": "04-media-generation",
       "hosts": [
@@ -489,7 +482,7 @@
       "phase": "unrouted",
       "group": "Media",
       "defaultOn": false,
-      "description": "|",
+      "description": "Generate images/videos/3D assets/audio via Higgsfield AI. Defaults: GPT Image 2 for image/design/text, Seedance 2.0 for video, Nano Banana 2/Lite/Pro for character/reference images, Marketing Studio for ads, Seed Audio 1.0 for audio. Use when: \"generate an image\", \"make a video\", \"animate this photo\", \"image-to-video\", \"edit/stylize/remix this image\", \"reframe this video\", \"edit this video from a sketch\", \"create a 3D model/GLB\", \"create a sound effect\", \"make music\", \"text-to-audio\", \"create an ad\", \"make a UGC video\", \"unboxing\", \"presenter video\", \"import product from URL\", or \"analyze video virality\". Supports generic generation, workflows, Marketing Studio, and Virality Predictor. Chain with higgsfield-soul-id for face/identity consistency. NOT for: Soul training, brand systems/brandbooks (use higgsfield-brandkit), photoshoots, cards, YouTube thumbnails (use higgsfield-youtube-thumbnail), explainers (use higgsfield-video-explainer), playable games/assets (use higgsfield-game-generation), or TTS.",
       "runtimePrompt": "",
       "category": "04-media-generation",
       "hosts": [
@@ -506,7 +499,7 @@
       "phase": "unrouted",
       "group": "Media",
       "defaultOn": false,
-      "description": "|",
+      "description": "Generate marketplace product image cards through Higgsfield: compliant main image, secondary product images, and A+ style content modules. Use when the user asks for marketplace listing images, product detail cards, secondary product images, product infographics, lifestyle listing shots, A+ style content, marketplace image sets, or sales-ready product visuals. Backend owns marketplace compliance references and prompt templates; this skill only routes user intent to the CLI. NOT for generic brand product photography without marketplace/listing context (use higgsfield-product-photoshoot), video generation or UGC ads (use higgsfield-generate), or Soul Character training (use higgsfield-soul-id).",
       "runtimePrompt": "",
       "category": "04-media-generation",
       "hosts": [
@@ -523,7 +516,7 @@
       "phase": "unrouted",
       "group": "Media",
       "defaultOn": false,
-      "description": "|",
+      "description": "Generate brand-quality product images through Higgsfield product-photoshoot prompt enhancement on GPT Image 2 / gpt_image_2. Entry point for professional brand/product visuals. Use when: \"product photo\", \"studio shot\", \"lifestyle image\", \"Pinterest pin\", \"hero/banner\", \"carousel\", \"ad creative\", \"Meta ads\", \"virtual try-on\", \"model wearing\", \"person holding product\", \"closeup with hands\", \"levitating/floating/splash product\", \"CGI/surreal product\", \"restyle\", \"seasonal/aesthetic variation\", or any product, brand, or paid-social creative. Modes: product_shot, lifestyle_scene, closeup_product_with_person, moodboard_pin, hero_banner, social_carousel, ad_creative_pack, virtual_model_tryout, conceptual_product, restyle. Backend assembles the final prompt; never freehand it. NOT for: no-product text-to-image (use higgsfield-generate), branded avatar video (use higgsfield-generate Marketing Studio), marketplace listing cards (use higgsfield-marketplace-cards), Soul Character training (use higgsfield-soul-id).",
       "runtimePrompt": "",
       "category": "04-media-generation",
       "hosts": [
@@ -540,7 +533,7 @@
       "phase": "unrouted",
       "group": "Media",
       "defaultOn": false,
-      "description": "|",
+      "description": "Train a Soul Character — a personalized model on a person's face that Higgsfield uses for identity-faithful image and video generation. Use when: \"create my Soul\", \"train my face\", \"make my digital twin\", \"build me an avatar\", \"learn my appearance\", \"create a character of me\", \"set up identity for video\", \"I want my face in generated images\". Chain: train Soul (one-time, returns reference_id) → use in higgsfield-generate via `--soul-id <id>` with models like `text2image_soul_v2` or `soul_cinema_studio`. NOT for: one-shot face swaps (use higgsfield-generate with --image), named-character / non-photo avatars (use higgsfield-generate with prompt).",
       "runtimePrompt": "",
       "category": "04-media-generation",
       "hosts": [
@@ -557,7 +550,7 @@
       "phase": "unrouted",
       "group": "Media",
       "defaultOn": false,
-      "description": "|",
+      "description": "Build a complete non-photoreal narrated explainer or story video from ordered 10-second blocks: one narrator, one universal style key, one Seed Audio take and one Gemini Omni clip per block, then server-side assembly with explainer_video. Use when: \"make an explainer video\", \"explain this in a video\", \"turn this topic or document into a narrated video\", \"tell this story as an animated video\", \"make a faceless narrated video\", or \"show me explainer styles\". Supports live CMS presets, custom style references, mascot/faceless modes, two aspects, and optional burned subtitles. NOT for: photoreal films, ads/UGC, talking heads, podcasts, motion typography reels, one-off clips without narration, or editing a finished video.",
       "runtimePrompt": "",
       "category": "04-media-generation",
       "hosts": [
@@ -574,7 +567,7 @@
       "phase": "unrouted",
       "group": "Media",
       "defaultOn": false,
-      "description": "|",
+      "description": "Build, edit, and deploy full-stack websites, apps and games via the Higgsfield CLI (`higgsfield website …`). Each is a React 19 + TanStack Start SSR app in one Cloudflare Worker (D1/R2/KV/DO/Containers). THREE product types, picked via `--type` on create: `website` (standalone, no Higgsfield integration — references/website-flow.md), `app` (Sign in with Higgsfield + fnf SDK, Quanta — references/app-flow.md), `game` (realtime multiplayer rooms — references/game-flow.md). Routes to the right flow; each carries its own rules and deploy/publish gates. Use when: \"build me a website\", \"make a landing page\", \"create a web app\", \"build a SaaS dashboard / portfolio\", \"make me a game\", \"deploy this site\", \"publish\". Also owns GAME ART: \"make a spritesheet\", \"tileable texture\", \"animate a 3D character\", game music/SFX — see the game-* references. NOT for: single image/video/audio generation (higgsfield-generate), product photos (higgsfield-product-photoshoot), marketplace cards (higgsfield-marketplace-cards).",
       "runtimePrompt": "",
       "category": "04-media-generation",
       "hosts": [
@@ -591,7 +584,7 @@
       "phase": "unrouted",
       "group": "Media",
       "defaultOn": false,
-      "description": "|",
+      "description": "Create high-click-through YouTube thumbnails and vertical video covers through the Higgsfield CLI. Builds a truthful information-gap concept, preserves up to three referenced identities, supports logos and controlled variants, renders the main image with Nano Banana Pro, and applies focused Seedream edits. Use when: \"make a YouTube thumbnail\", \"thumbnail for this video\", \"MrBeast-style cover\", \"Shorts cover\", or \"Instagram video cover\". Chain after any video workflow once its truthful topic and visual direction are known. NOT for producing the video itself (use higgsfield-generate), product catalog photos (use higgsfield-product-photoshoot), or marketplace cards (use higgsfield-marketplace-cards).",
       "runtimePrompt": "",
       "category": "04-media-generation",
       "hosts": [

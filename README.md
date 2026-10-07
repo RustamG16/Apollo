@@ -68,20 +68,38 @@ git clone https://github.com/RustamG16/Apollo.git
 cd Apollo
 ```
 
-Run the structural validators — both are dependency-free and should exit clean on any machine:
+Check the clone and this machine — stdlib Python, no installs:
 
 ```bash
-python library/tools/verify.py
+python library/tools/apollo.py doctor
 ```
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/validate-system.ps1
+It runs `verify.py` (the single health check: library, registry, agents, generated trees,
+plugin manifest) and then warns about anything that makes Apollo behave differently here than
+elsewhere — personal skills with the same names as Apollo's, a retired global Apollo, absolute
+paths. It must report `verify clean` before you trust the clone.
+
+### Install for Claude Code (recommended: as a plugin)
+
+```text
+/plugin marketplace add RustamG16/Apollo        (or a local path to this folder)
+/plugin install apollo@apollo
 ```
 
-`verify.py` checks registry/skill parity in `library/`; `validate-system.ps1` checks that every
-required file and every enabled, non-stub skill's projection into `.claude/` and `.agents/`
-exists. Both must print a clean pass (`CLEAN` / `Olympus validation passed…`) before you trust
-the clone.
+The plugin carries every Apollo skill and agent, namespaced (`apollo:gsap-core`,
+`apollo:design-director`), so nothing collides with skills you have installed personally.
+Without the plugin, start Claude Code with `claude --add-dir <this folder>` instead.
+
+### Attach a project (both hosts)
+
+```bash
+python library/tools/apollo.py attach <your-project>
+```
+
+This writes `.olympus/APOLLO.md` (where Apollo lives on this machine, what to read first) and a
+short pointer block in the project's `AGENTS.md`/`CLAUDE.md`. Apollo itself is never copied in.
+`.olympus/` is gitignored by default so client research stays private; pass
+`--commit-olympus` to keep the run trail in the project's history. `detach` reverses it.
 
 ### Optional: Apollo Studio (the local console)
 
@@ -94,11 +112,12 @@ npm start
 Then open `http://127.0.0.1:4173`. `npm run check` syntax-checks the whole studio (server,
 scripts, and public JS) — run it after `npm install` to confirm the clone is healthy.
 
-### MCP wiring
+### MCP wiring (optional)
 
-`.mcp.json` at the repo root registers the Apollo Studio MCP server using
-`${CLAUDE_PROJECT_DIR}` (a Claude Code variable expanded to wherever the repo actually lives),
-so it works unmodified regardless of clone path or OS — no per-device edits needed.
+The Apollo Studio MCP server is off by default, so a session never depends on the optional
+console. To turn it on in Claude Code, copy `.mcp.json.example` to `.mcp.json` (it uses
+`${CLAUDE_PROJECT_DIR}`, so no per-device edits). For Codex, copy the block from
+`.codex/config.example.toml` into `.codex/config.toml` and set the path.
 
 ## What is included
 
@@ -110,7 +129,7 @@ so it works unmodified regardless of clone path or OS — no per-device edits ne
 | `templates/` | Stable output contracts for every run (`00-brief.md` … `10-finish-review.md`, `run.json`). |
 | `config/MCP-SETUP.md` | Optional external MCP connections and their activation rules. |
 | `test_projects/` | Device-specific test/demo projects. **Gitignored** — each one is its own independent git repo, never tracked or pushed as part of Apollo. |
-| `scripts/` | PowerShell validators (`validate-system.ps1`, `validate-project-context.ps1`). |
+| `scripts/` | Thin PowerShell wrappers around `library/tools/verify.py`, kept for existing habits. |
 | `unused/` | Retired plans, skills and experiments, kept instead of deleted. Nothing reads it; see `unused/README.md`. |
 
 The skill library also vendors the requested
@@ -149,14 +168,10 @@ polished-but-wrong output.
 rebuild every generated tree and re-verify before committing:
 
 ```bash
-python library/tools/project.py all      # regenerate .claude/ .agents/ .codex/ apollo-studio/knowledge/
-python library/tools/verify.py           # health check — exit 0 = clean
+python library/tools/project.py all      # regenerate .claude/ .agents/ .codex/ .claude-plugin/ apollo-studio/knowledge/
+python library/tools/verify.py           # the single health check — exit 0 = clean
 python library/tools/build_index.py      # refresh library/INDEX.md
 ```
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/validate-system.ps1
-```
-
-`project.py <claude|codex|studio|digest>` runs one projector; add `--dry-run` to preview
+`project.py <claude|codex|studio|digest|plugin>` runs one projector; add `--dry-run` to preview
 without writing.

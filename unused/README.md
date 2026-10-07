@@ -22,6 +22,7 @@ the only copy of something worth keeping.
 | `apollo-studio/GOOGLE-FLOW-*` | `apollo-studio/` | Savra client media notes — one client's data, not system knowledge | no — client work record |
 | `library/skills/apollo-loadout-sync`, `apollo-dashboard-sync`, `apollo-cyberpunk-athens-skin` | `library/skills/11-meta-system/` | Written for an older repo layout; every path they cite is missing. Studio's `/api/loadouts` and `state.mjs` replaced them | yes |
 | `library/skills/taste-first-experience-design`, `ethical-gamification-systems`, `agent-identity-and-portfolio` | `library/skills/` | Stubs with no body that were still routed | yes |
+| `library/skills/apollo-bootstrap` | `library/skills/11-meta-system/` | Installed an older Apollo layout (profiles/, dashboard/, 12-agent roster) into projects; replaced by `python library/tools/apollo.py attach` | yes |
 | `library/skills/garden-kb-retriever` | `library/skills/11-meta-system/` | Chinese-language local-KB retriever, out of scope | yes |
 | `library/knowledge/02-tool-inventories/`, `05-pending-capture/` | `library/knowledge/` | Tool-shopping research, not knowledge a run uses | yes |
 | `library/knowledge/07-design-systems/` | `library/knowledge/` | Agent definitions for the retired atelier/kinetic/instrument agents. Every token is already in `library/doctrines/*/design.md` | yes |
