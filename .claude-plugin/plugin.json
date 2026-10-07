@@ -17,6 +17,7 @@
   "agents": [
     "./.claude/agents/analytics-specialist.md",
     "./.claude/agents/asset-producer.md",
+    "./.claude/agents/brand-strategist.md",
     "./.claude/agents/design-director.md",
     "./.claude/agents/design-engineer.md",
     "./.claude/agents/independent-critic.md",

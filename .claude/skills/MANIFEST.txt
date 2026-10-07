@@ -12,6 +12,10 @@ award-rubric/SKILL.md
 award-rubric/agents/openai.yaml
 award-rubric/references/scoring-anchors.md
 awwwards-web-design/SKILL.md
+competitor-profiling/SKILL.md
+competitor-profiling/evals/evals.json
+competitor-profiling/references/templates.md
+competitor-profiling/references/tool-reference.md
 concept-studio/SKILL.md
 concept-studio/agents/openai.yaml
 concept-studio/references/distinction-test.md
@@ -238,6 +242,8 @@ olympus-design-director/SKILL.md
 olympus-design-director/agents/openai.yaml
 olympus-design-director/references/routing-contract.md
 pick-ui-library/SKILL.md
+product-marketing/SKILL.md
+product-marketing/evals/evals.json
 prototype/PICKER.md
 prototype/SKILL.md
 reference-deconstruction/SKILL.md

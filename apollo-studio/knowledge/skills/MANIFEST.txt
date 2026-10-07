@@ -68,7 +68,9 @@ production/asset-director/README.md
 production/webgl-experience/README.md
 qa/superpowers-receiving-code-review/README.md
 qa/superpowers-requesting-code-review/README.md
+research/competitor-profiling/README.md
 research/customer-research/README.md
+research/product-marketing/README.md
 taste/apollo-style-picker/README.md
 taste/apollo-taste-interview/README.md
 verification/visual-qa/README.md

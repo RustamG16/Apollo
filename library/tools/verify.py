@@ -38,7 +38,7 @@ VALID_HOSTS = {"claude", "codex", "studio"}
 VALID_STATUS = {"active", "stub", "manual"}
 SANCTIONED_AGENTS = {
     "visual-analyst", "independent-critic", "asset-producer", "design-engineer",
-    "analytics-specialist", "design-director",
+    "analytics-specialist", "design-director", "brand-strategist",
 }
 REQUIRED_FILES = [
     "README.md", "START-HERE.md", "PROMPT.md", "CLAUDE.md", "USAGE.md", "AGENTS.md",
@@ -51,6 +51,8 @@ REQUIRED_FILES = [
     *[f"templates/project-context/{n}" for n in ("PRD.md", "ARCHITECTURE.md",
                                                  "ARCHITECTURE-ESSENTIALS.md", "AGENTS.md",
                                                  "CODEX.md", "PROGRESS-AND-DECISIONS.md")],
+    "templates/BRAND.md", "library/schemas/brand-dna.schema.json",
+    "library/schemas/taste-profile.schema.json",
     "library/README.md", "library/registry/skills.registry.json",
     "library/registry/ROUTING-DIGEST.md", "library/tools/project.py", "library/tools/verify.py",
 ]

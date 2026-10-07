@@ -6,7 +6,9 @@ Unrouted skills (48) are in `UNROUTED.md` — capabilities, invoked explicitly, 
 | Skill | Phase | Line |
 |---|---|---|
 | `olympus-design-director` | always | Orchestrate an evidence-based redesign through intake, audit, one direction resolved at intake, human appro… |
+| `competitor-profiling` | diagnose | Profile a business's competitors from their URLs — offer, positioning, pricing, and how they present themse… |
 | `customer-research` | diagnose | Synthesise existing customer evidence (interviews, tickets, reviews, surveys) into the user, their primary … |
+| `product-marketing` | diagnose | Structure a business's offer, audience, ICP and positioning into a reusable context the Brand DNA is built on |
 | `reference-deconstruction` | diagnose | Extracts transferable visual logic without copying expression. |
 | `site-architecture` | diagnose | Plan the page/route hierarchy, navigation model, URL structure, and internal linking so the redesign has a … |
 | `ui-ux` | diagnose | Establishes product cognition, task journeys, progressive disclosure, recovery states, mobile priorities, a… |

@@ -2,42 +2,53 @@
 
 ## What this system does
 
-Apollo runs an evidence-based website redesign as a single Design Director that routes work
-through explicit approval gates, activating one skill or specialist at a time instead of
+Apollo takes a business from its Brand DNA — who it serves, how it should look and sound,
+what it needs made — to a verified, built design, as a single Design Director that routes
+work through explicit approval gates, activating one skill or specialist at a time instead of
 loading every design capability at once. The method, token rules, and loop bounds are in
 `AGENTS.md`; the routing table is in `ARCHITECTURE.md`; the skill and agent source of truth
 is `library/`.
 
 ## The gates, in three sentences
 
-**Gate A** freezes the brief and the single design direction (resolved from the questionnaire
-and the taste profile, not by generating options). **Gate B** confirms that direction before
+**Gate A** freezes the brief, the list of products to make, and the single design direction
+(resolved from the Brand DNA, not by generating options). **Gate B** confirms that direction before
 any production code is written. **Gate C** is the client review of the verified
 implementation, with before/after evidence, asset provenance, and how success will be
 measured.
 
+## Connect a project (once per project)
+
+```bash
+python library/tools/apollo.py attach <PROJECT_FOLDER>
+```
+
+In Claude Code, also install the plugin once per machine (`/plugin marketplace add
+<this folder or RustamG16/Apollo>`, then `/plugin install apollo@apollo`) — or start the
+session with `claude --add-dir <this folder>`.
+
 ## Kickoff — Claude Code
 
-Attach this folder and the website project to the session, then send:
+Open the project, then send:
 
-> Read `CLAUDE.md`, then `ARCHITECTURE-ESSENTIALS.md`, `AGENTS.md`, and `START-HERE.md`
-> completely before acting. The website project is `<PROJECT_FOLDER>`; the initial target is
-> `<ROUTE_OR_PAGE>`. Do not inspect or edit production code yet. First ask the intake
-> questions from `START-HERE.md`. Act as one Design Director, route skills from
-> `library/registry/ROUTING-DIGEST.md`, respect Gates A/B/C and the loop bounds in
-> `AGENTS.md`, and write project artifacts to `<PROJECT_FOLDER>/.olympus/`.
+> Read `.olympus/APOLLO.md`, then Apollo's `ARCHITECTURE-ESSENTIALS.md`, `AGENTS.md` and
+> `START-HERE.md` completely before acting. Act as the Apollo Design Director for
+> `<BUSINESS / PROJECT>`. Start with the Brand DNA (the `brand-strategist` agent) unless
+> `.olympus/brand-dna.json` exists, then ask only the intake questions it leaves open. Do not
+> edit production code yet. Route skills from `library/registry/ROUTING-DIGEST.md`, respect
+> Gates A/B/C and the loop bounds in `AGENTS.md`, and write everything to `.olympus/`.
 
 ## Kickoff — Codex
 
-Attach both folders to one Codex task and send:
+Open the project, then send:
 
-> Use the attached Apollo folder as read-only operating context for this redesign. Read
-> `ARCHITECTURE-ESSENTIALS.md`, `AGENTS.md`, and `START-HERE.md` completely before acting.
-> The website project is `<PROJECT_FOLDER>` and the initial target is `<ROUTE_OR_PAGE>`. Do
-> not inspect or edit production code yet. First ask the intake questions from
-> `START-HERE.md`. Use one Design Director, route skills from
-> `library/registry/ROUTING-DIGEST.md` (skills are `$name` tokens), respect Gates A/B/C and
-> the loop bounds in `AGENTS.md`, and write artifacts to `<PROJECT_FOLDER>/.olympus/`.
+> Read `.olympus/APOLLO.md` and follow its read order before acting. Act as the Apollo Design
+> Director for `<BUSINESS / PROJECT>`. Start with the Brand DNA (the brand-strategist
+> instructions in Apollo's `library/agents/brand-strategist.md`) unless
+> `.olympus/brand-dna.json` exists, then ask only the intake questions it leaves open. Do not
+> edit production code yet. Route skills from Apollo's `library/registry/ROUTING-DIGEST.md`
+> (skills are `$name` tokens), respect Gates A/B/C and the loop bounds in `AGENTS.md`, and
+> write everything to `.olympus/`.
 
 Codex-specific mechanics (skill tokens, sandboxed agents, the opt-in MCP server) are in
 `PROMPT.md`. Do not start a new task for every phase; the durable `.olympus/` artifacts are
