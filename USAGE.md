@@ -39,7 +39,9 @@ Attach both folders to one Codex task and send:
 > `library/registry/ROUTING-DIGEST.md` (skills are `$name` tokens), respect Gates A/B/C and
 > the loop bounds in `AGENTS.md`, and write artifacts to `<PROJECT_FOLDER>/.olympus/`.
 
-`PROMPT.md` is the same prompt plus the Codex host-mechanics quick reference.
+Codex-specific mechanics (skill tokens, sandboxed agents, the opt-in MCP server) are in
+`PROMPT.md`. Do not start a new task for every phase; the durable `.olympus/` artifacts are
+the handoff if a new task becomes necessary.
 
 ## Follow-up commands (either host)
 

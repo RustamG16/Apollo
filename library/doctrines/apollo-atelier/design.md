@@ -50,8 +50,11 @@ tool (see Instrument).
 
 ## Who builds it
 
-The `apollo-atelier` agent owns the actual design work under this doctrine. This file is
-reference documentation, not an executable skill — read it, don't invoke it.
+No agent is named after a doctrine. The `design-director` selects this doctrine at intake
+(from the client's `.olympus/brand-dna.json` or the brief), commits its tokens as numbers in
+the project's `DESIGN.md`, and `design-engineer` builds from that. New media is planned by
+`asset-director` and produced by `asset-producer`. This file is reference documentation,
+not an executable skill — read it, don't invoke it.
 
 ## Related
 

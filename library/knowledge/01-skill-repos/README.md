@@ -42,4 +42,4 @@ Note that `Owl-Listener` also publishes `ai-design-skills` — a **different** r
 only to confirm it is wired up and used.
 
 Against the ~97 locally indexed skills, the genuine gaps are ranked in
-[../02-tool-inventories/gap-analysis.md](../02-tool-inventories/gap-analysis.md).
+[../../../unused/library/knowledge/02-tool-inventories/gap-analysis.md](../../../unused/library/knowledge/02-tool-inventories/gap-analysis.md).

@@ -4,9 +4,6 @@ animate/RECIPES.md
 animate/SKILL.md
 animation-vocabulary/SKILL.md
 apollo-bootstrap/SKILL.md
-apollo-cyberpunk-athens-skin/SKILL.md
-apollo-dashboard-sync/SKILL.md
-apollo-loadout-sync/SKILL.md
 apollo-style-picker/SKILL.md
 apollo-taste-interview/SKILL.md
 apple-design/SKILL.md
@@ -198,14 +195,6 @@ garden-gpt-image-2/scripts/edit.js
 garden-gpt-image-2/scripts/generate.js
 garden-gpt-image-2/scripts/package.json
 garden-gpt-image-2/scripts/shared.js
-garden-kb-retriever/README.md
-garden-kb-retriever/README.zh-CN.md
-garden-kb-retriever/SKILL.md
-garden-kb-retriever/manifest.json
-garden-kb-retriever/references/excel_analysis.md
-garden-kb-retriever/references/excel_reading.md
-garden-kb-retriever/references/pdf_reading.md
-garden-kb-retriever/scripts/convert_pdf_to_images.py
 garden-web-design-engineer/README.md
 garden-web-design-engineer/README.zh-CN.md
 garden-web-design-engineer/SKILL.md

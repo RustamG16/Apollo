@@ -1,7 +1,7 @@
 # Routing digest
 
 One line per pipeline-active skill. Route from this table, then follow the two-stage skill-loading rule in `AGENTS.md`.
-Unrouted skills (53) are in `UNROUTED.md` — capabilities, invoked explicitly, not part of the pipeline.
+Unrouted skills (49) are in `UNROUTED.md` — capabilities, invoked explicitly, not part of the pipeline.
 
 | Skill | Phase | Line |
 |---|---|---|
@@ -16,9 +16,6 @@ Unrouted skills (53) are in `UNROUTED.md` — capabilities, invoked explicitly, 
 | `apple-design` | direct | Applies Apple-inspired purpose, agency, familiarity, simplicity, typography, material restraint, and fluid … |
 | `award-rubric` | direct | Independently critique and score the single frozen website direction against an approved brief using design… |
 | `concept-studio` | direct | Produce the one website redesign direction the approved brief specifies — in full: layout, typography, medi… |
-| `ethical-gamification-systems` | direct | Creates meaningful missions, mastery, rewards, and collections with explicit spend and anti-coercion safegu… |
-| `taste-first-experience-design` | direct | Turns visual preference evidence into editable Creative DNA, plain-language choices, and a bounded mission … |
-| `agent-identity-and-portfolio` | prepare | Defines consistent agent identities, transparent inventory, and evidence-backed marketplace portfolios. |
 | `asset-director` | prepare | Plans required media, provenance, rights, and fallbacks. |
 | `gsap-core` | prepare | Adds responsive, reduced-motion-aware tweens. |
 | `gsap-plugins` | prepare | Routes approved plugin use such as Flip, Draggable, or SplitText. |

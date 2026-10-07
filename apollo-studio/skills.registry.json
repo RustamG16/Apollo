@@ -1,21 +1,6 @@
 {
   "skills": [
     {
-      "id": "agent-identity-and-portfolio",
-      "name": "Agent Identity and Portfolio",
-      "phase": "prepare",
-      "group": "Agents",
-      "defaultOn": false,
-      "description": "Defines consistent agent identities, transparent inventory, and evidence-backed marketplace portfolios.",
-      "runtimePrompt": "Keep agent identity memorable but truthful. Specify a reproducible avatar bible, capability and configuration limits, typed inventory availability, and portfolio claims linked to inspectable evidence. Reject fabricated achievements, endorsements, credentials, or deceptive persona claims.",
-      "category": "11-meta-system",
-      "hosts": [
-        "studio"
-      ],
-      "status": "stub",
-      "enabled": true
-    },
-    {
       "id": "animate",
       "name": "animate",
       "phase": "unrouted",
@@ -56,57 +41,6 @@
       "group": "Meta",
       "defaultOn": false,
       "description": "First-use analysis, audit, and install flow for Apollo_claude in a target project. Detects whether this is a first install or a re-audit, inventories the project's stack and existing six-files coverage, writes an audit doc, then offers to improve the existing project or scaffold a new one with the design roster ready. Trigger phrases - \"set up Apollo here\", \"install Apollo_claude in this project\", \"audit this project\", \"bootstrap Apollo\". Idempotent - safe to re-run.",
-      "runtimePrompt": "",
-      "category": "11-meta-system",
-      "hosts": [
-        "claude",
-        "codex",
-        "studio"
-      ],
-      "status": "active",
-      "enabled": false
-    },
-    {
-      "id": "apollo-cyberpunk-athens-skin",
-      "name": "apollo-cyberpunk-athens-skin",
-      "phase": "unrouted",
-      "group": "Meta",
-      "defaultOn": false,
-      "description": "Regenerate dashboard/css/tokens.cyberpunk-athens.css from the Cyberpunk Athens doctrine's token block, whenever the doctrine file changes. This is the mechanical derivation step CLAUDE.md's \"Never hand-edit tokens.cyberpunk-athens.css directly\" rule depends on. Trigger phrases - \"regenerate the cyberpunk athens skin\", \"sync the dashboard css to the doctrine\", \"update the skin css\". Do NOT use for - defining or changing the doctrine itself (that's the apollo-cyberpunk-athens agent's job; this skill only translates what's already decided there into CSS).",
-      "runtimePrompt": "",
-      "category": "11-meta-system",
-      "hosts": [
-        "claude",
-        "codex",
-        "studio"
-      ],
-      "status": "active",
-      "enabled": false
-    },
-    {
-      "id": "apollo-dashboard-sync",
-      "name": "apollo-dashboard-sync",
-      "phase": "unrouted",
-      "group": "Meta",
-      "defaultOn": false,
-      "description": "The single write path into a project's dashboard state.json. Any agent that starts, updates, blocks, or completes a task calls this skill rather than editing state.json directly - this is what keeps writes from racing across agents. Trigger phrases - this is invoked by other agents/skills as part of normal work, not typically by the user directly.",
-      "runtimePrompt": "",
-      "category": "11-meta-system",
-      "hosts": [
-        "claude",
-        "codex",
-        "studio"
-      ],
-      "status": "active",
-      "enabled": false
-    },
-    {
-      "id": "apollo-loadout-sync",
-      "name": "apollo-loadout-sync",
-      "phase": "unrouted",
-      "group": "Meta",
-      "defaultOn": false,
-      "description": "The single write path for a per-agent skill loadout. Activating, saving, or clearing a named setup goes through this skill rather than hand-editing agent files or .apollo/loadouts/ — it is what keeps the dashboard's \"Save\" button, this skill, and scripts/apply-loadout.ps1 producing byte-identical output. Trigger phrases - \"activate the awwwards-launch loadout\", \"apply this setup\", \"clear the active loadout\", \"sync the loadout to the agent files\". Usually invoked as part of dashboard work, not directly by the user.",
       "runtimePrompt": "",
       "category": "11-meta-system",
       "hosts": [
@@ -320,21 +254,6 @@
       "enabled": true
     },
     {
-      "id": "ethical-gamification-systems",
-      "name": "Ethical Gamification Systems",
-      "phase": "direct",
-      "group": "Progression",
-      "defaultOn": false,
-      "description": "Creates meaningful missions, mastery, rewards, and collections with explicit spend and anti-coercion safeguards.",
-      "runtimePrompt": "Reward creative value, mastery, and reusable outcomes rather than attention or token spend. Make costs and evidence states explicit; reject false urgency, streak punishment, automatic paid retries, misleading status, and mechanics that add complexity without user benefit.",
-      "category": "11-meta-system",
-      "hosts": [
-        "studio"
-      ],
-      "status": "stub",
-      "enabled": true
-    },
-    {
       "id": "find-animation-opportunities",
       "name": "find-animation-opportunities",
       "phase": "unrouted",
@@ -377,23 +296,6 @@
       "description": "面向 GPT Image 2 的图像生成 / 编辑技能。可在 3 种环境下使用：(A) Garden 本地模式，通过 OpenAI 兼容接口直接出图并落盘；(B) Host-Native 模式，把本 Skill 当作提示词工程指引，把渲染好的 prompt 交给宿主 Agent 自带的图像工具出图；(C) Advisor 模式，宿主无任何图像工具时退化为高质量 prompt 顾问。涵盖 18 大类、80+ 个结构化模板，覆盖海报 / UI / 产品 / 信息图 / 学术图 / 技术架构图 / 漫画 / 头像 / 流程板 / 电影分镜 / IP 周边 / 编辑工作流等场景。",
       "runtimePrompt": "",
       "category": "04-media-generation",
-      "hosts": [
-        "claude",
-        "codex",
-        "studio"
-      ],
-      "status": "active",
-      "enabled": false
-    },
-    {
-      "id": "garden-kb-retriever",
-      "name": "garden-kb-retriever",
-      "phase": "unrouted",
-      "group": "Meta",
-      "defaultOn": false,
-      "description": "面向本地知识库目录的检索和问答助手。核心流程：(1)分层索引导航 (2)遇到PDF/Excel时必须先读取references学习处理方法 (3)处理文件后再检索。按文件类型组合使用 grep、Read、pdfplumber、pandas 进行渐进式检索，避免整文件加载。用户问题涉及\"从知识库目录回答问题/检索信息/查资料\"时使用。",
-      "runtimePrompt": "",
-      "category": "11-meta-system",
       "hosts": [
         "claude",
         "codex",
@@ -1314,21 +1216,6 @@
       ],
       "status": "active",
       "enabled": false
-    },
-    {
-      "id": "taste-first-experience-design",
-      "name": "Taste-First Experience Design",
-      "phase": "direct",
-      "group": "Experience",
-      "defaultOn": false,
-      "description": "Turns visual preference evidence into editable Creative DNA, plain-language choices, and a bounded mission setup.",
-      "runtimePrompt": "Elicit taste through concrete visual choices, preserve provenance and uncertainty, produce an editable Style Profile, explain consequences in plain language, recommend the smallest capable squad, and progressively disclose advanced controls without hiding cost or permissions.",
-      "category": "01-design-direction",
-      "hosts": [
-        "studio"
-      ],
-      "status": "stub",
-      "enabled": true
     },
     {
       "id": "ui-ux",

@@ -3,8 +3,6 @@ MANIFEST.txt
 animate/RECIPES.md
 animate/SKILL.md
 apollo-bootstrap/SKILL.md
-apollo-dashboard-sync/SKILL.md
-apollo-loadout-sync/SKILL.md
 apollo-style-picker/SKILL.md
 apollo-taste-interview/SKILL.md
 asset-director/SKILL.md

@@ -33,8 +33,6 @@ routing decision, one per phase.
   `emil-design-eng`, `seo-audit`). Use the installed plugin skill of that name; do not look
   for a `.claude/skills/` copy. `apple-design` and `emil-design-eng` are `defaultOn` in the
   registry, so treat the plugin skill as active, not optional.
-- **Three skills are studio-only stubs** (`taste-first-experience-design`,
-  `ethical-gamification-systems`, `agent-identity-and-portfolio`) — no body to load here.
 - **PowerShell** scripts run via `powershell -File scripts\<name>.ps1` (e.g.
   `validate-system.ps1`, `validate-project-context.ps1`).
 - **Rebuild the generated trees** after any `library/` change:
@@ -55,6 +53,7 @@ routing decision, one per phase.
   `apollo-studio/knowledge/skills/` — they are generated from `library/` and overwritten.
 - Write project evidence into this repo. It goes in `<website-project>/.olympus/`.
 - Touch `apollo-studio/data/`, `evidence/`, `handoffs/`, `public/media/`, or any `.olympus/`.
+- Read or route from `unused/` — it is retired material, indexed in `unused/README.md`.
 
 ## For humans
 

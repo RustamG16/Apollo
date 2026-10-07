@@ -1,6 +1,6 @@
 # Start Olympus
 
-Read this file completely before taking action. Then read `AGENTS.md` and `ARCHITECTURE.md` in this folder. Treat this folder as read-only reusable operating context. Put every project-specific artifact in `<website-project>/.olympus/`.
+Read this file completely before taking action. It comes third in the read order defined in `ARCHITECTURE-ESSENTIALS.md` (essentials → `AGENTS.md` → this file); open `ARCHITECTURE.md` only when a decision needs the full routing table. Treat this folder as read-only reusable operating context. Put every project-specific artifact in `<website-project>/.olympus/`.
 
 ## Your role
 

@@ -96,7 +96,7 @@ foreach ($agent in $customAgents) {
 # --- unification checks --------------------------------------------------
 
 # scope the TODO scan to system-authored files; generated + vendored skill trees are excluded
-$excludeRe = '\\third-party\\|\\.validation-libs\\|\\.git\\|\\node_modules\\|\\test_projects\\|\\.skill-backups\\|\\.olympus\\|\\.impeccable\\|\\library\\skills\\|\\library\\knowledge\\|\\.claude\\skills\\|\\.agents\\skills\\|\\apollo-studio\\knowledge\\skills\\'
+$excludeRe = '\\third-party\\|\\.validation-libs\\|\\.git\\|\\node_modules\\|\\test_projects\\|\\unused\\|\\.olympus\\|\\library\\skills\\|\\library\\knowledge\\|\\.claude\\skills\\|\\.agents\\skills\\|\\apollo-studio\\knowledge\\skills\\'
 $unfinishedMarkers = @('\[' + 'TODO', 'TODO' + ':')
 $todoHits = Get-ChildItem -LiteralPath $systemRoot -Recurse -File |
     Where-Object { $_.FullName -notmatch $excludeRe } |
@@ -168,7 +168,6 @@ function Test-LineCap($rel, $cap) {
 }
 Test-LineCap 'library/registry/ROUTING-DIGEST.md' 200
 Test-LineCap 'CLAUDE.md' 120
-Test-LineCap 'CODEX.md' 120
 Test-LineCap 'PROMPT.md' 120
 
 # CLAUDE.md must not duplicate doctrine sentences from AGENTS.md (>15 words shared verbatim)

@@ -1,6 +1,5 @@
 GENERATED.md
 MANIFEST.txt
-agents/agent-identity-and-portfolio/README.md
 content/copy-editing/README.md
 content/copywriting/README.md
 craft/apple-design/README.md
@@ -26,7 +25,6 @@ engineering/superpowers-verification-before-completion/README.md
 engineering/superpowers-writing-plans/README.md
 evidence/reference-deconstruction/README.md
 evidence/ux-evidence-audit/README.md
-experience/taste-first-experience-design/README.md
 measurement/design-analytics/README.md
 media/garden-gpt-image-2/README.md
 media/higgsfield-brandkit/README.md
@@ -39,10 +37,6 @@ media/higgsfield-websites/README.md
 media/higgsfield-youtube-thumbnail/README.md
 media/image/README.md
 meta/apollo-bootstrap/README.md
-meta/apollo-cyberpunk-athens-skin/README.md
-meta/apollo-dashboard-sync/README.md
-meta/apollo-loadout-sync/README.md
-meta/garden-kb-retriever/README.md
 meta/superpowers-writing-skills/README.md
 motion/animate/README.md
 motion/animation-vocabulary/README.md
@@ -73,7 +67,6 @@ motion/video/README.md
 orchestration/olympus-design-director/README.md
 production/asset-director/README.md
 production/webgl-experience/README.md
-progression/ethical-gamification-systems/README.md
 qa/superpowers-receiving-code-review/README.md
 qa/superpowers-requesting-code-review/README.md
 research/customer-research/README.md

@@ -111,6 +111,7 @@ so it works unmodified regardless of clone path or OS — no per-device edits ne
 | `config/MCP-SETUP.md` | Optional external MCP connections and their activation rules. |
 | `test_projects/` | Device-specific test/demo projects. **Gitignored** — each one is its own independent git repo, never tracked or pushed as part of Apollo. |
 | `scripts/` | PowerShell validators (`validate-system.ps1`, `validate-project-context.ps1`). |
+| `unused/` | Retired plans, skills and experiments, kept instead of deleted. Nothing reads it; see `unused/README.md`. |
 
 The skill library also vendors the requested
 [Impeccable](https://github.com/pbakaus/impeccable) package and
