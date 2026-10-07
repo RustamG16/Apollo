@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "apollo": {
-      "command": "node",
-      "args": ["D:/Analyst_Designer/Apollo/apollo-studio/mcp-server.mjs"]
-    }
-  }
-}
