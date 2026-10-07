@@ -30,10 +30,10 @@ try {
   const created = after.projects.find(project => !before.projects.some(old => old.id === project.id));
   check('create adds exactly one project', after.projects.length, before.projects.length + 1);
   assert.ok(created, 'project creation must succeed before checking route consistency');
-  check('created project owns URL', await evaluate(page, 'location.hash'), '#/projects/' + encodeURIComponent(created.id) + '/work');
+  check('created project and chat own URL', await evaluate(page, 'location.hash'), '#/projects/' + encodeURIComponent(created.id) + '/work/' + encodeURIComponent(created.chats[0].id));
   check('created project owns Work heading', await evaluate(page, 'document.querySelector("#work-title").textContent'), created.name);
   check('created project owns route trail', await evaluate(page, 'document.querySelector("#route-trail").textContent.includes(' + JSON.stringify(created.name) + ')'), true);
-  check('created project owns Oracle context', await evaluate(page, 'document.querySelector("#shell-oracle-context").textContent'), created.name + ' / Work');
+  check('created project and chat own Oracle context', await evaluate(page, 'document.querySelector("#shell-oracle-context").textContent'), created.name + ' / Work / ' + created.chats[0].name);
   check('created project focuses prompt', await evaluate(page, 'document.activeElement.id'), 'work-prompt');
   await page.send('Page.reload'); await settle(page, 2500);
   check('new project reload retains Work heading', await evaluate(page, 'document.querySelector("#work-title").textContent'), created.name);

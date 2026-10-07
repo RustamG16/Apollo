@@ -193,6 +193,12 @@ function saveArtifact(state, input, timestamp) {
 
 function applyOperation(state, operation, timestamp, approver) {
   switch (operation.type) {
+    case 'batch': {
+      requireValue(Array.isArray(operation.operations) && operation.operations.length > 0 && operation.operations.length <= 20, 'Batch requires 1–20 operations.');
+      requireValue(operation.operations.every(item => item.type !== 'batch'), 'Nested batches are not supported.');
+      for (const item of operation.operations) applyOperation(state, item, timestamp, approver);
+      break;
+    }
     case 'artifact.save': saveArtifact(state, operation.artifact, timestamp); break;
     case 'record.put': {
       requireValue(recordCollections.includes(operation.collection), 'Record collection is not writable.');
@@ -256,6 +262,10 @@ function applyOperation(state, operation, timestamp, approver) {
         bindings.artifacts[id] = dependency.hash;
       }
       if (operation.gate === 'C') {
+        for(const kind of ['plan','design']) {
+          const declared=artifact.content[`${kind}Hash`];
+          if(declared) requireValue(state.artifacts.some(a=>a.projectId===artifact.projectId&&a.kind===kind&&a.hash===declared&&bindings.artifacts[a.id]===declared), `Output ${kind} hash does not match the current approved ${kind}.`);
+        }
         const evidence = operation.evidence;
         requireValue(evidence && Array.isArray(evidence.provenance) && evidence.provenance.some(hasText) && Array.isArray(evidence.limitations) && evidence.limitations.every(hasText) && hasText(evidence.userReview), 'Gate C requires provenance, limitations and user review evidence.');
         const reviews = state.reviews.filter(item => item.artifactId === artifact.id && item.artifactHash === artifact.hash && item.status === 'complete' && item.evidence?.some(hasText) && hasText(item.authorId));

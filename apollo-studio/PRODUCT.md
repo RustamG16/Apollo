@@ -29,7 +29,7 @@ The first release is a local, low-cost prototype in the existing Node/vanilla ap
 - Oracle can explain, ask, propose, navigate, schedule, and prepare changes, but cannot silently approve gates, mutate production, grant permissions, spend externally, publish, or deploy.
 - Playground tests drafts in isolation; configuration changes require explicit application to the approved plan. Material changes invalidate downstream approvals by artifact hash.
 - The prototype preserves existing Node 20+ ESM, local `/api/*` behavior, protected data and knowledge, existing Lucide/GSAP bundles, and deterministic demo/live distinction.
-- Excluded: React migration, CrewAI, WebGL, managed cloud execution, accounts/billing, marketplace, external asset generation, unattended publication, and deployment.
+- Excluded: React migration, CrewAI, WebGL, managed cloud execution, accounts/billing, marketplace, unattended publication, and deployment. Generated imagery is allowed only for the interface's own assets (preview heroes, the neural core, the Apollo Totem guide), generated with Higgsfield and recorded in `.olympus/asset-sources/`.
 
 ## Brand Commitments
 
@@ -50,6 +50,20 @@ Apollo is task-first, precise, local-first, and honest about what is simulated, 
 3. Draft, test, and production execution are visibly and technically separated.
 4. Advanced control is progressive disclosure; graphs explain evidence rather than navigate.
 5. Every result is accompanied by provenance, verification, limitations, and approval state.
+
+## Superseded: chat-first rebuild (2026-09-16)
+
+*Superseded on 2026-10-03 by Journey v2 (below).* Apollo's primary entry was a standalone or project chat. The Constructor is an optional project tool, never a prerequisite for ordinary work. Projects own shared knowledge, workflows, runs, and results; folders are one-level sidebar organization only. The default journey is New chat → goal → clarification → brief → approach → work → result → continued chat. Raw gates, budgets, routing, and diagnostics remain available under technical details, while the primary controls use plain language and preserve existing canonical IDs and hash-bound semantics.
+
+## Journey v2 (2026-10-03, current)
+
+The owner asked for the interface in the journey-v2 imagery, implemented screen for screen. The shell is the 210px-class near-black rail with nine destinations, a warm-paper workspace, a persistent Oracle dock and right-hand inspectors. On top of that come Operator-style brain-network views of agents and skills, and guided tutorials presented by a generated mascot, the Apollo Totem.
+
+- **Journey:** Home → Oracle intake (8 questions) → Brief and Design DNA → Master plan (5 stages over the 12-phase workflow) → Configure (swap slot skills, guardrails) → Playground (real deterministic compare) → Apply → Work (run approvals) → Results (Gate C).
+- **Customisation:** agents and skills are customised in drafts (Configure, Agents). A draft becomes a non-active loadout so Playground can compare it. "Save/Apply to plan" activates it and writes agent guardrails, always after a confirmation.
+- **Brain views:** System → Architecture (neural tree per stage), Agents (radial and neural brain), Knowledge (typed connections). Each graph has a list twin.
+- **Tutorials:** six totem-guided tours run on the real screens. `npm run tutorials` replays them with Playwright and writes videos, screenshots and instruction pages to `public/tutorials/`.
+- **Not included:** XP, points and achievements.
 
 ## Accessibility & Inclusion
 

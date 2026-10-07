@@ -103,3 +103,9 @@ Apollo Studio currently presents a tested global shell around several incompatib
 ## Design problem statement
 
 Rebuild Apollo Studio as one comprehensible task system—not a shell layered over a control panel—so a user can choose a project and chat, describe a goal, understand each question and decision, inspect the exact six-role Savra workflow, test configuration safely, execute only after approval, and review evidence without learning Apollo's internal architecture. The supplied continuous-journey screenshots determine hierarchy and node-view logic; success is the complete working journey at desktop and mobile, not isolated route or visual-metric passes.
+
+## User-rejected visual finish — corrective audit
+
+Observed: no bundled fonts or @font-face; Arial Narrow is the first body/UI family. New rail contains no SVG icons; six-role inspector list contains only role name and status. System graph is hidden after six large role disclosures. Knowledge graph is hidden by default at every width. These are high-confidence visual implementation gaps against canonical05/09/10, despite prior functional PASS WITH NOTES. That verdict does not constitute visual acceptance.
+
+Preserve working journal, routing, gates, data, six-role manifest, keyboard and offline behavior. Correct one direction, no alternatives or intake. New visual correction scope authorized by user's explicit rejection. Missing assets are locally served OFL fonts, not user product media; no generated imagery is needed.

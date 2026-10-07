@@ -28,6 +28,7 @@ numerals in data contexts; motion that delays a state change.
 --font-mono : IDs, codes, values, keys, paths
 --scale     : 1.200 (minor third)
 --sizes     : 11 / 12 / 13 / 14 / 16 / 20 / 28
+--display-max : 28px (the largest step of --sizes; run.json design_system is checked against it)
 --leading   : 1.35 UI / 1.5 prose blocks
 --label     : 11px, uppercase, +0.1em tracking, dim
 --bg        : neutral, slightly cool

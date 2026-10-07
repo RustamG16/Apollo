@@ -31,6 +31,7 @@ heroes; more than two typefaces.
 --leading      : 1.55 body / 1.05 display / 1.35 UI
 --tracking     : display -0.02em / body 0 / small caps +0.08em
 --sizes        : 72 / 56 / 40 / 28 / 20 / 16 / 13 - pick one, never interpolate
+--display-max   : 72px (the largest step of --sizes; run.json design_system is checked against it)
 --paper        : warm off-white (never pure #fff)
 --ink          : near-black, warm-shifted (never pure #000)
 --ink-2        : 62% ink

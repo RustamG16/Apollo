@@ -1,4 +1,7 @@
 import http from 'node:http';
+import { savraReceipt } from './receipts.mjs';
+import { projectJourney } from './journey.mjs';
+import { prepareFixture } from './fixture-output.mjs';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { readFile, stat } from 'node:fs/promises';
@@ -67,7 +70,7 @@ async function verifyRuntime() {
     runtimeDetail = 'Could not reach the models endpoint: ' + (error.message || 'unknown error') + '.';
   }
 }
-const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml' };
+const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif', '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf', '.mp4': 'video/mp4', '.txt': 'text/plain; charset=utf-8', '.md': 'text/markdown; charset=utf-8' };
 const execFileAsync = promisify(execFile);
 
 const json = (response, status, body) => {
@@ -196,12 +199,14 @@ async function handleOracle(request, response, planOnly = false) {
     const prompt = String(body.prompt || '').trim();
     if (prompt.length < 3 || prompt.length > 30_000) return json(response, 400, { error: 'Prompt must contain 3–30,000 characters.' });
     const budget = Math.min(300_000, Math.max(1000, Number(body.budget) || 30_000));
-    const plan = await buildPlan(prompt, budget);
+    const canonicalState=body.projectId?await (await projectJourney(body.projectId)).read():null;
+    const configuration=canonicalState?.artifacts.findLast(a=>a.kind==='plan')?.content?.configuration;
+    const plan = await buildPlan(prompt, budget, {loadoutId:configuration?.id||body.loadoutId,roleSettings:configuration?.roleSettings,projectId:body.projectId,canonicalState});
     await publishEvent({ host: 'apollo', kind: 'plan.created', summary: `Oracle created a ${plan.steps.length}-specialist plan.`, data: { systemId: plan.system.id, systemName: plan.system.name, specialists: plan.steps.map(step => step.name), requestedBudget: plan.requestedBudget, allocatedBudget: plan.allocatedBudget, phase: 'plan', agent: 'Apollo Orchestrator', tokens: 0 } });
     if (planOnly) return json(response, 200, { mode: 'plan', plan });
     const approved = new Set(Array.isArray(body.approvedAgentIds) ? body.approvedAgentIds : []);
-    const executable = plan.steps.filter(step => !step.approval || approved.has(step.id));
-    const waiting = plan.steps.filter(step => step.approval && !approved.has(step.id));
+    const executable = plan.steps.filter(step => step.status !== 'blocked' && (!step.approval || approved.has(step.id)));
+    const waiting = plan.steps.filter(step => !executable.includes(step));
     const runId = crypto.randomUUID();
     await publishEvent({ host: 'apollo', kind: 'run.started', runId, summary: `${apiKey && body.mode !== 'demo' ? 'Live' : 'Demo'} Oracle run started.`, data: { systemId: plan.system.id, systemName: plan.system.name, specialists: executable.map(step => step.name), waiting: waiting.map(step => step.name), phase: 'plan', agent: 'Apollo Orchestrator', tokens: 0 } });
     if (!apiKey || body.mode === 'demo') {
@@ -213,7 +218,7 @@ async function handleOracle(request, response, planOnly = false) {
       for (const step of executable) await publishEvent({ host: 'apollo', kind: 'run.progress', runId, summary: `${step.name} simulated in demo mode.`, data: { systemId: plan.system.id, phase: step.phase, agent: step.name, tokens: 0, status: 'simulated' } });
       const output = await recordSystemOutput(plan.system.id, { name: `Oracle · ${prompt.slice(0, 72)}`, type: 'Oracle run', status: 'Demo', runId, summary: 'Planned route preview; no model tokens were consumed.', content: answer });
       await publishEvent({ host: 'apollo', kind: 'run.completed', runId, summary: 'Demo Oracle run completed without model usage.', data: { systemId: plan.system.id, outputId: output.id, phase: 'synthesize', agent: 'Apollo Orchestrator', tokens: 0 } });
-      return json(response, 200, { runId, mode: 'demo', plan, waiting, output, trace: executable.map(step => ({ agent: step.name, status: 'simulated', budget: step.budget, skills: step.skills })), answer });
+      return json(response, 200, { runId, mode: 'demo', plan, waiting, output, trace: executable.map(step => ({ agent: step.name, phase:step.phase, status: 'simulated', budget: step.budget, skills: step.skills })), answer });
     }
     const model = allowedModels.has(body.model) ? body.model : defaultModel;
     const loadoutContext = plan.context || '';
@@ -271,7 +276,8 @@ async function integrations() {
 
 async function serveStatic(request, response) {
   const url = new URL(request.url, `http://${request.headers.host}`);
-  const requested = url.pathname === '/' ? 'index.html' : decodeURIComponent(url.pathname.slice(1));
+  // The legacy interface is kept reachable at /legacy/ while the journey-v2 UI replaces it.
+  const requested = url.pathname === '/' ? 'index.html' : url.pathname === '/legacy' || url.pathname === '/legacy/' ? 'legacy/index.html' : decodeURIComponent(url.pathname.slice(1));
   const resolved = normalize(join(root, requested));
   if (!resolved.startsWith(normalize(root))) return json(response, 403, { error: 'Forbidden.' });
   try {
@@ -287,10 +293,32 @@ await Promise.all([initializeKnowledge(), initializeEventStore(), initializeSyst
 
 const server = http.createServer(async (request, response) => {
   const url = new URL(request.url, `http://${request.headers.host}`);
-  const path = url.pathname;
+  // /legacy/api/* is the same API, so the retained legacy UI and its test suite keep working.
+  const path = url.pathname.startsWith('/legacy/api/') ? url.pathname.slice('/legacy'.length) : url.pathname;
   try {
     if (request.method === 'GET' && path === '/api/config') return json(response, 200, { mode: runtimeMode, modeDetail: runtimeDetail, models: [...allowedModels], skills: await allSkills(), tools, plugins, presets });
+    if (request.method === 'GET' && path === '/api/systems/savra-v2-system/receipt') {
+      try { return json(response, 200, await savraReceipt(url.searchParams.get('artifact'))); }
+      catch (error) { return json(response, 400, { error: error.message }); }
+    }
     if (request.method === 'GET' && path === '/api/workspace') return json(response, 200, await listWorkspace());
+    if (request.method === 'POST' && path === '/api/workflow/compare') {
+      const input=await readJson(request);const loadouts=await listLoadouts();
+      if(![input.a,input.b].every(id=>loadouts.loadouts.some(l=>l.id===id)))throw new Error('Choose two available loadouts.');
+      const started=performance.now();
+      const [a,b]=await Promise.all([buildPlan(input.prompt,30000,{loadoutId:input.a,roleSettings:input.rolesA}),buildPlan(input.prompt,30000,{loadoutId:input.b,roleSettings:input.rolesB})]);
+      const checks=[{name:'Same workflow version',pass:a.workflow.id===b.workflow.id&&a.workflow.version===b.workflow.version},{name:'Six functional roles',pass:a.workflow.roles.length===6&&b.workflow.roles.length===6},{name:'Build stays gated',pass:[a,b].every(p=>p.steps.find(s=>s.phase==='build').status==='blocked')},{name:'Sequential author and critic',pass:[a,b].every(p=>p.concurrency===1)}];
+      return json(response,200,{mode:'deterministic',productionApplied:false,a,b,checks,elapsedMs:Math.round(performance.now()-started),limitations:['Routing and approval contract checks only. Visual quality, model output quality and provider cost are not measured.']});
+    }
+    const journeyMatch=path.match(/^\/api\/projects\/([a-z0-9-]+)\/journey$/);
+    const fixtureMatch=path.match(/^\/api\/projects\/([a-z0-9-]+)\/journey\/fixture$/);
+    if(fixtureMatch && request.method==='POST') {
+      const writer=await projectJourney(fixtureMatch[1]);return json(response,200,prepareFixture(await writer.read(),fixtureMatch[1]));
+    }
+    if(journeyMatch && ['GET','POST'].includes(request.method)) {
+      const writer=await projectJourney(journeyMatch[1]);
+      return json(response,200,request.method==='GET'?await writer.read():await writer.dispatch(await readJson(request)));
+    }
     if (request.method === 'POST' && path === '/api/projects') return json(response, 201, await createProject(await readJson(request)));
     const projectChatMatch = path.match(/^\/api\/projects\/([a-z0-9-]+)\/chats$/);
     if (request.method === 'POST' && projectChatMatch) return json(response, 201, await createChat(projectChatMatch[1], await readJson(request)));

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-15T20:50:45.437Z",
-  "durationMs": 28570,
+  "generatedAt": "2026-09-16T18:33:22.236Z",
+  "durationMs": 28503,
   "thresholds": {
     "T1": {
       "name": "Rendered text below 13px",
@@ -109,6 +109,7 @@
         ],
         "all": [
           "Arial Narrow",
+          "monospace",
           "ui-monospace"
         ]
       }
@@ -176,7 +177,7 @@
   },
   "perViewport": {
     "390x844": {
-      "textNodes": 1327,
+      "textNodes": 1909,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
@@ -184,54 +185,55 @@
       "boundaryWorst": [],
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 39,
-      "controls": 467,
+      "unmeasuredControls": 213,
+      "controls": 431,
       "targetFloor": 44,
       "overflow": [],
       "clipped": [],
       "families": [
         "Arial Narrow",
+        "monospace",
         "ui-monospace"
       ],
       "perView": {
         "work": {
-          "textNodes": 33,
+          "textNodes": 36,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 9,
+          "unmeasuredControls": 11,
           "dominantSize": [
             "16.0",
-            11
+            13
           ]
         },
         "architecture": {
-          "textNodes": 348,
+          "textNodes": 636,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 6,
+          "unmeasuredControls": 125,
           "dominantSize": [
             "16.0",
-            205
+            415
           ]
         },
         "systems": {
-          "textNodes": 188,
+          "textNodes": 225,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 2,
           "dominantSize": [
             "16.0",
-            109
+            138
           ]
         },
         "playground": {
-          "textNodes": 249,
+          "textNodes": 406,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -239,43 +241,43 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            209
+            247
           ]
         },
         "agents": {
-          "textNodes": 80,
+          "textNodes": 122,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 26,
           "dominantSize": [
             "13.0",
-            46
+            53
           ]
         },
         "knowledge": {
-          "textNodes": 349,
+          "textNodes": 399,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 28,
+          "dominantSize": [
+            "16.0",
+            222
+          ]
+        },
+        "oracle": {
+          "textNodes": 54,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
           "unmeasuredControls": 8,
           "dominantSize": [
-            "16.0",
-            176
-          ]
-        },
-        "oracle": {
-          "textNodes": 49,
-          "belowThirteen": 0,
-          "contrastFails": 0,
-          "targetsBelowFloor": 0,
-          "targetsBelow32": 0,
-          "unmeasuredControls": 1,
-          "dominantSize": [
             "14.0",
-            20
+            21
           ]
         },
         "runs": {
@@ -305,7 +307,7 @@
       }
     },
     "820x1180": {
-      "textNodes": 1334,
+      "textNodes": 1927,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
@@ -313,54 +315,55 @@
       "boundaryWorst": [],
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 24,
-      "controls": 485,
+      "unmeasuredControls": 205,
+      "controls": 444,
       "targetFloor": 44,
       "overflow": [],
       "clipped": [],
       "families": [
         "Arial Narrow",
+        "monospace",
         "ui-monospace"
       ],
       "perView": {
         "work": {
-          "textNodes": 40,
+          "textNodes": 54,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 9,
+          "unmeasuredControls": 13,
           "dominantSize": [
             "16.0",
-            14
+            22
           ]
         },
         "architecture": {
-          "textNodes": 348,
+          "textNodes": 636,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 125,
           "dominantSize": [
             "16.0",
-            205
+            415
           ]
         },
         "systems": {
-          "textNodes": 188,
+          "textNodes": 225,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 2,
           "dominantSize": [
             "16.0",
-            109
+            138
           ]
         },
         "playground": {
-          "textNodes": 249,
+          "textNodes": 406,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -368,43 +371,43 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            209
+            247
           ]
         },
         "agents": {
-          "textNodes": 80,
+          "textNodes": 122,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 26,
           "dominantSize": [
             "13.0",
-            46
+            53
           ]
         },
         "knowledge": {
-          "textNodes": 349,
+          "textNodes": 399,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 28,
+          "dominantSize": [
+            "16.0",
+            222
+          ]
+        },
+        "oracle": {
+          "textNodes": 54,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
           "unmeasuredControls": 8,
           "dominantSize": [
-            "16.0",
-            176
-          ]
-        },
-        "oracle": {
-          "textNodes": 49,
-          "belowThirteen": 0,
-          "contrastFails": 0,
-          "targetsBelowFloor": 0,
-          "targetsBelow32": 0,
-          "unmeasuredControls": 1,
-          "dominantSize": [
             "14.0",
-            20
+            21
           ]
         },
         "runs": {
@@ -434,7 +437,7 @@
       }
     },
     "1280x800": {
-      "textNodes": 1334,
+      "textNodes": 1927,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
@@ -442,54 +445,55 @@
       "boundaryWorst": [],
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 16,
-      "controls": 493,
+      "unmeasuredControls": 197,
+      "controls": 452,
       "targetFloor": 36,
       "overflow": [],
       "clipped": [],
       "families": [
         "Arial Narrow",
+        "monospace",
         "ui-monospace"
       ],
       "perView": {
         "work": {
-          "textNodes": 40,
+          "textNodes": 54,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 5,
           "dominantSize": [
             "16.0",
-            14
+            22
           ]
         },
         "architecture": {
-          "textNodes": 348,
+          "textNodes": 636,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 125,
           "dominantSize": [
             "16.0",
-            205
+            415
           ]
         },
         "systems": {
-          "textNodes": 188,
+          "textNodes": 225,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 2,
           "dominantSize": [
             "16.0",
-            109
+            138
           ]
         },
         "playground": {
-          "textNodes": 249,
+          "textNodes": 406,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -497,43 +501,43 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            209
+            247
           ]
         },
         "agents": {
-          "textNodes": 80,
+          "textNodes": 122,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 26,
           "dominantSize": [
             "13.0",
-            46
+            53
           ]
         },
         "knowledge": {
-          "textNodes": 349,
+          "textNodes": 399,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 28,
+          "dominantSize": [
+            "16.0",
+            222
+          ]
+        },
+        "oracle": {
+          "textNodes": 54,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
           "unmeasuredControls": 8,
           "dominantSize": [
-            "16.0",
-            176
-          ]
-        },
-        "oracle": {
-          "textNodes": 49,
-          "belowThirteen": 0,
-          "contrastFails": 0,
-          "targetsBelowFloor": 0,
-          "targetsBelow32": 0,
-          "unmeasuredControls": 1,
-          "dominantSize": [
             "14.0",
-            20
+            21
           ]
         },
         "runs": {
@@ -563,7 +567,7 @@
       }
     },
     "1440x900": {
-      "textNodes": 1334,
+      "textNodes": 1927,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
@@ -571,54 +575,55 @@
       "boundaryWorst": [],
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 16,
-      "controls": 493,
+      "unmeasuredControls": 197,
+      "controls": 452,
       "targetFloor": 36,
       "overflow": [],
       "clipped": [],
       "families": [
         "Arial Narrow",
+        "monospace",
         "ui-monospace"
       ],
       "perView": {
         "work": {
-          "textNodes": 40,
+          "textNodes": 54,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 5,
           "dominantSize": [
             "16.0",
-            14
+            22
           ]
         },
         "architecture": {
-          "textNodes": 348,
+          "textNodes": 636,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 125,
           "dominantSize": [
             "16.0",
-            205
+            415
           ]
         },
         "systems": {
-          "textNodes": 188,
+          "textNodes": 225,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 2,
           "dominantSize": [
             "16.0",
-            109
+            138
           ]
         },
         "playground": {
-          "textNodes": 249,
+          "textNodes": 406,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -626,43 +631,43 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            209
+            247
           ]
         },
         "agents": {
-          "textNodes": 80,
+          "textNodes": 122,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 26,
           "dominantSize": [
             "13.0",
-            46
+            53
           ]
         },
         "knowledge": {
-          "textNodes": 349,
+          "textNodes": 399,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 28,
+          "dominantSize": [
+            "16.0",
+            222
+          ]
+        },
+        "oracle": {
+          "textNodes": 54,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
           "unmeasuredControls": 8,
           "dominantSize": [
-            "16.0",
-            176
-          ]
-        },
-        "oracle": {
-          "textNodes": 49,
-          "belowThirteen": 0,
-          "contrastFails": 0,
-          "targetsBelowFloor": 0,
-          "targetsBelow32": 0,
-          "unmeasuredControls": 1,
-          "dominantSize": [
             "14.0",
-            20
+            21
           ]
         },
         "runs": {
@@ -692,7 +697,7 @@
       }
     },
     "1920x1080": {
-      "textNodes": 1334,
+      "textNodes": 1927,
       "belowThirteen": 0,
       "contrastFails": 0,
       "contrastFailsUnverifiable": 0,
@@ -700,54 +705,55 @@
       "boundaryWorst": [],
       "targetsBelowFloor": 0,
       "targetsBelow32": 0,
-      "unmeasuredControls": 16,
-      "controls": 493,
+      "unmeasuredControls": 197,
+      "controls": 452,
       "targetFloor": 36,
       "overflow": [],
       "clipped": [],
       "families": [
         "Arial Narrow",
+        "monospace",
         "ui-monospace"
       ],
       "perView": {
         "work": {
-          "textNodes": 40,
+          "textNodes": 54,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 5,
           "dominantSize": [
             "16.0",
-            14
+            22
           ]
         },
         "architecture": {
-          "textNodes": 348,
+          "textNodes": 636,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 125,
           "dominantSize": [
             "16.0",
-            205
+            415
           ]
         },
         "systems": {
-          "textNodes": 188,
+          "textNodes": 225,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 2,
           "dominantSize": [
             "16.0",
-            109
+            138
           ]
         },
         "playground": {
-          "textNodes": 249,
+          "textNodes": 406,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
@@ -755,43 +761,43 @@
           "unmeasuredControls": 3,
           "dominantSize": [
             "14.0",
-            209
+            247
           ]
         },
         "agents": {
-          "textNodes": 80,
+          "textNodes": 122,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
-          "unmeasuredControls": 1,
+          "unmeasuredControls": 26,
           "dominantSize": [
             "13.0",
-            46
+            53
           ]
         },
         "knowledge": {
-          "textNodes": 349,
+          "textNodes": 399,
+          "belowThirteen": 0,
+          "contrastFails": 0,
+          "targetsBelowFloor": 0,
+          "targetsBelow32": 0,
+          "unmeasuredControls": 28,
+          "dominantSize": [
+            "16.0",
+            222
+          ]
+        },
+        "oracle": {
+          "textNodes": 54,
           "belowThirteen": 0,
           "contrastFails": 0,
           "targetsBelowFloor": 0,
           "targetsBelow32": 0,
           "unmeasuredControls": 8,
           "dominantSize": [
-            "16.0",
-            176
-          ]
-        },
-        "oracle": {
-          "textNodes": 49,
-          "belowThirteen": 0,
-          "contrastFails": 0,
-          "targetsBelowFloor": 0,
-          "targetsBelow32": 0,
-          "unmeasuredControls": 1,
-          "dominantSize": [
             "14.0",
-            20
+            21
           ]
         },
         "runs": {
@@ -829,12 +835,13 @@
     "unmeasuredControls": 0
   },
   "sizeHistogram": {
-    "13.0": 364,
-    "14.0": 335,
-    "16.0": 565,
-    "20.0": 20,
-    "24.0": 21,
-    "28.0": 8
+    "13.0": 380,
+    "14.0": 458,
+    "16.0": 1002,
+    "18.7": 2,
+    "20.0": 21,
+    "24.0": 29,
+    "28.0": 14
   },
   "css": {
     "files": [
@@ -928,97 +935,121 @@
     {
       "view": "work",
       "tag": "button",
-      "cls": "primary-action",
+      "cls": "quiet-action",
       "inDisclosure": false
     },
     {
-      "view": "architecture",
-      "tag": "button",
-      "cls": "primary-action",
-      "inDisclosure": false
-    },
-    {
-      "view": "systems",
-      "tag": "button",
-      "cls": "primary-action",
-      "inDisclosure": false
-    },
-    {
-      "view": "playground",
-      "tag": "button",
-      "cls": "icon-action remove-variant",
-      "inDisclosure": false
-    },
-    {
-      "view": "playground",
-      "tag": "button",
-      "cls": "icon-action remove-variant",
-      "inDisclosure": false
-    },
-    {
-      "view": "playground",
-      "tag": "button",
-      "cls": "primary-action",
-      "inDisclosure": false
-    },
-    {
-      "view": "agents",
-      "tag": "button",
-      "cls": "primary-action",
-      "inDisclosure": false
-    },
-    {
-      "view": "knowledge",
+      "view": "work",
       "tag": "button",
       "cls": "quiet-action",
       "inDisclosure": false
     },
     {
-      "view": "knowledge",
-      "tag": "input",
-      "cls": "",
-      "inDisclosure": false
-    },
-    {
-      "view": "knowledge",
-      "tag": "input",
-      "cls": "",
-      "inDisclosure": false
-    },
-    {
-      "view": "knowledge",
-      "tag": "select",
-      "cls": "",
-      "inDisclosure": false
-    },
-    {
-      "view": "knowledge",
-      "tag": "textarea",
-      "cls": "",
-      "inDisclosure": false
-    },
-    {
-      "view": "knowledge",
-      "tag": "textarea",
-      "cls": "",
-      "inDisclosure": false
-    },
-    {
-      "view": "knowledge",
+      "view": "work",
       "tag": "button",
-      "cls": "run-action",
+      "cls": "quiet-action",
       "inDisclosure": false
     },
     {
-      "view": "knowledge",
+      "view": "work",
       "tag": "button",
-      "cls": "primary-action",
+      "cls": "icon-action",
       "inDisclosure": false
     },
     {
-      "view": "oracle",
+      "view": "work",
       "tag": "button",
-      "cls": "primary-action",
+      "cls": "quiet-action work-inspector-action",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "quiet-action",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "quiet-action",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "quiet-action",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "quiet-action",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "quiet-action",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "div",
+      "cls": "receipt-viewport",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "receipt-node",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "receipt-node",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "receipt-node",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "receipt-node",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "receipt-node",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "receipt-node",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "receipt-node",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "receipt-node",
+      "inDisclosure": false
+    },
+    {
+      "view": "architecture",
+      "tag": "button",
+      "cls": "receipt-node",
       "inDisclosure": false
     }
   ],

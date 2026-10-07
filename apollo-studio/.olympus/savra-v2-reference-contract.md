@@ -1,7 +1,7 @@
 # Savra recovery: route and control contract
 
 Date: 2026-09-15
-Status: prepared for the explicit approval checkpoint in implementation plan Task 4 Step 5. Production implementation has not started.
+Status: approved for implementation by the user continuation instruction. Implemented recovery is undergoing the final bounded verification pass. Original contract retained below.
 
 ## Evidence and precedence
 
@@ -87,3 +87,4 @@ Follow Tasks 1–8 in their written order using red/green tests. Verify the dete
 ## Approval checkpoint
 
 Task 4 Step 5 explicitly says: “No production code begins until the user confirms that the plan matches the supplied examples.” Approval is requested for the matrix and node contract above. This checkpoint is why production Tasks 1–3 have not yet been edited despite appearing earlier in the numbered plan. Once approved, execute Tasks 1–8 without another concept/intake round.
+

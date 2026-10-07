@@ -88,6 +88,14 @@ test('Gate C cannot pass without real review evidence and independently authored
   await assert.rejects(apply(writer, { type: 'gate.approve', gate: 'C', artifactId: 'output', actor: user }), /evidence|review/i);
 });
 
+test('Gate C rejects output whose declared plan hash is obsolete despite passing reviews',async()=>{
+ const writer=createStateWriter({initialState:createFixtureState(),clock:fixedClock});await approvedChain(writer);
+ await apply(writer,artifact('old-output','output',{planHash:'obsolete',designHash:(await writer.read()).artifacts.find(a=>a.id==='design').hash}));
+ const output=(await writer.read()).artifacts.find(a=>a.id==='old-output');
+ for(const kind of ['qa','independent'])await apply(writer,{type:'record.put',collection:'reviews',record:{id:kind,projectId:'project-demo',artifactId:output.id,artifactHash:output.hash,kind,status:'complete',verdict:'PASS',evidence:['executed-check'],authorId:kind}});
+ await assert.rejects(apply(writer,{type:'gate.approve',gate:'C',artifactId:output.id,actor:user,evidence:{provenance:['local'],limitations:['fixture'],userReview:'Reviewed'}}),/plan.*hash/i);
+});
+
 test('stale proposals fail without partial changes; snapshots cannot mutate writer state', async () => {
   const writer = createStateWriter({ initialState: createFixtureState(), clock: fixedClock });
   await writer.dispatch({ type: 'proposal.create', id: 'old', operation: artifact('brief', 'brief', {}) });

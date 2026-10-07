@@ -37,7 +37,7 @@ try {
   await navigate(page, server.base + '/?switch-project#/projects/' + encodeURIComponent(created.project.id) + '/work'); await settle(page, 2500);
   check('deep link selects requested project', await evaluate(page, 'document.querySelector("#work-title").textContent'), created.project.name);
   await evaluate(page, `[...document.querySelectorAll('.project-item')].find(button => button.querySelector('strong').textContent === ${JSON.stringify(project.name)}).click()`); await settle(page, 200);
-  check('legacy project selection updates deep link', await evaluate(page, 'location.hash'), '#/projects/' + encodeURIComponent(project.id) + '/work');
+  check('project selection includes the selected chat in its deep link', await evaluate(page, 'location.hash'), '#/projects/' + encodeURIComponent(project.id) + '/work/' + encodeURIComponent(project.chats[0].id));
   assert.ok((await evaluate(page, 'document.querySelector("#route-trail").textContent')).includes(project.name)); checks.push('legacy project selection updates trail');
   await evaluate(page, `location.hash = '#/projects/not-a-project/work'`); await settle(page, 120);
   check('missing project unavailable', await evaluate(page, 'document.body.dataset.shellState'), 'unavailable');

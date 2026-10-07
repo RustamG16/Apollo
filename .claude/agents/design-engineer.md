@@ -2,7 +2,7 @@
 name: design-engineer
 description: Implements the selected concept and verifies a bounded website slice.
 tools: Read, Glob, Grep, Bash, WebFetch, Write, Edit, NotebookEdit
-skills: [impeccable, emil-design-eng, webgl-experience, gsap-core, gsap-timeline, gsap-scrolltrigger, gsap-react, gsap-frameworks, gsap-performance, gsap-plugins]
+skills: [impeccable, emil-design-eng, awwwards-web-design, visual-qa, webgl-experience, gsap-core, gsap-timeline, gsap-scrolltrigger, gsap-react, gsap-frameworks, gsap-performance, gsap-plugins]
 ---
 
 ## Activation

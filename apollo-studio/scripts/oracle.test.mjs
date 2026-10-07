@@ -7,7 +7,7 @@ import {
   createOracleIntake,
   removeOracleToken,
   setOracleMode,
-} from '../public/modules/oracle.js';
+} from '../public/legacy/modules/oracle.js';
 
 test('context tokens follow page and selection while removable optional tokens stay dismissed', () => {
   const initial = buildOracleContext({ project: { id: 'p1', name: 'Atlas' }, route: { id: 'work', trail: ['Work'] }, selection: { kind: 'artifact', id: 'a1', label: 'Homepage brief' } });

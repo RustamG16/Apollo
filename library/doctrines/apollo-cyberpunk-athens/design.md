@@ -41,6 +41,7 @@ attack).
 --ground-black : pure black, character-portrait background only
 --halo-ring    : same cyan as crack-primary, thin stroke, concentric
 --type-display : classical-leaning serif or carved-letterform face
+--display-max  : none of its own - this is a skin; it inherits the base doctrine's --display-max
 --type-ui      : neutral grotesque (shared with Instrument when skinning system UI)
 --tracking     : identity/department labels get wide tracking, +0.15em to +0.22em
 --motion       : glow pulse (slow, ambient) and crack-reveal-on-focus only

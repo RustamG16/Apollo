@@ -199,3 +199,9 @@ The following map is exact for the approved prototype. New behavior belongs in f
 ## Research basis
 
 No claim in this plan depends on a current external trend. The binding evidence is local: `PRODUCT-ARCHITECTURE.md`, `CONTINUOUS-UI-CONTRACT.md`, and the numbered routing reference.
+
+## Visual correction after user rejection — committed before UI edit
+
+Restore canonical05/09/10 composition: same210px rail; labelled Lucide icons; warm workspace; Barlow body16px and Barlow Condensed headings40px/700; IBM Plex Mono state/evidence labels13px. Self-host fonts with OFL source records. Use role rows with ordinal, icon/name, responsibility, activation, skill summary; selected row has a restrained semantic tint and right inspector. Keep functional editing controls and draft mediation unchanged. Inspector20rem. Heading40px is an explicit exception to doctrine28px: supplied Configure screenshot and user rejection show the previous compact ramp erased the required editorial hierarchy. Narrow heading32px; body remains16px. No marketing hero.
+
+System/Knowledge are supporting routes already; their desktop canvas is visible on entry with inspector alongside and synchronized readable list below. Graph is optional at <820px and list remains first. No fake execution states or edges. Local semantic colors preserved. Shared spacing/radii/motion tokens unchanged. Verify actual loaded font faces,9rail SVGs,6role SVGs,role metadata,canvas discovery; retain full journey and accessibility thresholds.
