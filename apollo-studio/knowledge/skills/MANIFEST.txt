@@ -11,6 +11,8 @@ direction/award-rubric/README.md
 direction/concept-studio/README.md
 docs/garden-beautiful-article/README.md
 docs/garden-web-video-presentation/README.md
+engineering/implementing-secret-scanning-with-gitleaks/README.md
+engineering/open-sourcing/README.md
 engineering/project-scaffold/README.md
 engineering/superpowers-brainstorming/README.md
 engineering/superpowers-dispatching-parallel-agents/README.md

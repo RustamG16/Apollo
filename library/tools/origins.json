@@ -9,6 +9,11 @@
       "windows": "C:\\Users\\Rustam Gurbanov\\.claude\\skills",
       "env": "PERSONAL_SKILLS_DIR",
       "note": "Still the global Claude load path. Read-only donor; never modified by this system."
+    },
+    "vendored_2026_10_09": {
+      "open-sourcing": "trailofbits/skills@82fe8226252622fa807643bdca1710901198553a plugins/open-sourcing — CC-BY-SA-4.0",
+      "implementing-secret-scanning-with-gitleaks": "mukul975/Anthropic-Cybersecurity-Skills@54a798831d2266a3ca61ce68a7acb80b81160d57 skills/implementing-secret-scanning-with-gitleaks — Apache-2.0, .py scripts excluded",
+      "rejected": "secondsky/claude-skills security-headers-configuration — ServerSignature in .htaccess (500 error), HSTS includeSubDomains+preload by default, deprecated X-XSS-Protection"
     }
   }
 }

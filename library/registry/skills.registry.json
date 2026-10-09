@@ -1327,5 +1327,39 @@
     "name": "competitor-profiling",
     "description": "Profile a business's competitors from their URLs — offer, positioning, pricing, and how they present themselves visually — so the brand can stand apart. Routed to the diagnose phase via brand-strategist.",
     "runtimePrompt": "Profile two to four competitors from URLs you actually fetch: offer, positioning, price signals, and look-and-feel. Cite each URL. Write profiles to .olympus/research/ and summarise each in brand-dna.json -> business.competitors. Never describe a site you did not load."
+  },
+  {
+    "id": "open-sourcing",
+    "name": "open-sourcing",
+    "description": "Trail of Bits release-readiness workflow: full-history secret scanning before anything else, licensing, docs, and GitHub Actions hardening (SHA-pinned actions, least-privilege permissions, zizmor/actionlint). Use before publishing a repo or wiring a deploy pipeline. Vendored; see APOLLO-NOTES.md.",
+    "phase": "unrouted",
+    "group": "Engineering",
+    "defaultOn": false,
+    "runtimePrompt": "",
+    "category": "06-ops-security",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "implementing-secret-scanning-with-gitleaks",
+    "name": "implementing-secret-scanning-with-gitleaks",
+    "description": "Gitleaks secret scanning: full-history scans, pre-commit hooks, CI integration, custom rules, baselines and the rotate-then-clean remediation flow. Read APOLLO-NOTES.md first — it corrects deprecated commands and unsafe defaults in the vendored body.",
+    "phase": "unrouted",
+    "group": "Engineering",
+    "defaultOn": false,
+    "runtimePrompt": "",
+    "category": "06-ops-security",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
   }
 ]
