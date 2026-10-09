@@ -14,6 +14,7 @@ docs/garden-web-video-presentation/README.md
 engineering/implementing-secret-scanning-with-gitleaks/README.md
 engineering/open-sourcing/README.md
 engineering/project-scaffold/README.md
+engineering/static-site-apache-deploy/README.md
 engineering/superpowers-brainstorming/README.md
 engineering/superpowers-dispatching-parallel-agents/README.md
 engineering/superpowers-executing-plans/README.md

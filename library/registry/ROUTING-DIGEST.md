@@ -1,7 +1,7 @@
 # Routing digest
 
 One line per pipeline-active skill. Route from this table, then follow the two-stage skill-loading rule in `AGENTS.md`.
-Unrouted skills (50) are in `UNROUTED.md` — capabilities, invoked explicitly, not part of the pipeline.
+Unrouted skills (51) are in `UNROUTED.md` — capabilities, invoked explicitly, not part of the pipeline.
 
 | Skill | Phase | Line |
 |---|---|---|

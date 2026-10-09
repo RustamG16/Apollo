@@ -1362,6 +1362,23 @@
       ],
       "status": "active",
       "enabled": false
+    },
+    {
+      "id": "static-site-apache-deploy",
+      "name": "static-site-apache-deploy",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "Deploy a static site to Apache/cPanel (GoDaddy): security audit, root-served build, .htaccess (redirects, HTTPS gate, headers, Report-Only CSP, caching, compression), SHA-pinned rsync-over-SSH GitHub Actions pipeline, and an email-safe DNS cutover with AutoSSL. Authored from the Convenium Studio deploy, 2026-10-09.",
+      "runtimePrompt": "",
+      "category": "06-ops-security",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
     }
   ],
   "tools": [

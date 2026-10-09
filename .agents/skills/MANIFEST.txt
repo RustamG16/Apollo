@@ -910,6 +910,9 @@ site-architecture/evals/evals.json
 site-architecture/references/mermaid-templates.md
 site-architecture/references/navigation-patterns.md
 site-architecture/references/site-type-templates.md
+static-site-apache-deploy/SKILL.md
+static-site-apache-deploy/references/deploy-workflow-template.yml
+static-site-apache-deploy/references/htaccess-template.conf
 superpowers-brainstorming/SKILL.md
 superpowers-brainstorming/scripts/frame-template.html
 superpowers-brainstorming/scripts/helper.js
