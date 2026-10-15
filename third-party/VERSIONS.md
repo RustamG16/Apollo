@@ -12,6 +12,8 @@ These upstream skill folders are copied into `.agents/skills/` so `system1` rema
 | `ui-ux` support files (`references/`, `scripts/`, `templates/`, `evals/`) | Vendored 2026-10-08 from the operator's personal `~/.codex/skills/ui-ux`; only its `SKILL.md` had been copied before. Upstream not recorded. | — |
 | `open-sourcing` (Trail of Bits, plugin 0.1.2) | https://github.com/trailofbits/skills (`plugins/open-sourcing`) — CC BY-SA 4.0, vendored 2026-10-09 into `library/skills/06-ops-security/` | `82fe8226252622fa807643bdca1710901198553a` |
 | `implementing-secret-scanning-with-gitleaks` | https://github.com/mukul975/Anthropic-Cybersecurity-Skills (not affiliated with Anthropic) — Apache-2.0, vendored 2026-10-09, `.py` scripts excluded, corrections in `APOLLO-NOTES.md` | `54a798831d2266a3ca61ce68a7acb80b81160d57` |
+| `octalysis-gamification` | https://github.com/eykd/vance-ts (`.claude/skills/octalysis-gamification`) — ISC per `package.json` (no LICENSE file in repo), vendored 2026-10-14 into `library/skills/01-design-direction/` | `548afca81ea8ee7f0924d19b002968af1c6857af` |
+| `game-feel` | https://github.com/gamedev-skills/awesome-gamedev-agent-skills (`skills/disciplines/game-feel`) — Apache-2.0, vendored 2026-10-14 into `library/skills/03-motion-3d/`; licence + NOTICE in `third-party/AWESOME-GAMEDEV-SKILLS-*.txt`; changes listed in its `APOLLO-NOTES.md` | `0a70cfc64672d512c5b5b6006b5dcb5cf90dbdbd` |
 
 Vendored on 2026-08-09 (Impeccable, GSAP). Review upstream releases, diffs, and licenses before updating. Do not auto-update during a client project.
 

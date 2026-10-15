@@ -1379,6 +1379,74 @@
       ],
       "status": "active",
       "enabled": false
+    },
+    {
+      "id": "octalysis-gamification",
+      "name": "octalysis-gamification",
+      "phase": "unrouted",
+      "group": "Direction",
+      "defaultOn": false,
+      "description": "Analyse or design motivation with Yu-kai Chou's Octalysis Framework: 8 core drives, white vs black hat, player lifecycle and player types (levels 1-3). The audit and strategy layer under gamified-ui. Vendored from eykd/vance-ts (ISC).",
+      "runtimePrompt": "",
+      "category": "01-design-direction",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "ethical-gamification-systems",
+      "name": "ethical-gamification-systems",
+      "phase": "unrouted",
+      "group": "Direction",
+      "defaultOn": false,
+      "description": "Design non-coercive gamification: mission loops, mastery-based progress, utility rewards, bounded token/credit spend, truthful status labels (verified, user-reported, simulated, estimated, unavailable) and a dark-pattern rejection checklist. The ethics gate for octalysis-gamification and gamified-ui. Authored by the owner (EXTERNAL_KNOWLEDGEBASE), replaces the retired stub.",
+      "runtimePrompt": "",
+      "category": "01-design-direction",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "game-feel",
+      "name": "game-feel",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Add juice: layered, transient feedback (pop, shake, flash, number pop) scaled by small/medium/large importance tiers. Engine examples upstream; APOLLO-NOTES.md maps them to GSAP/CSS and adds reduced-motion and a11y rules. Vendored from gamedev-skills/awesome-gamedev-agent-skills (Apache-2.0).",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "gamified-ui",
+      "name": "gamified-ui",
+      "phase": "unrouted",
+      "group": "Web Build",
+      "defaultOn": false,
+      "description": "Design and build gamified web/app UI - XP and levels, streaks, achievements, progress, quests, leaderboards, celebration tiers - with every number committed to DESIGN.md before code, all states designed, and an ethics gate. Original Apollo skill, 2026-10-14.",
+      "runtimePrompt": "",
+      "category": "02-web-build",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
     }
   ],
   "tools": [

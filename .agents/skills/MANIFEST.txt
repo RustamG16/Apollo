@@ -36,7 +36,14 @@ design-analytics/SKILL.md
 design-analytics/agents/openai.yaml
 design-analytics/references/event-quality.md
 emil-design-eng/SKILL.md
+ethical-gamification-systems/SKILL.md
+ethical-gamification-systems/agents/openai.yaml
 find-animation-opportunities/SKILL.md
+game-feel/APOLLO-NOTES.md
+game-feel/SKILL.md
+game-feel/references/feedback-recipes.md
+gamified-ui/SKILL.md
+gamified-ui/references/sources.md
 garden-beautiful-article/README.md
 garden-beautiful-article/README.zh-CN.md
 garden-beautiful-article/SKILL.md
@@ -608,6 +615,10 @@ implementing-secret-scanning-with-gitleaks/references/workflows.md
 improve-animations/AUDIT.md
 improve-animations/PLAN-TEMPLATE.md
 improve-animations/SKILL.md
+octalysis-gamification/SKILL.md
+octalysis-gamification/references/analysis_methodology.md
+octalysis-gamification/references/core_drives.md
+octalysis-gamification/references/game_techniques.md
 olympus-design-director/SKILL.md
 olympus-design-director/agents/openai.yaml
 olympus-design-director/references/routing-contract.md
