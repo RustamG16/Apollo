@@ -1,0 +1,14 @@
+{
+  "name": "apollo",
+  "owner": {
+    "name": "Rustam Gurbanov"
+  },
+  "description": "Apollo design system \u2014 one plugin, rooted at this repository.",
+  "plugins": [
+    {
+      "name": "apollo",
+      "source": "./",
+      "description": "Gated design agency: a Brand DNA strategist, one Design Director and five specialists that take a business from intake to a verified, built design."
+    }
+  ]
+}

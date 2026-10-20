@@ -2,7 +2,5 @@
 enabled = true
 max_concurrent_threads_per_session = 2
 
-[mcp_servers.apollo]
-command = "node"
-args = ["D:/Analyst_Designer/Apollo/apollo-studio/mcp-server.mjs"]
-required = true
+# The Apollo Studio MCP server is optional and machine-specific. To enable it,
+# copy the block from .codex/config.example.toml and set the absolute path.

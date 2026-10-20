@@ -8,5 +8,11 @@ tmp/
 *.log
 apollo-studio/data/*.jsonl
 
-# Nested repo with its own origin — github.com/RustamG16/EcoPowerTech
-test_projects/EcoPowerTech/
+# test_projects/* are device-specific, each an independent git repo with its
+# own origin (or none yet) — never tracked or pushed as part of Apollo.
+test_projects/
+
+# The operator's own default taste, written by Apollo Studio. Client Brand DNA
+# lives in <project>/.olympus/brand-dna.json, never in this repo.
+library/design-dna/*
+!library/design-dna/.gitkeep

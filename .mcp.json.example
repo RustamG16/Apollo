@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "apollo": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${CLAUDE_PROJECT_DIR}/apollo-studio/mcp-server.mjs"],
+      "env": {}
+    }
+  }
+}
