@@ -1,10 +1,9 @@
 ---
 name: scroll-scrubbed-visual-sequence
-description: Build reversible scroll-controlled visual transformations with a pinned or sticky stage, normalized progress, and video, image-sequence, canvas, SVG, or DOM renderers. Use for hero transformations, product assembly, interface state walkthroughs, object rotation, diagrams, or photo sequences that must move forward and backward with native scrolling.
+description: "Builds reversible scroll-controlled transformations on a pinned or sticky stage with normalized progress (video, image sequence, canvas, SVG or DOM) for heroes, assembly and walkthroughs."
 license: MIT
 ---
-
-> **Apollo:** vendored from `MengTo/Skills` (MIT). Read `APOLLO-NOTES.md` for provenance and how this skill fits the Olympus pipeline.
+> **convenium.design:** vendored from `MengTo/Skills` (MIT). Read `CONVENIUM-NOTES.md` for provenance and how this skill fits the Olympus pipeline.
 
 # Scroll-Scrubbed Visual Sequence
 

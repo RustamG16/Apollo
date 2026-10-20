@@ -4,7 +4,7 @@ Copy everything below into a new Codex task attached to `D:\Analyst_Designer\Apo
 
 ---
 
-Implement the approved Apollo Oracle-first prototype in `D:\Analyst_Designer\Apollo\apollo-studio`.
+Implement the approved convenium.design Oracle-first prototype in `D:\Analyst_Designer\Apollo\convenium-studio`.
 
 Read these sources in order:
 
@@ -17,10 +17,10 @@ Read these sources in order:
 7. `D:\Analyst_Designer\Apollo\New_upgradePlan\IMPLEMENTATION-PLAN.md`
 8. `D:\Analyst_Designer\Apollo\New_upgradePlan\MASTERPLAN.md`
 9. `D:\Analyst_Designer\Apollo\New_upgradePlan\SAVRA-VERIFICATION.md`
-10. `D:\Analyst_Designer\Apollo\apollo-studio\ARCHITECTURE-ESSENTIALS.md`
-11. `D:\Analyst_Designer\Apollo\apollo-studio\PRODUCT.md`
-12. `D:\Analyst_Designer\Apollo\apollo-studio\DESIGN.md`
-13. `D:\Analyst_Designer\Apollo\apollo-studio\PROGRESS-AND-DECISIONS.md`
+10. `D:\Analyst_Designer\Apollo\convenium-studio\ARCHITECTURE-ESSENTIALS.md`
+11. `D:\Analyst_Designer\Apollo\convenium-studio\PRODUCT.md`
+12. `D:\Analyst_Designer\Apollo\convenium-studio\DESIGN.md`
+13. `D:\Analyst_Designer\Apollo\convenium-studio\PROGRESS-AND-DECISIONS.md`
 
 This is an explicitly authorized implementation request. The product direction is approved; do not restart intake or generate alternative concepts. Use the Olympus abridged trail and record Gates A and B as `approved-in-plan`. Gate C remains a real user review.
 
@@ -41,7 +41,7 @@ The approved direction is:
 - Knowledge is searchable first and graphical second.
 - System Node Control is the advanced cinematic graph view; ordinary work never requires graph literacy.
 - A bottom-center contextual Oracle composer persists across primary views and visibly lists its removable context sources.
-- The first implementation is a local, low-cost prototype using real Apollo artifacts and explicit deterministic fixtures. Do not claim cloud autonomy.
+- The first implementation is a local, low-cost prototype using real convenium.design artifacts and explicit deterministic fixtures. Do not claim cloud autonomy.
 
 Preserve the exact Olympus operating logic that produced the stronger Savra run: one director, bounded specialists, one direction, design tokens before layout, build from the plan, author QA, independent critic, maximum two repair cycles. Use the existing six runtime roles. Specialists may not delegate; author and critic are sequential.
 
@@ -55,7 +55,7 @@ Before editing production code:
 
 Then execute `New_upgradePlan/IMPLEMENTATION-PLAN.md` in order with test-first, independently reviewable slices. Use `superpowers:subagent-driven-development` if available; otherwise use `superpowers:executing-plans`. Do not ask the user to choose execution style again.
 
-Do not modify Apollo's reusable agent, skill, registry, template or doctrine sources to make the UI pass. Do not install CrewAI, migrate to React, add WebGL, add cloud billing, or build a marketplace. Do not commit or push unless explicitly requested.
+Do not modify convenium.design's reusable agent, skill, registry, template or doctrine sources to make the UI pass. Do not install CrewAI, migrate to React, add WebGL, add cloud billing, or build a marketplace. Do not commit or push unless explicitly requested.
 
 Use the supplied reference media under `D:\Analyst_Designer\Apollo\New_upgradePlan\media` as evidence, but treat `media\apollo-continuous-journey-v2\` as authoritative for routing, hierarchy, shell, and screen relationships. Extract technical grid, precise luminous paths, condensed operational typography, high-contrast status and purposeful system motion. Do not copy Instagram/browser chrome or another product's distinctive expression. Keep Home, Projects and Results comprehensible; reserve the full network spectacle for System Node Control.
 

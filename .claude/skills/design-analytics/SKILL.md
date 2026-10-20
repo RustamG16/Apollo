@@ -1,8 +1,7 @@
 ---
 name: design-analytics
-description: Connect an approved redesign to measurable user behavior through a baseline, design hypothesis, minimal event-property contract, guardrails, experiment or comparison method, and readout plan. Use when a page has a business goal and analytics access or implementation is in scope.
+description: "Connects design hypotheses to a minimal event contract."
 ---
-
 # Design Analytics
 
 Measure whether the redesign helps the intended behavior, not whether visitors triggered decorative interactions.

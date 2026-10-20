@@ -5,3 +5,6 @@ interface:
   icon_large: './assets/remotion-icon.png'
   brand_color: '#0B84F3'
   default_prompt: '$remotion-interactivity: Make the markup in MyComp.tsx interactive'
+
+policy:
+  allow_implicit_invocation: false

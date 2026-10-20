@@ -1,8 +1,7 @@
 ---
 name: concept-studio
-description: Produce the one website redesign direction the approved brief specifies — in full: layout, typography, media, motion, mobile behavior, asset needs, and risk. Alternatives only on explicit request. Use after the design problem is approved and before implementation or asset generation.
+description: "Produces the one direction the approved brief specifies, in full: layout, type, media, motion, mobile, asset needs and risk. Alternatives only on explicit request."
 ---
-
 # Concept Studio
 
 Create choice at the level of experience, not decoration. Begin only after Gate A.

@@ -34,12 +34,12 @@
     "enabled": false
   },
   {
-    "id": "apollo-style-picker",
-    "name": "apollo-style-picker",
+    "id": "convenium-style-picker",
+    "name": "convenium-style-picker",
     "phase": "direct",
     "group": "Taste",
     "defaultOn": false,
-    "description": "Path B of the taste-profile system. Presents the built-in design doctrines, pre-fills a taste profile from the chosen one, then runs a short residual interview only for fields the doctrine can't answer (audience, avoid-list additions, project constraints). Trigger phrases - \"pick a style for me\", \"show me the design options\", \"which style should I use\". Do NOT use for building a fully bespoke profile from scratch - use apollo-taste-interview instead.",
+    "description": "Path B of the taste profile: pick a built-in doctrine, pre-fill the profile from it, then ask only what the doctrine cannot answer (audience, avoid-list, constraints). For a bespoke profile use convenium-taste-interview.",
     "runtimePrompt": "Present the built-in design doctrines, let the user pick one, pre-fill the taste profile from it, then resolve the few remaining fields with short residual questions. Write the profile to `library/design-dna/`.",
     "category": "01-design-direction",
     "hosts": [
@@ -51,12 +51,12 @@
     "enabled": true
   },
   {
-    "id": "apollo-taste-interview",
-    "name": "apollo-taste-interview",
+    "id": "convenium-taste-interview",
+    "name": "convenium-taste-interview",
     "phase": "direct",
     "group": "Taste",
     "defaultOn": false,
-    "description": "Path A of the taste-profile system. Runs a structured interview that is a 1:1 walk through taste-profile.schema.json's fields, producing a complete saved profile. Trigger phrases - \"build my taste profile\", \"interview me about design preferences\", \"let's figure out my style\". Do NOT use when a style is already picked - use apollo-style-picker instead, which runs a shorter residual version of this same question set.",
+    "description": "Path A of the taste profile: a structured interview that walks taste-profile.schema.json field by field and saves a complete profile. When a doctrine is already picked, use convenium-style-picker.",
     "runtimePrompt": "Walk the user field by field through `taste-profile.schema.json`, producing a complete saved profile in `library/design-dna/`. Capture provenance and uncertainty; never infer a preference the user did not state.",
     "category": "01-design-direction",
     "hosts": [
@@ -74,7 +74,7 @@
     "group": "Craft",
     "defaultOn": true,
     "description": "Applies Apple-inspired purpose, agency, familiarity, simplicity, typography, material restraint, and fluid interaction principles to the cross-platform desktop experience.",
-    "runtimePrompt": "Treat Apollo as Apple-inspired rather than HIG-compliant. Prioritize purpose, agency, familiarity, simplicity, legible hierarchy, system typography, restrained materials, immediate feedback, spatial consistency, interruptible motion, reduced-motion and reduced-transparency alternatives, and platform-appropriate desktop behavior. Do not imitate proprietary Apple screens or assets.",
+    "runtimePrompt": "Treat convenium.design as Apple-inspired rather than HIG-compliant. Prioritize purpose, agency, familiarity, simplicity, legible hierarchy, system typography, restrained materials, immediate feedback, spatial consistency, interruptible motion, reduced-motion and reduced-transparency alternatives, and platform-appropriate desktop behavior. Do not imitate proprietary Apple screens or assets.",
     "category": "01-design-direction",
     "hosts": [
       "claude",
@@ -107,7 +107,7 @@
     "phase": "direct",
     "group": "Direction",
     "defaultOn": false,
-    "description": "Independently critique and score the single frozen website direction against an approved brief using design, usability, creativity, content, and delivery-risk evidence. Use once a direction is frozen or for a bounded final review; it may reject the direction but must not author or merge a replacement.",
+    "description": "Independently scores the single frozen direction against the approved brief (design, usability, creativity, content, delivery risk). May reject the direction; never authors a replacement.",
     "runtimePrompt": "Critique the single frozen direction independently. Score design, usability, creativity, content, and delivery risk; return accept / accept with fixes / reject. It may reject the direction; it may not author a replacement.",
     "category": "08-qa-review",
     "hosts": [
@@ -141,7 +141,7 @@
     "phase": "direct",
     "group": "Direction",
     "defaultOn": true,
-    "description": "Produce the one website redesign direction the approved brief specifies — in full: layout, typography, media, motion, mobile behavior, asset needs, and risk. Alternatives only on explicit request. Use after the design problem is approved and before implementation or asset generation.",
+    "description": "Produces the one direction the approved brief specifies, in full: layout, type, media, motion, mobile, asset needs and risk. Alternatives only on explicit request.",
     "runtimePrompt": "Detail the one direction the brief specifies — structure, hierarchy, media, motion, mobile behavior, assets, and risk, not only color. Produce alternatives only when the user asks, stating how many and why.",
     "category": "01-design-direction",
     "hosts": [
@@ -617,7 +617,7 @@
     "phase": "build",
     "group": "Craft",
     "defaultOn": true,
-    "description": "Own the finish: commit the design system as numbers before layout (PRODUCT.md, DESIGN.md, design.json), then run the bounded craft and review pass over the implementation. Its scripts/ and reference/ playbooks ship in this library, so it must be projected as a body rather than left to a host plugin.",
+    "description": "Owns the finish: commits the design system as numbers before layout (PRODUCT.md, DESIGN.md, design.json), then runs the bounded craft and review pass. Ships its scripts/ and reference/ playbooks.",
     "runtimePrompt": "Use only when explicitly routed for an additional finishing pass. Resolve hierarchy, typography, spacing, states, accessibility, responsive behavior, and purposeful interaction without overriding the approved UI/UX, Apple, or Emil design contracts.",
     "category": "01-design-direction",
     "hosts": [
@@ -651,7 +651,7 @@
     "phase": "always",
     "group": "Orchestration",
     "defaultOn": true,
-    "description": "Orchestrate an evidence-based redesign through intake, audit, one direction resolved at intake, human approval, asset planning, implementation, analytics, and browser QA. Use when a user asks to improve, repair, redesign, or elevate a page and needs coherent routing rather than every design capability at once.",
+    "description": "Orchestrates an evidence-based redesign through intake, audit, one direction, human approval, assets, build, analytics and browser QA, routing one capability at a time.",
     "runtimePrompt": "Act as the single design director. Maintain one interpretation of the brief, activate only relevant capabilities, and make dependencies and approval boundaries explicit.",
     "category": "01-design-direction",
     "hosts": [
@@ -1266,7 +1266,7 @@
     "phase": "verify",
     "group": "Verification",
     "defaultOn": true,
-    "description": "Verify an implemented website redesign against the approved direction using browser screenshots, responsive and interaction states, accessibility basics, reduced motion, runtime health, content, assets, and performance evidence. Use after a working implementation exists; the QA repair loop is bounded by AGENTS.md.",
+    "description": "Verifies the implementation against the approved direction with browser evidence: viewports, interaction states, accessibility basics, reduced motion, runtime health, assets and performance.",
     "runtimePrompt": "Verify the implementation against the approved direction at desktop and mobile, including interaction states, reduced motion, console health, accessibility basics, assets, and performance risks. The QA repair loop is bounded by AGENTS.md.",
     "category": "08-qa-review",
     "hosts": [
@@ -1331,7 +1331,7 @@
   {
     "id": "open-sourcing",
     "name": "open-sourcing",
-    "description": "Trail of Bits release-readiness workflow: full-history secret scanning before anything else, licensing, docs, and GitHub Actions hardening (SHA-pinned actions, least-privilege permissions, zizmor/actionlint). Use before publishing a repo or wiring a deploy pipeline. Vendored; see APOLLO-NOTES.md.",
+    "description": "Trail of Bits release-readiness workflow: full-history secret scanning before anything else, licensing, docs, and GitHub Actions hardening (SHA-pinned actions, least-privilege permissions, zizmor/actionlint). Use before publishing a repo or wiring a deploy pipeline. Vendored; see CONVENIUM-NOTES.md.",
     "phase": "unrouted",
     "group": "Engineering",
     "defaultOn": false,
@@ -1348,7 +1348,7 @@
   {
     "id": "implementing-secret-scanning-with-gitleaks",
     "name": "implementing-secret-scanning-with-gitleaks",
-    "description": "Gitleaks secret scanning: full-history scans, pre-commit hooks, CI integration, custom rules, baselines and the rotate-then-clean remediation flow. Read APOLLO-NOTES.md first — it corrects deprecated commands and unsafe defaults in the vendored body.",
+    "description": "Gitleaks secret scanning: full-history scans, pre-commit hooks, CI integration, custom rules, baselines and the rotate-then-clean remediation flow. Read CONVENIUM-NOTES.md first — it corrects deprecated commands and unsafe defaults in the vendored body.",
     "phase": "unrouted",
     "group": "Engineering",
     "defaultOn": false,
@@ -1436,7 +1436,7 @@
     "phase": "unrouted",
     "group": "Motion",
     "defaultOn": false,
-    "description": "Add juice: layered, transient feedback (pop, shake, flash, number pop) scaled by small/medium/large importance tiers. Engine examples upstream; APOLLO-NOTES.md maps them to GSAP/CSS and adds reduced-motion and a11y rules. Vendored from gamedev-skills/awesome-gamedev-agent-skills (Apache-2.0).",
+    "description": "Add juice: layered, transient feedback (pop, shake, flash, number pop) scaled by small/medium/large importance tiers. Engine examples upstream; CONVENIUM-NOTES.md maps them to GSAP/CSS and adds reduced-motion and a11y rules. Vendored from gamedev-skills/awesome-gamedev-agent-skills (Apache-2.0).",
     "runtimePrompt": "",
     "category": "03-motion-3d",
     "hosts": [
@@ -1453,7 +1453,7 @@
     "phase": "unrouted",
     "group": "Web Build",
     "defaultOn": false,
-    "description": "Design and build gamified web/app UI - XP and levels, streaks, achievements, progress, quests, leaderboards, celebration tiers - with every number committed to DESIGN.md before code, all states designed, and an ethics gate. Original Apollo skill, 2026-10-14.",
+    "description": "Design and build gamified web/app UI - XP and levels, streaks, achievements, progress, quests, leaderboards, celebration tiers - with every number committed to DESIGN.md before code, all states designed, and an ethics gate. Original convenium.design skill, 2026-10-14.",
     "runtimePrompt": "",
     "category": "02-web-build",
     "hosts": [
@@ -1470,7 +1470,7 @@
     "phase": "build",
     "group": "Web Build",
     "defaultOn": false,
-    "description": "Make a marketing or hospitality site's phone journey app-grade — per-page screen budgets, phone-sized scroll-scrub runways and frame sets, a thumb-zone tab bar, safe areas on all four sides, cheap phone motion, and the verification rules that catch what emulated tests miss. Use when a site must work as the primary phone experience (360–430 px wide), when phone pages feel too long, when scroll-driven video is soft or stutters on phones, or before sharing a concept that most visitors will open on a phone.",
+    "description": "Makes the phone journey app-grade (360–430 px): screen budgets per page, phone-sized scroll-scrub runways, thumb-zone tab bar, safe areas, cheap phone motion, and real-device verification.",
     "runtimePrompt": "Treat the 360–430 px phone band as the primary layout: hold each route to its screen budget (home ≤ 16, others ≤ 12 at 390×844), size scroll-scrub runways and frame sets for phones, ship a thumb-zone tab bar with safe areas on all four sides, keep phone motion play-once, and verify reduced motion by computed opacity, live-scroll lag on 4G and production cache headers.",
     "category": "02-web-build",
     "hosts": [
@@ -1487,7 +1487,7 @@
     "phase": "build",
     "group": "Motion",
     "defaultOn": false,
-    "description": "Build reversible scroll-controlled visual transformations with a pinned or sticky stage, normalized progress, and video, image-sequence, canvas, SVG, or DOM renderers. Use for hero transformations, product assembly, interface state walkthroughs, object rotation, diagrams, or photo sequences that must move forward and backward with native scrolling.",
+    "description": "Builds reversible scroll-controlled transformations on a pinned or sticky stage with normalized progress (video, image sequence, canvas, SVG or DOM) for heroes, assembly and walkthroughs.",
     "runtimePrompt": "Build scroll-scrubbed media as a sticky stage driven by one normalized progress value, with a poster, a reduced-motion frame, copy kept in HTML, and phone runway and frame-set sizing from mobile-app-shell. Verify forward and reverse scrolling and fast flicks.",
     "category": "03-motion-3d",
     "hosts": [
@@ -1711,6 +1711,142 @@
     "description": "Reviews and fixes keyboard and focus behavior, ARIA, accessible names, forms, screen-reader announcements, motion and zoom in your project against WCAG 2.2.",
     "runtimePrompt": "",
     "category": "08-qa-review",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "modern-web-guidance",
+    "name": "Modern Web Guidance",
+    "phase": "build",
+    "group": "Web Build",
+    "defaultOn": false,
+    "description": "Looks up current web-platform patterns (dialog, popover, anchor positioning, container queries, View Transitions, scroll-driven animation) before they are hand-built.",
+    "runtimePrompt": "Before implementing a UI pattern the platform may now provide natively, run one focused search and retrieve only the guide that matches; apply its fallbacks. Skip for patterns already settled in DESIGN.md or the build plan. Offline, grep the bundled guides/ and read one file.",
+    "category": "02-web-build",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": true
+  },
+  {
+    "id": "threejs-build",
+    "name": "three.js Build",
+    "phase": "build",
+    "group": "Motion",
+    "defaultOn": false,
+    "description": "Implements an approved three.js / React Three Fiber scene within the budget and fallback that webgl-experience set.",
+    "runtimePrompt": "Activate only when webgl-experience approved 3D. Read references/fundamentals.md, then references/performance.md, then only the reference the current step needs. Keep the static fallback and reduced-motion path from the spec working.",
+    "category": "03-motion-3d",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": true
+  },
+  {
+    "id": "playwright-cli",
+    "name": "Playwright CLI",
+    "phase": "verify",
+    "group": "Verification",
+    "defaultOn": false,
+    "description": "Drives a real browser from the command line for captures, interaction states and responsive checks during audit and QA.",
+    "runtimePrompt": "Use for browser evidence in audit and visual QA: capture the agreed viewports, exercise interaction states, and save outputs to .olympus/. Prefer accessibility snapshots to screenshots when text evidence is enough; return file paths, not image dumps.",
+    "category": "08-qa-review",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": true
+  },
+  {
+    "id": "animation-performance",
+    "name": "Animation Performance",
+    "phase": "verify",
+    "group": "Motion",
+    "defaultOn": false,
+    "description": "Checks that implemented motion stays inside the frame budget: composite-only properties, main-thread load, and the cause of dropped frames.",
+    "runtimePrompt": "Activate when the build ships motion. Confirm animations use transform/opacity, nothing animates layout properties, and long tasks do not stall scroll-linked motion; report each dropped-frame cause with the fix. Leave GSAP-specific tuning to gsap-performance.",
+    "category": "03-motion-3d",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": true
+  },
+  {
+    "id": "debug-optimize-lcp",
+    "name": "Debug and Optimize LCP",
+    "phase": "unrouted",
+    "group": "Verification",
+    "defaultOn": false,
+    "description": "Diagnoses slow Largest Contentful Paint with the Chrome DevTools MCP server and proposes fixes.",
+    "runtimePrompt": "",
+    "category": "08-qa-review",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "a11y-debugging",
+    "name": "Accessibility Debugging",
+    "phase": "unrouted",
+    "group": "Verification",
+    "defaultOn": false,
+    "description": "Audits semantics, ARIA, focus, keyboard, tap targets and contrast in a live browser through the Chrome DevTools MCP server.",
+    "runtimePrompt": "",
+    "category": "08-qa-review",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "context-optimization",
+    "name": "Context Optimization",
+    "phase": "unrouted",
+    "group": "Meta",
+    "defaultOn": false,
+    "description": "Reference for keeping agent context lean: budgets, masking old tool output, partitioning work, and cache-stable prompt prefixes.",
+    "runtimePrompt": "",
+    "category": "11-meta-system",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "context-compression",
+    "name": "Context Compression",
+    "phase": "unrouted",
+    "group": "Meta",
+    "defaultOn": false,
+    "description": "Reference for structured handoff summaries that keep decisions, files, state and next steps while dropping the transcript.",
+    "runtimePrompt": "",
+    "category": "11-meta-system",
     "hosts": [
       "claude",
       "codex",

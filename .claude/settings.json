@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./unused/**)",
+      "Read(./.agents/**)",
+      "Read(./.codex/**)",
+      "Read(./convenium-studio/knowledge/**)",
+      "Read(./convenium-studio/metrics/**)",
+      "Read(./convenium-studio/.olympus/**)",
+      "Read(./convenium-studio/evidence/**)",
+      "Read(./convenium-studio/handoffs/**)",
+      "Read(./convenium-studio/public/media/**)",
+      "Read(./New_upgradePlan/media/**)",
+      "Read(./**/node_modules/**)"
+    ]
+  }
+}

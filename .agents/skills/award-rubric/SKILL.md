@@ -1,8 +1,7 @@
 ---
 name: award-rubric
-description: Independently critique and score the single frozen website direction against an approved brief using design, usability, creativity, content, and delivery-risk evidence. Use once a direction is frozen or for a bounded final review; it may reject the direction but must not author or merge a replacement.
+description: "Independently scores the single frozen direction against the approved brief (design, usability, creativity, content, delivery risk). May reject the direction; never authors a replacement."
 ---
-
 # Independent Design Critic
 
 Critique as a read-only judge. Do not reward visual drama that obscures the user goal,

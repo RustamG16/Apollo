@@ -1,8 +1,7 @@
 ---
 name: ui-ux
-description: "Use as the UI/UX quality gate for frontend work that materially affects web product surfaces: design/build/redesign/review/polish/refactor pages or component systems, screenshot/UX critiques, rescue of GPT/Codex-looking UI, stack or UI-foundation choices, shadcn/Tailwind/table/form patterns, loading/empty/error/mobile/accessibility states, or installing frontend governance docs such as DESIGN.md, FRONTEND_CONTRACT.md, PAGE_BRIEF.md, and visual QA norms. Trigger lightly for small UI-sensitive tweaks using the Tiny change gate. Coordinate with visual implementation skills when asked to build a polished interface; this skill supplies product cognition, UX judgment, guardrails, and verification. Skip for pure backend/API/data/model changes, tests with no UI surface, mechanical renames, dependency chores, or edits that do not affect layout, interaction, copy, visual behavior, accessibility, or frontend rules."
+description: "Establishes product cognition, task journeys, progressive disclosure, recovery states, mobile priorities, and frontend governance."
 ---
-
 # UI/UX Quality
 
 This skill turns Codex from a free-form UI generator into a frontend design-and-development agent. It must understand the project first, recommend suitable choices, and create enforceable project-level norms during implementation.

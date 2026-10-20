@@ -1,8 +1,7 @@
 ---
 name: webgl-experience
-description: Decide whether an approved website concept genuinely benefits from WebGL and specify a bounded Three.js experience with performance, lifecycle, accessibility, mobile, loading, and static fallbacks. Use only for selected concepts with a concrete 3D communication purpose.
+description: "Tests whether 3D has communication value and specifies a bounded fallback."
 ---
-
 # WebGL Experience
 
 WebGL is an optional enhancement, never a default quality signal.

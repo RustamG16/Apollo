@@ -1,8 +1,7 @@
 ---
 name: asset-director
-description: Define, source, generate, and govern the visual media required by an approved website concept through an explicit asset manifest. Use after concept selection when photography, illustration, video, renders, textures, icons, or transformations are missing; require approval before external generation or purchase.
+description: "Plans required media, provenance, rights, and fallbacks."
 ---
-
 # Asset Director
 
 Treat media as a designed system with purpose, composition, rights, and responsive behavior. Begin only after Gate B.

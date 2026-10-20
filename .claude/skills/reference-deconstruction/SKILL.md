@@ -1,8 +1,7 @@
 ---
 name: reference-deconstruction
-description: Analyze approved website, graphic design, motion, or brand references and extract transferable visual logic without copying distinctive expression. Use when references, moodboards, Figma frames, screenshots, reels, or Awwwards examples should inform a redesign direction.
+description: "Extracts transferable visual logic without copying expression."
 ---
-
 # Reference Deconstruction
 
 Analyze references as systems, not collections of attractive details. Preserve the source/URL and distinguish direct observation from interpretation.

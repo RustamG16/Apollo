@@ -4,4 +4,4 @@ interface:
   default_prompt: "Use $web-design-engineer to design and build a polished visual web artifact from my brief."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

@@ -18,7 +18,7 @@ REG_PATH = os.path.join(LIB, "registry", "skills.registry.json")
 
 REG = json.load(open(REG_PATH, encoding="utf-8"))
 # normalise `enabled` from phase before any projection emits it: pipeline-routed skills
-# are enabled, the unrouted capability library is not. apollo_get_context filters on this.
+# are enabled, the unrouted capability library is not. convenium_get_context filters on this.
 for _r in REG:
     _r["enabled"] = _r.get("phase") != "unrouted"
 
@@ -166,13 +166,13 @@ def copy_skill_body(sid):
     return out
 
 
-CLAUDE_LOCATE = ("> **Where Apollo lives.** Paths such as `AGENTS.md`, `START-HERE.md`, `templates/` "
-                 "and `library/` are relative to the Apollo folder: `${CLAUDE_PLUGIN_ROOT}` when Apollo "
+CLAUDE_LOCATE = ("> **Where convenium.design lives.** Paths such as `AGENTS.md`, `START-HERE.md`, `templates/` "
+                 "and `library/` are relative to the convenium.design folder: `${CLAUDE_PLUGIN_ROOT}` when convenium.design "
                  "is installed as a plugin, otherwise the folder named in the project's "
-                 "`.olympus/APOLLO.md`, or the current repository when you are working inside Apollo.\n\n")
-CODEX_LOCATE = ("Where Apollo lives: paths such as AGENTS.md, START-HERE.md, templates/ and library/ are "
-                "relative to the Apollo folder named in the project's .olympus/APOLLO.md, or the current "
-                "repository when working inside Apollo.\n\n")
+                 "`.olympus/CONVENIUM.md`, or the current repository when you are working inside convenium.design.\n\n")
+CODEX_LOCATE = ("Where convenium.design lives: paths such as AGENTS.md, START-HERE.md, templates/ and library/ are "
+                "relative to the convenium.design folder named in the project's .olympus/CONVENIUM.md, or the current "
+                "repository when working inside convenium.design.\n\n")
 
 
 def claude_agent(name):
@@ -199,47 +199,88 @@ def codex_agent(name):
     return "\n".join(lines) + "\n\n"
 
 
-# ------------------------------------------------- Claude projection policy
-# Claude Code loads EVERY .claude/skills/*/SKILL.md frontmatter into the system
-# prompt on EVERY turn. Projecting the whole library cost ~7,310 tok/turn, of
-# which ~5,208 was unrouted capability skills no pipeline phase ever routes to.
+# ------------------------------------------------------ listing policy
+# Both hosts put the name + description of every model-invocable skill into the
+# prompt of EVERY session (Claude Code: ~1% of the context window, overflow is
+# silently dropped; Codex: no budget). Measured before this policy:
+# .claude/skills 36 skills ~16k chars, .agents/skills 97 skills ~36k chars.
 #
-# Policy: project the pipeline-routed skills, plus the short allowlist below of
-# capabilities that are genuinely invoked by hand. Everything else stays in
-# library/skills/ and is reached the way AGENTS.md already prescribes — route
-# from registry/ROUTING-DIGEST.md or registry/UNROUTED.md, then load one body.
-# Nothing is deleted from the library; only the host projection is narrowed.
-#
-# To re-project a dropped skill, add its id here and rerun:
-#   python library/tools/project.py claude
-MANUAL_CLAUDE_SKILLS = {
-    "image",                        # generic image generation
-    "animate",                      # build motion from scratch
-    "prototype",                    # multiple UI variants behind a picker
-    "pick-ui-library",              # choose the right frontend library
-    "garden-web-design-engineer",   # polished HTML/CSS/JS artifacts
-}
+# Policy, identical on both hosts:
+#   * pipeline-routed skills are listed, and their projected description is the
+#     registry's one-line `description` (the Director routes from the digest, so the
+#     upstream trigger essay is not needed in the listing);
+#   * every other skill is projected but hidden from the listing — Claude:
+#     `disable-model-invocation: true`; Codex: agents/openai.yaml
+#     `policy.allow_implicit_invocation: false`. Both stay invocable by name
+#     (/id, $id), so the knowledge base costs nothing until it is used.
+# The library body is never changed; only the generated copy's frontmatter is.
 
 
-def project_to_claude(r):
-    """True when this registry record belongs in .claude/skills."""
-    if "claude" not in r["hosts"] or r["status"] == "stub":
-        return False
-    if r.get("phase") != "unrouted":
-        return True                      # pipeline-routed: always projected
-    return r["id"] in MANUAL_CLAUDE_SKILLS
+def yaml_str(v):
+    return '"' + v.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def listed(r):
+    return r.get("phase") != "unrouted"
+
+
+def set_frontmatter(text, key, value):
+    """replace (or add) one top-level frontmatter key; drops a multi-line value's continuation."""
+    m = re.match(r"^---\s*\n(.*?)\n---\s*\n", text, re.S)
+    if not m:
+        return text
+    lines, out, skip = m.group(1).splitlines(), [], False
+    for i, line in enumerate(lines):
+        if skip:
+            nxt = lines[i + 1] if i + 1 < len(lines) else ""
+            if line[:1] in (" ", "\t") or (not line.strip() and nxt[:1] in (" ", "\t")):
+                continue
+            skip = False
+        if re.match(rf"^{re.escape(key)}:", line):
+            skip = True
+            continue
+        out.append(line)
+    out.insert(1 if out and out[0].startswith("name:") else 0, f"{key}: {value}")
+    return "---\n" + "\n".join(out) + "\n---\n" + text[m.end():]
+
+
+def projected_skill_md(r, text, host):
+    if listed(r):
+        return set_frontmatter(text, "description", yaml_str(r["description"]))
+    if host == "claude":
+        return set_frontmatter(text, "disable-model-invocation", "true")
+    return text
+
+
+def codex_policy_yaml(existing):
+    """agents/openai.yaml that hides an unrouted skill from Codex's implicit listing."""
+    if existing and re.search(r"^policy:", existing, re.M):
+        if re.search(r"^\s+allow_implicit_invocation:", existing, re.M):
+            return re.sub(r"^(\s+allow_implicit_invocation:).*$", r"\1 false", existing, flags=re.M)
+        return re.sub(r"^policy:\s*$", "policy:\n  allow_implicit_invocation: false", existing, flags=re.M)
+    base = (existing or "").rstrip("\n")
+    return (base + "\n\n" if base else "") + "policy:\n  allow_implicit_invocation: false\n"
+
+
+def project_skill(r, host):
+    """{relpath: content} for one skill on one host, with the listing policy applied."""
+    files = copy_skill_body(r["id"])
+    files["SKILL.md"] = projected_skill_md(r, files["SKILL.md"], host)
+    if host == "codex" and not listed(r):
+        files["agents/openai.yaml"] = codex_policy_yaml(files.get("agents/openai.yaml"))
+    return files
 
 
 # ---------------------------------------------------------------- targets
 def build_claude(dry):
     ok = True
     ps = Plan(os.path.join(ROOT, ".claude", "skills"),
-              "library/skills (routed + MANUAL_CLAUDE_SKILLS; see project_to_claude)",
+              "library/skills (hosts includes 'claude'; listing policy above)",
               "python library/tools/project.py claude")
     for r in REG:
-        if not project_to_claude(r):
+        if "claude" not in r["hosts"] or r["status"] == "stub":
             continue
-        for rel, c in copy_skill_body(r["id"]).items():
+        for rel, c in project_skill(r, "claude").items():
             ps.add(f"{r['id']}/{rel}", c)
     ok &= ps.apply(lambda rel: True, dry)
 
@@ -248,18 +289,35 @@ def build_claude(dry):
     for name in AGENTS:
         pa.add(f"{name}.md", claude_agent(name))
     ok &= pa.apply(lambda rel: rel.endswith(".md"), dry)
+    write_if_changed(os.path.join(ROOT, ".claude", "settings.json"), claude_settings(), dry,
+                     f"{len(NO_READ)} read-deny rules")
     return ok
+
+
+# Paths an agent working inside this repo never needs: duplicates of library/ (the Codex and
+# Studio projections), retired material, and recorded evidence. A Read deny also covers Grep,
+# Glob and cat/head/sed in Bash, so a stray broad search cannot pull them into context.
+# The Claude projection (.claude/skills, .claude/agents) stays readable: skills load from it.
+NO_READ = ["unused/**", ".agents/**", ".codex/**", "convenium-studio/knowledge/**",
+           "convenium-studio/metrics/**", "convenium-studio/.olympus/**",
+           "convenium-studio/evidence/**", "convenium-studio/handoffs/**",
+           "convenium-studio/public/media/**", "New_upgradePlan/media/**", "**/node_modules/**"]
+
+
+def claude_settings():
+    # no comment key: Claude Code validates settings.json and an unknown key can void the file
+    return json.dumps({"permissions": {"deny": [f"Read(./{p})" for p in NO_READ]}}, indent=2) + "\n"
 
 
 def build_codex(dry):
     ok = True
     ps = Plan(os.path.join(ROOT, ".agents", "skills"),
-              "library/skills (hosts includes 'codex')",
+              "library/skills (hosts includes 'codex'; listing policy above)",
               "python library/tools/project.py codex")
     for r in REG:
         if "codex" not in r["hosts"] or r["status"] == "stub":
             continue
-        for rel, c in copy_skill_body(r["id"]).items():
+        for rel, c in project_skill(r, "codex").items():
             ps.add(f"{r['id']}/{rel}", c)
     ok &= ps.apply(lambda rel: True, dry)
 
@@ -272,7 +330,7 @@ def build_codex(dry):
 
 
 def build_studio(dry):
-    root = os.path.join(ROOT, "apollo-studio", "knowledge", "skills")
+    root = os.path.join(ROOT, "convenium-studio", "knowledge", "skills")
     p = Plan(root, "library/registry + library/skills (hosts includes 'studio')",
              "python library/tools/project.py studio")
     for r in REG:
@@ -293,14 +351,14 @@ def build_studio(dry):
         p.add(f"{grp}/{r['id']}/README.md", readme)
     # the studio's data file
     p.files_registry = json.dumps(REGISTRY, indent=2, ensure_ascii=False) + "\n"
-    reg_target = os.path.join(ROOT, "apollo-studio", "skills.registry.json")
+    reg_target = os.path.join(ROOT, "convenium-studio", "skills.registry.json")
 
     managed = lambda rel: rel.endswith("/README.md") or rel in ("GENERATED.md", "MANIFEST.txt")
     ok = p.apply(managed, dry)
     # skills.registry.json lives one level up — handle separately, never delete
     old = open(reg_target, encoding="utf-8").read() if os.path.isfile(reg_target) else None
     if old != p.files_registry:
-        print(f"{'[dry-run] ' if dry else ''}apollo-studio/skills.registry.json: 1 write")
+        print(f"{'[dry-run] ' if dry else ''}convenium-studio/skills.registry.json: 1 write")
         if not dry:
             write_text(reg_target, p.files_registry)
     return ok
@@ -328,8 +386,9 @@ def build_digest(dry):
     unrouted = sorted((r for r in REG if r["phase"] == "unrouted"), key=lambda r: (r["category"], r["id"]))
     lines = ["# Unrouted skills", "",
              "Generated by `python library/tools/project.py digest` — do not edit. These skills are "
-             "in the library and projected to their hosts, but have no phase in Apollo's pipeline. "
-             "They are capabilities, invoked explicitly, and are excluded from `ROUTING-DIGEST.md`.",
+             "in the library and projected to both hosts, hidden from the skill listing (no per-session token cost), "
+             "and have no phase in convenium.design's pipeline. They are the knowledge base: invoke one by name "
+             "(`/id` in Claude Code, `$id` in Codex) or read its `SKILL.md` when a need below matches.",
              "", f"Count: {len(unrouted)}"]
     cat = None
     for r in unrouted:
@@ -358,12 +417,12 @@ def build_plugin(dry):
     """Claude Code plugin + single-plugin marketplace, rooted at the repo itself.
 
     Install: `/plugin marketplace add <this folder | RustamG16/Apollo>` then
-    `/plugin install apollo@apollo`. Skills become `apollo:<id>`, agents `apollo:<name>`,
+    `/plugin install convenium-design@convenium-design`. Skills become `convenium-design:<id>`, agents `convenium-design:<name>`,
     so nothing collides with same-named personal or plugin skills. `agents` must list
     files (a directory is rejected); `skills` may be a directory.
     """
     plugin = {
-        "name": "apollo",
+        "name": "convenium-design",
         "version": PLUGIN_VERSION,
         "description": ("Gated design agency: a Brand DNA strategist, one Design Director and five "
                         "specialists that take a business from intake to a verified, built design."),
@@ -375,10 +434,10 @@ def build_plugin(dry):
         "agents": [f"./.claude/agents/{n}.md" for n in AGENTS],
     }
     market = {
-        "name": "apollo",
+        "name": "convenium-design",
         "owner": {"name": "Rustam Gurbanov"},
-        "description": "Apollo design system — one plugin, rooted at this repository.",
-        "plugins": [{"name": "apollo", "source": "./", "description": plugin["description"]}],
+        "description": "convenium.design design system — one plugin, rooted at this repository.",
+        "plugins": [{"name": "convenium-design", "source": "./", "description": plugin["description"]}],
     }
     d = os.path.join(ROOT, ".claude-plugin")
     if not dry:

@@ -1,8 +1,7 @@
 ---
 name: ux-evidence-audit
-description: Diagnose an existing website page with browser, source, content, accessibility, responsive, and available analytics evidence before design work begins. Use for redesigns, weak-performing pages, visual-quality reviews, conversion problems, or unclear interfaces where causes must be prioritized before concepts.
+description: "Diagnoses source, browser, responsive, accessibility, and content evidence."
 ---
-
 # UX Evidence Audit
 
 Audit the actual experience before prescribing a style. Inspect the target route at representative desktop and mobile widths and relevant interaction states.

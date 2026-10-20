@@ -10,14 +10,14 @@ fails when it adds points and badges to an experience that has nothing underneat
 makes the decisions in the order that keeps it honest. It names the behaviour first, then the
 motivation and the loop, then the mechanic. Every number is fixed before any code is written.
 
-Authored for Apollo on 2026-10-14. It is original text, and its frameworks are cited where they
+Authored for convenium.design on 2026-10-14. It is original text, and its frameworks are cited where they
 are used.
 
 ## When not to use
 
 - To audit which motivations an existing product uses → `octalysis-gamification`.
 - To decide how strongly a single event should be felt (pop, shake, particles) → `game-feel`
-  and its `APOLLO-NOTES.md`.
+  and its `CONVENIUM-NOTES.md`.
 - To write the motion itself → `animate`, `gsap-core`, `gsap-timeline`.
 - To build a game (rules, levels, controls) rather than gamify a product → `higgsfield-websites`
   (`library/skills/04-media-generation/higgsfield-websites/references/game-design-system.md`).
@@ -38,7 +38,7 @@ are used.
 4. **Choose the fewest mechanics that close the loop.** Use the table below. Start with one or
    two.
 5. **Commit the numbers** (§ Numbers) to the project's `DESIGN.md` under `## Gamification`
-   before any code. This follows Apollo's design-system rule.
+   before any code. This follows convenium.design's design-system rule.
 6. **Design every state** (§ States), not only the success path.
 7. **Run the ethics gate** (§ Ethics). Any failure blocks the build.
 8. **Build, then verify** (§ Done when).

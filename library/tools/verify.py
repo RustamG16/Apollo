@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The single health check for Apollo. stdlib only. Exit 0 = clean, 1 = problems.
+"""The single health check for convenium.design. stdlib only. Exit 0 = clean, 1 = problems.
 
     python library/tools/verify.py                    # library + system checks
     python library/tools/verify.py --project <path>   # a website project's six context files
@@ -56,6 +56,16 @@ REQUIRED_FILES = [
     "library/README.md", "library/registry/skills.registry.json",
     "library/registry/ROUTING-DIGEST.md", "library/tools/project.py", "library/tools/verify.py",
 ]
+# Token budgets. ALWAYS_READ is what every run reads before its first decision (CLAUDE.md read
+# order); LISTING is the skill listing both hosts inject into every session (routed skills only,
+# see project.py's listing policy) — Claude Code budgets it at ~1% of the window (~8k chars) and
+# silently drops overflow. Raise a cap only with a measured reason.
+ALWAYS_READ = ["CLAUDE.md", "ARCHITECTURE-ESSENTIALS.md", "AGENTS.md", "START-HERE.md",
+               "library/registry/ROUTING-DIGEST.md"]
+ALWAYS_READ_CAP = 38000      # chars, ~9.5k tokens
+LISTING_CAP = 8000           # chars of id + description over routed skills
+ROUTED_DESC_CAP = 250        # chars per routed skill description
+AGENT_DESC_CAP = 300         # chars per agent description (listed in every session too)
 LINE_CAPS = {"library/registry/ROUTING-DIGEST.md": 200, "CLAUDE.md": 120, "PROMPT.md": 120}
 PROJECT_CONTEXT = ["PRD.md", "ARCHITECTURE.md", "ARCHITECTURE-ESSENTIALS.md", "AGENTS.md",
                    "CODEX.md", "PROGRESS-AND-DECISIONS.md"]
@@ -66,6 +76,9 @@ CITED_PATH = re.compile(r"`((?:library|templates|scripts|profiles|dashboard|conf
                         r"references|\.claude/agents|\.claude/skills|\.agents/skills)/[^`\s]+)`")
 
 bad = []
+
+
+BUDGET = {}
 
 
 def read(path):
@@ -105,9 +118,14 @@ def check_library():
             body = read(p)
             if fm_field(frontmatter(body), "name") != sid:
                 bad.append(f"{cat}/{sid}: frontmatter name != folder")
+            vendored = os.path.isfile(os.path.join(sdir, "CONVENIUM-NOTES.md"))
             for m in CITED_PATH.finditer(body):
                 ref = m.group(1).rstrip(".,;:)")
                 if any(c in ref for c in "<>*{}$"):
+                    continue
+                # upstream text cites its own example paths (config/…, scripts/…); in a vendored
+                # body only references into this system's own trees are ours to keep valid
+                if vendored and not ref.startswith(("library/", "templates/", ".claude/", ".agents/")):
                     continue
                 if not (os.path.exists(os.path.join(sdir, ref)) or os.path.exists(os.path.join(ROOT, ref))):
                     bad.append(f"{sid}: SKILL.md cites missing path {ref}")
@@ -261,6 +279,23 @@ def check_system(reg):
             if n > cap:
                 bad.append(f"{rel} is {n} lines (cap {cap})")
 
+    always = sum(len(read(os.path.join(ROOT, rel)) or "") for rel in ALWAYS_READ)
+    routed = [r for r in reg if r["phase"] != "unrouted" and r["status"] != "stub"]
+    listing = sum(len(r["id"]) + len(r["description"]) + 2 for r in routed)
+    BUDGET.update(always=always, listing=listing, listed=len(routed))
+    if always > ALWAYS_READ_CAP:
+        bad.append(f"always-read files total {always} chars (cap {ALWAYS_READ_CAP}): {', '.join(ALWAYS_READ)}")
+    if listing > LISTING_CAP:
+        bad.append(f"skill listing is {listing} chars over {len(routed)} routed skills (cap {LISTING_CAP})")
+    for r in routed:
+        if len(r["description"]) > ROUTED_DESC_CAP:
+            bad.append(f"{r['id']}: routed description is {len(r['description'])} chars (cap {ROUTED_DESC_CAP})")
+    for f in sorted(os.listdir(os.path.join(LIB, "agents"))):
+        if f.endswith(".md") and f != "README.md":
+            d = fm_field(frontmatter(read(os.path.join(LIB, "agents", f))), "description") or ""
+            if len(d) > AGENT_DESC_CAP:
+                bad.append(f"agent {f[:-3]}: description is {len(d)} chars (cap {AGENT_DESC_CAP})")
+
     norm = lambda t: re.sub(r"\s+", " ", re.sub(r"[^a-zA-Z0-9 ]", " ", t)).lower().strip()
     agents_words = norm(read(os.path.join(ROOT, "AGENTS.md")))
     for line in read(os.path.join(ROOT, "CLAUDE.md")).splitlines():
@@ -308,6 +343,8 @@ def main(argv):
         folders, reg = check_library()
         check_system(reg)
         print(f"skills {len(folders)} | registry records {len(reg)}")
+        print(f"context: always-read {BUDGET['always']}/{ALWAYS_READ_CAP} chars | skill listing "
+              f"{BUDGET['listing']}/{LISTING_CAP} chars over {BUDGET['listed']} routed skills")
         label = "library + system"
     for b in bad:
         print("FAIL ", b)

@@ -2,7 +2,7 @@
 
 ## What this system does
 
-Apollo takes a business from its Brand DNA — who it serves, how it should look and sound,
+convenium.design takes a business from its Brand DNA — who it serves, how it should look and sound,
 what it needs made — to a verified, built design, as a single Design Director that routes
 work through explicit approval gates, activating one skill or specialist at a time instead of
 loading every design capability at once. The method, token rules, and loop bounds are in
@@ -20,19 +20,19 @@ measured.
 ## Connect a project (once per project)
 
 ```bash
-python library/tools/apollo.py attach <PROJECT_FOLDER>
+python library/tools/convenium.py attach <PROJECT_FOLDER>
 ```
 
 In Claude Code, also install the plugin once per machine (`/plugin marketplace add
-<this folder or RustamG16/Apollo>`, then `/plugin install apollo@apollo`) — or start the
+<this folder or RustamG16/Apollo>`, then `/plugin install convenium-design@convenium-design`) — or start the
 session with `claude --add-dir <this folder>`.
 
 ## Kickoff — Claude Code
 
 Open the project, then send:
 
-> Read `.olympus/APOLLO.md`, then Apollo's `ARCHITECTURE-ESSENTIALS.md`, `AGENTS.md` and
-> `START-HERE.md` completely before acting. Act as the Apollo Design Director for
+> Read `.olympus/CONVENIUM.md`, then convenium.design's `ARCHITECTURE-ESSENTIALS.md`, `AGENTS.md` and
+> `START-HERE.md` completely before acting. Act as the convenium.design Design Director for
 > `<BUSINESS / PROJECT>`. Start with the Brand DNA (the `brand-strategist` agent) unless
 > `.olympus/brand-dna.json` exists, then ask only the intake questions it leaves open. Do not
 > edit production code yet. Route skills from `library/registry/ROUTING-DIGEST.md`, respect
@@ -42,11 +42,11 @@ Open the project, then send:
 
 Open the project, then send:
 
-> Read `.olympus/APOLLO.md` and follow its read order before acting. Act as the Apollo Design
+> Read `.olympus/CONVENIUM.md` and follow its read order before acting. Act as the convenium.design Design
 > Director for `<BUSINESS / PROJECT>`. Start with the Brand DNA (the brand-strategist
-> instructions in Apollo's `library/agents/brand-strategist.md`) unless
+> instructions in convenium.design's `library/agents/brand-strategist.md`) unless
 > `.olympus/brand-dna.json` exists, then ask only the intake questions it leaves open. Do not
-> edit production code yet. Route skills from Apollo's `library/registry/ROUTING-DIGEST.md`
+> edit production code yet. Route skills from convenium.design's `library/registry/ROUTING-DIGEST.md`
 > (skills are `$name` tokens), respect Gates A/B/C and the loop bounds in `AGENTS.md`, and
 > write everything to `.olympus/`.
 
@@ -68,15 +68,21 @@ the handoff if a new task becomes necessary.
 `library/` is the only place to edit skills, agents, and the registry. After any change:
 
 ```
-python library/tools/project.py all      # regenerate .claude/ .agents/ .codex/ .claude-plugin/ apollo-studio/knowledge/
+python library/tools/project.py all      # regenerate .claude/ .agents/ .codex/ .claude-plugin/ convenium-studio/knowledge/
 python library/tools/verify.py            # the single health check — exit 0 = clean
 python library/tools/build_index.py       # refresh library/INDEX.md
 ```
+
+`verify.py` also prints the token budget — what every run reads up front and what the skill
+listing costs per session — and fails when either passes its cap. To add a skill to the
+pipeline, give it a phase and a one-line description (≤ 250 chars) in
+`library/registry/skills.registry.json`; leave it `unrouted` to add it to the knowledge base,
+where it is invocable by name and costs nothing per session.
 
 `project.py <claude|codex|studio|digest|plugin>` runs one projector; add `--dry-run` to preview.
 
 ## The Studio
 
-`apollo-studio/` is an optional local control plane (Node ≥20): `npm --prefix apollo-studio
+`convenium-studio/` is an optional local control plane (Node ≥20): `npm --prefix convenium-studio
 start`, then `http://127.0.0.1:4173`. It reads the same `library/registry/` data via
-`skills.mjs`. `npm --prefix apollo-studio run check` syntax-checks it.
+`skills.mjs`. `npm --prefix convenium-studio run check` syntax-checks it.

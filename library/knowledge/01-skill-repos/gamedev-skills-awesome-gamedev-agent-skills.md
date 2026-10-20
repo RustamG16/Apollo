@@ -13,7 +13,7 @@ verdict: installed (1 of 67)
 
 # gamedev-skills/awesome-gamedev-agent-skills
 
-**Installed: `game-feel` → `library/skills/03-motion-3d/`, with `APOLLO-NOTES.md` mapping it to
+**Installed: `game-feel` → `library/skills/03-motion-3d/`, with `CONVENIUM-NOTES.md` mapping it to
 the web.** The LICENSE and NOTICE are in `third-party/`.
 
 ## What it is for
@@ -26,7 +26,7 @@ is why it has the notes file.
 
 | Skill | Why |
 |---|---|
-| `game-ui-ux` | Engine HUDs, gamepad focus and safe areas. Revisit if Apollo builds a real game UI. |
+| `game-ui-ux` | Engine HUDs, gamepad focus and safe areas. Revisit if convenium.design builds a real game UI. |
 | `rpg`, `procedural-gen` | Stats, leveling and loot tables are game systems. `gamified-ui` carries the web version. |
 | `threejs-*`, `phaser-core`, `pixijs-rendering` | Already covered by `three-guide` and `webgl-experience`, or out of scope |
 

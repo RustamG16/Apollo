@@ -1,8 +1,7 @@
 ---
 name: mobile-app-shell
-description: Make a marketing or hospitality site's phone journey app-grade — per-page screen budgets, phone-sized scroll-scrub runways and frame sets, a thumb-zone tab bar, safe areas on all four sides, cheap phone motion, and the verification rules that catch what emulated tests miss. Use when a site must work as the primary phone experience (360–430 px wide), when phone pages feel too long, when scroll-driven video is soft or stutters on phones, or before sharing a concept that most visitors will open on a phone.
+description: "Makes the phone journey app-grade (360–430 px): screen budgets per page, phone-sized scroll-scrub runways, thumb-zone tab bar, safe areas, cheap phone motion, and real-device verification."
 ---
-
 # Mobile app shell
 
 Most hospitality and editorial traffic arrives on a phone. Treat the 360–430 px band as the

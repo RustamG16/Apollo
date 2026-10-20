@@ -1,5 +1,5 @@
 {
-  "_comment": "library/ is the source of truth inside Apollo. The host trees (.claude, .agents, .codex, apollo-studio/knowledge) are GENERATED from it by tools/project.py — nothing here is read at runtime. This file only records provenance.",
+  "_comment": "library/ is the source of truth inside convenium.design. The host trees (.claude, .agents, .codex, convenium-studio/knowledge) are GENERATED from it by tools/project.py — nothing here is read at runtime. This file only records provenance.",
   "provenance": {
     "skills": "KnowledgeFactory library/skills (52) + the 6 Studio-store skills + 71 personal skills from the user's ~/.claude/skills, folded in Phase 1 of the unification (see git history / PROGRESS.md).",
     "agents": "The 5 specialists were converted from .codex/agents/*.toml; design-director was written new. Apollo_claude's 12 agents were deliberately not ported (decision 4).",
@@ -14,15 +14,24 @@
       "open-sourcing": "trailofbits/skills@82fe8226252622fa807643bdca1710901198553a plugins/open-sourcing — CC-BY-SA-4.0",
       "implementing-secret-scanning-with-gitleaks": "mukul975/Anthropic-Cybersecurity-Skills@54a798831d2266a3ca61ce68a7acb80b81160d57 skills/implementing-secret-scanning-with-gitleaks — Apache-2.0, .py scripts excluded",
       "rejected": "secondsky/claude-skills security-headers-configuration — ServerSignature in .htaccess (500 error), HSTS includeSubDomains+preload by default, deprecated X-XSS-Protection",
-      "static-site-apache-deploy": "Authored in Apollo 2026-10-09 from the Convenium Studio (005-agency) GoDaddy deploy; templates derived from its public/.htaccess and deploy-godaddy.yml",
-      "domain-and-hosting-plan": "Authored in Apollo 2026-10-19 for the ArkhEthos domain + hosting sizing request; GoDaddy MCP exposes availability/suggest only"
+      "static-site-apache-deploy": "Authored in convenium.design 2026-10-09 from the Convenium Studio (005-agency) GoDaddy deploy; templates derived from its public/.htaccess and deploy-godaddy.yml",
+      "domain-and-hosting-plan": "Authored in convenium.design 2026-10-19 for the ArkhEthos domain + hosting sizing request; GoDaddy MCP exposes availability/suggest only"
     },
     "vendored_2026_10_14": {
       "octalysis-gamification": "eykd/vance-ts@548afca81ea8ee7f0924d19b002968af1c6857af .claude/skills/octalysis-gamification - ISC (package.json; no LICENSE file)",
-      "game-feel": "gamedev-skills/awesome-gamedev-agent-skills@0a70cfc64672d512c5b5b6006b5dcb5cf90dbdbd skills/disciplines/game-feel - Apache-2.0; Apollo adds APOLLO-NOTES.md + a pointer line",
-      "gamified-ui": "Authored in Apollo 2026-10-14; original text, sources in references/sources.md",
+      "game-feel": "gamedev-skills/awesome-gamedev-agent-skills@0a70cfc64672d512c5b5b6006b5dcb5cf90dbdbd skills/disciplines/game-feel - Apache-2.0; convenium.design adds CONVENIUM-NOTES.md + a pointer line",
+      "gamified-ui": "Authored in convenium.design 2026-10-14; original text, sources in references/sources.md",
       "ethical-gamification-systems": "Owner-authored, copied 2026-10-15 from D:/Analyst_Designer/EXTERNAL_KNOWLEDGEBASE/skills/ethical-gamification-systems (SKILL.md + agents/openai.yaml); replaces the body-less stub in unused/library/skills/",
       "rejected": "mulosbron/gamification-skills (no licence); JimmyTranDev/dotfiles ui-gamification (unverifiable, flagged secret); jarrodmedrano game-feel/game-design-theory (parked)"
+    },
+    "vendored_2026_10_20": {
+      "modern-web-guidance": "GoogleChrome/modern-web-guidance@65e7edd67e77420eaf02c5df00fdc0521417d809 skills/modern-web-guidance — Apache-2.0",
+      "playwright-cli": "microsoft/playwright-cli@b1a5903c5b633b8c9f843ad7b629c2a78437040c skills/playwright-cli — Apache-2.0",
+      "debug-optimize-lcp, a11y-debugging": "ChromeDevTools/chrome-devtools-mcp@46b69e5af4d518d111b7201aa0dd18786fce4f84 skills/* — Apache-2.0",
+      "animation-performance": "emilkowalski/skills@2d228630ba1446365f614a108cb8252f1feda202 skills/animation-performance — MIT",
+      "threejs-build": "cloudai-x/threejs-skills@0e181866f095b5f06d005133876e926515390d95 skills/threejs-* bundled as references/ — MIT",
+      "context-optimization, context-compression": "muratcankoylan/Agent-Skills-for-Context-Engineering@9ff0c99108b36d3b886defd825d8ac1f47dba374 skills/* — MIT",
+      "deferred": "pbakaus/impeccable 4.7.0 — see third-party/VERSIONS.md"
     }
   }
 }

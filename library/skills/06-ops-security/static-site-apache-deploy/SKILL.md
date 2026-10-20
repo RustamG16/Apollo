@@ -7,7 +7,7 @@ description: Deploy a static site (Next.js `output export`, Astro, Vite, plain H
 
 Distilled from the Convenium Studio deploy (2026-10-09). Templates: `references/htaccess-template.conf`,
 `references/deploy-workflow-template.yml`. Pair with `06-ops-security/open-sourcing` (Actions hardening)
-and `06-ops-security/implementing-secret-scanning-with-gitleaks` (read its APOLLO-NOTES first).
+and `06-ops-security/implementing-secret-scanning-with-gitleaks` (read its CONVENIUM-NOTES first).
 
 **Verification status of this skill:** the build, export checks and pipeline logic were verified on the
 source project; the `.htaccess` was reviewed but its live Apache run was still pending when written —

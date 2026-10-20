@@ -1,10 +1,9 @@
 ---
 name: better-interface
-description: Combines all of the `better-*` skills into a single review across accessibility, layout, writing, typography, color and UI polish.
+description: "Combines all of the `better-*` skills into a single review across accessibility, layout, writing, typography, color and UI polish."
 license: MIT
 ---
-
-> **Apollo:** vendored from `jakubkrehel/skills` (MIT). Read `APOLLO-NOTES.md` for provenance and how this skill fits the Olympus pipeline.
+> **convenium.design:** vendored from `jakubkrehel/skills` (MIT). Read `CONVENIUM-NOTES.md` for provenance and how this skill fits the Olympus pipeline.
 
 # Cross-discipline review
 

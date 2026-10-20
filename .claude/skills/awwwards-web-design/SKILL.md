@@ -1,8 +1,7 @@
 ---
 name: awwwards-web-design
-description: Creates premium Awwwards-level websites from reference analysis, scraped visual evidence, GSAP motion, editorial typography, and polished responsive implementation. Use when designing or building high-end marketing sites, portfolio sites, medical practice sites, hero sections, ScrollTrigger animations, reference-inspired redesigns, or when the user asks for Awwwards-level visuals.
+description: "Adds premium editorial craft after hierarchy is stable."
 ---
-
 # Awwwards Web Design
 
 ## Operating Mode

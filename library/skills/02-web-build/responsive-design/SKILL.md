@@ -4,7 +4,7 @@ description: Implement modern responsive layouts using container queries, fluid 
 license: MIT
 ---
 
-> **Apollo:** vendored from `wshobson/agents` (MIT). Read `APOLLO-NOTES.md` for provenance and how this skill fits the Olympus pipeline.
+> **convenium.design:** vendored from `wshobson/agents` (MIT). Read `CONVENIUM-NOTES.md` for provenance and how this skill fits the Olympus pipeline.
 
 # Responsive Design
 

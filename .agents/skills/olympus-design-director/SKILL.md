@@ -1,8 +1,7 @@
 ---
 name: olympus-design-director
-description: Orchestrate an evidence-based redesign through intake, audit, one direction resolved at intake, human approval, asset planning, implementation, analytics, and browser QA. Use when a user asks to improve, repair, redesign, or elevate a page and needs coherent routing rather than every design capability at once.
+description: "Orchestrates an evidence-based redesign through intake, audit, one direction, human approval, assets, build, analytics and browser QA, routing one capability at a time."
 ---
-
 # Olympus Design Director
 
 Own one interpretation of the brief and route work through explicit gates. Never treat “award-winning” as a license to optimize spectacle over clarity, accessibility, mobile behavior, or performance.
@@ -27,8 +26,8 @@ Own one interpretation of the brief and route work through explicit gates. Never
 - Write durable findings to `.olympus/01-audit.md`.
 - Resolve the direction block in `00-brief.md` from `.olympus/brand-dna.json` (business,
   taste, doctrine match), the intake answers and the references. If taste is still
-  unresolved, have the strategist run `$apollo-taste-interview` or `$apollo-style-picker`;
-  the result goes into `brand-dna.json → taste`, never into the Apollo folder.
+  unresolved, have the strategist run `$convenium-taste-interview` or `$convenium-style-picker`;
+  the result goes into `brand-dna.json → taste`, never into the convenium.design folder.
 - Confirm `neededProducts` with the user at Gate A: it decides what this run makes.
 - Stop for Gate A. Do not generate the direction or edit production code before approval.
 

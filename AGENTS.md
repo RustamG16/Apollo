@@ -91,9 +91,9 @@ The Brand DNA is load-bearing. Every project gets one before Gate A: the `brand-
 specialist analyses the business (its site, socials, reviews, competitors and media, or an
 interview when there is no public presence) and writes `.olympus/brand-dna.json` plus
 `BRAND.md` in the project — business, audience, voice, taste, doctrine match and the ranked
-products it needs. The taste part comes from `$apollo-taste-interview` or
-`$apollo-style-picker` rather than guessing. Client DNA lives with the client project, never in
-this repository; a user's personal default taste may live in `~/.apollo/taste.json`.
+products it needs. The taste part comes from `$convenium-taste-interview` or
+`$convenium-style-picker` rather than guessing. Client DNA lives with the client project, never in
+this repository; a user's personal default taste may live in `~/.convenium/taste.json`.
 
 Greenfield work has an entry: with no existing page the run starts at the questionnaire,
 `$ux-evidence-audit` stays dormant, and `$reference-deconstruction` carries the evidence phase.
@@ -116,6 +116,22 @@ The default is a single Design Director using focused skills. Optional custom ag
 - Never load more than one `SKILL.md` body per phase.
 - Share file paths and concise phase packets, not the whole conversation.
 - A critic identifies defects and scores work; it does not secretly redesign it.
+
+**Context budget.** Every file read stays in context for the rest of the session, so:
+
+- Read only what the read order, the routing decision or the phase packet names. Never read
+  generated trees (`.claude/`, `.agents/`, `.codex/`, `convenium-studio/knowledge/`) or `unused/`
+  — the source is `library/`.
+- Search before opening; open long files by line range. Do not re-read a file already in context.
+- Skills built as an index (`threejs-build`, `impeccable`'s `reference/`, `modern-web-guidance`)
+  load one reference at a time, only for the current step.
+- A specialist writes its full output to `<website-project>/.olympus/` and returns at most ~300
+  words: intent, files written, decisions, open risks, next step. Screenshots go to disk; return
+  paths, not images. Prefer an accessibility snapshot to a screenshot when text proves the point.
+- Keep the shared prefix stable during a run: do not edit `AGENTS.md`/`CLAUDE.md` or switch model
+  mid-run (both invalidate the prompt cache).
+- The knowledge base (`library/registry/UNROUTED.md`) is hidden from the skill listing; invoke
+  one of its skills by name only when its line matches the need.
 - Stop and ask when a missing choice would materially alter direction, cost, rights, or technical risk.
 
 ## Loop bounds
@@ -141,7 +157,7 @@ in `AGENTS.md`" rather than restating a number.
 
 Record per-run phase counts in `<website-project>/.olympus/run.json` under `phase_counts`
 (increment the phase key each time a phase runs, including repeats). This is the only place
-Apollo measures its own loop cost, so the bounds above can be tuned against real data.
+convenium.design measures its own loop cost, so the bounds above can be tuned against real data.
 
 ## Safety and quality
 
