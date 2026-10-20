@@ -14,7 +14,8 @@
       "open-sourcing": "trailofbits/skills@82fe8226252622fa807643bdca1710901198553a plugins/open-sourcing — CC-BY-SA-4.0",
       "implementing-secret-scanning-with-gitleaks": "mukul975/Anthropic-Cybersecurity-Skills@54a798831d2266a3ca61ce68a7acb80b81160d57 skills/implementing-secret-scanning-with-gitleaks — Apache-2.0, .py scripts excluded",
       "rejected": "secondsky/claude-skills security-headers-configuration — ServerSignature in .htaccess (500 error), HSTS includeSubDomains+preload by default, deprecated X-XSS-Protection",
-      "static-site-apache-deploy": "Authored in Apollo 2026-10-09 from the Convenium Studio (005-agency) GoDaddy deploy; templates derived from its public/.htaccess and deploy-godaddy.yml"
+      "static-site-apache-deploy": "Authored in Apollo 2026-10-09 from the Convenium Studio (005-agency) GoDaddy deploy; templates derived from its public/.htaccess and deploy-godaddy.yml",
+      "domain-and-hosting-plan": "Authored in Apollo 2026-10-19 for the ArkhEthos domain + hosting sizing request; GoDaddy MCP exposes availability/suggest only"
     },
     "vendored_2026_10_14": {
       "octalysis-gamification": "eykd/vance-ts@548afca81ea8ee7f0924d19b002968af1c6857af .claude/skills/octalysis-gamification - ISC (package.json; no LICENSE file)",

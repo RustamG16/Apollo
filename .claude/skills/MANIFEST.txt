@@ -12,6 +12,10 @@ award-rubric/SKILL.md
 award-rubric/agents/openai.yaml
 award-rubric/references/scoring-anchors.md
 awwwards-web-design/SKILL.md
+better-interface/APOLLO-NOTES.md
+better-interface/SKILL.md
+better-interface/agents/openai.yaml
+better-interface/review-format.md
 competitor-profiling/SKILL.md
 competitor-profiling/evals/evals.json
 competitor-profiling/references/templates.md
@@ -238,6 +242,7 @@ impeccable/scripts/palette.mjs
 impeccable/scripts/pin.mjs
 impeccable/scripts/serve-question.mjs
 impeccable/scripts/surface-brief.mjs
+mobile-app-shell/SKILL.md
 olympus-design-director/SKILL.md
 olympus-design-director/agents/openai.yaml
 olympus-design-director/references/routing-contract.md
@@ -249,6 +254,13 @@ prototype/SKILL.md
 reference-deconstruction/SKILL.md
 reference-deconstruction/agents/openai.yaml
 reference-deconstruction/references/inspection-checklist.md
+scroll-scrubbed-visual-sequence/APOLLO-NOTES.md
+scroll-scrubbed-visual-sequence/REFERENCES.md
+scroll-scrubbed-visual-sequence/SKILL.md
+scroll-scrubbed-visual-sequence/agents/openai.yaml
+scroll-scrubbed-visual-sequence/demo/PROMPT.md
+scroll-scrubbed-visual-sequence/demo/index.html
+scroll-scrubbed-visual-sequence/demo/preview.jpg
 site-architecture/SKILL.md
 site-architecture/evals/evals.json
 site-architecture/references/mermaid-templates.md

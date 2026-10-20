@@ -1380,6 +1380,23 @@
     "enabled": false
   },
   {
+    "id": "domain-and-hosting-plan",
+    "name": "domain-and-hosting-plan",
+    "phase": "unrouted",
+    "group": "Engineering",
+    "defaultOn": false,
+    "description": "Check and secure a domain through the GoDaddy connector (availability, cart guidance, owner-only purchase) and size hosting - static shell, backend, database, object storage, egress - from the measured footprint times a growth factor, then hand off DNS records. Authored for the ArkhEthos domain request, 2026-10-19.",
+    "runtimePrompt": "",
+    "category": "06-ops-security",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
     "id": "octalysis-gamification",
     "name": "octalysis-gamification",
     "phase": "unrouted",
@@ -1439,6 +1456,261 @@
     "description": "Design and build gamified web/app UI - XP and levels, streaks, achievements, progress, quests, leaderboards, celebration tiers - with every number committed to DESIGN.md before code, all states designed, and an ethics gate. Original Apollo skill, 2026-10-14.",
     "runtimePrompt": "",
     "category": "02-web-build",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "mobile-app-shell",
+    "name": "Mobile App Shell",
+    "phase": "build",
+    "group": "Web Build",
+    "defaultOn": false,
+    "description": "Make a marketing or hospitality site's phone journey app-grade — per-page screen budgets, phone-sized scroll-scrub runways and frame sets, a thumb-zone tab bar, safe areas on all four sides, cheap phone motion, and the verification rules that catch what emulated tests miss. Use when a site must work as the primary phone experience (360–430 px wide), when phone pages feel too long, when scroll-driven video is soft or stutters on phones, or before sharing a concept that most visitors will open on a phone.",
+    "runtimePrompt": "Treat the 360–430 px phone band as the primary layout: hold each route to its screen budget (home ≤ 16, others ≤ 12 at 390×844), size scroll-scrub runways and frame sets for phones, ship a thumb-zone tab bar with safe areas on all four sides, keep phone motion play-once, and verify reduced motion by computed opacity, live-scroll lag on 4G and production cache headers.",
+    "category": "02-web-build",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": true
+  },
+  {
+    "id": "scroll-scrubbed-visual-sequence",
+    "name": "Scroll-Scrubbed Visual Sequence",
+    "phase": "build",
+    "group": "Motion",
+    "defaultOn": false,
+    "description": "Build reversible scroll-controlled visual transformations with a pinned or sticky stage, normalized progress, and video, image-sequence, canvas, SVG, or DOM renderers. Use for hero transformations, product assembly, interface state walkthroughs, object rotation, diagrams, or photo sequences that must move forward and backward with native scrolling.",
+    "runtimePrompt": "Build scroll-scrubbed media as a sticky stage driven by one normalized progress value, with a poster, a reduced-motion frame, copy kept in HTML, and phone runway and frame-set sizing from mobile-app-shell. Verify forward and reverse scrolling and fast flicks.",
+    "category": "03-motion-3d",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": true
+  },
+  {
+    "id": "better-interface",
+    "name": "Better Interface",
+    "phase": "verify",
+    "group": "Verification",
+    "defaultOn": false,
+    "description": "Combines all of the `better-*` skills into a single review across accessibility, layout, writing, typography, color and UI polish.",
+    "runtimePrompt": "Run one evidence-based review across accessibility, layout, writing, typography, colour and UI polish through the six better-* skills. Cite file:line, measure rendered states, treat the committed design system as convention, and report at most 15 findings with a Block or Approve verdict.",
+    "category": "01-design-direction",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": true
+  },
+  {
+    "id": "cinematic-scroll-storytelling",
+    "name": "Cinematic Scroll Storytelling",
+    "phase": "unrouted",
+    "group": "Motion",
+    "defaultOn": false,
+    "description": "Create cinematic scroll-driven landing pages with Lenis smooth scrolling, GSAP ScrollTrigger, scroll-linked progression, staggered text reveals, sticky card stacks, parallax backgrounds, scroll-scrubbed transitions, footer reveals, and immersive preloaders. Use when analyzing or building premium editorial scroll experiences, sticky project stacks, kinetic typography, or section-by-section storytelling.",
+    "runtimePrompt": "",
+    "category": "03-motion-3d",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "cinematic-gsap-lenis-motion-system",
+    "name": "Cinematic GSAP Lenis Motion System",
+    "phase": "unrouted",
+    "group": "Motion",
+    "defaultOn": false,
+    "description": "Create premium cinematic web motion systems with GSAP, ScrollTrigger, and Lenis. Use for luxury editorial websites, creative studio portfolios, Awwwards-style interactions, smooth scroll reveals, staggered text, parallax, pinned sections, magnetic hover states, custom cursors, and mouse-reactive layered movement.",
+    "runtimePrompt": "",
+    "category": "03-motion-3d",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "mobile-ios-design",
+    "name": "Mobile iOS Design",
+    "phase": "unrouted",
+    "group": "Web Build",
+    "defaultOn": false,
+    "description": "Master iOS Human Interface Guidelines and SwiftUI patterns for building native iOS apps. Use when designing iOS interfaces, implementing SwiftUI views, or ensuring apps follow Apple's design principles.",
+    "runtimePrompt": "",
+    "category": "02-web-build",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "responsive-design",
+    "name": "Responsive Design",
+    "phase": "unrouted",
+    "group": "Web Build",
+    "defaultOn": false,
+    "description": "Implement modern responsive layouts using container queries, fluid typography, CSS Grid, and mobile-first breakpoint strategies. Use when building adaptive interfaces, implementing fluid layouts, or creating component-level responsive behavior.",
+    "runtimePrompt": "",
+    "category": "02-web-build",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "gesture-patterns",
+    "name": "Gesture Patterns",
+    "phase": "unrouted",
+    "group": "Web Build",
+    "defaultOn": false,
+    "description": "Design gesture interactions for touch and pointer — swipe, drag, long-press, and their discoverability. Use when input is gestural. For OS-standard gestures on iOS and Android, use `platform-conventions` (ui-design).",
+    "runtimePrompt": "",
+    "category": "02-web-build",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "better-layout",
+    "name": "Better Layout",
+    "phase": "unrouted",
+    "group": "Craft",
+    "defaultOn": false,
+    "description": "Helps with grouping, alignment, reading order, responsive structure and room for translated text, so a layout holds up when it is resized, translated or mirrored.",
+    "runtimePrompt": "",
+    "category": "01-design-direction",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "better-typography",
+    "name": "Better Typography",
+    "phase": "unrouted",
+    "group": "Craft",
+    "defaultOn": false,
+    "description": "Sets and reviews how text renders in your product, from the type scale and spacing to font features, wrapping, truncation and punctuation.",
+    "runtimePrompt": "",
+    "category": "01-design-direction",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "better-colors",
+    "name": "Better Colors",
+    "phase": "unrouted",
+    "group": "Craft",
+    "defaultOn": false,
+    "description": "Helps you build and check a color system for your project. It generates palettes, names semantic tokens, converts between formats and measures contrast.",
+    "runtimePrompt": "",
+    "category": "01-design-direction",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "better-ui",
+    "name": "Better UI",
+    "phase": "unrouted",
+    "group": "Craft",
+    "defaultOn": false,
+    "description": "Polishes the surfaces, icons and motion in your project with exact values for border radius, optical alignment, shadows, icon states and animation.",
+    "runtimePrompt": "",
+    "category": "01-design-direction",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "better-writing",
+    "name": "Better Writing",
+    "phase": "unrouted",
+    "group": "Content",
+    "defaultOn": false,
+    "description": "Writes and reviews your interface copy, from labels and errors to empty states and confirmations, so it matches your product's voice and tells people what to do next.",
+    "runtimePrompt": "",
+    "category": "05-content-copy",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "interface-review",
+    "name": "Interface Review",
+    "phase": "unrouted",
+    "group": "Verification",
+    "defaultOn": false,
+    "description": "Reviews a branch, pull request or uncommitted change for the interface problems it introduced or regressed, across accessibility, layout, writing, typography, color and UI.",
+    "runtimePrompt": "",
+    "category": "08-qa-review",
+    "hosts": [
+      "claude",
+      "codex",
+      "studio"
+    ],
+    "status": "active",
+    "enabled": false
+  },
+  {
+    "id": "better-accessibility",
+    "name": "Better Accessibility",
+    "phase": "unrouted",
+    "group": "Verification",
+    "defaultOn": false,
+    "description": "Reviews and fixes keyboard and focus behavior, ARIA, accessible names, forms, screen-reader announcements, motion and zoom in your project against WCAG 2.2.",
+    "runtimePrompt": "",
+    "category": "08-qa-review",
     "hosts": [
       "claude",
       "codex",

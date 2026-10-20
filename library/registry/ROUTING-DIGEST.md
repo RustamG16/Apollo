@@ -1,7 +1,7 @@
 # Routing digest
 
 One line per pipeline-active skill. Route from this table, then follow the two-stage skill-loading rule in `AGENTS.md`.
-Unrouted skills (55) are in `UNROUTED.md` — capabilities, invoked explicitly, not part of the pipeline.
+Unrouted skills (68) are in `UNROUTED.md` — capabilities, invoked explicitly, not part of the pipeline.
 
 | Skill | Phase | Line |
 |---|---|---|
@@ -31,6 +31,9 @@ Unrouted skills (55) are in `UNROUTED.md` — capabilities, invoked explicitly, 
 | `gsap-frameworks` | build | Scopes Vue, Nuxt, Svelte, and SvelteKit animation lifecycle. |
 | `gsap-react` | build | Scopes React animation lifecycle and cleanup. |
 | `impeccable` | build | Own the finish: commit the design system as numbers before layout (PRODUCT.md, DESIGN.md, design.json), the… |
+| `mobile-app-shell` | build | Make a marketing or hospitality site's phone journey app-grade — per-page screen budgets, phone-sized scrol… |
+| `scroll-scrubbed-visual-sequence` | build | Build reversible scroll-controlled visual transformations with a pinned or sticky stage, normalized progres… |
+| `better-interface` | verify | Combines all of the `better-*` skills into a single review across accessibility, layout, writing, typograph… |
 | `copy-editing` | verify | Edit implemented interface copy in focused passes (clarity, concision, consistency, voice) without changing… |
 | `design-analytics` | verify | Connects design hypotheses to a minimal event contract. |
 | `gsap-performance` | verify | Finds animation jank and layout-thrashing risk. |
