@@ -295,3 +295,10 @@
     });
   });
 })();
+
+// If a CDN image fails, hide the broken glyph so the dark frame stays clean.
+document.querySelectorAll('img').forEach((img) => {
+  const fail = () => img.classList.add('is-broken');
+  img.addEventListener('error', fail);
+  if (img.complete && img.naturalWidth === 0 && img.currentSrc) fail();
+});

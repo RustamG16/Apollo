@@ -460,3 +460,7 @@ ul, ol { list-style: none; }
   .prologue__lines { gap: 3rem; }
   .stmt { grid-area: auto; opacity: 1; filter: none; transform: none; }
 }
+
+/* Failed media: keep the frame, never leak alt text or the broken-image glyph. */
+img { color: transparent; }
+img.is-broken { visibility: hidden; }
