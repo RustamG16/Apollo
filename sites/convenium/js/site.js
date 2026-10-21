@@ -92,17 +92,17 @@
   if (fine.matches && hasGsap) {
     rows.forEach(function (row) {
       var frame = row.querySelector('.row-frame');
-      var toX = gsap.quickTo(frame, 'x', { duration: 0.35, ease: 'power3.out' });
       var toY = gsap.quickTo(frame, 'y', { duration: 0.35, ease: 'power3.out' });
+      function fx() { var g = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gutter')) || 72; return window.innerWidth - (frame.offsetWidth || 330) - g; }
       function enter(e) {
         if (reducedMotion() || row.classList.contains('is-hover')) return;
-        gsap.set(frame, { xPercent: -50, yPercent: -50, x: e.clientX, y: e.clientY, scale: 0.96 });
+        gsap.set(frame, { xPercent: 0, yPercent: -50, x: fx(), y: e.clientY, scale: 0.96 });
         gsap.to(frame, { scale: 1, duration: 0.4, ease: 'power3.out', overwrite: 'auto' });
         row.classList.add('is-hover');
       }
       row.addEventListener('pointerenter', enter);
       row.addEventListener('pointerover', enter);
-      row.addEventListener('pointermove', function (e) { if (!reducedMotion()) { toX(e.clientX); toY(e.clientY); } });
+      row.addEventListener('pointermove', function (e) { if (!reducedMotion()) { toY(e.clientY); } });
       row.addEventListener('pointerleave', function () { row.classList.remove('is-hover'); });
     });
   }

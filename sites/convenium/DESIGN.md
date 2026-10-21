@@ -194,7 +194,7 @@ replaced by their posters; the XP figure updates instantly. The content is ident
 
 ## Accessibility
 
-Landmarks: `header` (nav), `main`, six `section`s each with an `h2`, `footer`. One `h1`
+Landmarks: `header` (nav), `main`, eight `section`s, seven with an `h2` and the hero with the `h1`, `footer`. One `h1`
 (*The Rustam Codex*); `h2` per section; `h3` for path names, campaign titles and quest
 titles. Skip link to `main`. Focus ring is brass 2px at 4px offset everywhere; over imagery
 it gains the ground-coloured halo from the `focus-ring` token. The quest tiles are real
