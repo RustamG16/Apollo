@@ -2,7 +2,7 @@
 enabled = true
 max_concurrent_threads_per_session = 2
 
-[mcp_servers.apollo]
+[mcp_servers.convenium-design]
 command = "node"
-args = ["D:/Analyst_Designer/Apollo/apollo-studio/mcp-server.mjs"]
+args = ["D:/Analyst_Designer/Convenium.Design/convenium-design-studio/mcp-server.mjs"]
 required = true

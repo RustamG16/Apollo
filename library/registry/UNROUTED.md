@@ -1,6 +1,6 @@
 # Unrouted skills
 
-These skills are in the library and are projected to their hosts, but have no derivable phase in Apollo's redesign pipeline (decision 13). They are available capabilities, invoked explicitly, and are excluded from `ROUTING-DIGEST.md`'s active table.
+These skills are in the library and are projected to their hosts, but have no derivable phase in Convenium.Design's redesign pipeline (decision 13). They are available capabilities, invoked explicitly, and are excluded from `ROUTING-DIGEST.md`'s active table.
 
 Count: 53
 
@@ -71,10 +71,10 @@ Count: 53
 
 ## 11-meta-system
 
-- `apollo-bootstrap` - First-use analysis, audit, and install flow for Apollo_claude in a target project. Detects whether this is a first install or a re-audit, in
-- `apollo-cyberpunk-athens-skin` - Regenerate dashboard/css/tokens.cyberpunk-athens.css from the Cyberpunk Athens doctrine's token block, whenever the doctrine file changes. T
-- `apollo-dashboard-sync` - The single write path into a project's dashboard state.json. Any agent that starts, updates, blocks, or completes a task calls this skill ra
-- `apollo-loadout-sync` - The single write path for a per-agent skill loadout. Activating, saving, or clearing a named setup goes through this skill rather than hand-
+- `convenium-design-bootstrap` - First-use analysis, audit, and install flow for ConveniumDesign_claude in a target project. Detects whether this is a first install or a re-audit, in
+- `convenium-design-cyberpunk-athens-skin` - Regenerate dashboard/css/tokens.cyberpunk-athens.css from the Cyberpunk Athens doctrine's token block, whenever the doctrine file changes. T
+- `convenium-design-dashboard-sync` - The single write path into a project's dashboard state.json. Any agent that starts, updates, blocks, or completes a task calls this skill ra
+- `convenium-design-loadout-sync` - The single write path for a per-agent skill loadout. Activating, saving, or clearing a named setup goes through this skill rather than hand-
 - `garden-kb-retriever` - 面向本地知识库目录的检索和问答助手。核心流程：(1)分层索引导航 (2)遇到PDF/Excel时必须先读取references学习处理方法 (3)处理文件后再检索。按文件类型组合使用 grep、Read、pdfplumber、pandas 进行渐进式检索，避免整文件加载。用户问题
 - `superpowers-writing-skills` - Use when creating new skills, editing existing skills, or verifying skills work before deployment
 

@@ -1,17 +1,17 @@
 # New upgrade plan — start here
 
-Turning Apollo into a multi-agency system on one shared knowledge base. Design Agency
+Turning Convenium.Design into a multi-agency system on one shared knowledge base. Design Agency
 finished first; the rest attach after.
 
 Written 2026-09-03 from two sources by Bennett Spooner (@bennett.spooner) plus the current
-state of `D:\Analyst_Designer\Apollo`.
+state of `D:\Analyst_Designer\Convenium.Design`.
 
 ## Kickoff prompt for a fresh session
 
 Paste this. It is written for a cold session with no memory of how the plan got here.
 
 ```
-Apollo system work, not a website redesign — skip the website read order in CLAUDE.md.
+Convenium.Design system work, not a website redesign — skip the website read order in CLAUDE.md.
 
 Read in this order:
   1. New_upgradePlan/README.md, including "Repository state at handoff"
@@ -27,9 +27,9 @@ the hostNote field, verify.py checks 10 and 11, and agent parity.
 
 Constraints:
 - library/ is the only source of truth. Never hand-edit .claude/, .agents/skills/,
-  .codex/agents/ or apollo-studio/knowledge/skills/ — regenerate with
+  .codex/agents/ or convenium-design-studio/knowledge/skills/ — regenerate with
   `python library/tools/project.py all`, then `python library/tools/verify.py`.
-- Do not touch apollo-studio/data/ or anything under test_projects/. Both Savra projects
+- Do not touch convenium-design-studio/data/ or anything under test_projects/. Both Savra projects
   are finished evidence, not work in progress.
 - Follow §4.0's acceptance test literally, including the regression step: break one skill's
   hosts, confirm the check fails, restore it. A check that only describes today's state is
@@ -47,7 +47,7 @@ To continue past sub-project 0, replace the last three paragraphs with the next 
 
 | # | File | What it is |
 |---|---|---|
-| 1 | [SOURCE-ANALYSIS.md](SOURCE-ANALYSIS.md) | His architecture, decoded — tiers, token economics, guardrails. Plus a gap table against Apollo. |
+| 1 | [SOURCE-ANALYSIS.md](SOURCE-ANALYSIS.md) | His architecture, decoded — tiers, token economics, guardrails. Plus a gap table against Convenium.Design. |
 | 2 | [SPEC-01-KNOWLEDGE-BASE.md](SPEC-01-KNOWLEDGE-BASE.md) | **Approved.** The shared KB: SQLite + FTS5, three verbs, agents query instead of loading. |
 | 3 | [SPEC-02-AGENCY-MODEL.md](SPEC-02-AGENCY-MODEL.md) | Draft. How Design is finished and how agency #2 attaches without a refactor. |
 | 4 | [SPEC-03-CONSOLE-UI.md](SPEC-03-CONSOLE-UI.md) | Draft. The console: 5 views not 18, the five fixes, and why it is a window and never a dependency. |
@@ -78,8 +78,8 @@ scored 93 — the reference for what good looks like. `test_projects/Savra_Claud
 Claude run that scored 67 and whose repair pass is the evidence in `SOURCE-ANALYSIS.md` §9.
 Neither is being rebuilt. Do not treat either as work in progress.
 
-**The MCP `apollo` server was disconnected** during the session that wrote this. Nothing in
-the plan depends on it, but if a task seems to want `apollo_get_context`, that is why it is
+**The MCP `convenium-design` server was disconnected** during the session that wrote this. Nothing in
+the plan depends on it, but if a task seems to want `convenium_design_get_context`, that is why it is
 unavailable.
 
 ## The two constraints everything obeys
@@ -89,12 +89,12 @@ under `test_projects/`, and run it. No new install, no service that must be up, 
 subscription beyond Claude and Codex.
 
 **2. The console is a window, never a dependency.** If it is broken or never built, every
-Apollo run still works. Nothing in the pipeline imports from it or waits on it.
+Convenium.Design run still works. Nothing in the pipeline imports from it or waits on it.
 
 ## What was cut, 2026-09-03
 
 Hermes, GLM-5.2, Ollama Cloud, the gateway, the $240 three-subscription stack, and the
-model-per-seat routing table. Apollo runs on Claude + Codex. What survives from his worker
+model-per-seat routing table. Convenium.Design runs on Claude + Codex. What survives from his worker
 pool is the *economics* — bounded brief in, one page out, one-way escalation, stateless
 subagents — which Claude Code's own subagents already support. See `SPEC-02` §4.1.
 
@@ -125,12 +125,12 @@ All of it is already in the repo: `AGENTS.md`, `START-HERE.md`, `templates/06-bu
 
 ## The two findings that shape everything
 
-**1. Apollo is already his tiers 1 and 2.** `design-director` is the conductor; the five
+**1. Convenium.Design is already his tiers 1 and 2.** `design-director` is the conductor; the five
 specialists are the dept heads. What's missing is tier 3 — the cheap worker lane. Without
-it, every Apollo run pays conductor prices for typing work. *(Still true. No longer the
+it, every Convenium.Design run pays conductor prices for typing work. *(Still true. No longer the
 first thing to fix — see the 2026-09-04 update above.)*
 
-**2. The measured cost of the current design.** `apollo_get_context` ships **21,992 bytes
+**2. The measured cost of the current design.** `convenium_design_get_context` ships **21,992 bytes
 on every task** (`PROGRESS.md` Phase 8) — ~5.5K tokens before any work starts. Spec 01
 exists to kill that, and its acceptance test is a 5x reduction with no behavioural change.
 

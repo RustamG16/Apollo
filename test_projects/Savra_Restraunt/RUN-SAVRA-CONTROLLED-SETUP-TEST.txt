@@ -1,20 +1,20 @@
 Act as the Olympus Design Director and run a controlled end-to-end test of the current
-Apollo website-production setup. This is a real implementation task, not a theoretical
+Convenium.Design website-production setup. This is a real implementation task, not a theoretical
 plan, but you must observe the Olympus approval gates exactly.
 
 WORKSPACE AND TARGET
 Open and retain this workspace root:
-D:\Analyst_Designer\Apollo
+D:\Analyst_Designer\Convenium.Design
 
 Treat the Olympus repository outside the target project as reusable operating context.
 Write all project-specific code, evidence, decisions, screenshots, notes, and statistics
 only under:
-D:\Analyst_Designer\Apollo\test_projects\Savra_Restraunt
+D:\Analyst_Designer\Convenium.Design\test_projects\Savra_Restraunt
 
 Target route: /
 Target page: one premium, responsive, scroll-animated restaurant landing page.
 Media source folder:
-D:\Analyst_Designer\Apollo\test_projects\Savra_Restraunt\media
+D:\Analyst_Designer\Convenium.Design\test_projects\Savra_Restraunt\media
 
 The media folder currently contains 31 supplied assets: 30 JPEG images and one MP4 video.
 Treat the originals as read-only first-party project inputs. Do not rename, overwrite,
@@ -64,7 +64,7 @@ Write concise, original concept copy. Do not use lorem ipsum. Keep factual claim
 to the fictional positioning explicitly supplied here.
 
 COMPLETE INTAKE ANSWERS
-1. Project folder: D:\Analyst_Designer\Apollo\test_projects\Savra_Restraunt
+1. Project folder: D:\Analyst_Designer\Convenium.Design\test_projects\Savra_Restraunt
 2. Route: /
 3. Business goal: reservation intent.
 4. Primary audience: defined above.
@@ -87,9 +87,9 @@ questions again unless a genuinely blocking contradiction is discovered.
 
 OLYMPUS STARTUP
 Before designing or editing:
-1. Read D:\Analyst_Designer\Apollo\START-HERE.md completely.
-2. Read D:\Analyst_Designer\Apollo\AGENTS.md completely.
-3. Read D:\Analyst_Designer\Apollo\ARCHITECTURE.md completely.
+1. Read D:\Analyst_Designer\Convenium.Design\START-HERE.md completely.
+2. Read D:\Analyst_Designer\Convenium.Design\AGENTS.md completely.
+3. Read D:\Analyst_Designer\Convenium.Design\ARCHITECTURE.md completely.
 4. Use $olympus-design-director as the persistent run owner.
 5. Initialize the target project's .olympus directory from the Olympus templates.
 6. Create a unique run ID and record host, start time, project, route, current phase,
@@ -275,10 +275,10 @@ Keep valid JSON and update it at phase boundaries. Include, when actually observ
 Never estimate token usage, timing, Lighthouse scores, or tool counts when the host does not
 expose them. Use null and an explicit unavailableReason. Separate exact measurements from
 inferences. Do not include secrets, session tokens, API keys, cookies, private conversation
-history, or credential-bearing command output in notes, stats, or Apollo events.
+history, or credential-bearing command output in notes, stats, or Convenium.Design events.
 
-APOLLO SHARED EVENT TEST
-If the shared Apollo MCP tools are available, use them. At startup call apollo_get_context,
+CONVENIUM.DESIGN SHARED EVENT TEST
+If the shared Convenium.Design MCP tools are available, use them. At startup call convenium_design_get_context,
 create or publish the explicit run plan, and use a single runId for this test. Publish only
 bounded, non-sensitive events using the supported kinds:
 - host.connected once;
@@ -291,13 +291,13 @@ bounded, non-sensitive events using the supported kinds:
 - run.completed only after verified implementation and Gate C approval;
 - run.failed only for a genuine terminal failure.
 
-At the end, call apollo_list_events for this run if available and reconcile the event count
-with .olympus/11-run-stats.json. Do not forward private host conversation history. If Apollo
+At the end, call convenium_design_list_events for this run if available and reconcile the event count
+with .olympus/11-run-stats.json. Do not forward private host conversation history. If Convenium.Design
 MCP is unavailable, record that fact and continue using the local audit artifacts.
 
 TOKEN AND CONTEXT BUDGET
 The user-authorized hard ceiling is 500,000 total tokens for the complete multi-turn run.
-Use substantially less whenever possible. At startup inspect the effective host/Apollo
+Use substantially less whenever possible. At startup inspect the effective host/Convenium.Design
 ceiling. Never raise or bypass a lower configured ceiling automatically; the effective hard
 limit is the lower of 500,000 and the configured host limit.
 
@@ -332,7 +332,7 @@ After implementation and QA, write .olympus/09-handoff.md with:
 
 Then stop at Gate C and ask me to review the actual page. Do not call the implementation
 final and do not publish or deploy it until I explicitly approve Gate C. After approval,
-mark the run complete, write final timestamps/stats, and publish run.completed to Apollo if
+mark the run complete, write final timestamps/stats, and publish run.completed to Convenium.Design if
 the shared MCP is available.
 
 BEGIN NOW

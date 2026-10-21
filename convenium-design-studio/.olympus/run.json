@@ -1,0 +1,28 @@
+{
+  "system": "olympus-design-director",
+  "target_project": "Convenium.Design Studio",
+  "target_route": "Desktop application shell: Work, Systems, Library, Playground, Oracle, and Settings",
+  "mode": "concept-and-implementation",
+  "phase": "desktop continuous improvement — research and implementation",
+  "gate_a": "approved (2026-08-31; master plan)",
+  "gate_b": "approved (2026-08-31; Convenium.Design Workbench selected by delegated user decision)",
+  "gate_c": "pending",
+  "approved_concept": "Convenium.Design Workbench",
+  "constraints": [
+    "Preserve existing uncommitted work, Node-based local application, demo/live OpenAI distinction, and /api/* behavior during migration.",
+    "Keep local data private; files remain external references unless explicitly imported.",
+    "Record media provenance and usage rights before reuse; avoid unapproved external media generation.",
+    "Honor reduced motion/transparency and keep Work usable without WebGL.",
+    "Optimize and verify laptop/desktop only; mobile responsiveness is explicitly out of scope as of 2026-09-01.",
+    "Keep post-baseline improvement commits local until the user explicitly approves another GitHub push."
+  ],
+  "references": [
+    "Approved direction: calm Codex-style desktop workspace with contextual mythological identity; no external visual reference supplied."
+  ],
+  "assets": [
+    "public/media/gods/{Convenium.Design,Athena,Calliope,Hephaestus,Hermes}",
+    "public/media/other"
+  ],
+  "last_updated": "2026-09-01",
+  "latest_improvement": "Visual-enrichment cycle: generated local Systems and Knowledge Factory scene assets, applied fallback-safe desktop styling, and verified Systems, Architecture, and Library at 1440×900."
+}

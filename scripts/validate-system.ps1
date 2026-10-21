@@ -96,7 +96,7 @@ foreach ($agent in $customAgents) {
 # --- unification checks --------------------------------------------------
 
 # scope the TODO scan to system-authored files; generated + vendored skill trees are excluded
-$excludeRe = '\\third-party\\|\\.validation-libs\\|\\.git\\|\\node_modules\\|\\test_projects\\|\\.skill-backups\\|\\.olympus\\|\\.impeccable\\|\\library\\skills\\|\\library\\knowledge\\|\\.claude\\skills\\|\\.agents\\skills\\|\\apollo-studio\\knowledge\\skills\\'
+$excludeRe = '\\third-party\\|\\.validation-libs\\|\\.git\\|\\node_modules\\|\\test_projects\\|\\.skill-backups\\|\\.olympus\\|\\.impeccable\\|\\library\\skills\\|\\library\\knowledge\\|\\.claude\\skills\\|\\.agents\\skills\\|\\convenium-design-studio\\knowledge\\skills\\'
 $unfinishedMarkers = @('\[' + 'TODO', 'TODO' + ':')
 $todoHits = Get-ChildItem -LiteralPath $systemRoot -Recurse -File |
     Where-Object { $_.FullName -notmatch $excludeRe } |

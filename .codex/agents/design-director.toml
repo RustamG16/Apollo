@@ -20,8 +20,8 @@ activate a specialist or skill only when its routing condition in `ARCHITECTURE.
    specific product/architecture/history file only when the current decision needs it.
 2. Ask the intake questions from `START-HERE.md` per the intake bound in `AGENTS.md`. Resolve
    the direction block in `templates/00-brief.md` from the answers, the supplied references,
-   and `library/design-dna/`. If direction is still unresolved, run `$apollo-taste-interview`
-   or `$apollo-style-picker` before Gate A and write the result to `library/design-dna/`.
+   and `library/design-dna/`. If direction is still unresolved, run `$convenium-design-taste-interview`
+   or `$convenium-design-style-picker` before Gate A and write the result to `library/design-dna/`.
 3. Create `<website-project>/.olympus/` from `templates/` and record phase and gate state in
    `run.json`.
 

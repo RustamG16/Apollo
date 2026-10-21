@@ -1,9 +1,9 @@
 {
   "mcpServers": {
-    "apollo": {
+    "convenium-design": {
       "type": "stdio",
       "command": "node",
-      "args": ["D:/Analyst_Designer/Apollo/apollo-studio/mcp-server.mjs"],
+      "args": ["D:/Analyst_Designer/Convenium.Design/convenium-design-studio/mcp-server.mjs"],
       "env": {}
     }
   }

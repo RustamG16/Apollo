@@ -49,12 +49,12 @@
     "enabled": false
   },
   {
-    "id": "apollo-bootstrap",
-    "name": "apollo-bootstrap",
+    "id": "convenium-design-bootstrap",
+    "name": "convenium-design-bootstrap",
     "phase": "unrouted",
     "group": "Meta",
     "defaultOn": false,
-    "description": "First-use analysis, audit, and install flow for Apollo_claude in a target project. Detects whether this is a first install or a re-audit, inventories the project's stack and existing six-files coverage, writes an audit doc, then offers to improve the existing project or scaffold a new one with the design roster ready. Trigger phrases - \"set up Apollo here\", \"install Apollo_claude in this project\", \"audit this project\", \"bootstrap Apollo\". Idempotent - safe to re-run.",
+    "description": "First-use analysis, audit, and install flow for ConveniumDesign_claude in a target project. Detects whether this is a first install or a re-audit, inventories the project's stack and existing six-files coverage, writes an audit doc, then offers to improve the existing project or scaffold a new one with the design roster ready. Trigger phrases - \"set up Convenium.Design here\", \"install ConveniumDesign_claude in this project\", \"audit this project\", \"bootstrap Convenium.Design\". Idempotent - safe to re-run.",
     "runtimePrompt": "",
     "category": "11-meta-system",
     "hosts": [
@@ -66,12 +66,12 @@
     "enabled": false
   },
   {
-    "id": "apollo-cyberpunk-athens-skin",
-    "name": "apollo-cyberpunk-athens-skin",
+    "id": "convenium-design-cyberpunk-athens-skin",
+    "name": "convenium-design-cyberpunk-athens-skin",
     "phase": "unrouted",
     "group": "Meta",
     "defaultOn": false,
-    "description": "Regenerate dashboard/css/tokens.cyberpunk-athens.css from the Cyberpunk Athens doctrine's token block, whenever the doctrine file changes. This is the mechanical derivation step CLAUDE.md's \"Never hand-edit tokens.cyberpunk-athens.css directly\" rule depends on. Trigger phrases - \"regenerate the cyberpunk athens skin\", \"sync the dashboard css to the doctrine\", \"update the skin css\". Do NOT use for - defining or changing the doctrine itself (that's the apollo-cyberpunk-athens agent's job; this skill only translates what's already decided there into CSS).",
+    "description": "Regenerate dashboard/css/tokens.cyberpunk-athens.css from the Cyberpunk Athens doctrine's token block, whenever the doctrine file changes. This is the mechanical derivation step CLAUDE.md's \"Never hand-edit tokens.cyberpunk-athens.css directly\" rule depends on. Trigger phrases - \"regenerate the cyberpunk athens skin\", \"sync the dashboard css to the doctrine\", \"update the skin css\". Do NOT use for - defining or changing the doctrine itself (that's the convenium-design-cyberpunk-athens agent's job; this skill only translates what's already decided there into CSS).",
     "runtimePrompt": "",
     "category": "11-meta-system",
     "hosts": [
@@ -83,8 +83,8 @@
     "enabled": false
   },
   {
-    "id": "apollo-dashboard-sync",
-    "name": "apollo-dashboard-sync",
+    "id": "convenium-design-dashboard-sync",
+    "name": "convenium-design-dashboard-sync",
     "phase": "unrouted",
     "group": "Meta",
     "defaultOn": false,
@@ -100,12 +100,12 @@
     "enabled": false
   },
   {
-    "id": "apollo-loadout-sync",
-    "name": "apollo-loadout-sync",
+    "id": "convenium-design-loadout-sync",
+    "name": "convenium-design-loadout-sync",
     "phase": "unrouted",
     "group": "Meta",
     "defaultOn": false,
-    "description": "The single write path for a per-agent skill loadout. Activating, saving, or clearing a named setup goes through this skill rather than hand-editing agent files or .apollo/loadouts/ — it is what keeps the dashboard's \"Save\" button, this skill, and scripts/apply-loadout.ps1 producing byte-identical output. Trigger phrases - \"activate the awwwards-launch loadout\", \"apply this setup\", \"clear the active loadout\", \"sync the loadout to the agent files\". Usually invoked as part of dashboard work, not directly by the user.",
+    "description": "The single write path for a per-agent skill loadout. Activating, saving, or clearing a named setup goes through this skill rather than hand-editing agent files or .convenium-design/loadouts/ — it is what keeps the dashboard's \"Save\" button, this skill, and scripts/apply-loadout.ps1 producing byte-identical output. Trigger phrases - \"activate the awwwards-launch loadout\", \"apply this setup\", \"clear the active loadout\", \"sync the loadout to the agent files\". Usually invoked as part of dashboard work, not directly by the user.",
     "runtimePrompt": "",
     "category": "11-meta-system",
     "hosts": [
@@ -117,12 +117,12 @@
     "enabled": false
   },
   {
-    "id": "apollo-style-picker",
-    "name": "apollo-style-picker",
+    "id": "convenium-design-style-picker",
+    "name": "convenium-design-style-picker",
     "phase": "direct",
     "group": "Taste",
     "defaultOn": false,
-    "description": "Path B of the taste-profile system. Presents the built-in design doctrines, pre-fills a taste profile from the chosen one, then runs a short residual interview only for fields the doctrine can't answer (audience, avoid-list additions, project constraints). Trigger phrases - \"pick a style for me\", \"show me the design options\", \"which style should I use\". Do NOT use for building a fully bespoke profile from scratch - use apollo-taste-interview instead.",
+    "description": "Path B of the taste-profile system. Presents the built-in design doctrines, pre-fills a taste profile from the chosen one, then runs a short residual interview only for fields the doctrine can't answer (audience, avoid-list additions, project constraints). Trigger phrases - \"pick a style for me\", \"show me the design options\", \"which style should I use\". Do NOT use for building a fully bespoke profile from scratch - use convenium-design-taste-interview instead.",
     "runtimePrompt": "Present the built-in design doctrines, let the user pick one, pre-fill the taste profile from it, then resolve the few remaining fields with short residual questions. Write the profile to `library/design-dna/`.",
     "category": "01-design-direction",
     "hosts": [
@@ -134,12 +134,12 @@
     "enabled": true
   },
   {
-    "id": "apollo-taste-interview",
-    "name": "apollo-taste-interview",
+    "id": "convenium-design-taste-interview",
+    "name": "convenium-design-taste-interview",
     "phase": "direct",
     "group": "Taste",
     "defaultOn": false,
-    "description": "Path A of the taste-profile system. Runs a structured interview that is a 1:1 walk through taste-profile.schema.json's fields, producing a complete saved profile. Trigger phrases - \"build my taste profile\", \"interview me about design preferences\", \"let's figure out my style\". Do NOT use when a style is already picked - use apollo-style-picker instead, which runs a shorter residual version of this same question set.",
+    "description": "Path A of the taste-profile system. Runs a structured interview that is a 1:1 walk through taste-profile.schema.json's fields, producing a complete saved profile. Trigger phrases - \"build my taste profile\", \"interview me about design preferences\", \"let's figure out my style\". Do NOT use when a style is already picked - use convenium-design-style-picker instead, which runs a shorter residual version of this same question set.",
     "runtimePrompt": "Walk the user field by field through `taste-profile.schema.json`, producing a complete saved profile in `library/design-dna/`. Capture provenance and uncertainty; never infer a preference the user did not state.",
     "category": "01-design-direction",
     "hosts": [
@@ -157,7 +157,7 @@
     "group": "Craft",
     "defaultOn": true,
     "description": "Applies Apple-inspired purpose, agency, familiarity, simplicity, typography, material restraint, and fluid interaction principles to the cross-platform desktop experience.",
-    "runtimePrompt": "Treat Apollo as Apple-inspired rather than HIG-compliant. Prioritize purpose, agency, familiarity, simplicity, legible hierarchy, system typography, restrained materials, immediate feedback, spatial consistency, interruptible motion, reduced-motion and reduced-transparency alternatives, and platform-appropriate desktop behavior. Do not imitate proprietary Apple screens or assets.",
+    "runtimePrompt": "Treat Convenium.Design as Apple-inspired rather than HIG-compliant. Prioritize purpose, agency, familiarity, simplicity, legible hierarchy, system typography, restrained materials, immediate feedback, spatial consistency, interruptible motion, reduced-motion and reduced-transparency alternatives, and platform-appropriate desktop behavior. Do not imitate proprietary Apple screens or assets.",
     "category": "01-design-direction",
     "hosts": [
       "codex",

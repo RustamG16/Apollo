@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Health check for Apollo's unified library. Exit 0 = clean, 1 = problems.
+"""Health check for Convenium.Design's unified library. Exit 0 = clean, 1 = problems.
 
 Checks:
   1. every skill folder has SKILL.md whose frontmatter `name:` equals the folder name
@@ -9,7 +9,7 @@ Checks:
   5. no canonical id appears in two category folders
   6. every record's `hosts` is a non-empty subset of {claude, codex, studio}
   7. `three-js-implementation` appears nowhere in the library
-  8. no Apollo_claude agent bodies leaked into library/agents (only the 6 sanctioned files)
+  8. no ConveniumDesign_claude agent bodies leaked into library/agents (only the 6 sanctioned files)
   9. registry `status` is one of active | stub | manual
 """
 import json, os, re, sys

@@ -1,7 +1,7 @@
-# library/ — Apollo's source of truth
+# library/ — Convenium.Design's source of truth
 
 Everything an agent needs is authored **here and only here**. The host trees
-(`.claude/`, `.agents/skills/`, `.codex/agents/`, `apollo-studio/knowledge/`) are
+(`.claude/`, `.agents/skills/`, `.codex/agents/`, `convenium-design-studio/knowledge/`) are
 **generated** from this directory by `tools/project.py` (added in Phase 3). Editing a
 generated tree is a defect; the generator overwrites it.
 
@@ -29,7 +29,7 @@ library/
 
 - `name:` in a skill's frontmatter **must equal its folder name**.
 - Precedence when stores disagree, highest wins: a real `SKILL.md` body → a
-  `sources/upstream/` copy → an Apollo_claude copy → a `runtimePrompt`-only entry (a stub).
+  `sources/upstream/` copy → an ConveniumDesign_claude copy → a `runtimePrompt`-only entry (a stub).
 - Plugin skills are never copied here as bodies — they are declared in
   `registry/external-skills.json`.
 - A skill whose bare name collides with an installed plugin skill keeps its file here but

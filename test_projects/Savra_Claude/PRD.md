@@ -3,7 +3,7 @@
 ## Problem and goal
 
 SAVRA is a fictional fine-dining restaurant in Vienna's first district, used here as the
-subject of an Apollo design run. It has thirty photographs, one eight-second clip, a name,
+subject of an Convenium.Design design run. It has thirty photographs, one eight-second clip, a name,
 and a four-colour palette. It has no website.
 
 A restaurant at this register is chosen on atmosphere before it is chosen on menu. The

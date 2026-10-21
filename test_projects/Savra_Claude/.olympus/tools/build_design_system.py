@@ -80,7 +80,7 @@ def main() -> None:
 
     type_roles = {
         "hero":    ("Bodoni Moda Variable, Bodoni MT, Didot, Times New Roman, serif", t.get("t-hero"), 500, "0.78", "0.02em",
-                    "The wordmark, once, at the cold open. 15vw at 1920 -- the apollo-kinetic doctrine calls for 12-18vw and an earlier draft of this build shipped 6vw, which is the single number that most held the design back."),
+                    "The wordmark, once, at the cold open. 15vw at 1920 -- the convenium-design-kinetic doctrine calls for 12-18vw and an earlier draft of this build shipped 6vw, which is the single number that most held the design back."),
         "display": ("Bodoni Moda Variable, Bodoni MT, Didot, Times New Roman, serif", t.get("t-display"), 500, "0.86", "-0.02em",
                     "Every section headline. High optical contrast -- thick stem, hairline serif -- which is how brass reads against lacquer, and the room is literally made of both."),
         "sub":     ("Bodoni Moda Variable, Bodoni MT, Didot, Times New Roman, serif", t.get("t-sub"), 500, "1.05", "-0.01em",
@@ -192,7 +192,7 @@ def main() -> None:
                 "A slate-cast near-black ground for most of the page, because the photography measures that dark.",
                 "Auburn, hunyadi and vanilla each arrive exactly once, each tied to a beat where that colour is physically in the frame.",
                 "Photography runs full-bleed and at full strength; type is placed where the image is already dark rather than dimming the image to suit the type.",
-                "Display type at 12-18vw, per the apollo-kinetic doctrine.",
+                "Display type at 12-18vw, per the convenium-design-kinetic doctrine.",
                 "One hero moment, and the aperture that opens onto it.",
             ],
             "rules": [

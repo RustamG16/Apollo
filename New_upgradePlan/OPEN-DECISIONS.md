@@ -51,10 +51,10 @@ by accident in the meantime.
 | ✔ | **Multi-model worker lane** | **Cut.** No Hermes, no GLM, no Ollama, no gateway. Claude + Codex subscriptions only. `SPEC-02` §4.1 |
 | ✔ | What survives from his worker pool | The *economics*: bounded brief in, one page out, one-way escalation, stateless subagents |
 | ✔ | UI direction (was D1) | **Similar to the reference, simplified and made honest.** Dark technical console, 5 views not 18, the five fixes in `SPEC-03` §4 |
-| ✔ | Console's role | A window, never a dependency. Apollo runs headless whether or not it exists. `SPEC-03` §1 |
+| ✔ | Console's role | A window, never a dependency. Convenium.Design runs headless whether or not it exists. `SPEC-03` §1 |
 | ✔ | Usage model | Unchanged — open Claude Code in a project folder, or create it under `test_projects/` |
 | ✔ | Build order | **Amended 2026-09-04:** host-parity guard → KB → delegation/guardrails → SOP content → console; agency #2 last |
-| ✔ | Which agent roster is real | The **six** in `library/agents/`. Both hosts load them; the five-name pantheon in `apollo-studio/data/` is a console display model and no runtime has ever read it. `slots.json` carries `runtimeOwner` to join the two. |
+| ✔ | Which agent roster is real | The **six** in `library/agents/`. Both hosts load them; the five-name pantheon in `convenium-design-studio/data/` is a console display model and no runtime has ever read it. `slots.json` carries `runtimeOwner` to join the two. |
 | ✔ | What `06-build-plan.md` is | **The design document**, not a task list — written in plan mode, implemented from in a fresh session. The largest measured difference between a run that produced award-level work and one that did not. |
 | ✔ | Whether intake is unconditional | **No.** Explicit creative freedom cancels it. A refusal in the brief is a rejection to encode, not a request. |
 | ✔ | How many verification passes | **Two**, and the second is independent: the agent that reviews is never the agent that built. |
@@ -64,10 +64,10 @@ by accident in the meantime.
 
 ## Note on D1
 
-D1 asked whether to build the console in Apollo's own doctrine rather than resembling the
+D1 asked whether to build the console in Convenium.Design's own doctrine rather than resembling the
 reference. Your answer — "similar ux/ui inspired from the screenshots" — settles it toward
 the reference's genre, and `SPEC-03` follows that.
 
-One piece of the argument is still worth keeping: **the console is the best demo Apollo
+One piece of the argument is still worth keeping: **the console is the best demo Convenium.Design
 has.** So §4's five fixes are not optional polish. A console that reproduces his unreadable
 type and his fake connection dots is a design system failing in public.

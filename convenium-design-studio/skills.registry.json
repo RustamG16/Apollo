@@ -1,0 +1,1572 @@
+{
+  "skills": [
+    {
+      "id": "agent-identity-and-portfolio",
+      "name": "Agent Identity and Portfolio",
+      "phase": "prepare",
+      "group": "Agents",
+      "defaultOn": false,
+      "description": "Defines consistent agent identities, transparent inventory, and evidence-backed marketplace portfolios.",
+      "runtimePrompt": "Keep agent identity memorable but truthful. Specify a reproducible avatar bible, capability and configuration limits, typed inventory availability, and portfolio claims linked to inspectable evidence. Reject fabricated achievements, endorsements, credentials, or deceptive persona claims.",
+      "category": "11-meta-system",
+      "hosts": [
+        "studio"
+      ],
+      "status": "stub",
+      "enabled": true
+    },
+    {
+      "id": "animate",
+      "name": "animate",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Build an animation from scratch, making the decisions in the order that determines whether it feels right — should it animate at all, what purpose, which tool, which properties, which curve and duration, how it interrupts, how it exits. Writes the implementation. Use when asked to animate something, add motion, make a component feel alive, or build a transition. For critiquing existing motion use review-animations; for auditing a whole codebase use improve-animations.",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "animation-vocabulary",
+      "name": "animation-vocabulary",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Reverse-lookup glossary that turns a vague description of a web animation or motion effect into its exact term (\"the bouncy thing when a popover opens\" → Pop in; \"the iOS rubber-band scroll\" → Rubber-banding). Use when the user asks \"what's it called when…\", or describes a motion effect without knowing its name and wants the right word to prompt an AI or designer with. For naming an effect, not designing or building one.",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "convenium-design-bootstrap",
+      "name": "convenium-design-bootstrap",
+      "phase": "unrouted",
+      "group": "Meta",
+      "defaultOn": false,
+      "description": "First-use analysis, audit, and install flow for ConveniumDesign_claude in a target project. Detects whether this is a first install or a re-audit, inventories the project's stack and existing six-files coverage, writes an audit doc, then offers to improve the existing project or scaffold a new one with the design roster ready. Trigger phrases - \"set up Convenium.Design here\", \"install ConveniumDesign_claude in this project\", \"audit this project\", \"bootstrap Convenium.Design\". Idempotent - safe to re-run.",
+      "runtimePrompt": "",
+      "category": "11-meta-system",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "convenium-design-cyberpunk-athens-skin",
+      "name": "convenium-design-cyberpunk-athens-skin",
+      "phase": "unrouted",
+      "group": "Meta",
+      "defaultOn": false,
+      "description": "Regenerate dashboard/css/tokens.cyberpunk-athens.css from the Cyberpunk Athens doctrine's token block, whenever the doctrine file changes. This is the mechanical derivation step CLAUDE.md's \"Never hand-edit tokens.cyberpunk-athens.css directly\" rule depends on. Trigger phrases - \"regenerate the cyberpunk athens skin\", \"sync the dashboard css to the doctrine\", \"update the skin css\". Do NOT use for - defining or changing the doctrine itself (that's the convenium-design-cyberpunk-athens agent's job; this skill only translates what's already decided there into CSS).",
+      "runtimePrompt": "",
+      "category": "11-meta-system",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "convenium-design-dashboard-sync",
+      "name": "convenium-design-dashboard-sync",
+      "phase": "unrouted",
+      "group": "Meta",
+      "defaultOn": false,
+      "description": "The single write path into a project's dashboard state.json. Any agent that starts, updates, blocks, or completes a task calls this skill rather than editing state.json directly - this is what keeps writes from racing across agents. Trigger phrases - this is invoked by other agents/skills as part of normal work, not typically by the user directly.",
+      "runtimePrompt": "",
+      "category": "11-meta-system",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "convenium-design-loadout-sync",
+      "name": "convenium-design-loadout-sync",
+      "phase": "unrouted",
+      "group": "Meta",
+      "defaultOn": false,
+      "description": "The single write path for a per-agent skill loadout. Activating, saving, or clearing a named setup goes through this skill rather than hand-editing agent files or .convenium-design/loadouts/ — it is what keeps the dashboard's \"Save\" button, this skill, and scripts/apply-loadout.ps1 producing byte-identical output. Trigger phrases - \"activate the awwwards-launch loadout\", \"apply this setup\", \"clear the active loadout\", \"sync the loadout to the agent files\". Usually invoked as part of dashboard work, not directly by the user.",
+      "runtimePrompt": "",
+      "category": "11-meta-system",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "convenium-design-style-picker",
+      "name": "convenium-design-style-picker",
+      "phase": "direct",
+      "group": "Taste",
+      "defaultOn": false,
+      "description": "Path B of the taste-profile system. Presents the built-in design doctrines, pre-fills a taste profile from the chosen one, then runs a short residual interview only for fields the doctrine can't answer (audience, avoid-list additions, project constraints). Trigger phrases - \"pick a style for me\", \"show me the design options\", \"which style should I use\". Do NOT use for building a fully bespoke profile from scratch - use convenium-design-taste-interview instead.",
+      "runtimePrompt": "Present the built-in design doctrines, let the user pick one, pre-fill the taste profile from it, then resolve the few remaining fields with short residual questions. Write the profile to `library/design-dna/`.",
+      "category": "01-design-direction",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "convenium-design-taste-interview",
+      "name": "convenium-design-taste-interview",
+      "phase": "direct",
+      "group": "Taste",
+      "defaultOn": false,
+      "description": "Path A of the taste-profile system. Runs a structured interview that is a 1:1 walk through taste-profile.schema.json's fields, producing a complete saved profile. Trigger phrases - \"build my taste profile\", \"interview me about design preferences\", \"let's figure out my style\". Do NOT use when a style is already picked - use convenium-design-style-picker instead, which runs a shorter residual version of this same question set.",
+      "runtimePrompt": "Walk the user field by field through `taste-profile.schema.json`, producing a complete saved profile in `library/design-dna/`. Capture provenance and uncertainty; never infer a preference the user did not state.",
+      "category": "01-design-direction",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "apple-design",
+      "name": "Apple Design",
+      "phase": "direct",
+      "group": "Craft",
+      "defaultOn": true,
+      "description": "Applies Apple-inspired purpose, agency, familiarity, simplicity, typography, material restraint, and fluid interaction principles to the cross-platform desktop experience.",
+      "runtimePrompt": "Treat Convenium.Design as Apple-inspired rather than HIG-compliant. Prioritize purpose, agency, familiarity, simplicity, legible hierarchy, system typography, restrained materials, immediate feedback, spatial consistency, interruptible motion, reduced-motion and reduced-transparency alternatives, and platform-appropriate desktop behavior. Do not imitate proprietary Apple screens or assets.",
+      "category": "01-design-direction",
+      "hosts": [
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "asset-director",
+      "name": "Asset Director",
+      "phase": "prepare",
+      "group": "Production",
+      "defaultOn": false,
+      "description": "Plans required media, provenance, rights, and fallbacks.",
+      "runtimePrompt": "Define an explicit asset manifest. State what the user should provide, provenance and rights needs, generation cost, and fallback before proposing external production.",
+      "category": "04-media-generation",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "award-rubric",
+      "name": "Award Rubric",
+      "phase": "direct",
+      "group": "Direction",
+      "defaultOn": false,
+      "description": "Independently critique and score the single frozen website direction against an approved brief using design, usability, creativity, content, and delivery-risk evidence. Use once a direction is frozen or for a bounded final review; it may reject the direction but must not author or merge a replacement.",
+      "runtimePrompt": "Critique the single frozen direction independently. Score design, usability, creativity, content, and delivery risk; return accept / accept with fixes / reject. It may reject the direction; it may not author a replacement.",
+      "category": "08-qa-review",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "awwwards-web-design",
+      "name": "Awwwards Web Design",
+      "phase": "build",
+      "group": "Craft",
+      "defaultOn": false,
+      "description": "Adds premium editorial craft after hierarchy is stable.",
+      "runtimePrompt": "Raise visual craft after hierarchy is accepted. Protect clarity, accessibility, responsive behavior, and performance while creating a distinctive editorial experience.",
+      "category": "01-design-direction",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "concept-studio",
+      "name": "Concept Studio",
+      "phase": "direct",
+      "group": "Direction",
+      "defaultOn": true,
+      "description": "Produce the one website redesign direction the approved brief specifies — in full: layout, typography, media, motion, mobile behavior, asset needs, and risk. Alternatives only on explicit request. Use after the design problem is approved and before implementation or asset generation.",
+      "runtimePrompt": "Detail the one direction the brief specifies — structure, hierarchy, media, motion, mobile behavior, assets, and risk, not only color. Produce alternatives only when the user asks, stating how many and why.",
+      "category": "01-design-direction",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "copy-editing",
+      "name": "copy-editing",
+      "phase": "verify",
+      "group": "Content",
+      "defaultOn": false,
+      "description": "Edit implemented interface copy in focused passes (clarity, concision, consistency, voice) without changing the approved message. Routed to the verify phase.",
+      "runtimePrompt": "Edit the implemented interface copy in focused passes - clarity, concision, consistency, voice - without changing the approved message. Flag copy that fights the visual hierarchy or the primary action.",
+      "category": "05-content-copy",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "copywriting",
+      "name": "copywriting",
+      "phase": "build",
+      "group": "Content",
+      "defaultOn": false,
+      "description": "Write the interface's copy against the approved direction and primary action - headline, subheads, body, CTAs, and empty/error/loading-state text. Routed to the build phase.",
+      "runtimePrompt": "Write the interface's copy against the approved direction and the page's primary action: headline, subheads, body, CTAs, and empty/error/loading-state text. Keep it concrete and specific to this product; no placeholder or marketing filler.",
+      "category": "05-content-copy",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "customer-research",
+      "name": "customer-research",
+      "phase": "diagnose",
+      "group": "Research",
+      "defaultOn": false,
+      "description": "Synthesise existing customer evidence (interviews, tickets, reviews, surveys) into the user, their primary task, and their language, to ground the brief. Routed to the diagnose phase.",
+      "runtimePrompt": "Synthesise existing customer evidence - interviews, tickets, reviews, surveys - into the user, their primary task, and their own language, to ground the brief. Do not invent findings; report confidence and gaps.",
+      "category": "07-research-intel",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "design-analytics",
+      "name": "Design Analytics",
+      "phase": "verify",
+      "group": "Measurement",
+      "defaultOn": false,
+      "description": "Connects design hypotheses to a minimal event contract.",
+      "runtimePrompt": "Translate the business goal into a baseline, falsifiable hypothesis, minimal event-property contract, guardrails, and readout plan. Never invent analytics.",
+      "category": "07-research-intel",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "emil-design-eng",
+      "name": "Emil Design Engineering",
+      "phase": "build",
+      "group": "Craft",
+      "defaultOn": true,
+      "description": "Polishes component feel, interaction feedback, animation decisions, easing, performance, and invisible interface details.",
+      "runtimePrompt": "Apply Emil Kowalski's design-engineering discipline after hierarchy and flows are stable. Decide whether motion is warranted by frequency and purpose; keep frequent and keyboard actions instant, use precise properties and strong easing, preserve interruptibility and reduced motion, constrain motion to transform and opacity where practical, and verify interaction details in slow motion when implemented.",
+      "category": "01-design-direction",
+      "hosts": [
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "ethical-gamification-systems",
+      "name": "Ethical Gamification Systems",
+      "phase": "direct",
+      "group": "Progression",
+      "defaultOn": false,
+      "description": "Creates meaningful missions, mastery, rewards, and collections with explicit spend and anti-coercion safeguards.",
+      "runtimePrompt": "Reward creative value, mastery, and reusable outcomes rather than attention or token spend. Make costs and evidence states explicit; reject false urgency, streak punishment, automatic paid retries, misleading status, and mechanics that add complexity without user benefit.",
+      "category": "11-meta-system",
+      "hosts": [
+        "studio"
+      ],
+      "status": "stub",
+      "enabled": true
+    },
+    {
+      "id": "find-animation-opportunities",
+      "name": "find-animation-opportunities",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Search a codebase or UI for places that don't animate but should, and reject everything that shouldn't. Read-only; it proposes motion with exact values, it does not implement it. Use when the user asks \"what could be animated here?\" or wants to \"make this feel more alive\". For fixing existing animations, use improve-animations or review-animations instead.",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "garden-beautiful-article",
+      "name": "garden-beautiful-article",
+      "phase": "unrouted",
+      "group": "Docs",
+      "defaultOn": false,
+      "description": "把用户提供的素材（网页 URL / PDF / DOCX / Markdown / 纯文本 / 截图 / 粘贴材料）编辑、设计成一篇美丽的、可离线打开和分享的**单文件 HTML 网页文章**。基于 reacticle 组件协议：不手写裸 HTML/CSS，而用语义组件 + 受主题约束的 Raw 自由层；按 source→规划→双确认→生成→终审→修复的小型 harness 流程推进，默认 100% 信息保留的长文。触发场景：把 URL/PDF/DOCX/文章做成网页文章 / 长文 / briefing / 解释文 / 视觉文章 / 教程 / 审阅复盘 / 方案分析，'render this as a beautiful web article / 把这篇做成网页文章 / 生成一篇可分享的 HTML 长文 / reacticle 文章'。只生成文章，不生成后台、表单、dashboard、产品原型或通用 Web App。",
+      "runtimePrompt": "",
+      "category": "10-docs-deliverables",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "garden-gpt-image-2",
+      "name": "garden-gpt-image-2",
+      "phase": "unrouted",
+      "group": "Media",
+      "defaultOn": false,
+      "description": "面向 GPT Image 2 的图像生成 / 编辑技能。可在 3 种环境下使用：(A) Garden 本地模式，通过 OpenAI 兼容接口直接出图并落盘；(B) Host-Native 模式，把本 Skill 当作提示词工程指引，把渲染好的 prompt 交给宿主 Agent 自带的图像工具出图；(C) Advisor 模式，宿主无任何图像工具时退化为高质量 prompt 顾问。涵盖 18 大类、80+ 个结构化模板，覆盖海报 / UI / 产品 / 信息图 / 学术图 / 技术架构图 / 漫画 / 头像 / 流程板 / 电影分镜 / IP 周边 / 编辑工作流等场景。",
+      "runtimePrompt": "",
+      "category": "04-media-generation",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "garden-kb-retriever",
+      "name": "garden-kb-retriever",
+      "phase": "unrouted",
+      "group": "Meta",
+      "defaultOn": false,
+      "description": "面向本地知识库目录的检索和问答助手。核心流程：(1)分层索引导航 (2)遇到PDF/Excel时必须先读取references学习处理方法 (3)处理文件后再检索。按文件类型组合使用 grep、Read、pdfplumber、pandas 进行渐进式检索，避免整文件加载。用户问题涉及\"从知识库目录回答问题/检索信息/查资料\"时使用。",
+      "runtimePrompt": "",
+      "category": "11-meta-system",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "garden-web-design-engineer",
+      "name": "garden-web-design-engineer",
+      "phase": "unrouted",
+      "group": "Web Build",
+      "defaultOn": false,
+      "description": "Build or redesign polished browser-rendered visual artifacts with HTML/CSS/JavaScript/React: pages, dashboards, prototypes, slide decks, animations, UI mockups, and data visualizations. Use for visual front-end creation, design-system exploration, design critique, or explicit browser acceptance / QA of a web artifact. Not for back-end, CLI, non-visual coding, source-to-longform article conversion, or narration-driven click-through video presentations.",
+      "runtimePrompt": "",
+      "category": "02-web-build",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "garden-web-video-presentation",
+      "name": "garden-web-video-presentation",
+      "phase": "unrouted",
+      "group": "Docs",
+      "defaultOn": false,
+      "description": "把一篇文章或口播稿，做成\"看起来像视频\"的点击驱动 16:9 网页演示，可选合成口播音频。流程：原始文章 → **一次产出**口播稿 + outline 开发计划 → 用户**一次对齐** 5 件事（稿子 / outline / 主题 / 素材 / 开发模式）→ 网页开发（逐章 / 顺序 / 并行）→ 可选音频合成（provider-agnostic：内置 MiniMax mmx-cli + OpenAI TTS，可换 ElevenLabs / edge-tts / Azure / 自带 TTS）。**outline 只规划节奏与信息密度，不规划动画** —— 动画由章节开发时按 PRINCIPLES + ANTI-AI 法则即时设计。每次点击推进口播稿的一个节拍，每一步独占整屏，进度条平时隐藏只在悬浮时出现。适用场景：用网页做视频（动态 PPT 但不像 PPT）、把口播稿 / 文章变成可交互的解说、为 B 站 / YouTube / 视频号录屏教程、做有电影感的产品 / talk demo。本 Skill 沉淀的是设计方法论 + 协作流程 —— 不绑定任何特定样式 / 字体 / 颜色 —— 因此能复用到任意主题与美学。",
+      "runtimePrompt": "",
+      "category": "10-docs-deliverables",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "gsap-core",
+      "name": "GSAP Core",
+      "phase": "prepare",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Adds responsive, reduced-motion-aware tweens.",
+      "runtimePrompt": "Use GSAP transforms and built-in eases for purposeful runtime-controlled motion. Honor prefers-reduced-motion and keep content visible without animation.",
+      "category": "03-motion-3d",
+      "hosts": [
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "gsap-frameworks",
+      "name": "GSAP Frameworks",
+      "phase": "build",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Scopes Vue, Nuxt, Svelte, and SvelteKit animation lifecycle.",
+      "runtimePrompt": "Align GSAP setup and cleanup with the selected non-React framework lifecycle. Scope selectors and remove effects on unmount.",
+      "category": "03-motion-3d",
+      "hosts": [
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "gsap-performance",
+      "name": "GSAP Performance",
+      "phase": "verify",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Finds animation jank and layout-thrashing risk.",
+      "runtimePrompt": "Audit animation performance. Prefer transforms, batch DOM reads and writes, bound will-change, and flag layout thrashing or excessive concurrent effects.",
+      "category": "03-motion-3d",
+      "hosts": [
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "gsap-plugins",
+      "name": "GSAP Plugins",
+      "phase": "prepare",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Routes approved plugin use such as Flip, Draggable, or SplitText.",
+      "runtimePrompt": "Select a GSAP plugin only for a concrete interaction need. Include registration, lifecycle, accessibility, licensing, and a no-plugin fallback.",
+      "category": "03-motion-3d",
+      "hosts": [
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "gsap-react",
+      "name": "GSAP React",
+      "phase": "build",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Scopes React animation lifecycle and cleanup.",
+      "runtimePrompt": "For React animation, use scoped refs and lifecycle-safe cleanup. Prevent duplicate effects across mounts and strict mode.",
+      "category": "03-motion-3d",
+      "hosts": [
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "gsap-scrolltrigger",
+      "name": "GSAP ScrollTrigger",
+      "phase": "prepare",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Controls justified scroll-linked narratives and pinning.",
+      "runtimePrompt": "Use scroll-driven motion only when the narrative requires it. Avoid decorative pinning; specify responsive and reduced-motion alternatives.",
+      "category": "03-motion-3d",
+      "hosts": [
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "gsap-timeline",
+      "name": "GSAP Timeline",
+      "phase": "prepare",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Sequences dependent animation beats.",
+      "runtimePrompt": "Use a GSAP timeline only when animation order carries meaning. Keep timing interruptible, readable, and reduced-motion safe.",
+      "category": "03-motion-3d",
+      "hosts": [
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "gsap-utils",
+      "name": "gsap-utils",
+      "phase": "prepare",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Official GSAP skill for gsap.utils — clamp, mapRange, normalize, interpolate, random, snap, toArray, wrap, pipe. Use when the user asks about gsap.utils, clamp, mapRange, random, snap, toArray, wrap, or helper utilities in GSAP.",
+      "runtimePrompt": "Reach for `gsap.utils` helpers - clamp, mapRange, interpolate, snap, wrap, random, toArray - when motion math would otherwise be hand-rolled. Utilities only; they do not by themselves justify adding animation.",
+      "category": "03-motion-3d",
+      "hosts": [
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "higgsfield-brandkit",
+      "name": "higgsfield-brandkit",
+      "phase": "unrouted",
+      "group": "Media",
+      "defaultOn": false,
+      "description": "|",
+      "runtimePrompt": "",
+      "category": "04-media-generation",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "higgsfield-generate",
+      "name": "higgsfield-generate",
+      "phase": "unrouted",
+      "group": "Media",
+      "defaultOn": false,
+      "description": "|",
+      "runtimePrompt": "",
+      "category": "04-media-generation",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "higgsfield-marketplace-cards",
+      "name": "higgsfield-marketplace-cards",
+      "phase": "unrouted",
+      "group": "Media",
+      "defaultOn": false,
+      "description": "|",
+      "runtimePrompt": "",
+      "category": "04-media-generation",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "higgsfield-product-photoshoot",
+      "name": "higgsfield-product-photoshoot",
+      "phase": "unrouted",
+      "group": "Media",
+      "defaultOn": false,
+      "description": "|",
+      "runtimePrompt": "",
+      "category": "04-media-generation",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "higgsfield-soul-id",
+      "name": "higgsfield-soul-id",
+      "phase": "unrouted",
+      "group": "Media",
+      "defaultOn": false,
+      "description": "|",
+      "runtimePrompt": "",
+      "category": "04-media-generation",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "higgsfield-video-explainer",
+      "name": "higgsfield-video-explainer",
+      "phase": "unrouted",
+      "group": "Media",
+      "defaultOn": false,
+      "description": "|",
+      "runtimePrompt": "",
+      "category": "04-media-generation",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "higgsfield-websites",
+      "name": "higgsfield-websites",
+      "phase": "unrouted",
+      "group": "Media",
+      "defaultOn": false,
+      "description": "|",
+      "runtimePrompt": "",
+      "category": "04-media-generation",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "higgsfield-youtube-thumbnail",
+      "name": "higgsfield-youtube-thumbnail",
+      "phase": "unrouted",
+      "group": "Media",
+      "defaultOn": false,
+      "description": "|",
+      "runtimePrompt": "",
+      "category": "04-media-generation",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "image",
+      "name": "image",
+      "phase": "unrouted",
+      "group": "Media",
+      "defaultOn": false,
+      "description": "When the user wants to create, generate, edit, or optimize images for marketing — blog heroes, social graphics, product mockups, profile banners, listing visuals, or brand assets. Also use when the user mentions 'AI image generation,' 'generate an image,' 'create a graphic,' 'product mockup,' 'hero image,' 'social media graphic,' 'banner image,' 'cover photo,' 'profile banner,' 'listing screenshot,' 'Flux,' 'Flux Kontext,' 'Midjourney,' 'DALL-E,' 'GPT Image,' 'ChatGPT Images,' 'Ideogram,' 'Gemini image,' 'Nano Banana,' 'Recraft,' 'Stable Diffusion,' 'Canva,' 'Figma,' 'image optimization,' 'compress images,' 'WebP,' or 'OG image.' Use this for general-purpose marketing image creation and optimization. For paid ad image creative and platform-specific ad specs, see ad-creative. For video production, see video.",
+      "runtimePrompt": "",
+      "category": "04-media-generation",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "impeccable",
+      "name": "Impeccable",
+      "phase": "build",
+      "group": "Craft",
+      "defaultOn": true,
+      "description": "Own the finish: commit the design system as numbers before layout (PRODUCT.md, DESIGN.md, design.json), then run the bounded craft and review pass over the implementation. Its scripts/ and reference/ playbooks ship in this library, so it must be projected as a body rather than left to a host plugin.",
+      "runtimePrompt": "Use only when explicitly routed for an additional finishing pass. Resolve hierarchy, typography, spacing, states, accessibility, responsive behavior, and purposeful interaction without overriding the approved UI/UX, Apple, or Emil design contracts.",
+      "category": "01-design-direction",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "improve-animations",
+      "name": "improve-animations",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Survey a codebase's animation and motion code as a senior motion advisor, then produce a prioritized audit and self-contained implementation plans for other agents (or cheaper models) to execute. Read-only on source code — it plans improvements, it does not apply them. Use when the user asks to \"improve the animations\", \"audit the motion\", \"make this app feel better\", or wants a roadmap of animation fixes rather than a review of a single diff.",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "olympus-design-director",
+      "name": "Olympus Design Director",
+      "phase": "always",
+      "group": "Orchestration",
+      "defaultOn": true,
+      "description": "Orchestrate an evidence-based redesign through intake, audit, one direction resolved at intake, human approval, asset planning, implementation, analytics, and browser QA. Use when a user asks to improve, repair, redesign, or elevate a page and needs coherent routing rather than every design capability at once.",
+      "runtimePrompt": "Act as the single design director. Maintain one interpretation of the brief, activate only relevant capabilities, and make dependencies and approval boundaries explicit.",
+      "category": "01-design-direction",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "pick-ui-library",
+      "name": "pick-ui-library",
+      "phase": "unrouted",
+      "group": "Web Build",
+      "defaultOn": false,
+      "description": "Pick the right library for a given frontend task from a curated, opinionated list — numbers, OTP inputs, charts, command menus, virtualization, drag and drop, toasts, state, styling, and more. Only runs when explicitly invoked; it does not trigger on its own.",
+      "runtimePrompt": "",
+      "category": "02-web-build",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "manual",
+      "disableModelInvocation": true,
+      "enabled": false
+    },
+    {
+      "id": "project-scaffold",
+      "name": "project-scaffold",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "Use at the start of any new project or major feature, before writing implementation code. Creates the context files an AI agent needs — PRD, architecture, an essentials digest, agent instructions — then scaffolds the structure before any feature work. Trigger on \"new project\", \"start a project\", \"set up this repo\", \"before we build\", \"scaffold this\", \"greenfield\", or any first request to build something that does not yet exist.",
+      "runtimePrompt": "",
+      "category": "09-engineering-workflow",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "prototype",
+      "name": "prototype",
+      "phase": "unrouted",
+      "group": "Web Build",
+      "defaultOn": false,
+      "description": "Build multiple genuinely different versions of a UI piece you describe, rendered behind a visual picker so you can flip through them live and promote the one that feels right. Only runs when explicitly invoked; it does not trigger on its own.",
+      "runtimePrompt": "",
+      "category": "02-web-build",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "manual",
+      "disableModelInvocation": true,
+      "enabled": false
+    },
+    {
+      "id": "reference-deconstruction",
+      "name": "Reference Deconstruction",
+      "phase": "diagnose",
+      "group": "Evidence",
+      "defaultOn": true,
+      "description": "Extracts transferable visual logic without copying expression.",
+      "runtimePrompt": "Analyze references as systems: composition, type, material, interaction, responsive behavior, risks, and transferable principles. Do not copy distinctive expression.",
+      "category": "01-design-direction",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "remotion-best-practices",
+      "name": "remotion-best-practices",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Router for all Remotion skills",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "remotion-captions",
+      "name": "remotion-captions",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Transcribing, displaying and animating captions",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "remotion-create",
+      "name": "remotion-create",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Create a new Remotion video",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "remotion-docs",
+      "name": "remotion-docs",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Search Remotion documentation",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "remotion-interactivity",
+      "name": "remotion-interactivity",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Structure Remotion markup for interactivity",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "remotion-maps",
+      "name": "remotion-maps",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Remotion Map animation knowledge",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "remotion-markup",
+      "name": "remotion-markup",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Content, animation and effects best practices",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "remotion-multimedia",
+      "name": "remotion-multimedia",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Interacting with Mediabunny",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "remotion-render",
+      "name": "remotion-render",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Export a Remotion video",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "remotion-saas",
+      "name": "remotion-saas",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Build an app with Remotion",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "remotion-studio",
+      "name": "remotion-studio",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Preview a Remotion video",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "remotion-upgrade",
+      "name": "remotion-upgrade",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Upgrade Remotion, and related packages",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "review-animations",
+      "name": "review-animations",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "Reviews animation and motion code against a high craft bar derived from Emil Kowalski's design engineering philosophy. Default to flagging; approval is earned.",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "manual",
+      "disableModelInvocation": true,
+      "enabled": false
+    },
+    {
+      "id": "site-architecture",
+      "name": "site-architecture",
+      "phase": "diagnose",
+      "group": "Web Build",
+      "defaultOn": false,
+      "description": "Plan the page/route hierarchy, navigation model, URL structure, and internal linking so the redesign has a defensible information architecture before layout. Routed to the diagnose phase.",
+      "runtimePrompt": "Map the page/route hierarchy, navigation model, URL structure, and internal linking so the redesign has a defensible information architecture before layout begins. Work from the primary task and audience, not from the current menu.",
+      "category": "02-web-build",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "superpowers-brainstorming",
+      "name": "superpowers-brainstorming",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.",
+      "runtimePrompt": "",
+      "category": "09-engineering-workflow",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-dispatching-parallel-agents",
+      "name": "superpowers-dispatching-parallel-agents",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies",
+      "runtimePrompt": "",
+      "category": "09-engineering-workflow",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-executing-plans",
+      "name": "superpowers-executing-plans",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "Use when you have a written implementation plan to execute in a separate session with review checkpoints",
+      "runtimePrompt": "",
+      "category": "09-engineering-workflow",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-finishing-a-development-branch",
+      "name": "superpowers-finishing-a-development-branch",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "Use when implementation is complete, all tests pass, and you need to decide how to integrate the work",
+      "runtimePrompt": "",
+      "category": "09-engineering-workflow",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-receiving-code-review",
+      "name": "superpowers-receiving-code-review",
+      "phase": "unrouted",
+      "group": "QA",
+      "defaultOn": false,
+      "description": "Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative agreement or blind implementation",
+      "runtimePrompt": "",
+      "category": "08-qa-review",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-requesting-code-review",
+      "name": "superpowers-requesting-code-review",
+      "phase": "unrouted",
+      "group": "QA",
+      "defaultOn": false,
+      "description": "Use when completing tasks, implementing major features, or before merging to verify work meets requirements",
+      "runtimePrompt": "",
+      "category": "08-qa-review",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-subagent-driven-development",
+      "name": "superpowers-subagent-driven-development",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "Use when executing implementation plans with independent tasks in the current session",
+      "runtimePrompt": "",
+      "category": "09-engineering-workflow",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-systematic-debugging",
+      "name": "superpowers-systematic-debugging",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes",
+      "runtimePrompt": "",
+      "category": "09-engineering-workflow",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-test-driven-development",
+      "name": "superpowers-test-driven-development",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "Use when implementing any feature or bugfix, before writing implementation code",
+      "runtimePrompt": "",
+      "category": "09-engineering-workflow",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-using-git-worktrees",
+      "name": "superpowers-using-git-worktrees",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback",
+      "runtimePrompt": "",
+      "category": "09-engineering-workflow",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-using-superpowers",
+      "name": "superpowers-using-superpowers",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "Use when starting any conversation - establishes how to find and use skills, requiring skill invocation before ANY response including clarifying questions",
+      "runtimePrompt": "",
+      "category": "09-engineering-workflow",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-verification-before-completion",
+      "name": "superpowers-verification-before-completion",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always",
+      "runtimePrompt": "",
+      "category": "09-engineering-workflow",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-writing-plans",
+      "name": "superpowers-writing-plans",
+      "phase": "unrouted",
+      "group": "Engineering",
+      "defaultOn": false,
+      "description": "Use when you have a spec or requirements for a multi-step task, before touching code",
+      "runtimePrompt": "",
+      "category": "09-engineering-workflow",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "superpowers-writing-skills",
+      "name": "superpowers-writing-skills",
+      "phase": "unrouted",
+      "group": "Meta",
+      "defaultOn": false,
+      "description": "Use when creating new skills, editing existing skills, or verifying skills work before deployment",
+      "runtimePrompt": "",
+      "category": "11-meta-system",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "taste-first-experience-design",
+      "name": "Taste-First Experience Design",
+      "phase": "direct",
+      "group": "Experience",
+      "defaultOn": false,
+      "description": "Turns visual preference evidence into editable Creative DNA, plain-language choices, and a bounded mission setup.",
+      "runtimePrompt": "Elicit taste through concrete visual choices, preserve provenance and uncertainty, produce an editable Style Profile, explain consequences in plain language, recommend the smallest capable squad, and progressively disclose advanced controls without hiding cost or permissions.",
+      "category": "01-design-direction",
+      "hosts": [
+        "studio"
+      ],
+      "status": "stub",
+      "enabled": true
+    },
+    {
+      "id": "ui-ux",
+      "name": "UI/UX Quality",
+      "phase": "diagnose",
+      "group": "Craft",
+      "defaultOn": true,
+      "description": "Establishes product cognition, task journeys, progressive disclosure, recovery states, mobile priorities, and frontend governance.",
+      "runtimePrompt": "Act as the product-cognition and UI/UX quality gate. Establish the user, business objects, surface type, primary task, first decision, success and recovery paths, mobile priority, vocabulary, and verification plan before visual execution. Prevent card walls, business-object soup, raw technical copy, missing states, and mechanical mobile stacking.",
+      "category": "01-design-direction",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "ux-evidence-audit",
+      "name": "UX Evidence Audit",
+      "phase": "diagnose",
+      "group": "Evidence",
+      "defaultOn": true,
+      "description": "Diagnoses source, browser, responsive, accessibility, and content evidence.",
+      "runtimePrompt": "Diagnose before prescribing. Separate observations from inferences, prioritize the five highest-leverage issues, and identify affected users.",
+      "category": "07-research-intel",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "video",
+      "name": "video",
+      "phase": "unrouted",
+      "group": "Motion",
+      "defaultOn": false,
+      "description": "When the user wants to create, generate, or produce video content using AI tools or programmatic frameworks. Also use when the user mentions 'video production,' 'AI video,' 'Remotion,' 'Hyperframes,' 'HeyGen,' 'Synthesia,' 'Veo,' 'Sora,' 'Runway,' 'Kling,' 'Seedance,' 'Hailuo,' 'MiniMax,' 'Pika,' 'Hunyuan,' 'Wan,' 'video generation,' 'AI avatar,' 'talking head video,' 'programmatic video,' 'video template,' 'explainer video,' 'product demo video,' 'video pipeline,' 'copy this edit,' 'match this video style,' 'reverse-engineer this video,' 'edit like this reference,' or 'make me a video.' Use this for video creation, generation, and production workflows. For video content strategy and what to post, see social. For paid video ad creative, see ad-creative.",
+      "runtimePrompt": "",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": false
+    },
+    {
+      "id": "visual-qa",
+      "name": "Visual QA",
+      "phase": "verify",
+      "group": "Verification",
+      "defaultOn": true,
+      "description": "Verify an implemented website redesign against the approved direction using browser screenshots, responsive and interaction states, accessibility basics, reduced motion, runtime health, content, assets, and performance evidence. Use after a working implementation exists; the QA repair loop is bounded by AGENTS.md.",
+      "runtimePrompt": "Verify the implementation against the approved direction at desktop and mobile, including interaction states, reduced motion, console health, accessibility basics, assets, and performance risks. The QA repair loop is bounded by AGENTS.md.",
+      "category": "08-qa-review",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    },
+    {
+      "id": "webgl-experience",
+      "name": "WebGL Experience",
+      "phase": "prepare",
+      "group": "Production",
+      "defaultOn": false,
+      "description": "Tests whether 3D has communication value and specifies a bounded fallback.",
+      "runtimePrompt": "Use WebGL only when it communicates something that 2D cannot. Bound performance, lifecycle, mobile, loading, accessibility, reduced motion, and static fallback.",
+      "category": "03-motion-3d",
+      "hosts": [
+        "claude",
+        "codex",
+        "studio"
+      ],
+      "status": "active",
+      "enabled": true
+    }
+  ],
+  "tools": [
+    {
+      "id": "web_search",
+      "name": "OpenAI Web Search",
+      "kind": "hosted",
+      "usable": true,
+      "status": "Available in live API mode",
+      "description": "Current web evidence through the Responses API."
+    },
+    {
+      "id": "browser_control",
+      "name": "Browser Control",
+      "kind": "local",
+      "usable": false,
+      "status": "Codex-hosted adapter",
+      "description": "Page inspection and visual QA; requires a browser automation bridge."
+    },
+    {
+      "id": "figma",
+      "name": "Figma MCP",
+      "kind": "mcp",
+      "usable": false,
+      "status": "Requires MCP connection",
+      "description": "Approved frames, variables, components, and exportable assets."
+    },
+    {
+      "id": "posthog",
+      "name": "PostHog MCP",
+      "kind": "mcp",
+      "usable": false,
+      "status": "Requires MCP connection",
+      "description": "Read-only baselines, funnels, experiments, and event evidence."
+    },
+    {
+      "id": "higgsfield",
+      "name": "Higgsfield MCP",
+      "kind": "mcp",
+      "usable": false,
+      "status": "Requires approval + MCP",
+      "description": "Media generation after an approved asset manifest."
+    },
+    {
+      "id": "chrome_devtools",
+      "name": "Chrome DevTools MCP",
+      "kind": "mcp",
+      "usable": false,
+      "status": "Requires MCP connection",
+      "description": "Runtime profiling and targeted performance diagnosis."
+    }
+  ],
+  "plugins": [
+    {
+      "id": "browser",
+      "name": "Browser",
+      "status": "Host capability",
+      "description": "Interactive local page inspection and browser QA when the active host exposes it."
+    },
+    {
+      "id": "imagegen",
+      "name": "Image generation",
+      "status": "Host capability",
+      "description": "Raster generation and editing when the host and approvals allow it."
+    },
+    {
+      "id": "documents",
+      "name": "Documents",
+      "status": "Host plugin",
+      "description": "Create, edit, render, and verify Word-compatible documents."
+    },
+    {
+      "id": "pdf",
+      "name": "PDF",
+      "status": "Host plugin",
+      "description": "Read, generate, render, and verify PDF artifacts."
+    },
+    {
+      "id": "presentations",
+      "name": "Presentations",
+      "status": "Host plugin",
+      "description": "Build and revise presentation decks with rendered review."
+    },
+    {
+      "id": "spreadsheets",
+      "name": "Spreadsheets",
+      "status": "Host plugin",
+      "description": "Create, analyze, and verify spreadsheet artifacts."
+    },
+    {
+      "id": "sites",
+      "name": "Sites",
+      "status": "Host plugin",
+      "description": "Build and host web experiences when a Sites project is present."
+    },
+    {
+      "id": "visualize",
+      "name": "Visualize",
+      "status": "Host plugin",
+      "description": "Create interactive diagrams, simulations, plots, and visual explanations."
+    }
+  ],
+  "presets": [
+    {
+      "id": "lean-audit",
+      "name": "Lean audit",
+      "skills": [
+        "olympus-design-director",
+        "ui-ux",
+        "ux-evidence-audit",
+        "reference-deconstruction"
+      ]
+    },
+    {
+      "id": "concept-lab",
+      "name": "Concept lab",
+      "skills": [
+        "olympus-design-director",
+        "ui-ux",
+        "ux-evidence-audit",
+        "reference-deconstruction",
+        "concept-studio",
+        "apple-design",
+        "award-rubric"
+      ]
+    },
+    {
+      "id": "premium-build",
+      "name": "Premium build",
+      "skills": [
+        "olympus-design-director",
+        "ui-ux",
+        "asset-director",
+        "apple-design",
+        "awwwards-web-design",
+        "emil-design-eng",
+        "gsap-core",
+        "gsap-performance",
+        "visual-qa"
+      ]
+    },
+    {
+      "id": "delivery-qa",
+      "name": "Delivery QA",
+      "skills": [
+        "olympus-design-director",
+        "ui-ux",
+        "apple-design",
+        "emil-design-eng",
+        "gsap-performance",
+        "design-analytics",
+        "visual-qa"
+      ]
+    }
+  ]
+}

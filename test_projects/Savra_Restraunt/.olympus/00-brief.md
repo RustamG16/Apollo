@@ -2,7 +2,7 @@
 
 ## Target
 
-- Project: `D:\Analyst_Designer\Apollo\test_projects\Savra_Restraunt`
+- Project: `D:\Analyst_Designer\Convenium.Design\test_projects\Savra_Restraunt`
 - Route/page: `/`, premium single-page restaurant landing page
 - Mode: concept + implementation + browser QA + measurement, gated
 
@@ -18,7 +18,7 @@
 - Must preserve: 31 original media files, SAVRA name, locked palette, fictional status, project boundaries, and Olympus gates.
 - May change: greenfield page structure, concept copy, responsive composition, and approved motion after Gate B.
 - Stack/dependencies: Gate-B-authorized baseline is Vite + React + TypeScript with GSAP and official React integration only if required; none installed before selection.
-- Deadline/budget: no calendar deadline supplied; effective token ceiling 300,000 from the lower Apollo host limit.
+- Deadline/budget: no calendar deadline supplied; effective token ceiling 300,000 from the lower Convenium.Design host limit.
 
 ## Taste references
 

@@ -63,7 +63,7 @@ Deliver `01-audit.md` with screenshots/evidence, severity, affected users, and t
 
 ### Gate A — approve the brief
 
-Resolve the direction block in `00-brief.md` from the intake answers, the supplied references, and `library/design-dna/`. If it is still unresolved, run `$apollo-taste-interview` or `$apollo-style-picker` now and write the result to `library/design-dna/`. Then show the interpreted problem, audience, constraints, success signal, missing assets, and the frozen direction. Wait for approval or corrections.
+Resolve the direction block in `00-brief.md` from the intake answers, the supplied references, and `library/design-dna/`. If it is still unresolved, run `$convenium-design-taste-interview` or `$convenium-design-style-picker` now and write the result to `library/design-dna/`. Then show the interpreted problem, audience, constraints, success signal, missing assets, and the frozen direction. Wait for approval or corrections.
 
 ### 2. Create the direction
 
