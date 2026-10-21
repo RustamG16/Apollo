@@ -1,0 +1,36 @@
+{
+  "system": "olympus-designer-system1",
+  "target_project": "sites/convenium",
+  "target_route": "/",
+  "mode": "concept-and-implementation",
+  "trail": "abridged",
+  "phase": "prepare",
+  "gate_a": "approved-in-plan",
+  "gate_b": "approved-in-plan",
+  "gate_c": "pending",
+  "approved_direction": "The Codex — a private universe for one inhabitant (doctrine: convenium-design-kinetic)",
+  "constraints": [
+    "static site, no bundler, no build step",
+    "media referenced by CDN url from assets/manifest.json",
+    "no invented facts: copy limited to PROFILE.md [F] facts and the profile's own proposals",
+    "generation budget <= 10 Higgsfield credits (target 0)",
+    "no git commit or push; nothing edited outside sites/convenium"
+  ],
+  "references": ["PROFILE.md", "assets/manifest.json (observatory set, 14 images + 2 videos)"],
+  "assets": ["see .olympus/05-asset-manifest.md"],
+  "design_system": {
+    "product_md": false,
+    "design_md": false,
+    "design_json": false,
+    "committed_before_build": false,
+    "hero_type_vw": 16,
+    "doctrine_display_range": "12-18vw (convenium-design-kinetic)",
+    "note": "impeccable craft-floor's generic 'display max 6rem' is overridden by the chosen doctrine's --display-max, as AGENTS.md's design-system rule provides (doctrine wins)."
+  },
+  "qa_passes": 0,
+  "finish_verdict": null,
+  "finish_score": null,
+  "credits_spent": 0,
+  "phase_counts": { "intake": 1, "audit": 0, "direction": 1, "critique": 0, "prepare": 1, "design_system": 0, "build": 0, "qa": 0, "finish": 0, "measurement": 0, "handoff": 0 },
+  "last_updated": "2026-10-21"
+}
