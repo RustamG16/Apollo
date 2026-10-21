@@ -2,7 +2,7 @@
 
 ## What this system does
 
-Apollo runs an evidence-based website redesign as a single Design Director that routes work
+Convenium.Design runs an evidence-based website redesign as a single Design Director that routes work
 through explicit approval gates, activating one skill or specialist at a time instead of
 loading every design capability at once. The method, token rules, and loop bounds are in
 `AGENTS.md`; the routing table is in `ARCHITECTURE.md`; the skill and agent source of truth
@@ -31,7 +31,7 @@ Attach this folder and the website project to the session, then send:
 
 Attach both folders to one Codex task and send:
 
-> Use the attached Apollo folder as read-only operating context for this redesign. Read
+> Use the attached Convenium.Design folder as read-only operating context for this redesign. Read
 > `ARCHITECTURE-ESSENTIALS.md`, `AGENTS.md`, and `START-HERE.md` completely before acting.
 > The website project is `<PROJECT_FOLDER>` and the initial target is `<ROUTE_OR_PAGE>`. Do
 > not inspect or edit production code yet. First ask the intake questions from
@@ -55,7 +55,7 @@ Attach both folders to one Codex task and send:
 `library/` is the only place to edit skills, agents, and the registry. After any change:
 
 ```
-python library/tools/project.py all      # regenerate .claude/ .agents/ .codex/ apollo-studio/knowledge/
+python library/tools/project.py all      # regenerate .claude/ .agents/ .codex/ convenium-design-studio/knowledge/
 python library/tools/verify.py            # health check — exit 0 = clean
 python library/tools/build_index.py       # refresh library/INDEX.md
 powershell -File scripts/validate-system.ps1
@@ -65,6 +65,6 @@ powershell -File scripts/validate-system.ps1
 
 ## The Studio
 
-`apollo-studio/` is an optional local control plane (Node ≥20): `npm --prefix apollo-studio
+`convenium-design-studio/` is an optional local control plane (Node ≥20): `npm --prefix convenium-design-studio
 start`, then `http://127.0.0.1:4173`. It reads the same `library/registry/` data via
-`skills.mjs`. `npm --prefix apollo-studio run check` syntax-checks it.
+`skills.mjs`. `npm --prefix convenium-design-studio run check` syntax-checks it.

@@ -2,7 +2,7 @@
 
 ## Target
 
-- Project: `D:\Analyst_Designer\Apollo\test_projects\Savra_Claude`
+- Project: `D:\Analyst_Designer\Convenium.Design\test_projects\Savra_Claude`
 - Route/page: single page `/`, plus a `#reserve` dialog. Greenfield — no existing page.
 - Mode: concept + implementation
 
@@ -44,13 +44,13 @@ The supplied media *is* the reference set. No external sites are referenced or d
 ## Direction
 
 Resolved by the director from the supplied media as reference evidence plus the
-`apollo-kinetic` doctrine. `library/design-dna/` holds no profile; the user granted full
-creative freedom and explicitly declined an intake round, so `apollo-taste-interview` and
-`apollo-style-picker` were both dormant. No profile was written back to
+`convenium-design-kinetic` doctrine. `library/design-dna/` holds no profile; the user granted full
+creative freedom and explicitly declined an intake round, so `convenium-design-taste-interview` and
+`convenium-design-style-picker` were both dormant. No profile was written back to
 `library/design-dna/` — a taste profile inferred from one test project should not persist
 into every future run.
 
-- Chosen doctrine: **`apollo-kinetic`**
+- Chosen doctrine: **`convenium-design-kinetic`**
 - Structural posture: cinematic
 - Motion posture: scroll-narrative
 - Type logic: a high-contrast variable display serif carries every headline at viewport
@@ -92,7 +92,7 @@ reservation is not a footer button but the arrival the whole page has been prepa
 
 - Status: **approved**
 - User decision: approved as part of the implementation plan, 2026-09-03. The user's brief
-  was "use the maximum capabilities of Apollo, build an awwwards-worthy high-end animated
+  was "use the maximum capabilities of Convenium.Design, build an awwwards-worthy high-end animated
   website from the provided media, full creative freedom, do not ask questions." Gate B was
   approved in the same act, against the single frozen direction stated above.
 - Date: 2026-09-03

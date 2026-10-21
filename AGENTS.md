@@ -88,7 +88,7 @@ Produce more only when the user asks for alternatives, and state how many and wh
 
 The taste profile is load-bearing. If `library/design-dna/` holds no profile and the supplied
 references do not resolve the direction block in `templates/00-brief.md`, the director runs
-`$apollo-taste-interview` or `$apollo-style-picker` before Gate A rather than guessing, and
+`$convenium-design-taste-interview` or `$convenium-design-style-picker` before Gate A rather than guessing, and
 writes the result to `library/design-dna/` where it persists across projects.
 
 Greenfield work has an entry: with no existing page the run starts at the questionnaire,
@@ -137,7 +137,7 @@ in `AGENTS.md`" rather than restating a number.
 
 Record per-run phase counts in `<website-project>/.olympus/run.json` under `phase_counts`
 (increment the phase key each time a phase runs, including repeats). This is the only place
-Apollo measures its own loop cost, so the bounds above can be tuned against real data.
+Convenium.Design measures its own loop cost, so the bounds above can be tuned against real data.
 
 ## Safety and quality
 

@@ -3,7 +3,7 @@
 One screen. Derived from `ARCHITECTURE.md` and `library/README.md` — do not add detail here;
 add it there and re-summarise.
 
-## What Apollo is
+## What Convenium.Design is
 
 One persistent Design Director routes an evidence-based redesign through explicit gates,
 activating a skill or specialist only when its routing condition is true. It is not "run every
@@ -37,7 +37,7 @@ intake + direction block → 01 audit → Gate A
   ("no three directions") is a rejection to encode, not a request; "current"/"trending"/a
   named year opens a research lane that must cite live URLs. See `AGENTS.md`.
 - **Six agents, one roster.** `library/agents/` is what both hosts run and each now states
-  its own activation conditions. The console's five-name pantheon in `apollo-studio/data/`
+  its own activation conditions. The console's five-name pantheon in `convenium-design-studio/data/`
   is a display model; `slots.json` carries `runtimeOwner` to map between them.
 - **Greenfield**: no existing page → start at the questionnaire, `ux-evidence-audit` dormant,
   `reference-deconstruction` carries evidence.
@@ -54,7 +54,7 @@ intake + direction block → 01 audit → Gate A
 | Registry | `library/registry/skills.registry.json` · `ROUTING-DIGEST.md` (route from this) |
 | Taste profile (persists across projects) | `library/design-dna/` |
 | Doctrines | `library/doctrines/` — direction input to the questionnaire |
-| **Generated, disposable** | `.claude/` · `.agents/skills/` · `.codex/agents/` · `apollo-studio/knowledge/` |
+| **Generated, disposable** | `.claude/` · `.agents/skills/` · `.codex/agents/` · `convenium-design-studio/knowledge/` |
 | Rebuild the generated trees | `python library/tools/project.py all` |
 | Project artifacts (never in this repo) | `<website-project>/.olympus/` |
 

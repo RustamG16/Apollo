@@ -15,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger, Flip, SplitText)
 
 export { gsap, ScrollTrigger, Flip, SplitText }
 
-/** Durations, in seconds. From the apollo-kinetic token set: 150 / 400 / 800ms. */
+/** Durations, in seconds. From the convenium-design-kinetic token set: 150 / 400 / 800ms. */
 export const DUR = {
   micro: 0.15, // state feedback
   move: 0.4, // element transitions

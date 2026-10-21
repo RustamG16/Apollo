@@ -1,7 +1,7 @@
 # Spec 03 — the console
 
 **Status:** draft. Depends on Spec 01 (the KB is what it queries).
-**Goal:** the reference's UI, simplified and made honest, rendered in Apollo's own doctrine.
+**Goal:** the reference's UI, simplified and made honest, rendered in Convenium.Design's own doctrine.
 
 Reference: `D:\KnowledgeFactory\library\knowledge\04-ui-references\operator-console-ui.md`
 (observed from the reel). Screenshots in `media/`.
@@ -12,11 +12,11 @@ Reference: `D:\KnowledgeFactory\library\knowledge\04-ui-references\operator-cons
 
 > **The console is a window, never a dependency.**
 
-Apollo is used by opening Claude Code in a project folder. That does not change. If the
-console is broken, not running, or never built, **every Apollo run still works exactly as it
+Convenium.Design is used by opening Claude Code in a project folder. That does not change. If the
+console is broken, not running, or never built, **every Convenium.Design run still works exactly as it
 does today.** Nothing in the pipeline may import from it, wait on it, or fail without it.
 
-This is the difference between the reference and Apollo. His console *is* the product. Ours
+This is the difference between the reference and Convenium.Design. His console *is* the product. Ours
 is a view onto a system that runs headless.
 
 ## 2. What gets cut
@@ -25,7 +25,7 @@ His rail has **18 destinations**: Home · Comms · Funnel · Workflows · Social
 Finances · Agents · Tasks · Skills · Org Chart · Optimal Engine · Doctor · Connections ·
 Roadmap · Analytics · Reference Vault · Personas.
 
-Most of those are a business OS, not a design agency. Apollo gets **five**:
+Most of those are a business OS, not a design agency. Convenium.Design gets **five**:
 
 | View | Shows | Source |
 |---|---|---|
@@ -36,11 +36,11 @@ Most of those are a business OS, not a design agency. Apollo gets **five**:
 | **Projects** | Projects found under `test_projects/` and elsewhere; pick one | filesystem scan |
 
 Cut entirely: Funnel, Personas, Finances, Comms, Social, Content, Analytics, Roadmap.
-They have no referent in Apollo and adding them would invent scope.
+They have no referent in Convenium.Design and adding them would invent scope.
 
 ## 3. Map — the hero view
 
-Concentric, as in the reference, but with Apollo's actual entities:
+Concentric, as in the reference, but with Convenium.Design's actual entities:
 
 ```
 core         unlabelled particle cloud   = library/ , the shared knowledge
@@ -67,18 +67,18 @@ These are defects in the reference, not preferences.
 |---|---|---|
 | 1 | Outer tool ring is red "not connected" glyphs, implying live connection state a static page cannot know | Two honest states only: **declared** (a skill names it) and **resolved** (last `verify.py` run found it), with that run's timestamp on screen. Never a live green dot. |
 | 2 | Small type unreadable even on a 4K monitor recording | Minimum 12px for any label that carries meaning. Pixel display face for headings only; a real mono for everything else. |
-| 3 | Six accents competing simultaneously | One accent at a time, on focus. Apollo has one agency today — a second accent only exists when a second agency does. |
+| 3 | Six accents competing simultaneously | One accent at a time, on focus. Convenium.Design has one agency today — a second accent only exists when a second agency does. |
 | 4 | Omni-input says "dump into the brain", implying an LLM behind the box | It is KB search and it is labelled **Search**. It calls `search()`. It never implies more than it does. |
 | 5 | 18 nav destinations for 6 crews | 5 for 1 agency. |
 
 ## 5. The detail drawer — the thing most worth taking
 
-His best idea. Trimmed to what Apollo can honestly fill:
+His best idea. Trimmed to what Convenium.Design can honestly fill:
 
 ```
 title                      the skill's title
 breadcrumb                 agency · category
-ROUTING CONDITION          when this fires   <- Apollo-specific; better than his
+ROUTING CONDITION          when this fires   <- Convenium.Design-specific; better than his
 PHASE / GATE               where in the run
 WHAT IT REPLACES           one sentence
 THE LADDER                 human-led / human-assisted / fully autonomous, current rung marked
@@ -97,7 +97,7 @@ item in the whole plan and it gates this view being worth opening.
 
 ## 6. Run view
 
-The reference's Funnel, reframed to something Apollo actually has: the pipeline rail.
+The reference's Funnel, reframed to something Convenium.Design actually has: the pipeline rail.
 
 ```
 intake → 01 audit → [Gate A] → 02 direction → 03 critique → [Gate B]
@@ -110,10 +110,10 @@ render as a distinct mark, not another node — a gate is a decision, not a step
 
 ## 7. Build
 
-- **Extend `apollo-studio/`.** It is already Node + npm with a green `npm run check` and an
+- **Extend `convenium-design-studio/`.** It is already Node + npm with a green `npm run check` and an
   MCP server. No new framework, no React, no build pipeline that isn't already there.
 - Data: `kb.db` (via the same three verbs as the agents use) plus `run.json` per project.
-- Launch: `npm run studio` from the Apollo root. Opens localhost, scans for projects.
+- Launch: `npm run studio` from the Convenium.Design root. Opens localhost, scans for projects.
 - **Protected files stay protected**: `server.mjs`, `knowledge.mjs`, `mcp-server.mjs`,
   `data/`, `evidence/`, `handoffs/`, `public/media/` — per the existing out-of-scope rule.
 

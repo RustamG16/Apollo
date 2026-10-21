@@ -18,7 +18,7 @@ REG_PATH = os.path.join(LIB, "registry", "skills.registry.json")
 
 REG = json.load(open(REG_PATH, encoding="utf-8"))
 # normalise `enabled` from phase before any projection emits it: pipeline-routed skills
-# are enabled, the unrouted capability library is not. apollo_get_context filters on this.
+# are enabled, the unrouted capability library is not. convenium_design_get_context filters on this.
 for _r in REG:
     _r["enabled"] = _r.get("phase") != "unrouted"
 
@@ -197,9 +197,9 @@ MANUAL_CLAUDE_SKILLS = {
     "prototype",                    # multiple UI variants behind a picker
     "pick-ui-library",              # choose the right frontend library
     "garden-web-design-engineer",   # polished HTML/CSS/JS artifacts
-    "apollo-bootstrap",             # install / re-audit Apollo in a project
-    "apollo-loadout-sync",          # THE write path for per-agent loadouts
-    "apollo-dashboard-sync",        # THE write path for dashboard state.json
+    "convenium-design-bootstrap",             # install / re-audit Convenium.Design in a project
+    "convenium-design-loadout-sync",          # THE write path for per-agent loadouts
+    "convenium-design-dashboard-sync",        # THE write path for dashboard state.json
 }
 
 
@@ -254,7 +254,7 @@ def build_codex(dry):
 
 
 def build_studio(dry):
-    root = os.path.join(ROOT, "apollo-studio", "knowledge", "skills")
+    root = os.path.join(ROOT, "convenium-design-studio", "knowledge", "skills")
     p = Plan(root, "library/registry + library/skills (hosts includes 'studio')",
              "python library/tools/project.py studio")
     for r in REG:
@@ -275,14 +275,14 @@ def build_studio(dry):
         p.add(f"{grp}/{r['id']}/README.md", readme)
     # the studio's data file
     p.files_registry = json.dumps(REGISTRY, indent=2, ensure_ascii=False) + "\n"
-    reg_target = os.path.join(ROOT, "apollo-studio", "skills.registry.json")
+    reg_target = os.path.join(ROOT, "convenium-design-studio", "skills.registry.json")
 
     managed = lambda rel: rel.endswith("/README.md") or rel in ("GENERATED.md", "MANIFEST.txt")
     ok = p.apply(managed, dry)
     # skills.registry.json lives one level up — handle separately, never delete
     old = open(reg_target, encoding="utf-8").read() if os.path.isfile(reg_target) else None
     if old != p.files_registry:
-        print(f"{'[dry-run] ' if dry else ''}apollo-studio/skills.registry.json: 1 write")
+        print(f"{'[dry-run] ' if dry else ''}convenium-design-studio/skills.registry.json: 1 write")
         if not dry:
             open(reg_target, "w", encoding="utf-8", newline="\n").write(p.files_registry)
     return ok

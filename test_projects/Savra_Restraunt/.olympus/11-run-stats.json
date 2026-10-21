@@ -77,9 +77,9 @@
   "toolCallsByName": {
     "exec_command": 24,
     "codex_app__load_workspace_dependencies": 1,
-    "apollo_get_context": 1,
-    "apollo_create_plan": 2,
-    "apollo_publish_event": 8,
+    "convenium_design_get_context": 1,
+    "convenium_design_create_plan": 2,
+    "convenium_design_publish_event": 8,
     "apply_patch": 6,
     "view_image": 1
   },

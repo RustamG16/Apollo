@@ -1,6 +1,6 @@
 # Design direction
 
-One direction. The brief's direction block specifies `apollo-kinetic`, cinematic posture,
+One direction. The brief's direction block specifies `convenium-design-kinetic`, cinematic posture,
 scroll-narrative motion; alternatives were not requested and are not produced, per the
 direction rule in `AGENTS.md`.
 
@@ -266,7 +266,7 @@ open here, with the reservation sitting in the light that comes through it.
 | Information model | Nine beats on one page, ordered as an hour: where it is → the room → its palette → its materials → its cook → its food → its opening. The clock is the progress indicator. | "Understand the room, the cooking and the price register without reading a paragraph of marketing copy." |
 | Composition | Slate-black ground with a monotonically widening aperture; asymmetric editorial grid on a 1600px measure inside 1920. Photographs with large empty grounds carry the type. | Cinematic structural posture; single 1920×1080 target. |
 | Media | 24 of 30 stills, registered and separated; the clip muted and masked; one photograph colour-matched to the page ground. | "Use the provided media"; asset provenance recorded; nothing generated. |
-| Motion | One spine (the aperture) plus three justified GSAP uses. Exactly one hero moment. Every beat has a static end state. | `apollo-kinetic` scroll-narrative posture; the doctrine's refusal of uniform fade-up, second heroes, and motion that delays reading. |
+| Motion | One spine (the aperture) plus three justified GSAP uses. Exactly one hero moment. Every beat has a static end state. | `convenium-design-kinetic` scroll-narrative posture; the doctrine's refusal of uniform fade-up, second heroes, and motion that delays reading. |
 | Colour | Slate-black ambient; auburn, hunyadi and vanilla arrive once each, each tied to a photograph where that colour is physically present. Eleven measured legal pairings; three named bans. | Locked palette preserved; ≥4.5:1 designed in rather than QA'd in. |
 | Complexity / risk | One page, no router, no server, no WebGL, no smooth-scroll. Three GSAP plugins, each with a written justification. | "Make new dependencies, WebGL and heavy scroll animation opt-in decisions with explicit value and fallback." |
 

@@ -5,8 +5,8 @@
 - Inspected `START-HERE.md`, `AGENTS.md`, `ARCHITECTURE.md`, the controlled runbook, templates, project tree, and available local tools.
 - Activated `olympus-design-director` because it is the required persistent run owner. Output begins with `.olympus/run.json` and this audit trail.
 - Recorded Gate A as approved from the user-supplied runbook; Gate B and Gate C remain pending.
-- Apollo context reported a 300,000-token host ceiling and concurrency 2. Effective ceiling is therefore 300,000, with actual concurrency held at 1 and nested delegation disabled.
-- Registered a sanitized pre–Gate B Apollo plan. Two outbound attempts containing a local path or machine hostname were rejected; sensitive local metadata remains local. The safe plan and Gate A note were accepted.
+- Convenium.Design context reported a 300,000-token host ceiling and concurrency 2. Effective ceiling is therefore 300,000, with actual concurrency held at 1 and nested delegation disabled.
+- Registered a sanitized pre–Gate B Convenium.Design plan. Two outbound attempts containing a local path or machine hostname were rejected; sensitive local metadata remains local. The safe plan and Gate A note were accepted.
 - Confirmed this is greenfield: only the runbook and 31 media inputs existed; there were no production files to audit.
 - `ux-evidence-audit` remains dormant because no existing UI exists. `reference-deconstruction` remains dormant because no specific external reference was supplied.
 - Began media metadata inspection. System.Drawing exposed JPEG dimensions. Windows Shell exposed the MP4 duration as 00:00:08 and its audio bit rate as 128 kbps; video codec and dimensions require a local container parse.

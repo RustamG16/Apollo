@@ -2,12 +2,12 @@
 
 Olympus is a portable context pack for redesigning an existing website page. It is deliberately a **gated studio**, not an autonomous swarm: one design director owns the run, specialist roles are activated only when needed, and implementation cannot begin until a human selects a concept.
 
-## Apollo Orchestration Studio
+## Convenium.Design Orchestration Studio
 
-The working architecture console and same-prompt skill-comparison playground live in [`apollo-studio/`](apollo-studio/). Start it with:
+The working architecture console and same-prompt skill-comparison playground live in [`convenium-design-studio/`](convenium-design-studio/). Start it with:
 
 ```powershell
-cd D:\Analyst_Designer\Apollo\apollo-studio
+cd D:\Analyst_Designer\Convenium.Design\convenium-design-studio
 npm.cmd start
 ```
 

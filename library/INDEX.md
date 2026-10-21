@@ -6,8 +6,8 @@
 
 | Skill | Phase | Status | Hosts | Purpose |
 |---|---|---|---|---|
-| `apollo-style-picker` | direct | active | c/c/s | Path B of the taste-profile system. Presents the built-in design doctrines, pre-fills a taste profile from the chosen one, then… |
-| `apollo-taste-interview` | direct | active | c/c/s | Path A of the taste-profile system. Runs a structured interview that is a 1:1 walk through taste-profile.schema.json's fields, … |
+| `convenium-design-style-picker` | direct | active | c/c/s | Path B of the taste-profile system. Presents the built-in design doctrines, pre-fills a taste profile from the chosen one, then… |
+| `convenium-design-taste-interview` | direct | active | c/c/s | Path A of the taste-profile system. Runs a structured interview that is a 1:1 walk through taste-profile.schema.json's fields, … |
 | `apple-design` | direct | active | c/s | Applies Apple-inspired purpose, agency, familiarity, simplicity, typography, material restraint, and fluid interaction principl… |
 | `awwwards-web-design` | build | active | c/c/s | Adds premium editorial craft after hierarchy is stable. |
 | `concept-studio` | direct | active | c/c/s | Produce the one website redesign direction the approved brief specifies — in full: layout, typography, media, motion, mobile be… |
@@ -128,10 +128,10 @@
 | Skill | Phase | Status | Hosts | Purpose |
 |---|---|---|---|---|
 | `agent-identity-and-portfolio` | prepare | stub | s | Defines consistent agent identities, transparent inventory, and evidence-backed marketplace portfolios. |
-| `apollo-bootstrap` | unrouted | active | c/c/s | First-use analysis, audit, and install flow for Apollo_claude in a target project. Detects whether this is a first install or a… |
-| `apollo-cyberpunk-athens-skin` | unrouted | active | c/c/s | Regenerate dashboard/css/tokens.cyberpunk-athens.css from the Cyberpunk Athens doctrine's token block, whenever the doctrine fi… |
-| `apollo-dashboard-sync` | unrouted | active | c/c/s | The single write path into a project's dashboard state.json. Any agent that starts, updates, blocks, or completes a task calls … |
-| `apollo-loadout-sync` | unrouted | active | c/c/s | The single write path for a per-agent skill loadout. Activating, saving, or clearing a named setup goes through this skill rath… |
+| `convenium-design-bootstrap` | unrouted | active | c/c/s | First-use analysis, audit, and install flow for ConveniumDesign_claude in a target project. Detects whether this is a first install or a… |
+| `convenium-design-cyberpunk-athens-skin` | unrouted | active | c/c/s | Regenerate dashboard/css/tokens.cyberpunk-athens.css from the Cyberpunk Athens doctrine's token block, whenever the doctrine fi… |
+| `convenium-design-dashboard-sync` | unrouted | active | c/c/s | The single write path into a project's dashboard state.json. Any agent that starts, updates, blocks, or completes a task calls … |
+| `convenium-design-loadout-sync` | unrouted | active | c/c/s | The single write path for a per-agent skill loadout. Activating, saving, or clearing a named setup goes through this skill rath… |
 | `ethical-gamification-systems` | direct | stub | s | Creates meaningful missions, mastery, rewards, and collections with explicit spend and anti-coercion safeguards. |
 | `garden-kb-retriever` | unrouted | active | c/c/s | 面向本地知识库目录的检索和问答助手。核心流程：(1)分层索引导航 (2)遇到PDF/Excel时必须先读取references学习处理方法 (3)处理文件后再检索。按文件类型组合使用 grep、Read、pdfplumber、pandas 进行渐进式检索… |
 | `superpowers-writing-skills` | unrouted | active | c/c/s | Use when creating new skills, editing existing skills, or verifying skills work before deployment |

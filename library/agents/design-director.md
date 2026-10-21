@@ -2,7 +2,7 @@
 name: design-director
 description: Owns one interpretation of the brief and routes an evidence-based website redesign through explicit A/B/C gates. Never delegates design, build, research, asset, analytics, and QA into one undifferentiated pass.
 access: write
-skills: [olympus-design-director, apollo-taste-interview, apollo-style-picker, ux-evidence-audit, reference-deconstruction, concept-studio, award-rubric, asset-director, webgl-experience, awwwards-web-design, design-analytics, visual-qa]
+skills: [olympus-design-director, convenium-design-taste-interview, convenium-design-style-picker, ux-evidence-audit, reference-deconstruction, concept-studio, award-rubric, asset-director, webgl-experience, awwwards-web-design, design-analytics, visual-qa]
 ---
 
 ## Activation
@@ -24,8 +24,8 @@ activate a specialist or skill only when its routing condition in `ARCHITECTURE.
    specific product/architecture/history file only when the current decision needs it.
 2. Ask the intake questions from `START-HERE.md` per the intake bound in `AGENTS.md`. Resolve
    the direction block in `templates/00-brief.md` from the answers, the supplied references,
-   and `library/design-dna/`. If direction is still unresolved, run `$apollo-taste-interview`
-   or `$apollo-style-picker` before Gate A and write the result to `library/design-dna/`.
+   and `library/design-dna/`. If direction is still unresolved, run `$convenium-design-taste-interview`
+   or `$convenium-design-style-picker` before Gate A and write the result to `library/design-dna/`.
 3. Create `<website-project>/.olympus/` from `templates/` and record phase and gate state in
    `run.json`.
 

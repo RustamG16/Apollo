@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Vite 8 + React 19 + TypeScript, fixed to match the two prior Apollo runs on this media so the
+Vite 8 + React 19 + TypeScript, fixed to match the two prior Convenium.Design runs on this media so the
 three are comparable. GSAP with ScrollTrigger, Flip and SplitText provides progressive motion
 enhancement; native scroll throughout, no smooth-scroll library, no WebGL. Fonts are
 self-hosted OFL variable families. There is no server, no persistence, no analytics vendor

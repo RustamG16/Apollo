@@ -6,7 +6,8 @@ node_modules/
 !.env.example
 tmp/
 *.log
-apollo-studio/data/*.jsonl
+convenium-design-studio/data/*.jsonl
 
 # Nested repo with its own origin — github.com/RustamG16/EcoPowerTech
 test_projects/EcoPowerTech/
+_site/

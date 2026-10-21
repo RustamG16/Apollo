@@ -5,7 +5,7 @@ see `USAGE.md`.
 
 Replace the two placeholders, attach both folders to one Codex task, and send this:
 
-> Use the attached Apollo folder as read-only operating context for this redesign. Read
+> Use the attached Convenium.Design folder as read-only operating context for this redesign. Read
 > `ARCHITECTURE-ESSENTIALS.md`, `AGENTS.md`, and `START-HERE.md` completely before acting.
 > The website project is `<PROJECT_FOLDER>` and the initial target is `<ROUTE_OR_PAGE>`. Do
 > not inspect or edit production code yet. First ask the required intake questions from

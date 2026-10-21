@@ -4,13 +4,13 @@ Append concise dated entries. Preserve earlier entries; correct them with a late
 
 ## 2026-09-03 — Project initialized
 
-- **Run.** First Apollo run under Claude Code (Opus 5) against the SAVRA media set, which
+- **Run.** First Convenium.Design run under Claude Code (Opus 5) against the SAVRA media set, which
   two earlier Codex-driven runs also used (`test_projects/Savra_Restraunt`,
   `test_projects/Savra_v2`). Stack and pipeline deliberately match those runs so the three
   are comparable.
 - **Brief.** Greenfield, single page `/`, concept + implementation. Approved as Gate A and
   Gate B together via the implementation plan. Gate C remains a real review.
-- **Direction — "Mise en Place", doctrine `apollo-kinetic`.** The site is SAVRA in the hour
+- **Direction — "Mise en Place", doctrine `convenium-design-kinetic`.** The site is SAVRA in the hour
   before service; the scroll is the clock running to 18:00; the four locked brand colours are
   four sequential narrative fields; the single hero moment is the doors opening. Chosen
   because every supplied photograph is empty of guests — the media's most conspicuous fact,
@@ -19,8 +19,8 @@ Append concise dated entries. Preserve earlier entries; correct them with a late
   creative freedom. Intake fields were resolved by the director from the media and recorded
   in `.olympus/00-brief.md` as director-resolved rather than user-stated.
 - **Deviation: no taste profile written.** `library/design-dna/` was empty. Rather than run
-  `apollo-taste-interview` (an interview the user declined), direction was resolved from the
-  media plus the `apollo-kinetic` doctrine. Nothing was written back to `library/design-dna/`
+  `convenium-design-taste-interview` (an interview the user declined), direction was resolved from the
+  media plus the `convenium-design-kinetic` doctrine. Nothing was written back to `library/design-dna/`
   — a profile inferred from one test project should not persist into every future run.
 - **Rejected: WebGL.** Failed its activation test — there is no spatial or material claim the
   photography does not already make better. Recorded as declined, not skipped.
@@ -48,7 +48,7 @@ Append concise dated entries. Preserve earlier entries; correct them with a late
 - The user compared this build with `test_projects/Savra_v2` (Codex) and judged v2 better.
   That judgement was correct, and the causes were specific rather than mysterious.
 - **Root cause, mechanical.** `impeccable` — which owns the design-system artifacts and the
-  drift detector — carried `hosts: ['codex','studio']` in the Apollo registry. Its full body,
+  drift detector — carried `hosts: ['codex','studio']` in the Convenium.Design registry. Its full body,
   including `scripts/` and `reference/`, was projected to `.agents/skills/` for Codex but not
   to `.claude/skills/`. This host fell back to a plugin copy that ships no scripts. Ten other
   pipeline skills were in the same position, two of them `defaultOn: true`. Claude Code was

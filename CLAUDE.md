@@ -6,7 +6,7 @@ carries **only** the read order and the host-specific mechanics. All doctrine is
 
 ## Read order
 
-1. `ARCHITECTURE-ESSENTIALS.md` — one screen: what Apollo is, the run, where things live.
+1. `ARCHITECTURE-ESSENTIALS.md` — one screen: what Convenium.Design is, the run, where things live.
 2. `AGENTS.md` — the operating doctrine. Read in full.
 3. `START-HERE.md` — the gated workflow and the intake questions.
 4. Then only the file the current decision needs: `ARCHITECTURE.md` for the full routing
@@ -52,9 +52,9 @@ routing decision, one per phase.
 ## Do not
 
 - Edit anything under `.claude/`, `.agents/skills/`, `.codex/agents/`, or
-  `apollo-studio/knowledge/skills/` — they are generated from `library/` and overwritten.
+  `convenium-design-studio/knowledge/skills/` — they are generated from `library/` and overwritten.
 - Write project evidence into this repo. It goes in `<website-project>/.olympus/`.
-- Touch `apollo-studio/data/`, `evidence/`, `handoffs/`, `public/media/`, or any `.olympus/`.
+- Touch `convenium-design-studio/data/`, `evidence/`, `handoffs/`, `public/media/`, or any `.olympus/`.
 
 ## For humans
 

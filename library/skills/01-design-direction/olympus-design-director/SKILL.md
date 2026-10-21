@@ -24,7 +24,7 @@ Own one interpretation of the brief and route work through explicit gates. Never
 - Greenfield: skip `$ux-evidence-audit`; `$reference-deconstruction` carries the evidence phase.
 - Write durable findings to `.olympus/01-audit.md`.
 - Resolve the direction block in `00-brief.md` from intake answers, references, and
-  `library/design-dna/`. If unresolved, run `$apollo-taste-interview` or `$apollo-style-picker`
+  `library/design-dna/`. If unresolved, run `$convenium-design-taste-interview` or `$convenium-design-style-picker`
   and write the result to `library/design-dna/`.
 - Stop for Gate A. Do not generate the direction or edit production code before approval.
 

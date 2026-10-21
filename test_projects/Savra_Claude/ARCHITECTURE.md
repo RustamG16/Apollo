@@ -5,7 +5,7 @@
 | Layer | Choice | Why |
 |---|---|---|
 | Build | Vite 7 | Fast dev, native ESM, no config surface to maintain for a single page. |
-| UI | React 19 + TypeScript | The two prior Apollo runs on this media settled here; keeping it makes this run comparable to them. A single page does not need React — but the beat components each own a GSAP context, and `useGSAP` gives correct cleanup for free. |
+| UI | React 19 + TypeScript | The two prior Convenium.Design runs on this media settled here; keeping it makes this run comparable to them. A single page does not need React — but the beat components each own a GSAP context, and `useGSAP` gives correct cleanup for free. |
 | Motion | GSAP 3 + `@gsap/react`, with ScrollTrigger, Flip and SplitText | The direction is scroll-narrative with element continuity between sections. Flip is the only honest way to move an element between two layouts; SplitText is the only honest way to animate per-character display type without shipping hand-split markup. All GSAP plugins are free as of 3.13. |
 | Scroll | Native | The doctrine refuses scroll-hijacking. A smooth-scroll library takes ownership of the scroll position, breaks browser find-in-page and anchor behaviour, and adds latency to every ScrollTrigger. Rejected deliberately, not overlooked. |
 | Styling | One hand-written `src/styles.css`, CSS custom properties as tokens | The token set is small and fixed (four brand colours, one ground, one scale). A utility framework would be more bytes than the entire stylesheet. |
@@ -31,7 +31,7 @@ src/
                         whether it may animate.
   components/           One component per beat, plus the reservation dialog.
   styles.css            All styling. Tokens at the top, beats in narrative order below.
-.olympus/               The Apollo audit trail. Not application code. Do not import from it.
+.olympus/               The Convenium.Design audit trail. Not application code. Do not import from it.
 .olympus/tools/         The media derivative pipeline (Python + ffmpeg).
 ```
 
@@ -88,7 +88,7 @@ Deployment is static: `dist/` on any host. Not configured — no target was spec
 ## Decisions and costs
 
 - **React for a single page is over-provisioned.** Accepted for comparability with the two
-  prior Apollo runs on this media, and because `useGSAP` cleanup is genuinely useful across
+  prior Convenium.Design runs on this media, and because `useGSAP` cleanup is genuinely useful across
   seven independently-triggered beats. Cost: ~45 kB gzip of framework for a page that could
   be static HTML. If this were a real launch, that trade should be revisited.
 - **Native scroll over Lenis.** Costs some perceived smoothness on Windows trackpads and
