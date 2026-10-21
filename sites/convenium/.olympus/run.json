@@ -4,10 +4,10 @@
   "target_route": "/",
   "mode": "concept-and-implementation",
   "trail": "abridged",
-  "phase": "finish",
+  "phase": "handoff",
   "gate_a": "approved-in-plan",
   "gate_b": "approved-in-plan",
-  "gate_c": "pending",
+  "gate_c": "pending (user review of the pushed page)",
   "approved_direction": "The Codex \u2014 a private universe for one inhabitant (doctrine: convenium-design-kinetic)",
   "constraints": [
     "static site, no bundler, no build step",
@@ -34,9 +34,9 @@
     "hero_type_px_at_1440": 234,
     "mobile_hero_vw": 24
   },
-  "qa_passes": 1,
-  "finish_verdict": null,
-  "finish_score": null,
+  "qa_passes": 2,
+  "finish_verdict": "PASS WITH NOTES",
+  "finish_score": 84,
   "credits_spent": 0,
   "phase_counts": {
     "intake": 1,
@@ -45,11 +45,12 @@
     "critique": 0,
     "prepare": 2,
     "design_system": 1,
-    "build": 1,
-    "qa": 1,
-    "finish": 0,
-    "measurement": 0,
-    "handoff": 0
+    "build": 2,
+    "qa": 2,
+    "finish": 2,
+    "measurement": 1,
+    "handoff": 1
   },
-  "last_updated": "2026-10-21"
+  "last_updated": "2026-10-21",
+  "finish_score_round_one": 82
 }

@@ -338,7 +338,7 @@ em { font-style: italic; }
 .no-motion .hero-lede, .no-motion .hero-meta, .no-motion .row-copy, .no-motion .quests li { opacity: 1; transform: none; }
 
 /* Campaign hover frame (fine pointer, desktop) */
-@media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
+@media (hover: hover) and (pointer: fine) and (min-width: 1280px) {
   .rows { position: relative; }
   .row-frame {
     position: fixed; left: 0; top: 0; width: 22vw; max-width: 330px;
@@ -348,6 +348,12 @@ em { font-style: italic; }
   .row.is-hover .row-frame { opacity: 1; will-change: transform; }
   .row-copy { grid-column: 1 / span 12; }
   .row { cursor: default; }
+}
+
+/* Inline frame for widths below the hover breakpoint (1025–1279 with any pointer) */
+@media (min-width: 1025px) and (max-width: 1279px) {
+  .row-copy { grid-column: 1 / span 7; }
+  .row-frame { grid-column: 9 / span 4; }
 }
 
 /* Tablet */

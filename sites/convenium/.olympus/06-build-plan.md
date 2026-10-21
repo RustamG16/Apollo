@@ -217,7 +217,7 @@ Beat sheet (kinetic doctrine's required first output):
 | paths-pin | paths section top hits top; pin 600vh; scrub 1 | reading blocks scroll through; frame crossfades (opacity + scale 1.04→1) at each fifth; counter ticks | scroll-linked | video 1 |
 | video-play | section 30% in view | video plays; leaves view → pauses | — | — |
 | rows-rise | campaign rows / board tiles 15% in view, once, batched | translateY 24 → 0, opacity 0 → 1 | 400ms, 60ms stagger, ≤ 8 | — |
-| campaign-hover | pointer over a row (fine pointer only) | the row's frame fades in at the cursor and follows it with 120ms lag | 150ms | — |
+| campaign-hover | pointer over a row (fine pointer, ≥1280px) | the row's frame fades in at the right gutter beside the row, level with the cursor, and follows it vertically with ~350ms lag; inline thumbnails below 1280px | 150ms | — |
 | board-count | quest toggled | XP figure counts to new value | 400ms | — |
 
 - Library: GSAP 3.13 + ScrollTrigger from `assets/vendor/`, registered once; `gsap.matchMedia`

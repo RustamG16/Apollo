@@ -80,7 +80,7 @@ already supplied and are used as-is.
 
 ## Gate C
 
-- Status: pending — awaiting the inhabitant's review of the pushed page at
+- Status: pending — finish review 84/100 PASS WITH NOTES; awaiting the inhabitant's review of the pushed page at
   `https://rustamg16.github.io/Apollo/convenium/`.
 - User decision: —
 - Date: 2026-10-21

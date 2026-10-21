@@ -65,7 +65,7 @@ typography:
 spacing:
   scale: "4 / 8 / 16 / 32 / 64 / 128 px; sections are viewport units (100vh, the paths 600vh pinned)"
   gutter: "clamp(20px, 5vw, 80px)"
-  measure: "62ch body, 38ch pull quotes, 44ch ledes"
+  measure: "62ch body (38ch beside a campaign title), 38ch pull quotes, 44ch ledes"
 
 motion:
   micro: "150ms"
@@ -167,7 +167,7 @@ and its label ("Lit").
 
 Photography bleeds full-width in the hero, the two video sections and the closing; it is
 contained in the inhabitant portrait (4:5 crop of the right half), the pinned path frame
-(3:2, sticky) and the campaign hover frames (3:2, 36vw wide, following the cursor). Images
+(3:2, sticky) and the campaign hover frames (3:2, 22vw wide, max 330px, anchored at the right gutter beside the row and following the cursor vertically; inline thumbnails below 1280px). Images
 are shown at full strength; no tint, no blend, no blur. Type crosses media in the hero, the
 video sections and the closing, and in each case the scrim belongs to the type: a gradient
 rising from the bottom of the copy block (`scrim` token), never a darkening of the whole

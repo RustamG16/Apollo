@@ -87,7 +87,7 @@
   });
 
   /* ---------- Campaign hover frames (fine pointer, desktop) ---------- */
-  var fine = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1025px)');
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1280px)');
   var rows = Array.prototype.slice.call(document.querySelectorAll('.row'));
   if (fine.matches && hasGsap) {
     rows.forEach(function (row) {
